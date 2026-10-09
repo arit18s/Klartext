@@ -63,7 +63,9 @@ export function Sidebar() {
 
       <nav aria-label="Main" className="flex flex-col gap-0.5 max-lg:gap-1 max-lg:pt-4">
         <Group label="Review" />
-        <NavEntry item={{ to: '/', label: 'Inbox', icon: Inbox, count: counts?.flagged, active: onCall || undefined }} />
+        <NavEntry
+          item={{ to: '/', label: 'Inbox', icon: Inbox, count: counts?.flagged, active: onCall || undefined }}
+        />
         <NavEntry item={{ to: '/calls', label: 'All calls', icon: List, count: counts?.total }} />
         <Group label="Configure" />
         <NavEntry item={{ to: '/tuning', label: 'Tuning', icon: SlidersVertical }} />
