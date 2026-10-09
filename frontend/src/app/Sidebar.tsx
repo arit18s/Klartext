@@ -1,7 +1,8 @@
 import { NavLink, useLocation } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Book, ChartLine, Folder, Inbox, List, Settings, SlidersVertical, Users, type LucideIcon } from 'lucide-react'
-import { getCalls } from '@/lib/api'
+import { getCalls, getPipelineStatus } from '@/lib/api'
+import { useLiveConnection } from './LiveUpdates'
 import { LogoMark } from '@/components/Logo'
 import { cn } from '@/lib/utils'
 
@@ -47,6 +48,34 @@ function Group({ label }: { label: string }) {
   )
 }
 
+/** Pipeline state from GET /api/pipeline/status, kept fresh by pipeline_status events. */
+function PipelineDot() {
+  const { data, error } = useQuery({ queryKey: ['pipeline'], queryFn: getPipelineStatus, retry: false })
+  const connection = useLiveConnection()
+  const working = data?.queue.filter((q) => q.stage !== 'failed').length ?? 0
+  const [tone, text] = error
+    ? ['bg-alarm', 'Pipeline not reachable']
+    : connection === 'lost'
+      ? ['bg-alarm', 'Live updates lost']
+      : !data
+        ? ['bg-line', 'Checking pipeline…']
+        : !data.watching
+          ? ['bg-muted', 'Watching paused']
+          : working
+            ? ['bg-review', `Processing ${working} ${working === 1 ? 'call' : 'calls'}`]
+            : ['bg-clear', 'Pipeline watching']
+  return (
+    <div
+      role="status"
+      title={text}
+      className="flex items-center gap-2 px-3 text-small text-graphite-soft max-lg:justify-center max-lg:px-0"
+    >
+      <span className={cn('h-2 w-2 flex-none rounded-full', tone)} aria-hidden="true" />
+      <span className="max-lg:sr-only">{text}</span>
+    </div>
+  )
+}
+
 /** Fixed left sidebar, 232 px; collapses to 64 px icons below 1024 px (04_FRONTEND_GUIDELINES.md section 5). */
 export function Sidebar() {
   const { data } = useQuery({ queryKey: ['calls', {}], queryFn: () => getCalls() })
@@ -79,11 +108,7 @@ export function Sidebar() {
 
       <div className="mt-auto flex flex-col gap-2 pt-6">
         <NavEntry item={{ to: '/settings', label: 'Settings', icon: Settings }} />
-        {/* Static until the pipeline status is wired up (F8/F9). */}
-        <div className="flex items-center gap-2 px-3 text-small text-graphite-soft max-lg:justify-center max-lg:px-0">
-          <span className="h-2 w-2 flex-none rounded-full bg-clear" aria-hidden="true" />
-          <span className="max-lg:sr-only">Pipeline watching</span>
-        </div>
+        <PipelineDot />
         <div className="px-3 text-[12px] leading-[18px] text-muted max-lg:hidden">Built for Inventx and Outcept</div>
       </div>
     </aside>

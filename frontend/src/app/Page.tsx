@@ -14,7 +14,7 @@ export function Page({ title, heading, intro, children }: PageProps) {
   return (
     <>
       <TopBar>{typeof title === 'string' ? <PageTitle>{title}</PageTitle> : title}</TopBar>
-      <main className="flex w-full max-w-content flex-col gap-8 p-8">
+      <main id="main" tabIndex={-1} className="flex w-full max-w-content flex-col gap-8 p-8 focus:outline-none">
         {heading && (
           <section>
             <h2 className="text-display">{heading}</h2>

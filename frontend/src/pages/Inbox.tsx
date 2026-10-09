@@ -11,7 +11,7 @@ import { Kbd } from '@/components/Kbd'
 import { StatCard } from '@/components/StatCard'
 import { Tag } from '@/components/Tag'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { USE_FIXTURES, getCalls, getPipelineStatus } from '@/lib/api'
+import { getCalls, getPipelineStatus } from '@/lib/api'
 import { INBOX_FILTERS, applyFilters, filterChips, removeChip, sortCalls, type FilterState } from '@/lib/filters'
 import { recordingName } from '@/lib/format'
 import { useFeedback } from '@/lib/hooks'
@@ -30,7 +30,7 @@ export default function Inbox() {
     queryKey: ['calls', { flagged_only: true }],
     queryFn: () => getCalls({ flagged_only: true }),
   })
-  const pipeline = useQuery({ queryKey: ['pipeline'], queryFn: getPipelineStatus, enabled: !USE_FIXTURES })
+  const pipeline = useQuery({ queryKey: ['pipeline'], queryFn: getPipelineStatus, retry: false })
   const feedback = useFeedback()
 
   const flagged = useMemo(() => sortCalls(calls.data?.items ?? []), [calls.data])

@@ -48,6 +48,7 @@ Still invented, review before implementing:
 | `GET /calls/{id}/history` | `action` values | `decided, feedback, recheck, retry, trigger_sent`; config changes have their own targets |
 | Eval metrics | shape of `metrics` | Section 10 lists the metrics, not their JSON |
 | Pipeline status | whole object | Not specified. Stages from `02_APP_FLOW.md` screen 7 |
+| `POST /pipeline/inbox` | whole endpoint | The Pipeline drop zone (02_APP_FLOW screen 7) copies one file into the inbox folder; section 9 has no endpoint for it |
 
 Not covered yet: "View history" of config versions (Rules, Settings).
 
@@ -467,6 +468,16 @@ Request: `{ "enabled": false }` pauses the inbox watcher, `true` resumes it. Fil
 ```json
 { "watching": false }
 ```
+
+### `POST /pipeline/inbox`
+
+Multipart form, one field `file`: a WAV recording (`audio/wav` or `.wav`), max 200 MB. The backend writes it into `INBOX_DIR` under a safe name (never a path from the client) and the watcher processes it like any other recording. Response `202`:
+
+```json
+{ "file_name": "Stufe2_C09-K4.wav", "queued": true, "duplicate": false }
+```
+
+A file seen before (same hash) answers `{ "queued": false, "duplicate": true }`. 415 for non-WAV files, 413 when too large; `detail` says what to do ("… is not a WAV file. Convert it to WAV and drop it again.").
 
 ### `POST /pipeline/process-folder`
 
