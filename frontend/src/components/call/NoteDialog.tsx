@@ -23,7 +23,7 @@ export function NoteDialog({
 }: {
   title: string
   description: string
-  actions: { label: FeedbackLabel; text: string; primary?: boolean }[]
+  actions: { label: FeedbackLabel; text: string; primary?: boolean; needsNote?: boolean }[]
   onSubmit: (a: FeedbackAction) => void
   children: ReactElement
 }) {
@@ -60,6 +60,7 @@ export function NoteDialog({
             <Button
               key={a.label}
               variant={a.primary ? 'primary' : 'secondary'}
+              disabled={a.needsNote && !note.trim()}
               onClick={() => {
                 onSubmit({ label: a.label, note: note.trim() || null })
                 setOpen(false)
