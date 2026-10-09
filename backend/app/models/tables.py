@@ -129,7 +129,7 @@ class Feedback(SQLModel, table=True):
     __tablename__ = "feedback"
     id: int | None = Field(default=None, primary_key=True)
     call_id: str = Field(index=True)
-    label: str  # correct / false_alarm / missed / escalated_to_alarm / closed_no_alert
+    label: str  # correct / false_alarm / missed / escalated_to_alarm / closed_no_alert / note
     note: str | None = None
     created_at: datetime = Field(default_factory=utcnow)
 

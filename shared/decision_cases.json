@@ -409,8 +409,8 @@
       }
     },
     {
-      "name": "family_failed_beats_alarm",
-      "why": "Any failed family -> review, even with a high score elsewhere; family = the failed one, score = max of the rest",
+      "name": "alarm_despite_failed_family",
+      "why": "S >= T_alarm stays alarm even when another family failed; the reason gets a note for each failed family",
       "input": {
         "families": [
           {
@@ -436,11 +436,11 @@
         "asr_uncertain": false
       },
       "expected": {
-        "verdict": "review",
-        "family": "trade",
+        "verdict": "alarm",
+        "family": "access",
         "score": 100,
-        "rule": "family_failed",
-        "reason": "A check could not complete. Needs a human.",
+        "rule": "score_alarm",
+        "reason": "r Note: the trade check could not complete.",
         "open_question": null
       }
     },
@@ -900,7 +900,7 @@
     },
     {
       "name": "no_families",
-      "why": "Nothing enabled: no alert, no family, score 0",
+      "why": "Nothing enabled: fail safe to review, no family, score 0",
       "input": {
         "families": [],
         "t_review": 30,
@@ -909,12 +909,48 @@
         "asr_uncertain": false
       },
       "expected": {
-        "verdict": "no_alert",
+        "verdict": "review",
         "family": null,
         "score": 0,
-        "rule": "no_alert",
-        "reason": null,
+        "rule": "no_checks",
+        "reason": "No checks enabled.",
         "open_question": null
+      }
+    },
+    {
+      "name": "needs_human_two_families_fixed_order",
+      "why": "Two families with a needs_human majority: the first in fixed order (trade, splitting, access, disclosure, documentation) wins, whatever the input order",
+      "input": {
+        "families": [
+          {
+            "family": "disclosure",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 2,
+            "open_question": "Is the caller authorised?",
+            "reason": "Caller claims a power of attorney."
+          },
+          {
+            "family": "access",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 3,
+            "open_question": "Was the code still valid?",
+            "reason": "Customer reads digits from a letter."
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "review",
+        "family": "access",
+        "score": 0,
+        "rule": "needs_human",
+        "reason": "Customer reads digits from a letter.",
+        "open_question": "Was the code still valid?"
       }
     }
   ]

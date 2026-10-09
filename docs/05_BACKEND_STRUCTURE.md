@@ -139,22 +139,28 @@ An all-undetermined family scores 50, which lands in the review band by default.
 
 ## 5. Decision rule (single source of truth)
 
-Inputs: per-family results for enabled families, thresholds `T_review` (default 30) and `T_alarm` (default 70), flag `asr_uncertain` (any evidence segment has `low_confidence`).
+Inputs: per-family results for enabled families, thresholds `T_review` (default 30) and `T_alarm` (default 70), `k` samples per check, flag `asr_uncertain` (any evidence segment has `low_confidence`).
+
+Families are always taken in the fixed order `trade, splitting, access, disclosure, documentation`, whatever order they arrive in. That order breaks every tie: equal top scores, and several families with a needs_human majority. The first family in the order wins.
 
 ```
-S, F = max score_f over enabled families, argmax family
+if no family is enabled                      → review  (reason: "No checks enabled.")
+S, F = max score_f over families that did not fail, argmax family (fixed order breaks ties; S = 0 if none)
 
-if any family failed                         → review  (reason: "A check could not complete. Needs a human.")
-elif S >= T_alarm                            → alarm   (family F)
+if S >= T_alarm                              → alarm   (family F; for each failed family append
+                                                        "Note: the <family> check could not complete." to the reason)
+elif any family failed                       → review  (first failed family; reason: "A check could not complete. Needs a human.")
 elif S >= T_review                           → review  (family F, open_question from F)
-elif any family has needs_human_votes > k/2  → review  (that family, its open_question)
+elif any family has needs_human_votes > k/2  → review  (first such family, its open_question)
 elif asr_uncertain and S >= T_review / 2     → review  (reason: "Transcription unclear at the key passage.")
 else                                         → no_alert
 ```
 
-Call `score` = S. Call `reason` = family F reason (or the rule's reason). Decision row stores the threshold config version used.
+A failed family only forces review below `T_alarm`: a clear alarm elsewhere stays an alarm, and the reason says which check is missing.
 
-The frontend recomputes this rule client-side from per-family scores when sliders move. Both implementations have a shared test file `decision_cases.json` (inputs → expected verdict) that both test suites run.
+Call `score` = S. Call `reason` = family F reason (or the rule's reason), `reason_de` the same in German. The decision row stores the threshold config version used. Both implementations also return the branch that fired (`rule`: `no_checks, score_alarm, family_failed, score_review, needs_human, asr_uncertain, no_alert`) for tests and traceability.
+
+The frontend recomputes this rule client-side from per-family scores when sliders move. Both implementations run the one shared file `shared/decision_cases.json` (inputs → expected output): `backend/tests/test_decision_cases.py` and `frontend/src/lib/decide.test.ts`.
 
 ## 6. Evidence, snippets, twin call
 
@@ -189,12 +195,12 @@ POST {TRIGGER_API_URL}/triggers
 | `check_results` | `call_id`, `family` (pk pair), `score`, `event_majority`, `agreement`, `needs_human_votes`, `open_question`, `reason`, `reason_de`, `benign_explanation` |
 | `decisions` | `call_id` (pk), `verdict`, `family`, `score`, `reason`, `reason_de`, `open_question`, `asr_uncertain`, `twin_call_id`, `twin_note`, `thresholds_version_id`, `decided_at` |
 | `evidence` | `id`, `call_id`, `family`, `seg_id`, `role`, `start_s`, `end_s`, `speaker_role`, `quote`, `note`, `snippet_path` |
-| `feedback` | `id`, `call_id`, `label` (correct / false_alarm / missed / escalated_to_alarm / closed_no_alert), `note` (optional), `created_at` |
+| `feedback` | `id`, `call_id`, `label` (correct / false_alarm / missed / escalated_to_alarm / closed_no_alert / note), `note` (optional; required for label `note`), `created_at` |
 | `triggers_sent` | `id`, `call_id`, `remote_id`, `url`, `status_code`, `created_at` |
 | `eval_runs` | `id`, `split`, `config_snapshot_json`, `metrics_json`, `created_at` |
 | `audit_log` | `id`, `actor`, `action`, `target`, `details_json`, `created_at` |
 
-Every config change and every feedback writes an `audit_log` row. The review actions `escalated_to_alarm` and `closed_no_alert` (buttons "Escalate as alarm" / "Close as no alert" in the review call view) are stored as feedback and always write an `audit_log` row with the label and note.
+Every config change and every feedback writes an `audit_log` row. The review actions `escalated_to_alarm` and `closed_no_alert` (buttons "Escalate as alarm" / "Close as no alert" in the review call view) are stored as feedback and always write an `audit_log` row with the label and note. Label `note` is a plain comment ("Add note"): it needs non-empty note text, does not mark the decision right or wrong and does not change the verdict.
 
 ## 9. API (FastAPI, prefix `/api`)
 
@@ -204,7 +210,7 @@ Every config change and every feedback writes an `audit_log` row. The review act
 | GET | `/calls/{id}` | Full detail: decision, checks, evidence, keyword hits, segments, twin |
 | GET | `/calls/{id}/audio` | Full WAV with HTTP range support |
 | GET | `/calls/{id}/snippets/{seg_id}` | Snippet WAV |
-| POST | `/calls/{id}/feedback` | `{label, note?}`, label ∈ `correct, false_alarm, missed, escalated_to_alarm, closed_no_alert` |
+| POST | `/calls/{id}/feedback` | `{label, note?}`, label ∈ `correct, false_alarm, missed, escalated_to_alarm, closed_no_alert, note`; `note` text required for label `note` (422 otherwise), max 2000 chars |
 | POST | `/calls/{id}/recheck` | Re-run checks + decision for one call |
 | GET / PUT | `/config/thresholds` | `{review, alarm}` |
 | GET / PUT | `/config/families` | Enabled flags, rule text, harmless text |

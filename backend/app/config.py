@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     llm_model: str = ""
     llm_samples: int = 3
     llm_temperature: float = 0.3
-    llm_reasoning: Literal["on", "off"] = "on"  # model "thinking"; switch without code changes
+    llm_reasoning: Literal["on", "off"] = "off"  # model "thinking"; switch without code changes
     llm_concurrency: int = 8  # parallel LLM requests
 
     # Speech
