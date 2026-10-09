@@ -1,0 +1,253 @@
+{
+  "call": {
+    "call_id": "Stufe3_C17-K3",
+    "file_name": "Stufe3_C17-K3.wav",
+    "dialogue_id": "Stufe3_C17",
+    "variant": "clean",
+    "level": 3,
+    "duration_s": 228.0,
+    "advisor_name": "Advisor 01",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:40:00Z",
+    "processed_at": "2026-10-10T07:40:00Z",
+    "verdict": "review",
+    "family": "access",
+    "score": 58,
+    "reason": "Customer reads six digits from a bank letter to the advisor. The call never says when the letter arrived, so it is unclear whether the code still worked.",
+    "open_question": "Was the code still valid when it was read out?",
+    "feedback_label": null,
+    "trigger_sent": true,
+    "expected_verdict": "review"
+  },
+  "decision": {
+    "verdict": "review",
+    "family": "access",
+    "score": 58,
+    "reason": "Customer reads six digits from a bank letter to the advisor. The call never says when the letter arrived, so it is unclear whether the code still worked.",
+    "reason_de": "Die Kundin liest der Beratung sechs Ziffern aus einem Brief der Bank vor. Im Gespräch wird nie gesagt, wann der Brief kam, deshalb ist unklar, ob der Code noch gültig war.",
+    "open_question": "Was the code still valid when it was read out?",
+    "asr_uncertain": false,
+    "thresholds_version_id": 3,
+    "decided_at": "2026-10-10T07:40:00Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 3,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 3,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "No trade, recommendation or company news comes up in the call.",
+      "reason_de": null,
+      "benign_explanation": "Nothing in the call points to this."
+    },
+    {
+      "family": "splitting",
+      "score": 2,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 3,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "No payment or transfer is discussed.",
+      "reason_de": null,
+      "benign_explanation": "Nothing in the call points to this."
+    },
+    {
+      "family": "access",
+      "score": 58,
+      "event_majority": "undetermined",
+      "agreement": 0.6666666666666666,
+      "samples": 3,
+      "needs_human_votes": 2,
+      "open_question": "Was the code still valid when it was read out?",
+      "reason": "Customer reads six digits from a bank letter to the advisor. The call never says when the letter arrived, so it is unclear whether the code still worked.",
+      "reason_de": "Die Kundin liest der Beratung sechs Ziffern aus einem Brief der Bank vor. Im Gespräch wird nie gesagt, wann der Brief kam, deshalb ist unklar, ob der Code noch gültig war.",
+      "benign_explanation": "The letter may be old, and codes on bank letters expire after a set time. Then the digits give no access."
+    },
+    {
+      "family": "disclosure",
+      "score": 6,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 3,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "Only the account holder is on the line.",
+      "reason_de": null,
+      "benign_explanation": "Nothing in the call points to this."
+    },
+    {
+      "family": "documentation",
+      "score": 0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 3,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call is a support call. Nothing had to be recorded for advice.",
+      "reason_de": null,
+      "benign_explanation": null
+    }
+  ],
+  "evidence": [
+    {
+      "id": 1,
+      "family": "access",
+      "seg_id": "S004",
+      "role": "context",
+      "start_s": 40.0,
+      "end_s": 52.0,
+      "speaker_role": "customer",
+      "quote": "Der Brief liegt schon eine Weile in der Schublade, ich weiss nicht mehr genau seit wann.",
+      "note": "The letter may be old. Codes on bank letters expire after a set time.",
+      "snippet_url": "/api/calls/Stufe3_C17-K3/snippets/S004"
+    },
+    {
+      "id": 2,
+      "family": "access",
+      "seg_id": "S007",
+      "role": "context",
+      "start_s": 110.0,
+      "end_s": 118.0,
+      "speaker_role": "advisor",
+      "quote": "Haben Sie den Brief von uns noch? Auf dem steht ein Bestätigungscode.",
+      "note": "The advisor points the customer to the code on the letter.",
+      "snippet_url": "/api/calls/Stufe3_C17-K3/snippets/S007"
+    },
+    {
+      "id": 3,
+      "family": "access",
+      "seg_id": "S008",
+      "role": "trigger",
+      "start_s": 125.0,
+      "end_s": 132.0,
+      "speaker_role": "customer",
+      "quote": "Zwei, neun, eins, fünf, null, acht.",
+      "note": "Would support Access code shared if the code was still valid. The call does not settle that.",
+      "snippet_url": "/api/calls/Stufe3_C17-K3/snippets/S008"
+    }
+  ],
+  "keyword_hits": [
+    {
+      "keyword_id": "K10",
+      "family": "access",
+      "phrase": "Bestätigungscode",
+      "seg_id": "S007",
+      "start_s": 115.0,
+      "end_s": 116.2,
+      "label": "relevant"
+    }
+  ],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 3.0,
+      "end_s": 14.4,
+      "role": "advisor",
+      "text": "Grüezi, Kundenberatung. Was kann ich für Sie tun?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 15.0,
+      "end_s": 26.4,
+      "role": "customer",
+      "text": "Ich sollte mein neues Login aktivieren, aber ich weiss nicht wie.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 27.0,
+      "end_s": 39.4,
+      "role": "advisor",
+      "text": "Kein Problem. Haben Sie einen Aktivierungsbrief bekommen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 40.0,
+      "end_s": 52.0,
+      "role": "customer",
+      "text": "Der Brief liegt schon eine Weile in der Schublade, ich weiss nicht mehr genau seit wann.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 55.0,
+      "end_s": 83.4,
+      "role": "advisor",
+      "text": "Gut, wir können das zusammen machen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 84.0,
+      "end_s": 109.4,
+      "role": "customer",
+      "text": "Ich habe ihn jetzt hier vor mir.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 110.0,
+      "end_s": 118.0,
+      "role": "advisor",
+      "text": "Haben Sie den Brief von uns noch? Auf dem steht ein Bestätigungscode.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 125.0,
+      "end_s": 132.0,
+      "role": "customer",
+      "text": "Zwei, neun, eins, fünf, null, acht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 136.0,
+      "end_s": 163.4,
+      "role": "advisor",
+      "text": "Merci, ich probiere das gerade.",
+      "low_confidence": true
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 164.0,
+      "end_s": 201.4,
+      "role": "advisor",
+      "text": "Ich schicke Ihnen noch einen neuen Brief, dann sind Sie sicher.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 202.0,
+      "end_s": 227.5,
+      "role": "customer",
+      "text": "Gut, vielen Dank. Ade.",
+      "low_confidence": false
+    }
+  ],
+  "twin": {
+    "call_id": "Stufe2_C10-K3",
+    "dialogue_id": "Stufe2_C10",
+    "variant": "clean",
+    "verdict": "no_alert",
+    "note": "The closest call is Stufe2_C10, where the customer reads an expired sample from the manual. Here the source is a real letter, so Klartext does not rule it out."
+  },
+  "feedback": [],
+  "triggers": [
+    {
+      "id": 2,
+      "call_id": "Stufe3_C17-K3",
+      "remote_id": "trg_0002",
+      "url": "http://localhost:5173/calls/Stufe3_C17-K3?t=115",
+      "status_code": 201,
+      "created_at": "2026-10-10T07:41:00Z"
+    }
+  ]
+}
