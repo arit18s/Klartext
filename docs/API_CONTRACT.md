@@ -329,7 +329,7 @@ The other four verdict families and `numbers` have the same shape. The UI never 
 }
 ```
 
-Keyword fields: `id`, `label` (German), `de[]`, `gsw[]`, `harmless`, `enabled`, `status`, `match_unit`, `partial_words_count_as_full_hit`; `rules[]` and `case_sensitive` are present on some keywords only. The UI edits `de`, `gsw` and `enabled` and keeps every other field as it came.
+Keyword fields: `id`, `label` (German), `de[]`, `gsw[]`, `enabled`, `status`, `match_unit`, `partial_words_count_as_full_hit`; `harmless`, `rules[]` and `case_sensitive` are present on some keywords only (K09–K11 have no `harmless`). The UI edits `de`, `gsw` and `enabled` and keeps every other field as it came.
 
 ### `POST /config/keywords/suggest`
 

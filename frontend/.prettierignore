@@ -1,0 +1,3 @@
+# Owned together with backend/app/pipeline/decide.py (CLAUDE.md rule 3); formatted by whoever changes the rule.
+src/lib/decide.ts
+src/lib/decide.test.ts

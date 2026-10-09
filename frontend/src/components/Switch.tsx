@@ -33,3 +33,32 @@ export function Switch({
     </button>
   )
 }
+
+/** Bare switch for cards and table rows; the visible "On"/"Off" text sits next to it. */
+export function ToggleSwitch({
+  checked,
+  onChange,
+  label,
+}: {
+  checked: boolean
+  onChange: (v: boolean) => void
+  label: string
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      aria-label={label}
+      onClick={() => onChange(!checked)}
+      className={cn('relative h-5 w-9 flex-none rounded-full transition-colors', checked ? 'bg-graphite' : 'bg-line')}
+    >
+      <span
+        className={cn(
+          'absolute top-0.5 h-4 w-4 rounded-full bg-paper transition-[left]',
+          checked ? 'left-[18px]' : 'left-0.5',
+        )}
+      />
+    </button>
+  )
+}

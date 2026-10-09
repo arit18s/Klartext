@@ -197,6 +197,53 @@ for (const c of scores.calls) {
 }
 if (scores.calls.length !== list.items.length) fail('scores.json', 'call count differs from calls.json')
 
+// ---- families.json, keywords.json ----
+const FAMILY_KEYS = [...FAMILIES, 'numbers']
+const kwc = load('keywords.json')
+keys('keywords.json', kwc, ['version_id', 'note', 'created_at', 'keywords'])
+const kl = kwc.keywords
+keys('keywords.json.keywords', kl, ['version', 'status', 'official_source', 'families', 'keywords', 'alarm_scope', 'policy_examples', 'corpus_binding'])
+const owner = new Map()
+for (const f of FAMILY_KEYS) {
+  if (!kl.families[f]) fail('keywords.json.families', `missing ${f}`)
+  for (const id of kl.families[f]?.keywords ?? []) {
+    if (owner.has(id)) fail('keywords.json.families', `${id} in ${owner.get(id)} and ${f}`)
+    owner.set(id, f)
+  }
+}
+kl.keywords.forEach((k, i) => {
+  for (const req of ['id', 'label', 'de', 'gsw', 'enabled', 'status', 'match_unit', 'partial_words_count_as_full_hit']) {
+    if (!(req in k)) fail(`keywords.json.keywords[${i}]`, `missing "${req}"`)
+  }
+  if (!owner.has(k.id)) fail(`keywords.json.keywords[${i}]`, `${k.id} belongs to no family`)
+  if (KEYWORD_FAMILY[k.id] && KEYWORD_FAMILY[k.id] !== owner.get(k.id)) fail(`keywords.json.keywords[${i}]`, `${k.id} family differs from the hits map`)
+})
+const fam = load('families.json')
+keys('families.json', fam, ['version_id', 'note', 'created_at', 'families'])
+if (JSON.stringify(Object.keys(fam.families).sort()) !== JSON.stringify([...FAMILY_KEYS].sort())) fail('families.json', 'families must be the five verdict families plus numbers')
+for (const [f, cfg] of Object.entries(fam.families)) {
+  keys(`families.json.${f}`, cfg, ['enabled', 'helper', 'label_de', 'task', 'keyword_ids', 'rule', 'harmless', 'changed_at', 'changed_by'])
+  if (cfg.helper !== (f === 'numbers')) fail(`families.json.${f}`, 'helper flag')
+  if (JSON.stringify(cfg.keyword_ids) !== JSON.stringify(kl.families[f]?.keywords)) fail(`families.json.${f}`, 'keyword_ids differ from keywords.json')
+  if (cfg.rule !== kl.policy_examples[f]) fail(`families.json.${f}`, 'rule differs from policy_examples (seed)')
+}
+for (const f of scores.enabled_families) if (!fam.families[f]?.enabled) fail('scores.json', `${f} enabled in scores but not in families.json`)
+
+// ---- eval.json ----
+const ev = load('eval.json')
+keys('eval.json', ev, ['run_id', 'split', 'source', 'created_at', 'config_versions', 'metrics'])
+const m = ev.metrics
+keys('eval.json.metrics', m, ['n_calls', 'binary', 'exact', 'confusion', 'breakdown', 'stufe2_pairs', 'stufe3_review', 'clean_noisy_agreement',
+  'evidence_overlap', 'family_accuracy', 'pr_curve', 'keyword_baseline', 'mismatches'])
+if (JSON.stringify(m.confusion.labels) !== JSON.stringify(VERDICTS)) fail('eval.json.confusion', 'labels order')
+const cm = VERDICTS.map((e) => VERDICTS.map((g) => list.items.filter((c) => c.expected_verdict === e && c.verdict === g).length))
+if (JSON.stringify(cm) !== JSON.stringify(m.confusion.matrix)) fail('eval.json.confusion', `matrix ${JSON.stringify(m.confusion.matrix)} != fixtures ${JSON.stringify(cm)}`)
+if (m.n_calls !== list.items.length) fail('eval.json', 'n_calls')
+const b = m.binary
+if (b.tp + b.fp + b.fn + b.tn !== m.n_calls) fail('eval.json.binary', 'tp+fp+fn+tn != n_calls')
+if (m.pr_curve.length !== 101 || m.pr_curve.some((p, i) => p.t_review !== i)) fail('eval.json.pr_curve', 'one point per t_review 0..100')
+for (const x of m.mismatches) if (!list.items.some((c) => c.call_id === x.call_id)) fail('eval.json.mismatches', `${x.call_id} unknown`)
+
 if (problems.length) {
   console.error(`Fixture check failed (${problems.length}):\n  ` + problems.join('\n  '))
   process.exit(1)

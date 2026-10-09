@@ -15,6 +15,7 @@ import type {
   HistoryEntry,
   KeywordsConfig,
   KeywordsUpdate,
+  KeywordList,
   KeywordSuggestResponse,
   Level,
   PipelineStatus,
@@ -34,6 +35,9 @@ import type {
 import { placeholderWav } from './placeholderAudio'
 import callsFixture from '@/fixtures/calls.json'
 import scoresFixture from '@/fixtures/scores.json'
+import familiesFixture from '@/fixtures/families.json'
+import keywordsFixture from '@/fixtures/keywords.json'
+import evalFixture from '@/fixtures/eval.json'
 
 export const USE_FIXTURES = import.meta.env.VITE_USE_FIXTURES === 'true'
 
@@ -186,7 +190,10 @@ let fixtureThresholds: ThresholdsConfig | null = null
 export async function getScores(): Promise<ScoresResponse> {
   if (!USE_FIXTURES) return request('/scores')
   const base = scoresFixture as unknown as ScoresResponse
-  return fixtureThresholds ? { ...base, thresholds: fixtureThresholds } : base
+  const enabled = (Object.keys(fixtureFamilies.families) as (Family | 'numbers')[]).filter(
+    (f): f is Family => f !== 'numbers' && fixtureFamilies.families[f].enabled,
+  )
+  return { ...base, thresholds: fixtureThresholds ?? base.thresholds, enabled_families: enabled }
 }
 
 // ---------- Config ----------
@@ -208,18 +215,104 @@ export async function putThresholds(body: ThresholdsUpdate): Promise<ThresholdsC
   }
   return fixtureThresholds
 }
-export const getFamilies = () => (USE_FIXTURES ? noFixture('Families') : request<FamiliesConfig>('/config/families'))
-export const putFamilies = (body: FamiliesUpdate) => send<FamiliesConfig>('PUT', '/config/families', body)
-export const getKeywords = () => (USE_FIXTURES ? noFixture('Keywords') : request<KeywordsConfig>('/config/keywords'))
-export const putKeywords = (body: KeywordsUpdate) => send<KeywordsConfig>('PUT', '/config/keywords', body)
+// Fixture mode: families and keywords are edited in memory for this tab, versions count up like the API's.
+let fixtureFamilies = structuredClone(familiesFixture) as unknown as FamiliesConfig
+let fixtureKeywords = structuredClone(keywordsFixture) as unknown as KeywordsConfig
+
+export async function getFamilies(): Promise<FamiliesConfig> {
+  if (!USE_FIXTURES) return request<FamiliesConfig>('/config/families')
+  return structuredClone(fixtureFamilies)
+}
+
+export async function putFamilies(body: FamiliesUpdate): Promise<FamiliesConfig> {
+  if (!USE_FIXTURES) return send<FamiliesConfig>('PUT', '/config/families', body)
+  const now = new Date().toISOString()
+  const families = structuredClone(body.families)
+  for (const [f, cfg] of Object.entries(families) as [
+    keyof FamiliesConfig['families'],
+    FamiliesConfig['families'][Family],
+  ][]) {
+    const before = fixtureFamilies.families[f]
+    const changed = before.enabled !== cfg.enabled || before.rule !== cfg.rule || before.harmless !== cfg.harmless
+    if (changed) Object.assign(cfg, { changed_at: now, changed_by: 'Compliance officer' })
+  }
+  fixtureFamilies = { version_id: nextVersion(), note: body.note ?? null, created_at: now, families }
+  return structuredClone(fixtureFamilies)
+}
+
+export async function getKeywords(): Promise<KeywordsConfig> {
+  if (!USE_FIXTURES) return request<KeywordsConfig>('/config/keywords')
+  return structuredClone(fixtureKeywords)
+}
+
+export async function putKeywords(body: KeywordsUpdate): Promise<KeywordsConfig> {
+  if (!USE_FIXTURES) return send<KeywordsConfig>('PUT', '/config/keywords', body)
+  fixtureKeywords = {
+    version_id: nextVersion(),
+    note: body.note ?? null,
+    created_at: new Date().toISOString(),
+    keywords: structuredClone(body.keywords),
+  }
+  return structuredClone(fixtureKeywords)
+}
+
+// Config versions share one id sequence in the API (config_versions table); fixtures start after the seeds (1–3).
+let fixtureVersion = 3
+const nextVersion = () => {
+  fixtureVersion = Math.max(fixtureVersion, fixtureThresholds?.version_id ?? 0) + 1
+  return fixtureVersion
+}
+
 export const suggestKeywordVariants = (keywordId: string) =>
-  send<KeywordSuggestResponse>('POST', '/config/keywords/suggest', { keyword_id: keywordId })
-export const rescanKeywords = () => send<RescanResponse>('POST', '/keywords/rescan')
+  USE_FIXTURES
+    ? noFixture('Suggesting Swiss German variants')
+    : send<KeywordSuggestResponse>('POST', '/config/keywords/suggest', { keyword_id: keywordId })
+
+/** Fixture mode stands in for the keyword stage with a plain case-insensitive phrase match over the fixture transcripts. */
+function fixtureHits(list: KeywordList): Map<string, number> {
+  const hits = new Map<string, number>()
+  for (const path in detailFixtures) {
+    const d = detailFixtures[path]
+    let n = 0
+    for (const kw of list.keywords.filter((k) => k.enabled)) {
+      for (const phrase of [...new Set([...kw.de, ...kw.gsw])]) {
+        const re = new RegExp(`(^|[^\\p{L}])${phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|[^\\p{L}])`, 'iu')
+        n += d.segments.filter((s) => re.test(s.text)).length
+      }
+    }
+    hits.set(d.call.call_id, n)
+  }
+  return hits
+}
+let fixtureLastHits: Map<string, number> | null = null
+
+export async function rescanKeywords(): Promise<RescanResponse> {
+  if (!USE_FIXTURES) return send<RescanResponse>('POST', '/keywords/rescan')
+  const before = fixtureLastHits ?? fixtureHits((keywordsFixture as unknown as KeywordsConfig).keywords)
+  const after = fixtureHits(fixtureKeywords.keywords)
+  fixtureLastHits = after
+  const sum = (m: Map<string, number>) => [...m.values()].reduce((a, b) => a + b, 0)
+  const flagged = (m: Map<string, number>) => [...m.values()].filter((n) => n > 0).length
+  return {
+    config_version_id: fixtureKeywords.version_id,
+    before: sum(before),
+    after: sum(after),
+    changed_calls: [...after]
+      .filter(([id, n]) => (before.get(id) ?? 0) !== n)
+      .map(([call_id, n]) => ({ call_id, hits_before: before.get(call_id) ?? 0, hits_after: n })),
+    keyword_only_flagged: { before: flagged(before), after: flagged(after) },
+  }
+}
 
 // ---------- Evaluation, pipeline, settings ----------
 
-export const runEval = (body: EvalRunRequest) => send<EvalRun>('POST', '/eval/run', body)
-export const getLatestEval = () => (USE_FIXTURES ? noFixture('Evaluation') : request<EvalRun>('/eval/latest'))
+export const runEval = (body: EvalRunRequest) =>
+  USE_FIXTURES ? noFixture('Running the evaluation') : send<EvalRun>('POST', '/eval/run', body)
+
+export async function getLatestEval(): Promise<EvalRun> {
+  if (!USE_FIXTURES) return request<EvalRun>('/eval/latest')
+  return evalFixture as unknown as EvalRun
+}
 export const getPipelineStatus = () =>
   USE_FIXTURES ? noFixture('Pipeline status') : request<PipelineStatus>('/pipeline/status')
 export const setWatching = (enabled: boolean) => send<WatchResponse>('POST', '/pipeline/watch', { enabled })
