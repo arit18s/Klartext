@@ -1,4 +1,6 @@
 import { forwardRef, type ReactNode } from 'react'
+import { Play } from 'lucide-react'
+import { Button } from '../ui/button'
 import type { Evidence } from '@/lib/types'
 import { FAMILY_LABEL, formatTimestamp } from '@/lib/format'
 import { cn } from '@/lib/utils'
@@ -21,48 +23,59 @@ function withFamily(note: string, family: Evidence['family']): ReactNode {
 }
 
 /** Evidence card (04_FRONTEND_GUIDELINES.md section 6). Trigger: yellow bar and quote. Focused: 2 px outline. */
-export const EvidenceCard = forwardRef<HTMLElement, { evidence: Evidence; focused: boolean; fromLink: boolean }>(
-  ({ evidence: e, focused, fromLink }, ref) => {
-    const trigger = e.role === 'trigger'
-    const time = `${formatTimestamp(e.start_s)}–${formatTimestamp(e.end_s)}`
-    return (
-      <article
-        ref={ref}
-        tabIndex={-1}
-        aria-label={`${ROLE_LABEL[e.role]} ${formatTimestamp(e.start_s)} to ${formatTimestamp(e.end_s)}, ${speaker(e.speaker_role)}`}
-        className={cn(
-          'relative flex flex-col gap-2 overflow-hidden rounded-panel border border-line bg-paper py-4 pl-[19px] pr-4 scroll-mt-24',
-          focused && 'outline outline-2 outline-graphite',
-        )}
-      >
+export const EvidenceCard = forwardRef<
+  HTMLElement,
+  { evidence: Evidence; focused: boolean; fromLink: boolean; onPlay: (e: Evidence) => void }
+>(({ evidence: e, focused, fromLink, onPlay }, ref) => {
+  const trigger = e.role === 'trigger'
+  const time = `${formatTimestamp(e.start_s)}–${formatTimestamp(e.end_s)}`
+  return (
+    <article
+      ref={ref}
+      tabIndex={-1}
+      aria-label={`${ROLE_LABEL[e.role]} ${formatTimestamp(e.start_s)} to ${formatTimestamp(e.end_s)}, ${speaker(e.speaker_role)}`}
+      className={cn(
+        'relative flex flex-col gap-2 overflow-hidden rounded-panel border border-line bg-paper py-4 pl-[19px] pr-4 scroll-mt-24',
+        focused && 'outline outline-2 outline-graphite',
+      )}
+    >
+      <span className={cn('absolute inset-y-0 left-0 w-[3px]', trigger ? 'bg-signal' : 'bg-line')} aria-hidden="true" />
+      <div className="flex flex-wrap items-center gap-2 text-small text-muted">
         <span
-          className={cn('absolute inset-y-0 left-0 w-[3px]', trigger ? 'bg-signal' : 'bg-line')}
-          aria-hidden="true"
-        />
-        <div className="flex flex-wrap items-center gap-2 text-small text-muted">
-          <span
-            className={cn(
-              'inline-flex h-[22px] items-center rounded-full border px-2 text-[12px] leading-4 text-graphite',
-              trigger ? 'border-signal-soft bg-signal-soft' : 'border-line bg-paper',
-            )}
-          >
-            {ROLE_LABEL[e.role]}
-          </span>
-          <span className="tabular">{time}</span>
-          <span aria-hidden="true">·</span>
-          <span>{speaker(e.speaker_role)}</span>
-          {focused && fromLink && <span className="ml-auto">Opened from Outcept link</span>}
-        </div>
-        <p className={cn('m-0 font-quote text-quote italic', trigger && 'rounded bg-signal-soft px-2 py-1')}>
-          «{e.quote}»
-        </p>
-        {e.note && (
+          className={cn(
+            'inline-flex h-[22px] items-center rounded-full border px-2 text-[12px] leading-4 text-graphite',
+            trigger ? 'border-signal-soft bg-signal-soft' : 'border-line bg-paper',
+          )}
+        >
+          {ROLE_LABEL[e.role]}
+        </span>
+        <span className="tabular">{time}</span>
+        <span aria-hidden="true">·</span>
+        <span>{speaker(e.speaker_role)}</span>
+        {focused && fromLink && <span className="ml-auto">Opened from Outcept link</span>}
+      </div>
+      <p className={cn('m-0 font-quote text-quote italic', trigger && 'rounded bg-signal-soft px-2 py-1')}>
+        «{e.quote}»
+      </p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        {e.note ? (
           <span className={cn('max-w-[72ch] text-small', !trigger && 'text-muted')}>
             {withFamily(e.note, e.family)}
           </span>
+        ) : (
+          <span />
         )}
-      </article>
-    )
-  },
-)
+        <Button
+          size="sm"
+          variant={trigger ? 'primary' : 'secondary'}
+          aria-label={`Play passage ${formatTimestamp(e.start_s)} to ${formatTimestamp(e.end_s)}`}
+          onClick={() => onPlay(e)}
+        >
+          <Play strokeWidth={1.75} aria-hidden="true" />
+          Play passage
+        </Button>
+      </div>
+    </article>
+  )
+})
 EvidenceCard.displayName = 'EvidenceCard'

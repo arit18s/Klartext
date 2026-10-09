@@ -31,6 +31,7 @@ import type {
   WatchResponse,
 } from './types'
 
+import { placeholderWav } from './placeholderAudio'
 import callsFixture from '@/fixtures/calls.json'
 import scoresFixture from '@/fixtures/scores.json'
 
@@ -138,6 +139,20 @@ export async function getCall(callId: string): Promise<CallDetail> {
 }
 
 export const audioUrl = (callId: string) => `/api/calls/${encodeURIComponent(callId)}/audio`
+
+const placeholderUrls = new Map<string, string>()
+
+/** Where the player loads the recording. Fixture mode: a generated placeholder of the call's length. */
+export function audioSource(detail: CallDetail): string {
+  if (!USE_FIXTURES) return audioUrl(detail.call.call_id)
+  const id = detail.call.call_id
+  let url = placeholderUrls.get(id)
+  if (!url) {
+    url = URL.createObjectURL(placeholderWav(id, detail.call.duration_s ?? 0, detail.segments))
+    placeholderUrls.set(id, url)
+  }
+  return url
+}
 export const snippetUrl = (callId: string, segId: string) =>
   `/api/calls/${encodeURIComponent(callId)}/snippets/${encodeURIComponent(segId)}`
 
