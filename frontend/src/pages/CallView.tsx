@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ChevronLeft, Hourglass, TriangleAlert } from 'lucide-react'
@@ -7,17 +7,19 @@ import { PageTitle } from '@/app/TopBar'
 import { Tag } from '@/components/Tag'
 import { useToast } from '@/components/Toast'
 import { Button } from '@/components/ui/button'
+import { AudioPlayer, type AudioPlayerHandle } from '@/components/call/AudioPlayer'
 import { ChecksTable } from '@/components/call/ChecksTable'
+import { TwinBox } from '@/components/call/TwinBox'
 import { EvidenceCard } from '@/components/call/EvidenceCard'
 import { KeywordHits } from '@/components/call/KeywordHits'
 import { Transcript } from '@/components/call/Transcript'
 import { VerdictHeader, type FeedbackAction } from '@/components/call/VerdictHeader'
 import { WhyUnclear, isUnclear } from '@/components/call/WhyUnclear'
-import { getCall, retryCall } from '@/lib/api'
-import { evidenceForTime, parseT } from '@/lib/deeplink'
-import { formatDuration, formatProcessed, formatTimestamp, recordingName } from '@/lib/format'
+import { audioSource, getCall, retryCall } from '@/lib/api'
+import { PAD_S, evidenceForTime, parseT, segmentAt } from '@/lib/deeplink'
+import { formatDuration, formatProcessed, recordingName } from '@/lib/format'
 import { useFeedback } from '@/lib/hooks'
-import type { CallDetail } from '@/lib/types'
+import type { CallDetail, Evidence } from '@/lib/types'
 
 function NotDecided({ detail }: { detail: CallDetail }) {
   const qc = useQueryClient()
@@ -56,8 +58,13 @@ function NotDecided({ detail }: { detail: CallDetail }) {
   )
 }
 
+/** Keyed by call ID, so moving to the twin call starts with a fresh player and focus state. */
 export default function CallView() {
   const { id = '' } = useParams()
+  return <CallPage key={id} id={id} />
+}
+
+function CallPage({ id }: { id: string }) {
   const [params, setParams] = useSearchParams()
   const { data, error, isPending } = useQuery({ queryKey: ['call', id], queryFn: () => getCall(id) })
   const feedback = useFeedback()
@@ -85,18 +92,40 @@ export default function CallView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [linked?.id])
 
+  const player = useRef<AudioPlayerHandle>(null)
+
   const cue = (seconds: number) => {
     params.set('t', String(Math.max(0, Math.floor(seconds))))
     setParams(params, { replace: true })
   }
 
+  /** Transcript line or keyword hit: highlight the line and seek the audio there. */
   const selectSegment = (segId: string) => {
     const seg = data?.segments.find((s) => s.seg_id === segId)
     if (!seg) return
     setFromLink(false)
     setActiveSeg(segId)
     cue(seg.start_s)
+    player.current?.seek(seg.start_s)
   }
+
+  /** "Play passage": the passage with 10 s before and after. */
+  const playPassage = (e: Evidence) => {
+    setFromLink(false)
+    setActiveSeg(e.seg_id)
+    player.current?.playRange(e.start_s - PAD_S, e.end_s + PAD_S)
+  }
+
+  // While playing, the transcript follows the audio.
+  const segments = data?.segments
+  const onTime = useCallback(
+    (time: number, playing: boolean) => {
+      if (!playing || !segments) return
+      const seg = segmentAt(segments, time)
+      if (seg) setActiveSeg((cur) => (cur === seg.seg_id ? cur : seg.seg_id))
+    },
+    [segments],
+  )
 
   const onFeedback = (a: FeedbackAction) => feedback.mutate({ callId: id, label: a.label, note: a.note })
 
@@ -160,18 +189,25 @@ export default function CallView() {
           setFromLink(false)
           setActiveSeg(null)
           cue(0)
+          player.current?.playRange(0, data.call.duration_s ?? Infinity)
         }}
       />
 
       <div className="-mt-2 flex flex-wrap items-start gap-6">
         <div className="flex min-w-0 flex-[4_1_480px] flex-col gap-4">
-          <section aria-label="Audio" className="flex flex-col gap-2 rounded-panel border border-line bg-paper p-5">
-            <span className="tabular">
-              <b className="font-semibold">{formatTimestamp(cueSeconds)}</b>{' '}
-              <span className="text-muted">/ {formatTimestamp(data.call.duration_s ?? 0)}</span>
-            </span>
-            <p className="m-0 text-small text-muted">Waveform and playback are built in step F4.</p>
-          </section>
+          <AudioPlayer
+            ref={player}
+            url={audioSource(data)}
+            duration={data.call.duration_s ?? 0}
+            segments={data.segments}
+            evidence={data.evidence}
+            cue={cueSeconds}
+            onTime={onTime}
+            onRegionClick={(e) => {
+              setFromLink(false)
+              setActiveSeg(e.seg_id)
+            }}
+          />
 
           <div className="flex items-baseline justify-between gap-3 pt-2">
             <h3 className="text-subtitle font-medium">Evidence, in time order</h3>
@@ -193,8 +229,10 @@ export default function CallView() {
               evidence={e}
               focused={focused?.id === e.id}
               fromLink={fromLink}
+              onPlay={playPassage}
             />
           ))}
+          {data.twin && <TwinBox twin={data.twin} verdict={decision.verdict} />}
         </div>
 
         <div className="flex min-w-0 flex-[1_1_460px] flex-col gap-4">

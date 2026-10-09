@@ -29,6 +29,7 @@ Agreed (contract changes beyond sections 2, 4 and 8):
 | Keyword list | `KeywordList`, `KeywordEntry` | Field names confirmed against `data/Stichwortliste.json` in the case repo (version `example-0.2`) |
 | New endpoints | `POST /pipeline/watch`, `POST /calls/{id}/retry`, `GET /calls/{id}/history` | Pause and resume watching, retry a failed call, call history from `audit_log` |
 | Download report | — | No endpoint. Stretch: a print stylesheet for the call view (browser print to PDF) |
+| `Feedback.label` | `note` | A plain note on a call. Note text required. Does not count as a verdict on the decision |
 
 Still invented, review before implementing:
 
@@ -176,7 +177,7 @@ Rules:
 
 ### `POST /calls/{id}/feedback`
 
-Request: `{ "label": "false_alarm", "note": "Code was a demo value from training." }`. `label` ∈ `correct, false_alarm, missed, escalated_to_alarm, closed_no_alert`. `note` is optional, max 2000 characters. Always writes an `audit_log` row.
+Request: `{ "label": "false_alarm", "note": "Code was a demo value from training." }`. `label` ∈ `correct, false_alarm, missed, escalated_to_alarm, closed_no_alert, note`. `note` is optional, max 2000 characters, except for `label: "note"`, where it is required and non-empty (422 otherwise). A `note` is a plain comment: it does not mark the decision right or wrong and does not change the verdict. Always writes an `audit_log` row.
 
 Response `201`:
 
@@ -216,7 +217,7 @@ The `audit_log` rows whose `target` is `call:{id}`, newest first. `details` is t
 ]
 ```
 
-`action` ∈ `decided, feedback, recheck, retry, trigger_sent`. Feedback and review actions (`escalated_to_alarm`, `closed_no_alert`) appear as `feedback` with the label in `details`.
+`action` ∈ `decided, feedback, recheck, retry, trigger_sent`. Feedback, review actions (`escalated_to_alarm`, `closed_no_alert`) and plain notes (`note`) appear as `feedback` with the label in `details`.
 
 ## Scores
 

@@ -16,7 +16,8 @@ export type CallStatus = 'queued' | 'transcribing' | 'checking' | 'done' | 'fail
 export type SpeakerRole = 'advisor' | 'customer' | 'unknown'
 export type EvidenceRole = 'context' | 'trigger' | 'exclusion'
 export type KeywordLabel = 'relevant' | 'benign'
-export type FeedbackLabel = 'correct' | 'false_alarm' | 'missed' | 'escalated_to_alarm' | 'closed_no_alert'
+/** `note` is a plain comment; it needs note text and says nothing about whether the decision was right. */
+export type FeedbackLabel = 'correct' | 'false_alarm' | 'missed' | 'escalated_to_alarm' | 'closed_no_alert' | 'note'
 export type PipelineStage =
   | 'queued'
   | 'transcribing'

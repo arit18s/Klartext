@@ -46,7 +46,8 @@ export function VerdictHeader({
   const decision = detail.decision!
   const [lang, setLang] = useState<'en' | 'de'>('en')
   const latest: Feedback | undefined = detail.feedback.at(-1)
-  const is = (l: FeedbackLabel) => latest?.label === l
+  const lastVerdict = [...detail.feedback].reverse().find((f) => f.label !== 'note')
+  const is = (l: FeedbackLabel) => lastVerdict?.label === l
   const sent = [...detail.triggers]
     .reverse()
     .find((t) => t.status_code !== null && t.status_code >= 200 && t.status_code < 300)
@@ -103,11 +104,8 @@ export function VerdictHeader({
               </ActionButton>
               <NoteDialog
                 title="Add note"
-                description="The note is saved with your decision and written to the audit log."
-                actions={[
-                  { label: 'escalated_to_alarm', text: 'Escalate as alarm' },
-                  { label: 'closed_no_alert', text: 'Close as no alert', primary: true },
-                ]}
+                description="A note for the record. It does not escalate or close the call. Notes are written to the audit log."
+                actions={[{ label: 'note', text: 'Save note', primary: true, needsNote: true }]}
                 onSubmit={onFeedback}
               >
                 <ActionButton icon={MessageSquare} pressed={false}>

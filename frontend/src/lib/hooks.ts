@@ -10,6 +10,7 @@ export const FEEDBACK_DONE: Record<FeedbackLabel, string> = {
   missed: 'Marked as missed',
   escalated_to_alarm: 'Escalated as alarm',
   closed_no_alert: 'Closed as no alert',
+  note: 'Note added',
 }
 
 export function useFeedback() {

@@ -31,6 +31,7 @@ import type {
   WatchResponse,
 } from './types'
 
+import { placeholderWav } from './placeholderAudio'
 import callsFixture from '@/fixtures/calls.json'
 import scoresFixture from '@/fixtures/scores.json'
 
@@ -138,6 +139,20 @@ export async function getCall(callId: string): Promise<CallDetail> {
 }
 
 export const audioUrl = (callId: string) => `/api/calls/${encodeURIComponent(callId)}/audio`
+
+const placeholderUrls = new Map<string, string>()
+
+/** Where the player loads the recording. Fixture mode: a generated placeholder of the call's length. */
+export function audioSource(detail: CallDetail): string {
+  if (!USE_FIXTURES) return audioUrl(detail.call.call_id)
+  const id = detail.call.call_id
+  let url = placeholderUrls.get(id)
+  if (!url) {
+    url = URL.createObjectURL(placeholderWav(id, detail.call.duration_s ?? 0, detail.segments))
+    placeholderUrls.set(id, url)
+  }
+  return url
+}
 export const snippetUrl = (callId: string, segId: string) =>
   `/api/calls/${encodeURIComponent(callId)}/snippets/${encodeURIComponent(segId)}`
 
@@ -165,16 +180,34 @@ export const getCallHistory = (callId: string) =>
 
 // ---------- Scores ----------
 
+// Fixture mode: "Apply thresholds" keeps a new version in memory for this tab.
+let fixtureThresholds: ThresholdsConfig | null = null
+
 export async function getScores(): Promise<ScoresResponse> {
   if (!USE_FIXTURES) return request('/scores')
-  return scoresFixture as unknown as ScoresResponse
+  const base = scoresFixture as unknown as ScoresResponse
+  return fixtureThresholds ? { ...base, thresholds: fixtureThresholds } : base
 }
 
 // ---------- Config ----------
 
-export const getThresholds = () =>
-  USE_FIXTURES ? noFixture('Thresholds') : request<ThresholdsConfig>('/config/thresholds')
-export const putThresholds = (body: ThresholdsUpdate) => send<ThresholdsConfig>('PUT', '/config/thresholds', body)
+export async function getThresholds(): Promise<ThresholdsConfig> {
+  if (!USE_FIXTURES) return request<ThresholdsConfig>('/config/thresholds')
+  return (await getScores()).thresholds
+}
+
+export async function putThresholds(body: ThresholdsUpdate): Promise<ThresholdsConfig> {
+  if (!USE_FIXTURES) return send<ThresholdsConfig>('PUT', '/config/thresholds', body)
+  const current = await getThresholds()
+  fixtureThresholds = {
+    review: body.review,
+    alarm: body.alarm,
+    note: body.note ?? null,
+    version_id: current.version_id + 1,
+    created_at: new Date().toISOString(),
+  }
+  return fixtureThresholds
+}
 export const getFamilies = () => (USE_FIXTURES ? noFixture('Families') : request<FamiliesConfig>('/config/families'))
 export const putFamilies = (body: FamiliesUpdate) => send<FamiliesConfig>('PUT', '/config/families', body)
 export const getKeywords = () => (USE_FIXTURES ? noFixture('Keywords') : request<KeywordsConfig>('/config/keywords'))
