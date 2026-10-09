@@ -1,0 +1,27 @@
+# Secrets
+.env
+
+# Data (never committed: audio, transcripts, results, case data)
+data/
+inbox/
+case-data/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Node
+node_modules/
+frontend/dist/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+
+# docs
+docs
+CLAUDE.md
