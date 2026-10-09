@@ -1,0 +1,16 @@
+# Outcept trigger API (no auth, local only). Start: docker compose up -d trigger-api
+# The ghcr.io image is not publicly pullable, so build it from the case repo (same Dockerfile as its own compose).
+services:
+  trigger-api:
+    build: https://github.com/Outcept/inventx-case-study.git
+    image: klartext-trigger-api
+    ports:
+      - "127.0.0.1:8080:8080"  # bound to localhost, never exposed
+    environment:
+      DATA_FILE: /data/triggers.json  # keep the list across restarts
+    volumes:
+      - trigger-data:/data
+    restart: unless-stopped
+
+volumes:
+  trigger-data:
