@@ -1,0 +1,51 @@
+@import '@fontsource/instrument-sans/400.css';
+@import '@fontsource/instrument-sans/500.css';
+@import '@fontsource/instrument-sans/600.css';
+@import '@fontsource/newsreader/400-italic.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Colour tokens (04_FRONTEND_GUIDELINES.md section 3) as RGB channels, so a dark theme can override them later. */
+:root {
+  --graphite: 30 33 38; /* #1E2126 */
+  --graphite-soft: 58 62 69; /* #3A3E45 nav text, from Klartext.html */
+  --paper: 255 255 255; /* #FFFFFF */
+  --canvas: 245 245 243; /* #F5F5F3 */
+  --canvas-hover: 236 236 232; /* #ECECE8 nav hover, from Klartext.html */
+  --line: 230 230 226; /* #E6E6E2 */
+  --muted: 110 114 122; /* #6E727A */
+  --signal: 242 199 68; /* #F2C744 */
+  --signal-soft: 252 241 201; /* #FCF1C9 */
+  --alarm: 194 54 31; /* #C2361F */
+  --alarm-soft: 251 233 229; /* #FBE9E5 */
+  --review: 53 87 183; /* #3557B7 */
+  --review-soft: 232 237 250; /* #E8EDFA */
+  --clear: 46 122 80; /* #2E7A50 */
+  --clear-soft: 230 242 234; /* #E6F2EA */
+}
+
+@layer base {
+  body {
+    @apply bg-paper font-sans text-body text-graphite antialiased;
+  }
+  :focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-graphite;
+  }
+}
+
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

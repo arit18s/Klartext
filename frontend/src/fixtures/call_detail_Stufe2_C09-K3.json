@@ -1,0 +1,306 @@
+{
+  "call": {
+    "call_id": "Stufe2_C09-K3",
+    "file_name": "Stufe2_C09-K3.wav",
+    "dialogue_id": "Stufe2_C09",
+    "variant": "clean",
+    "level": 2,
+    "duration_s": 192.0,
+    "advisor_name": "Advisor 04",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T08:42:00Z",
+    "processed_at": "2026-10-10T08:42:00Z",
+    "verdict": "alarm",
+    "family": "access",
+    "score": 91,
+    "reason": "Customer reads a live six-digit login code to the advisor. She had started the login herself a minute earlier, so the code was valid and gives access to her account.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": true,
+    "expected_verdict": "alarm"
+  },
+  "decision": {
+    "verdict": "alarm",
+    "family": "access",
+    "score": 91,
+    "reason": "Customer reads a live six-digit login code to the advisor. She had started the login herself a minute earlier, so the code was valid and gives access to her account.",
+    "reason_de": "Die Kundin liest der Beratung einen gültigen sechsstelligen Login-Code vor. Sie hatte die Anmeldung eine Minute vorher selbst gestartet, der Code war also gültig und gibt Zugriff auf ihr Konto.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 3,
+    "decided_at": "2026-10-10T08:42:00Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 4,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 3,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "No trade, recommendation or company news comes up in the call.",
+      "reason_de": null,
+      "benign_explanation": "Nothing in the call points to this.",
+      "uncertainty_note": null
+    },
+    {
+      "family": "splitting",
+      "score": 2,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 3,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "No payment or transfer is discussed.",
+      "reason_de": null,
+      "benign_explanation": "Nothing in the call points to this.",
+      "uncertainty_note": null
+    },
+    {
+      "family": "access",
+      "score": 91,
+      "event_majority": "present",
+      "agreement": 1.0,
+      "samples": 3,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "Customer reads a live six-digit login code to the advisor. She had started the login herself a minute earlier, so the code was valid and gives access to her account.",
+      "reason_de": "Die Kundin liest der Beratung einen gültigen sechsstelligen Login-Code vor. Sie hatte die Anmeldung eine Minute vorher selbst gestartet, der Code war also gültig und gibt Zugriff auf ihr Konto.",
+      "benign_explanation": "The customer might read a code that has already expired, for example a sample. Here she started the login herself just before, so the code was live.",
+      "uncertainty_note": null
+    },
+    {
+      "family": "disclosure",
+      "score": 9,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 3,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "Only the account holder is on the line. The balance comes up as an error message, not as information given to anyone.",
+      "reason_de": null,
+      "benign_explanation": "Nothing in the call points to this.",
+      "uncertainty_note": null
+    },
+    {
+      "family": "documentation",
+      "score": 0,
+      "event_majority": "not_applicable",
+      "agreement": 0.6666666666666666,
+      "samples": 3,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call is a support call. Nothing had to be recorded for advice.",
+      "reason_de": null,
+      "benign_explanation": null,
+      "uncertainty_note": null
+    }
+  ],
+  "numbers": {
+    "objects": [
+      {
+        "seg_id": "S010",
+        "start_s": 101.0,
+        "end_s": 108.0,
+        "digits": "836194",
+        "kind": "login_code",
+        "label": "Login code"
+      }
+    ],
+    "agreement": 1.0,
+    "samples": 3
+  },
+  "evidence": [
+    {
+      "id": 1,
+      "family": "access",
+      "seg_id": "S004",
+      "role": "context",
+      "start_s": 31.0,
+      "end_s": 45.0,
+      "speaker_role": "customer",
+      "quote": "Ich habe gerade selber die Anmeldung im E-Banking gestartet, jetzt ist ein Code auf mein Handy gekommen.",
+      "note": "She started the login herself, so any code that follows is live.",
+      "snippet_url": "/api/calls/Stufe2_C09-K3/snippets/S004"
+    },
+    {
+      "id": 2,
+      "family": "access",
+      "seg_id": "S009",
+      "role": "context",
+      "start_s": 96.0,
+      "end_s": 100.0,
+      "speaker_role": "advisor",
+      "quote": "Können Sie mir den Code gerade vorlesen? Dann mache ich das schnell für Sie.",
+      "note": "The advisor asks for the code. Bank staff never need a customer's login code.",
+      "snippet_url": "/api/calls/Stufe2_C09-K3/snippets/S009"
+    },
+    {
+      "id": 3,
+      "family": "access",
+      "seg_id": "S010",
+      "role": "trigger",
+      "start_s": 101.0,
+      "end_s": 108.0,
+      "speaker_role": "customer",
+      "quote": "Acht, drei, sechs, eins, neun, vier.",
+      "note": "Supports Access code shared: a valid one-time login code is read out to another person.",
+      "snippet_url": "/api/calls/Stufe2_C09-K3/snippets/S010"
+    }
+  ],
+  "keyword_hits": [
+    {
+      "keyword_id": "K07",
+      "family": "access",
+      "phrase": "Code vorlesen",
+      "seg_id": "S009",
+      "start_s": 96.0,
+      "end_s": 97.2,
+      "label": "relevant"
+    },
+    {
+      "keyword_id": "K07",
+      "family": "access",
+      "phrase": "sechs Ziffern",
+      "seg_id": "S010",
+      "start_s": 104.0,
+      "end_s": 105.2,
+      "label": "relevant"
+    },
+    {
+      "keyword_id": "K09",
+      "family": "disclosure",
+      "phrase": "Kontostand",
+      "seg_id": "S006",
+      "start_s": 52.0,
+      "end_s": 53.2,
+      "label": "benign"
+    }
+  ],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 4.0,
+      "end_s": 11.4,
+      "role": "advisor",
+      "text": "Grüezi, Sie sind mit der Kundenberatung verbunden. Wie kann ich Ihnen helfen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 12.0,
+      "end_s": 20.4,
+      "role": "customer",
+      "text": "Ich komme nicht ins E-Banking hinein, es zeigt immer einen Fehler.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 21.0,
+      "end_s": 30.4,
+      "role": "advisor",
+      "text": "Das schauen wir gleich zusammen an. Haben Sie das Handy zur Hand?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 31.0,
+      "end_s": 45.0,
+      "role": "customer",
+      "text": "Ja. Ich habe gerade selber die Anmeldung im E-Banking gestartet, jetzt ist ein Code auf mein Handy gekommen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 46.0,
+      "end_s": 51.4,
+      "role": "advisor",
+      "text": "Gut. Was für eine Fehlermeldung sehen Sie?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 52.0,
+      "end_s": 61.4,
+      "role": "customer",
+      "text": "Nur der Kontostand kommt nicht, der Rest geht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 62.0,
+      "end_s": 79.4,
+      "role": "customer",
+      "text": "Es heisst, der Zugang sei gesperrt.",
+      "low_confidence": true
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 80.0,
+      "end_s": 95.4,
+      "role": "advisor",
+      "text": "Ich muss kurz prüfen, ob Sie das sind.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 96.0,
+      "end_s": 100.0,
+      "role": "advisor",
+      "text": "Können Sie mir den Code gerade vorlesen? Dann mache ich das schnell für Sie.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 101.0,
+      "end_s": 108.0,
+      "role": "customer",
+      "text": "Acht, drei, sechs, eins, neun, vier.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 112.0,
+      "end_s": 149.4,
+      "role": "advisor",
+      "text": "Merci. Ich sehe, es ist jetzt freigeschaltet.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 150.0,
+      "end_s": 183.4,
+      "role": "customer",
+      "text": "Super, vielen Dank.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 184.0,
+      "end_s": 191.5,
+      "role": "advisor",
+      "text": "Gern geschehen. Einen schönen Tag noch.",
+      "low_confidence": false
+    }
+  ],
+  "twin": {
+    "call_id": "Stufe2_C10-K3",
+    "dialogue_id": "Stufe2_C10",
+    "variant": "clean",
+    "verdict": "no_alert",
+    "note": "Same six digits read out, but the customer reads an expired sample from the manual. No login was started."
+  },
+  "feedback": [],
+  "triggers": [
+    {
+      "id": 1,
+      "call_id": "Stufe2_C09-K3",
+      "remote_id": "trg_0001",
+      "url": "http://localhost:5173/calls/Stufe2_C09-K3?t=91",
+      "status_code": 201,
+      "created_at": "2026-10-10T08:43:00Z"
+    }
+  ]
+}

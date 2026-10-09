@@ -1,0 +1,288 @@
+{
+  "call": {
+    "call_id": "Stufe2_C10-K3",
+    "file_name": "Stufe2_C10-K3.wav",
+    "dialogue_id": "Stufe2_C10",
+    "variant": "clean",
+    "level": 2,
+    "duration_s": 186.0,
+    "advisor_name": "Advisor 02",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T08:37:00Z",
+    "processed_at": "2026-10-10T08:37:00Z",
+    "verdict": "no_alert",
+    "family": "access",
+    "score": 12,
+    "reason": "Customer reads an expired sample code from the manual. No login was started.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": false,
+    "expected_verdict": "no_alert"
+  },
+  "decision": {
+    "verdict": "no_alert",
+    "family": "access",
+    "score": 12,
+    "reason": "Customer reads an expired sample code from the manual. No login was started.",
+    "reason_de": "Die Kundin liest einen abgelaufenen Beispielcode aus der Anleitung vor. Es wurde keine Anmeldung gestartet.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 3,
+    "decided_at": "2026-10-10T08:37:00Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 3,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 3,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "No trade, recommendation or company news comes up in the call.",
+      "reason_de": null,
+      "benign_explanation": "Nothing in the call points to this.",
+      "uncertainty_note": null
+    },
+    {
+      "family": "splitting",
+      "score": 2,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 3,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "No payment or transfer is discussed.",
+      "reason_de": null,
+      "benign_explanation": "Nothing in the call points to this.",
+      "uncertainty_note": null
+    },
+    {
+      "family": "access",
+      "score": 12,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 3,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "Customer reads an expired sample code from the manual. No login was started.",
+      "reason_de": "Die Kundin liest einen abgelaufenen Beispielcode aus der Anleitung vor. Es wurde keine Anmeldung gestartet.",
+      "benign_explanation": "The six digits are the printed sample from the manual, marked as expired. No login was running, so the digits give no access.",
+      "uncertainty_note": null
+    },
+    {
+      "family": "disclosure",
+      "score": 4,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 3,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "Only the account holder is on the line.",
+      "reason_de": null,
+      "benign_explanation": "Nothing in the call points to this.",
+      "uncertainty_note": null
+    },
+    {
+      "family": "documentation",
+      "score": 0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 3,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call is a support call. Nothing had to be recorded for advice.",
+      "reason_de": null,
+      "benign_explanation": null,
+      "uncertainty_note": null
+    }
+  ],
+  "numbers": {
+    "objects": [
+      {
+        "seg_id": "S008",
+        "start_s": 84.0,
+        "end_s": 91.4,
+        "digits": "836194",
+        "kind": "login_code",
+        "label": "Sample code from the manual"
+      }
+    ],
+    "agreement": 1.0,
+    "samples": 3
+  },
+  "evidence": [
+    {
+      "id": 1,
+      "family": "access",
+      "seg_id": "S004",
+      "role": "exclusion",
+      "start_s": 30.0,
+      "end_s": 43.4,
+      "speaker_role": "customer",
+      "quote": "Hier steht ein Beispiel, wie so ein Code aussieht. Das Beispiel ist als abgelaufen markiert.",
+      "note": "The digits come from a printed sample that is marked as expired.",
+      "snippet_url": "/api/calls/Stufe2_C10-K3/snippets/S004"
+    },
+    {
+      "id": 2,
+      "family": "access",
+      "seg_id": "S006",
+      "role": "exclusion",
+      "start_s": 55.0,
+      "end_s": 69.4,
+      "speaker_role": "customer",
+      "quote": "Ich habe noch keine Anmeldung gestartet, ich will zuerst verstehen, wie es geht.",
+      "note": "No login was started, so no live code exists.",
+      "snippet_url": "/api/calls/Stufe2_C10-K3/snippets/S006"
+    },
+    {
+      "id": 3,
+      "family": "access",
+      "seg_id": "S008",
+      "role": "trigger",
+      "start_s": 84.0,
+      "end_s": 91.4,
+      "speaker_role": "customer",
+      "quote": "Acht, drei, sechs, eins, neun, vier.",
+      "note": "Six digits are read out, but they are the expired sample, not a login code.",
+      "snippet_url": "/api/calls/Stufe2_C10-K3/snippets/S008"
+    }
+  ],
+  "keyword_hits": [
+    {
+      "keyword_id": "K08",
+      "family": "access",
+      "phrase": "SMS-Code",
+      "seg_id": "S009",
+      "start_s": 95.0,
+      "end_s": 96.2,
+      "label": "benign"
+    },
+    {
+      "keyword_id": "K09",
+      "family": "disclosure",
+      "phrase": "Kontostand",
+      "seg_id": "S010",
+      "start_s": 115.0,
+      "end_s": 116.2,
+      "label": "benign"
+    }
+  ],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 3.0,
+      "end_s": 10.4,
+      "role": "advisor",
+      "text": "Grüezi, Sie sind mit der Kundenberatung verbunden. Wie kann ich Ihnen helfen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 11.0,
+      "end_s": 21.4,
+      "role": "customer",
+      "text": "Ich habe die neue E-Banking-App installiert und lese gerade die Anleitung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 22.0,
+      "end_s": 29.4,
+      "role": "advisor",
+      "text": "Sehr gut. Wo kommen Sie nicht weiter?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 30.0,
+      "end_s": 43.4,
+      "role": "customer",
+      "text": "Hier steht ein Beispiel, wie so ein Code aussieht. Das Beispiel ist als abgelaufen markiert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 44.0,
+      "end_s": 54.4,
+      "role": "advisor",
+      "text": "Genau, das ist nur ein Muster. Damit kann man sich nicht anmelden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 55.0,
+      "end_s": 69.4,
+      "role": "customer",
+      "text": "Ich habe noch keine Anmeldung gestartet, ich will zuerst verstehen, wie es geht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 70.0,
+      "end_s": 83.4,
+      "role": "advisor",
+      "text": "Das ist gut so. Lesen Sie mir das Beispiel ruhig vor, dann erkläre ich Ihnen die Felder.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 84.0,
+      "end_s": 91.4,
+      "role": "customer",
+      "text": "Acht, drei, sechs, eins, neun, vier.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 92.0,
+      "end_s": 109.4,
+      "role": "advisor",
+      "text": "Genau. Bei einer echten Anmeldung kommt der Code per SMS, und den geben Sie nie weiter, auch nicht mir.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 110.0,
+      "end_s": 124.4,
+      "role": "customer",
+      "text": "Gut zu wissen. Und wo sehe ich den Kontostand?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 125.0,
+      "end_s": 159.4,
+      "role": "advisor",
+      "text": "Gleich auf der Startseite, oben links.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 160.0,
+      "end_s": 177.4,
+      "role": "customer",
+      "text": "Ah, jetzt sehe ich es. Vielen Dank.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 178.0,
+      "end_s": 185.5,
+      "role": "advisor",
+      "text": "Gern geschehen. Einen schönen Tag noch.",
+      "low_confidence": false
+    }
+  ],
+  "twin": {
+    "call_id": "Stufe2_C09-K3",
+    "dialogue_id": "Stufe2_C09",
+    "variant": "clean",
+    "verdict": "alarm",
+    "note": "Same six digits read out, but there the customer had just started the login herself, so the code was live."
+  },
+  "feedback": [],
+  "triggers": []
+}

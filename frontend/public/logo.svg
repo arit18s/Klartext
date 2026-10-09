@@ -1,0 +1,8 @@
+<svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" aria-label="Klartext">
+  <rect width="28" height="28" rx="8" fill="#1E2126"/>
+  <rect x="6"    y="11" width="2" height="6"  rx="1" fill="#FFFFFF"/>
+  <rect x="9.5"  y="8"  width="2" height="12" rx="1" fill="#FFFFFF"/>
+  <rect x="13"   y="5"  width="2" height="18" rx="1" fill="#F2C744"/>
+  <rect x="16.5" y="8"  width="2" height="12" rx="1" fill="#FFFFFF"/>
+  <rect x="20"   y="11" width="2" height="6"  rx="1" fill="#FFFFFF"/>
+</svg>
