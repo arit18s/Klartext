@@ -1,0 +1,381 @@
+{
+  "note": "Fixed split. Tune prompts and thresholds on dev only. Never tune on holdout.",
+  "seed": 20261009,
+  "valid_candidates": 552,
+  "groups": {
+    "Stufe1_D01": {
+      "split": "holdout",
+      "family": "numbers",
+      "dialogues": [
+        "Stufe1_D01"
+      ],
+      "verdicts": [
+        "no_alert"
+      ],
+      "recordings": [
+        "Stufe1_D01-K1",
+        "Stufe1_D01-K2"
+      ]
+    },
+    "Stufe1_D02": {
+      "split": "dev",
+      "family": "trade",
+      "dialogues": [
+        "Stufe1_D02"
+      ],
+      "verdicts": [
+        "alarm"
+      ],
+      "recordings": [
+        "Stufe1_D02-K1",
+        "Stufe1_D02-K2"
+      ]
+    },
+    "Stufe1_D03": {
+      "split": "dev",
+      "family": "trade",
+      "dialogues": [
+        "Stufe1_D03"
+      ],
+      "verdicts": [
+        "no_alert"
+      ],
+      "recordings": [
+        "Stufe1_D03-K1",
+        "Stufe1_D03-K2"
+      ]
+    },
+    "Stufe1_D04": {
+      "split": "dev",
+      "family": "trade",
+      "dialogues": [
+        "Stufe1_D04"
+      ],
+      "verdicts": [
+        "alarm"
+      ],
+      "recordings": [
+        "Stufe1_D04-K1",
+        "Stufe1_D04-K2"
+      ]
+    },
+    "Stufe1_D05": {
+      "split": "holdout",
+      "family": "access",
+      "dialogues": [
+        "Stufe1_D05"
+      ],
+      "verdicts": [
+        "alarm"
+      ],
+      "recordings": [
+        "Stufe1_D05-K1",
+        "Stufe1_D05-K2"
+      ]
+    },
+    "Stufe1_D06": {
+      "split": "dev",
+      "family": "access",
+      "dialogues": [
+        "Stufe1_D06"
+      ],
+      "verdicts": [
+        "no_alert"
+      ],
+      "recordings": [
+        "Stufe1_D06-K1",
+        "Stufe1_D06-K2"
+      ]
+    },
+    "Stufe1_D07": {
+      "split": "dev",
+      "family": "disclosure",
+      "dialogues": [
+        "Stufe1_D07"
+      ],
+      "verdicts": [
+        "alarm"
+      ],
+      "recordings": [
+        "Stufe1_D07-K1",
+        "Stufe1_D07-K2"
+      ]
+    },
+    "Stufe1_D08": {
+      "split": "dev",
+      "family": "disclosure",
+      "dialogues": [
+        "Stufe1_D08"
+      ],
+      "verdicts": [
+        "no_alert"
+      ],
+      "recordings": [
+        "Stufe1_D08-K1",
+        "Stufe1_D08-K2"
+      ]
+    },
+    "Stufe1_D09": {
+      "split": "holdout",
+      "family": "documentation",
+      "dialogues": [
+        "Stufe1_D09"
+      ],
+      "verdicts": [
+        "alarm"
+      ],
+      "recordings": [
+        "Stufe1_D09-K1",
+        "Stufe1_D09-K2"
+      ]
+    },
+    "Stufe1_D10": {
+      "split": "dev",
+      "family": "splitting",
+      "dialogues": [
+        "Stufe1_D10"
+      ],
+      "verdicts": [
+        "alarm"
+      ],
+      "recordings": [
+        "Stufe1_D10-K1",
+        "Stufe1_D10-K2"
+      ]
+    },
+    "Stufe2_C01+C02": {
+      "split": "dev",
+      "family": "numbers",
+      "dialogues": [
+        "Stufe2_C01",
+        "Stufe2_C02"
+      ],
+      "verdicts": [
+        "no_alert",
+        "no_alert"
+      ],
+      "recordings": [
+        "Stufe2_C01-K3",
+        "Stufe2_C01-K4",
+        "Stufe2_C02-K3",
+        "Stufe2_C02-K4"
+      ]
+    },
+    "Stufe2_C03+C04": {
+      "split": "holdout",
+      "family": "numbers",
+      "dialogues": [
+        "Stufe2_C03",
+        "Stufe2_C04"
+      ],
+      "verdicts": [
+        "no_alert",
+        "no_alert"
+      ],
+      "recordings": [
+        "Stufe2_C03-K3",
+        "Stufe2_C03-K4",
+        "Stufe2_C04-K3",
+        "Stufe2_C04-K4"
+      ]
+    },
+    "Stufe2_C05+C06": {
+      "split": "holdout",
+      "family": "trade",
+      "dialogues": [
+        "Stufe2_C05",
+        "Stufe2_C06"
+      ],
+      "verdicts": [
+        "no_alert",
+        "alarm"
+      ],
+      "recordings": [
+        "Stufe2_C05-K3",
+        "Stufe2_C05-K4",
+        "Stufe2_C06-K3",
+        "Stufe2_C06-K4"
+      ]
+    },
+    "Stufe2_C07+C08": {
+      "split": "dev",
+      "family": "trade",
+      "dialogues": [
+        "Stufe2_C07",
+        "Stufe2_C08"
+      ],
+      "verdicts": [
+        "alarm",
+        "no_alert"
+      ],
+      "recordings": [
+        "Stufe2_C07-K3",
+        "Stufe2_C07-K4",
+        "Stufe2_C08-K3",
+        "Stufe2_C08-K4"
+      ]
+    },
+    "Stufe2_C09+C10": {
+      "split": "dev",
+      "family": "access",
+      "dialogues": [
+        "Stufe2_C09",
+        "Stufe2_C10"
+      ],
+      "verdicts": [
+        "alarm",
+        "no_alert"
+      ],
+      "recordings": [
+        "Stufe2_C09-K3",
+        "Stufe2_C09-K4",
+        "Stufe2_C10-K3",
+        "Stufe2_C10-K4"
+      ]
+    },
+    "Stufe2_C11+C12": {
+      "split": "dev",
+      "family": "disclosure",
+      "dialogues": [
+        "Stufe2_C11",
+        "Stufe2_C12"
+      ],
+      "verdicts": [
+        "no_alert",
+        "alarm"
+      ],
+      "recordings": [
+        "Stufe2_C11-K3",
+        "Stufe2_C11-K4",
+        "Stufe2_C12-K3",
+        "Stufe2_C12-K4"
+      ]
+    },
+    "Stufe2_C13+C14": {
+      "split": "dev",
+      "family": "documentation",
+      "dialogues": [
+        "Stufe2_C13",
+        "Stufe2_C14"
+      ],
+      "verdicts": [
+        "alarm",
+        "no_alert"
+      ],
+      "recordings": [
+        "Stufe2_C13-K3",
+        "Stufe2_C13-K4",
+        "Stufe2_C14-K3",
+        "Stufe2_C14-K4"
+      ]
+    },
+    "Stufe2_C15+C16": {
+      "split": "holdout",
+      "family": "splitting",
+      "dialogues": [
+        "Stufe2_C15",
+        "Stufe2_C16"
+      ],
+      "verdicts": [
+        "no_alert",
+        "alarm"
+      ],
+      "recordings": [
+        "Stufe2_C15-K3",
+        "Stufe2_C15-K4",
+        "Stufe2_C16-K3",
+        "Stufe2_C16-K4"
+      ]
+    },
+    "Stufe3_C17": {
+      "split": "dev",
+      "family": "access",
+      "dialogues": [
+        "Stufe3_C17"
+      ],
+      "verdicts": [
+        "review"
+      ],
+      "recordings": [
+        "Stufe3_C17-K3",
+        "Stufe3_C17-K4"
+      ]
+    },
+    "Stufe3_C18": {
+      "split": "dev",
+      "family": "disclosure",
+      "dialogues": [
+        "Stufe3_C18"
+      ],
+      "verdicts": [
+        "review"
+      ],
+      "recordings": [
+        "Stufe3_C18-K3",
+        "Stufe3_C18-K4"
+      ]
+    },
+    "Stufe3_C19": {
+      "split": "holdout",
+      "family": "documentation",
+      "dialogues": [
+        "Stufe3_C19"
+      ],
+      "verdicts": [
+        "review"
+      ],
+      "recordings": [
+        "Stufe3_C19-K3",
+        "Stufe3_C19-K4"
+      ]
+    },
+    "Stufe3_C20": {
+      "split": "dev",
+      "family": "splitting",
+      "dialogues": [
+        "Stufe3_C20"
+      ],
+      "verdicts": [
+        "review"
+      ],
+      "recordings": [
+        "Stufe3_C20-K3",
+        "Stufe3_C20-K4"
+      ]
+    }
+  },
+  "dev": [
+    "Stufe1_D02",
+    "Stufe1_D03",
+    "Stufe1_D04",
+    "Stufe1_D06",
+    "Stufe1_D07",
+    "Stufe1_D08",
+    "Stufe1_D10",
+    "Stufe2_C01",
+    "Stufe2_C02",
+    "Stufe2_C07",
+    "Stufe2_C08",
+    "Stufe2_C09",
+    "Stufe2_C10",
+    "Stufe2_C11",
+    "Stufe2_C12",
+    "Stufe2_C13",
+    "Stufe2_C14",
+    "Stufe3_C17",
+    "Stufe3_C18",
+    "Stufe3_C20"
+  ],
+  "holdout": [
+    "Stufe1_D01",
+    "Stufe1_D05",
+    "Stufe1_D09",
+    "Stufe2_C03",
+    "Stufe2_C04",
+    "Stufe2_C05",
+    "Stufe2_C06",
+    "Stufe2_C15",
+    "Stufe2_C16",
+    "Stufe3_C19"
+  ]
+}
