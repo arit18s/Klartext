@@ -21,8 +21,9 @@ export default function AllCalls() {
   const [params, setParams] = useSearchParams()
   const q = params.get('q') ?? ''
   const [filters, setFilters] = useState<FilterState>(EMPTY_FILTERS)
-  const [evalMode, setEvalMode] = useState(() => readFlag(EVAL_KEY, true))
-  const [onlyMismatches, setOnlyMismatches] = useState(false)
+  const [evalMode, setEvalMode] = useState(() => params.get('mismatches') === '1' || readFlag(EVAL_KEY, true))
+  // ?mismatches=1 (from the Quality page) opens with evaluation mode and only mismatches on.
+  const [onlyMismatches, setOnlyMismatches] = useState(() => params.get('mismatches') === '1')
   const toast = useToast()
 
   const calls = useQuery({ queryKey: ['calls', { q }], queryFn: () => getCalls(q ? { q } : {}) })
