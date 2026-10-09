@@ -7,12 +7,16 @@ complete_json() asks for JSON matching a Pydantic model:
   1. structured output (json_schema) where the endpoint supports it, else JSON mode
   2. Pydantic validation; on failure one retry with the validation error appended
   3. rate limits, timeouts and 5xx: exponential backoff, max 3 tries
+  4. reasoning ("thinking") on or off per LLM_REASONING, sent as OpenRouter's `reasoning` field
+  5. valid answers are cached on disk (DATA_DIR/llm_cache), keyed by a hash of model, reasoning,
+     temperature, prompts and sample index, so re-runs only call the API for what changed
 It never raises for model or network problems: callers get LLMResult(ok=False) and fail safe.
 Logs model, latency and token counts only. Never prompts, transcripts or keys.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import re
@@ -32,7 +36,7 @@ T = TypeVar("T", bound=BaseModel)
 
 MAX_TRANSPORT_TRIES = 3
 BACKOFF_BASE_S = 2.0
-REQUEST_TIMEOUT_S = 120.0
+REQUEST_TIMEOUT_S = 180.0  # reasoning on long transcripts can take minutes
 RETRYABLE = (openai.RateLimitError, openai.APITimeoutError, openai.APIConnectionError, openai.InternalServerError)
 THINK_RE = re.compile(r"<think>.*?</think>", re.S)
 FENCE_RE = re.compile(r"^```(?:json)?\s*|\s*```$")
@@ -49,7 +53,9 @@ class LLMResult(BaseModel, Generic[T]):
     latency_ms: int = 0
     prompt_tokens: int = 0
     completion_tokens: int = 0
-    calls: int = 0
+    reasoning_tokens: int = 0
+    calls: int = 0  # API calls made (0 when served from cache)
+    cached: bool = False
 
 
 class _TransportError(Exception):
@@ -87,7 +93,7 @@ def _short_error(exc: openai.APIStatusError) -> str:
     return f"HTTP {exc.status_code}: {msg or type(exc).__name__}"
 
 
-def _call(messages: list[dict], schema_model: type[BaseModel], model: str, temperature: float):
+def _call(messages: list[dict], schema_model: type[BaseModel], model: str, temperature: float, reasoning: bool):
     """One chat completion with transport backoff. Falls back to JSON mode if json_schema is rejected."""
     for attempt in range(1, MAX_TRANSPORT_TRIES + 1):
         try:
@@ -96,6 +102,7 @@ def _call(messages: list[dict], schema_model: type[BaseModel], model: str, tempe
                 messages=messages,
                 temperature=temperature,
                 response_format=_response_format(schema_model, model),
+                extra_body={"reasoning": {"enabled": reasoning}},
             )
         except openai.BadRequestError as exc:
             msg = str(exc).lower()
@@ -115,27 +122,62 @@ def _call(messages: list[dict], schema_model: type[BaseModel], model: str, tempe
     raise _TransportError("No response")
 
 
+def _cache_key(model: str, reasoning: bool, temperature: float, system: str, user: str, sample_idx: int) -> str:
+    raw = json.dumps([model, reasoning, temperature, system, user, sample_idx], ensure_ascii=False)
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+
+def _cache_get(key: str, schema_model: type[T], model: str) -> LLMResult[T] | None:
+    path = get_settings().llm_cache_path / f"{key[:2]}/{key}.json"
+    if not path.exists():
+        return None
+    try:
+        entry = json.loads(path.read_text(encoding="utf-8"))
+        value = schema_model.model_validate_json(_extract_json(entry["content"]))
+    except (ValueError, KeyError, ValidationError):
+        return None  # unreadable or outdated schema: treat as a miss
+    usage = {k: entry.get(k, 0) for k in ("latency_ms", "prompt_tokens", "completion_tokens", "reasoning_tokens")}
+    return LLMResult(ok=True, value=value, model=model, cached=True, calls=0, **usage)
+
+
+def _cache_put(key: str, content: str, result: LLMResult) -> None:
+    path = get_settings().llm_cache_path / f"{key[:2]}/{key}.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    entry = {"content": content, **result.model_dump(include={"model", "latency_ms", "prompt_tokens", "completion_tokens", "reasoning_tokens"})}
+    tmp = path.with_suffix(".tmp")
+    tmp.write_text(json.dumps(entry, ensure_ascii=False), encoding="utf-8")
+    tmp.replace(path)
+
+
 def complete_json(
     system: str,
     user: str,
     schema_model: type[T],
     temperature: float | None = None,
     model: str | None = None,
+    reasoning: bool | None = None,
+    sample_idx: int = 0,
+    use_cache: bool = True,
 ) -> LLMResult[T]:
     s = get_settings()
     model = model or s.llm_model
     temperature = s.llm_temperature if temperature is None else temperature
+    reasoning = (s.llm_reasoning == "on") if reasoning is None else reasoning
     schema_hint = (
         "\n\nRespond with one JSON object only, matching this JSON schema:\n"
         + json.dumps(schema_model.model_json_schema(), ensure_ascii=False)
     )
+    key = _cache_key(model, reasoning, temperature, system + schema_hint, user, sample_idx)
+    if use_cache and (hit := _cache_get(key, schema_model, model)):
+        return hit
+
     messages: list[dict] = [{"role": "system", "content": system + schema_hint}, {"role": "user", "content": user}]
     result: LLMResult[T] = LLMResult(ok=False, model=model)
     started = time.monotonic()
 
     for validation_try in range(2):  # first answer + one retry with the validation error
         try:
-            resp = _call(messages, schema_model, model, temperature)
+            resp = _call(messages, schema_model, model, temperature, reasoning)
         except _TransportError as exc:
             result.error = str(exc)
             break
@@ -143,11 +185,16 @@ def complete_json(
         if resp.usage:
             result.prompt_tokens += resp.usage.prompt_tokens or 0
             result.completion_tokens += resp.usage.completion_tokens or 0
+            details = getattr(resp.usage, "completion_tokens_details", None)
+            result.reasoning_tokens += getattr(details, "reasoning_tokens", 0) or 0
         content = resp.choices[0].message.content if resp.choices else ""
         try:
             result.value = schema_model.model_validate_json(_extract_json(content or ""))
             result.ok = True
             result.error = None
+            result.latency_ms = int((time.monotonic() - started) * 1000)
+            if use_cache:
+                _cache_put(key, content or "", result)
             break
         except ValidationError as exc:
             result.error = f"Invalid JSON output: {exc.error_count()} error(s)"
@@ -159,8 +206,9 @@ def complete_json(
 
     result.latency_ms = int((time.monotonic() - started) * 1000)
     log.info(
-        "LLM %s ok=%s calls=%d latency=%dms tokens=%d+%d%s",
-        model, result.ok, result.calls, result.latency_ms, result.prompt_tokens, result.completion_tokens,
+        "LLM %s reasoning=%s sample=%d ok=%s calls=%d latency=%dms tokens in=%d out=%d (reasoning %d)%s",
+        model, "on" if reasoning else "off", sample_idx, result.ok, result.calls, result.latency_ms,
+        result.prompt_tokens, result.completion_tokens, result.reasoning_tokens,
         "" if result.ok else f" error={result.error}",
     )
     return result

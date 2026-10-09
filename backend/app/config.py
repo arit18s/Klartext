@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from functools import lru_cache
 from pathlib import Path
+from typing import Literal
 
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -20,6 +21,8 @@ class Settings(BaseSettings):
     llm_model: str = ""
     llm_samples: int = 3
     llm_temperature: float = 0.3
+    llm_reasoning: Literal["on", "off"] = "on"  # model "thinking"; switch without code changes
+    llm_concurrency: int = 8  # parallel LLM requests
 
     # Speech
     asr_model: str = ""
@@ -49,6 +52,10 @@ class Settings(BaseSettings):
     @property
     def case_data_path(self) -> Path:
         return self.path(self.case_data_dir)
+
+    @property
+    def llm_cache_path(self) -> Path:
+        return self.data_path / "llm_cache"
 
     @property
     def db_path(self) -> Path:

@@ -1,0 +1,3 @@
+What to decide: did the advisor actually reveal protected details (balances, transactions, personal data) of an account or customer to a person who is not the account holder and whose authority is not established in the call?
+Harmless readings: the caller is the account holder or a joint holder; a power of attorney is confirmed in the call; the advisor only asks or refuses; only general, non-account-specific information is given.
+Needs a human: if authority is claimed but not verified in the call, or its scope for this account is unclear, set needs_human true and name what must be checked, even if you judge the event absent.

@@ -1,0 +1,3 @@
+What to decide: did the customer or the advisor request, place or recommend a trade because of company information that is not yet public (results, takeovers, warnings, internal figures)? Execution is not required; a clear trade request based on the information is enough.
+Harmless readings: the information is already public; general market opinions or analyst reports; the person refuses or the advisor stops the trade; the information is only quoted, negated or discussed as a training example.
+Unclear: if it is unclear whether the information was public at the time, or whether the trade is linked to it, use "undetermined" and name the missing fact.

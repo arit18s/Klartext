@@ -1,0 +1,4 @@
+What to decide: did the customer actually read out or hand over an access secret (login code, one-time password, TAN, PIN, password, confirmation code) that was currently valid at that moment, to anyone, including bank staff?
+Key question: was the value live? A login or confirmation the customer just started makes the following code live. Bank staff never need a customer's live code.
+Harmless readings: the secret is only mentioned; the customer refuses or is told not to share it; the value is expired, a sample, an example from a manual or letter template; the number is not a secret (reference number, tracking number, IBAN, invoice number).
+Unclear: if digits are read out but the call does not establish whether the value was still valid or which process it belongs to, use "undetermined" and name the missing fact.
