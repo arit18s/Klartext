@@ -2,7 +2,7 @@
 
 Response bodies for every endpoint in `05_BACKEND_STRUCTURE.md` section 9. The backend implements exactly this; the frontend types in `frontend/src/lib/types.ts` mirror it one to one. Change both together.
 
-Base: section 8 tables, the transcript JSON (section 2) and `CheckSample` (section 4). Where those did not cover what the designs in `Klartext.html` show, a field was invented. Every invented field is listed in **Invented** below and marked *(invented)* where it appears.
+Base: section 8 tables, the transcript JSON (section 2) and `CheckSample` (section 4). Agreed changes and fields that are still invented are listed under **Decisions and invented fields** below.
 
 ## Conventions
 
@@ -15,33 +15,40 @@ Base: section 8 tables, the transcript JSON (section 2) and `CheckSample` (secti
 - Errors: any non-2xx returns FastAPI's `{"detail": "…"}`. 404 for an unknown call, 422 for invalid input.
 - Paths on disk (`file_path`, `snippet_path`) are never returned. Audio is reached only through the audio and snippet endpoints.
 
-## Invented
+## Decisions and invented fields
 
-These go beyond sections 2, 4 and 8. Review them before implementing.
+Agreed (contract changes beyond sections 2, 4 and 8):
+
+| Where | Field | Decision |
+|---|---|---|
+| `Evidence` | `note` | One short line on why this passage matters. The backend adds `note` to each `CheckSample.evidence` item |
+| `Decision` | `reason_de` | New column on `decisions`: the decided family's `reason_de` (English/Deutsch toggle) |
+| Scores | — | Section 4 formula stays. With k = 3, real scores move in steps of about 17. The UI accepts any integer 0–100. The fixtures keep the design's illustrative numbers (91, 58, 12) |
+| Numbers helper | — | Defined by the backend; not part of this contract yet. The UI does not show it |
+| "Why the check is unclear" panel | — | No new field. Built from the check's `open_question`, `benign_explanation` and `agreement` |
+| Keyword list | `KeywordList`, `KeywordEntry` | Field names confirmed against `data/Stichwortliste.json` in the case repo (version `example-0.2`) |
+| New endpoints | `POST /pipeline/watch`, `POST /calls/{id}/retry`, `GET /calls/{id}/history` | Pause and resume watching, retry a failed call, call history from `audit_log` |
+| Download report | — | No endpoint. Stretch: a print stylesheet for the call view (browser print to PDF) |
+
+Still invented, review before implementing:
 
 | Where | Field | Why |
 |---|---|---|
 | `CallSummary` | `file_name` | Pipeline page shows file names; `file_path` without directories |
-| `CallSummary` | `feedback_label`, `trigger_sent`, `expected_verdict` | Inbox status icons, All calls expected/match columns. `expected_verdict` comes from ground truth by `dialogue_id`, `null` when unknown; the UI shows it only in evaluation mode |
-| `GET /calls` | `counts` | Sidebar and Inbox header need unfiltered counts |
-| `Decision` | `reason_de` | English/Deutsch toggle in the call header. Copy of the decided family's `reason_de` (not a column in `decisions` today) |
+| `CallSummary` | `feedback_label`, `trigger_sent`, `expected_verdict` | Inbox status icons and the All calls expected/match columns. `expected_verdict` comes from ground truth by `dialogue_id`, `null` when unknown; the UI shows it only in evaluation mode |
+| `GET /calls` | `counts`, query params `advisor` and `since` | Sidebar and Inbox header need unfiltered counts. The filter modal has advisor and date |
 | `CheckResult` | `samples` | Number of valid samples, so the UI can say "2 of 3 runs agree" |
-| `CheckResult` | `uncertainty_note` | "Why the access check is unclear" panel (C17 design). Set when agreement < 1 or the event is undetermined; may be `null` |
-| `numbers` | whole object | Section 4 names the numbers helper but has no output schema. Kinds from the Rules page: `login_code, account_number, amount, date, phone_number, reference, unknown` |
-| `Evidence` | `note` | Evidence cards show one explanatory line per passage. Needs a `note` field on each `CheckSample.evidence` item |
 | `Evidence` | `snippet_url` | Replaces `snippet_path` |
 | `KeywordHit` | `label` | Majority of `keyword_judgements` for that hit, `null` if no sample judged it |
 | `twin` | expanded object | `decisions.twin_call_id` + `twin_note`, plus the twin's verdict and variant. For a review call the twin is "the closest call" (C17 design); the UI picks the wording |
 | Families config | `changed_at`, `changed_by` | Rules page shows "Last changed 8 Oct, 16:40 · Compliance officer" per family |
-| Keywords config | `KeywordEntry` fields | **To confirm against `case-data/Stichwortliste.json`**, which is not in this checkout. The UI needs per keyword: `id, label, family, de[], gsw[], harmless, enabled`. Unknown fields pass through unchanged |
 | `POST /keywords/rescan` | `keyword_only_flagged`, `config_version_id` | Rules page compares the keyword-only filter with Klartext |
-| `POST /calls/{id}/recheck` | async 202 | Re-checking takes seconds. Progress arrives over SSE |
+| `POST /calls/{id}/recheck`, `/retry` | async 202 | Both take seconds. Progress arrives over SSE |
+| `GET /calls/{id}/history` | `action` values | `decided, feedback, recheck, retry, trigger_sent`; config changes have their own targets |
 | Eval metrics | shape of `metrics` | Section 10 lists the metrics, not their JSON |
 | Pipeline status | whole object | Not specified. Stages from `02_APP_FLOW.md` screen 7 |
 
-**Design scores vs formula.** With k = 3 and section 4's formula, a family score can only be 0, 16.7, 33.3, 50, 66.7, 83.3 or 100. The designs show 91, 58, 12, 4 and so on. The fixtures copy the design values. Either the backend formula stays as it is (and real scores are coarser), or samples gain a confidence value. Undecided.
-
-**Not in section 9, shown in the designs:** "Pause watching" (Pipeline), "Retry" on a failed file, "View history" of config versions, "Download report" (Quality). There are no endpoints for these yet.
+Not covered yet: "View history" of config versions (Rules, Settings).
 
 ---
 
@@ -49,7 +56,7 @@ These go beyond sections 2, 4 and 8. Review them before implementing.
 
 ### `GET /calls`
 
-Query: `verdict`, `family`, `level`, `variant` (comma-separated lists), `q` (call ID, advisor name or transcript text), `flagged_only` (`true` = alarm or review). Items are sorted by verdict (alarm, review, no_alert, undecided), then by score, highest first. No pagination; the case has 60 calls.
+Query: `verdict`, `family`, `level`, `variant`, `advisor` (comma-separated lists), `since` (ISO time; `processed_at` at or after it), `q` (call ID, advisor name or transcript text), `flagged_only` (`true` = alarm or review). Items are sorted by verdict (alarm, review, no_alert, undecided), then by score, highest first. No pagination; the case has 60 calls.
 
 ```json
 {
@@ -111,17 +118,9 @@ The full detail. Full examples: `frontend/src/fixtures/call_detail_*.json`. Shor
       "open_question": "Was the code still valid when it was read out?",
       "reason": "Customer reads six digits from a bank letter to the advisor. …",
       "reason_de": "Die Kundin liest …",
-      "benign_explanation": "The letter may be old, and codes on bank letters expire after a set time. Then the digits give no access.",
-      "uncertainty_note": "Two runs found a code read out with no sign it had expired. One run treated the old letter as an expired code. …"
+      "benign_explanation": "The letter may be old, and codes on bank letters expire after a set time. Then the digits give no access."
     }
   ],
-  "numbers": {
-    "objects": [
-      { "seg_id": "S008", "start_s": 125.0, "end_s": 132.0, "digits": "291508", "kind": "login_code", "label": "Code, source unknown" }
-    ],
-    "agreement": 0.6666666666666666,
-    "samples": 3
-  },
   "evidence": [
     {
       "id": 3,
@@ -137,7 +136,7 @@ The full detail. Full examples: `frontend/src/fixtures/call_detail_*.json`. Shor
     }
   ],
   "keyword_hits": [
-    { "keyword_id": "K07", "family": "access", "phrase": "Code vorlesen", "seg_id": "S009", "start_s": 96.0, "end_s": 97.2, "label": "relevant" }
+    { "keyword_id": "K10", "family": "access", "phrase": "Bestätigungscode", "seg_id": "S007", "start_s": 112.0, "end_s": 113.2, "label": "relevant" }
   ],
   "segments": [
     { "seg_id": "S001", "start_s": 3.0, "end_s": 14.4, "role": "advisor", "text": "Grüezi, Kundenberatung. Was kann ich für Sie tun?", "low_confidence": false }
@@ -158,10 +157,12 @@ The full detail. Full examples: `frontend/src/fixtures/call_detail_*.json`. Shor
 
 Rules:
 - `decision` is `null` until decided. Its `verdict, family, score, reason, open_question` equal the same fields in `call`.
+- Scores are any number 0–100. With k = 3 they come in steps of about 17; the UI rounds and accepts any value.
 - `checks` always has the five verdict families in the order `trade, splitting, access, disclosure, documentation`. A family that failed has `score: null`, `agreement: null`, `event_majority: "failed"`. A `not_applicable` family has `score: 0`, which the UI shows as "–".
 - `decision.score` and `decision.family` are the maximum `checks[].score` and its family (section 5).
 - `evidence` holds only the decided family, sorted by `start_s`. `start_s`/`end_s` lie within the segment, and `quote` is a substring of the segment text. Every alarm or review has at least one `trigger`. A no-alert call may carry `exclusion` items.
-- `numbers` is `null` if the helper did not run.
+- The "Why the check is unclear" panel is built from the decided family's `open_question`, `benign_explanation` and `agreement`. No extra field.
+- The numbers helper output may be added by the backend later; the UI ignores unknown keys.
 - `segments` come from the transcript JSON without `speaker`, `words` or ASR probabilities.
 - `triggers[].url` is `{PUBLIC_BASE_URL}/calls/{call_id}?t={max(0, floor(trigger start − 10))}`.
 
@@ -192,6 +193,30 @@ No body. Re-runs the checks and the decision in the background. Response `202`:
 ```
 
 Progress and the result arrive as `call_updated` events.
+
+### `POST /calls/{id}/retry`
+
+No body. Re-queues a call whose `status` is `failed` and runs it from the first stage. Writes an `audit_log` row. Response `202`:
+
+```json
+{ "call_id": "Stufe1_D04-K2", "status": "queued" }
+```
+
+409 if the call is not `failed`.
+
+### `GET /calls/{id}/history`
+
+The `audit_log` rows whose `target` is `call:{id}`, newest first. `details` is the parsed `details_json`.
+
+```json
+[
+  { "id": 31, "actor": "Compliance officer", "action": "feedback", "target": "call:Stufe2_C09-K3", "details": { "label": "correct", "note": null }, "created_at": "2026-10-10T09:02:11Z" },
+  { "id": 12, "actor": "system", "action": "trigger_sent", "target": "call:Stufe2_C09-K3", "details": { "remote_id": "trg_0001", "status_code": 201 }, "created_at": "2026-10-10T08:43:00Z" },
+  { "id": 11, "actor": "system", "action": "decided", "target": "call:Stufe2_C09-K3", "details": { "verdict": "alarm", "family": "access", "score": 91, "thresholds_version_id": 3 }, "created_at": "2026-10-10T08:42:00Z" }
+]
+```
+
+`action` ∈ `decided, feedback, recheck, retry, trigger_sent`. Feedback and review actions (`escalated_to_alarm`, `closed_no_alert`) appear as `feedback` with the label in `details`.
 
 ## Scores
 
@@ -252,11 +277,11 @@ PUT body: `{ "review": 40, "alarm": 70, "note": "Recall first for the demo" }`. 
     "access": {
       "enabled": true,
       "helper": false,
-      "label_de": "Zugangsdaten weitergegeben",
-      "task": "…",
-      "keyword_ids": ["K07", "K08"],
-      "rule": "A valid login code, one-time password or PIN is read out to anyone, including bank staff.",
-      "harmless": "Expired sample codes from a manual, parcel tracking numbers.",
+      "label_de": "Zugangsinformation",
+      "task": "active_secret_disclosure",
+      "keyword_ids": ["K10"],
+      "rule": "Actual disclosure of a currently active access secret; mention/refusal/expired value is not disclosure of an active secret.",
+      "harmless": "…",
       "changed_at": "2026-10-09T09:05:00Z",
       "changed_by": "Compliance officer"
     }
@@ -268,7 +293,7 @@ The other four verdict families and `numbers` have the same shape. The UI never 
 
 ### `GET /config/keywords`, `PUT /config/keywords`
 
-`keywords` is the keyword list in the shape of `Stichwortliste.json`, stored and returned as is (see **Invented**: field names to confirm). PUT body: `{ "keywords": { … }, "note": "…" }`. Response for both:
+`keywords` is `Stichwortliste.json`, stored and returned unchanged. Confirmed against the case repo, version `example-0.2`. Keywords carry no family: a keyword's family is the key of the `families` entry whose `keywords` list contains its ID (K09 belongs to the `numbers` helper). PUT body: `{ "keywords": { … }, "note": "…" }`. Response for both:
 
 ```json
 {
@@ -276,29 +301,41 @@ The other four verdict families and `numbers` have the same shape. The UI never 
   "note": "Added gsw variant",
   "created_at": "2026-10-10T16:10:00Z",
   "keywords": {
-    "families": { "access": { "label": "Zugangsdaten", "task": "…", "keywords": ["K07", "K08"] } },
+    "version": "example-0.2",
+    "status": "provisional_not_official",
+    "official_source": "Inventx list not supplied",
+    "families": {
+      "access": { "label": "Zugangsinformation", "keywords": ["K10"], "task": "active_secret_disclosure" },
+      "numbers": { "label": "Zahlenobjekte", "keywords": ["K09"], "task": "object_classification" }
+    },
     "keywords": [
       {
-        "id": "K07",
-        "label": "Read out the code",
-        "family": "access",
-        "de": ["Code vorlesen", "sechs Ziffern"],
-        "gsw": ["Code vorläse", "sächs Ziffere", "de Code säge"],
-        "harmless": "Reading an expired sample code from a manual.",
-        "enabled": true
+        "id": "K10",
+        "label": "Zugangswörter",
+        "de": ["PIN", "Passwort", "TAN", "Bestätigungscode"],
+        "gsw": ["PIN", "Passwort", "TAN", "Bestätigungscode"],
+        "harmless": "…",
+        "enabled": true,
+        "status": "provisional_example",
+        "match_unit": "whole_phrase",
+        "partial_words_count_as_full_hit": false
       }
     ],
-    "policy_examples": { "access": "…" }
+    "alarm_scope": "Defined fictional test behaviors; keyword hits and entity mentions are not themselves legal findings.",
+    "policy_examples": { "access": "Actual disclosure of a currently active access secret; …" },
+    "corpus_binding": "corpus-3.0; unchanged provisional example-0.2 list"
   }
 }
 ```
 
+Keyword fields: `id`, `label` (German), `de[]`, `gsw[]`, `harmless`, `enabled`, `status`, `match_unit`, `partial_words_count_as_full_hit`; `rules[]` and `case_sensitive` are present on some keywords only. The UI edits `de`, `gsw` and `enabled` and keeps every other field as it came.
+
 ### `POST /config/keywords/suggest`
 
-Request: `{ "keyword_id": "K07" }`. Calls the open-weight LLM only. Response:
+Request: `{ "keyword_id": "K10" }`. Calls the open-weight LLM only. Response:
 
 ```json
-{ "keyword_id": "K07", "suggestions": ["d Zahle vorläse", "de Pin dürgä"] }
+{ "keyword_id": "K10", "suggestions": ["Bestätigungscode vorläse", "de Pin säge"] }
 ```
 
 Suggestions never include phrases already in the list. Nothing is saved until the officer accepts and PUTs the list.
@@ -422,6 +459,14 @@ Also the payload of the SSE event `pipeline_status`.
 - `queue` holds everything not yet done, plus failed items. `recent` holds the last 20 finished items, newest first.
 - A failed item carries `error` in plain language, for example "Transcription failed for Stufe1_D04. The file is not 16 kHz mono. Convert it and drop it into the inbox again."
 
+### `POST /pipeline/watch`
+
+Request: `{ "enabled": false }` pauses the inbox watcher, `true` resumes it. Files dropped while paused are picked up on resume. Writes an `audit_log` row. Response:
+
+```json
+{ "watching": false }
+```
+
 ### `POST /pipeline/process-folder`
 
 Request: `{ "path": "/data/hidden-test-set" }`. The path must resolve inside an allowed directory (07_SECURITY section 5). Response `202`:
@@ -462,6 +507,10 @@ data: { …same body as GET /pipeline/status… }
 ```
 
 `verdict` is `null` until decided. The client refetches the call and the lists on `call_updated`.
+
+## Download report
+
+No endpoint. Stretch goal: a print stylesheet for the call view, so the browser's print to PDF gives a one-page report.
 
 ## Settings and advisors
 

@@ -42,8 +42,7 @@
       "open_question": null,
       "reason": "No trade, recommendation or company news comes up in the call.",
       "reason_de": null,
-      "benign_explanation": "Nothing in the call points to this.",
-      "uncertainty_note": null
+      "benign_explanation": "Nothing in the call points to this."
     },
     {
       "family": "splitting",
@@ -55,8 +54,7 @@
       "open_question": null,
       "reason": "No payment or transfer is discussed.",
       "reason_de": null,
-      "benign_explanation": "Nothing in the call points to this.",
-      "uncertainty_note": null
+      "benign_explanation": "Nothing in the call points to this."
     },
     {
       "family": "access",
@@ -68,8 +66,7 @@
       "open_question": null,
       "reason": "Customer reads an expired sample code from the manual. No login was started.",
       "reason_de": "Die Kundin liest einen abgelaufenen Beispielcode aus der Anleitung vor. Es wurde keine Anmeldung gestartet.",
-      "benign_explanation": "The six digits are the printed sample from the manual, marked as expired. No login was running, so the digits give no access.",
-      "uncertainty_note": null
+      "benign_explanation": "The six digits are the printed sample from the manual, marked as expired. No login was running, so the digits give no access."
     },
     {
       "family": "disclosure",
@@ -81,8 +78,7 @@
       "open_question": null,
       "reason": "Only the account holder is on the line.",
       "reason_de": null,
-      "benign_explanation": "Nothing in the call points to this.",
-      "uncertainty_note": null
+      "benign_explanation": "Nothing in the call points to this."
     },
     {
       "family": "documentation",
@@ -94,24 +90,9 @@
       "open_question": null,
       "reason": "The call is a support call. Nothing had to be recorded for advice.",
       "reason_de": null,
-      "benign_explanation": null,
-      "uncertainty_note": null
+      "benign_explanation": null
     }
   ],
-  "numbers": {
-    "objects": [
-      {
-        "seg_id": "S008",
-        "start_s": 84.0,
-        "end_s": 91.4,
-        "digits": "836194",
-        "kind": "login_code",
-        "label": "Sample code from the manual"
-      }
-    ],
-    "agreement": 1.0,
-    "samples": 3
-  },
   "evidence": [
     {
       "id": 1,
@@ -152,21 +133,12 @@
   ],
   "keyword_hits": [
     {
-      "keyword_id": "K08",
+      "keyword_id": "K10",
       "family": "access",
-      "phrase": "SMS-Code",
+      "phrase": "Bestätigungscode",
       "seg_id": "S009",
-      "start_s": 95.0,
-      "end_s": 96.2,
-      "label": "benign"
-    },
-    {
-      "keyword_id": "K09",
-      "family": "disclosure",
-      "phrase": "Kontostand",
-      "seg_id": "S010",
-      "start_s": 115.0,
-      "end_s": 116.2,
+      "start_s": 96.0,
+      "end_s": 97.2,
       "label": "benign"
     }
   ],
@@ -240,7 +212,7 @@
       "start_s": 92.0,
       "end_s": 109.4,
       "role": "advisor",
-      "text": "Genau. Bei einer echten Anmeldung kommt der Code per SMS, und den geben Sie nie weiter, auch nicht mir.",
+      "text": "Genau. Bei einer echten Anmeldung kommt der Bestätigungscode per SMS, und den geben Sie nie weiter, auch nicht mir.",
       "low_confidence": false
     },
     {

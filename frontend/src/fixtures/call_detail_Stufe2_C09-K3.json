@@ -42,8 +42,7 @@
       "open_question": null,
       "reason": "No trade, recommendation or company news comes up in the call.",
       "reason_de": null,
-      "benign_explanation": "Nothing in the call points to this.",
-      "uncertainty_note": null
+      "benign_explanation": "Nothing in the call points to this."
     },
     {
       "family": "splitting",
@@ -55,8 +54,7 @@
       "open_question": null,
       "reason": "No payment or transfer is discussed.",
       "reason_de": null,
-      "benign_explanation": "Nothing in the call points to this.",
-      "uncertainty_note": null
+      "benign_explanation": "Nothing in the call points to this."
     },
     {
       "family": "access",
@@ -68,8 +66,7 @@
       "open_question": null,
       "reason": "Customer reads a live six-digit login code to the advisor. She had started the login herself a minute earlier, so the code was valid and gives access to her account.",
       "reason_de": "Die Kundin liest der Beratung einen gültigen sechsstelligen Login-Code vor. Sie hatte die Anmeldung eine Minute vorher selbst gestartet, der Code war also gültig und gibt Zugriff auf ihr Konto.",
-      "benign_explanation": "The customer might read a code that has already expired, for example a sample. Here she started the login herself just before, so the code was live.",
-      "uncertainty_note": null
+      "benign_explanation": "The customer might read a code that has already expired, for example a sample. Here she started the login herself just before, so the code was live."
     },
     {
       "family": "disclosure",
@@ -81,8 +78,7 @@
       "open_question": null,
       "reason": "Only the account holder is on the line. The balance comes up as an error message, not as information given to anyone.",
       "reason_de": null,
-      "benign_explanation": "Nothing in the call points to this.",
-      "uncertainty_note": null
+      "benign_explanation": "Nothing in the call points to this."
     },
     {
       "family": "documentation",
@@ -94,24 +90,9 @@
       "open_question": null,
       "reason": "The call is a support call. Nothing had to be recorded for advice.",
       "reason_de": null,
-      "benign_explanation": null,
-      "uncertainty_note": null
+      "benign_explanation": null
     }
   ],
-  "numbers": {
-    "objects": [
-      {
-        "seg_id": "S010",
-        "start_s": 101.0,
-        "end_s": 108.0,
-        "digits": "836194",
-        "kind": "login_code",
-        "label": "Login code"
-      }
-    ],
-    "agreement": 1.0,
-    "samples": 3
-  },
   "evidence": [
     {
       "id": 1,
@@ -133,7 +114,7 @@
       "start_s": 96.0,
       "end_s": 100.0,
       "speaker_role": "advisor",
-      "quote": "Können Sie mir den Code gerade vorlesen? Dann mache ich das schnell für Sie.",
+      "quote": "Können Sie mir den Bestätigungscode gerade vorlesen? Dann mache ich das schnell für Sie.",
       "note": "The advisor asks for the code. Bank staff never need a customer's login code.",
       "snippet_url": "/api/calls/Stufe2_C09-K3/snippets/S009"
     },
@@ -152,31 +133,13 @@
   ],
   "keyword_hits": [
     {
-      "keyword_id": "K07",
+      "keyword_id": "K10",
       "family": "access",
-      "phrase": "Code vorlesen",
+      "phrase": "Bestätigungscode",
       "seg_id": "S009",
-      "start_s": 96.0,
-      "end_s": 97.2,
+      "start_s": 97.0,
+      "end_s": 98.2,
       "label": "relevant"
-    },
-    {
-      "keyword_id": "K07",
-      "family": "access",
-      "phrase": "sechs Ziffern",
-      "seg_id": "S010",
-      "start_s": 104.0,
-      "end_s": 105.2,
-      "label": "relevant"
-    },
-    {
-      "keyword_id": "K09",
-      "family": "disclosure",
-      "phrase": "Kontostand",
-      "seg_id": "S006",
-      "start_s": 52.0,
-      "end_s": 53.2,
-      "label": "benign"
     }
   ],
   "segments": [
@@ -249,7 +212,7 @@
       "start_s": 96.0,
       "end_s": 100.0,
       "role": "advisor",
-      "text": "Können Sie mir den Code gerade vorlesen? Dann mache ich das schnell für Sie.",
+      "text": "Können Sie mir den Bestätigungscode gerade vorlesen? Dann mache ich das schnell für Sie.",
       "low_confidence": false
     },
     {

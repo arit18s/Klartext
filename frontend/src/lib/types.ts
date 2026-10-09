@@ -17,15 +17,6 @@ export type SpeakerRole = 'advisor' | 'customer' | 'unknown'
 export type EvidenceRole = 'context' | 'trigger' | 'exclusion'
 export type KeywordLabel = 'relevant' | 'benign'
 export type FeedbackLabel = 'correct' | 'false_alarm' | 'missed' | 'escalated_to_alarm' | 'closed_no_alert'
-/** Invented: number types listed on the Rules page of Klartext.html. */
-export type NumberKind =
-  | 'login_code'
-  | 'account_number'
-  | 'amount'
-  | 'date'
-  | 'phone_number'
-  | 'reference'
-  | 'unknown'
 export type PipelineStage =
   | 'queued'
   | 'transcribing'
@@ -85,7 +76,7 @@ export interface Decision {
   family: Family | null
   score: number | null
   reason: string | null
-  reason_de: string | null // invented column: reason_de of the decided family
+  reason_de: string | null // reason_de of the decided family (new column on decisions)
   open_question: string | null
   asr_uncertain: boolean
   thresholds_version_id: number | null
@@ -103,23 +94,6 @@ export interface CheckResult {
   reason: string | null
   reason_de: string | null
   benign_explanation: string | null
-  uncertainty_note: string | null // invented: why the runs disagree, shown when agreement < 1 or undetermined
-}
-
-/** Invented: output of the numbers helper (section 4 names it but defines no schema). */
-export interface NumberObject {
-  seg_id: string
-  start_s: number
-  end_s: number
-  digits: string // normalised, e.g. "836194"
-  kind: NumberKind
-  label: string // display text, e.g. "Login code"
-}
-
-export interface NumbersHelper {
-  objects: NumberObject[]
-  agreement: number | null
-  samples: number
 }
 
 export interface Evidence {
@@ -131,7 +105,7 @@ export interface Evidence {
   end_s: number
   speaker_role: SpeakerRole | null
   quote: string
-  note: string | null // invented: one-line explanation per evidence item (needs a `note` field in CheckSample evidence)
+  note: string | null // one short line on why this passage matters (from CheckSample evidence `note`)
   snippet_url: string | null // /api/calls/{id}/snippets/{seg_id}; replaces snippet_path, which is never exposed
 }
 
@@ -185,7 +159,7 @@ export interface CallDetail {
   call: CallSummary
   decision: Decision | null
   checks: CheckResult[] // one per verdict family, fixed order trade, splitting, access, disclosure, documentation
-  numbers: NumbersHelper | null
+  // The numbers helper output is defined by the backend and not part of this contract yet; the UI ignores it.
   evidence: Evidence[] // decided family only, sorted by start_s
   keyword_hits: KeywordHit[]
   segments: Segment[]
@@ -202,6 +176,19 @@ export interface FeedbackRequest {
 export interface RecheckResponse {
   call_id: string
   status: CallStatus
+}
+
+/** POST /api/calls/{id}/retry: re-queues a failed call from the start. */
+export type RetryResponse = RecheckResponse
+
+/** GET /api/calls/{id}/history: audit_log rows whose target is "call:{id}", newest first. */
+export interface HistoryEntry {
+  id: number
+  actor: string // "system" or "Compliance officer"
+  action: 'decided' | 'feedback' | 'recheck' | 'retry' | 'trigger_sent' | string
+  target: string // "call:Stufe2_C09-K3"
+  details: Record<string, unknown> | null // parsed details_json
+  created_at: string
 }
 
 // ---------- Scores (client-side tuning) ----------
@@ -274,23 +261,31 @@ export interface FamiliesUpdate {
   note?: string | null
 }
 
-/** To confirm against case-data/Stichwortliste.json (not in this checkout). Fields the UI needs. */
+/** One keyword of case-data/Stichwortliste.json. The family is not on the keyword: see KeywordList.families. */
 export interface KeywordEntry {
-  id: string // K01 …
-  label: string
-  family: Family
-  de: string[]
-  gsw: string[]
-  harmless: string | null
-  enabled: boolean // invented if the list has no on/off flag; default true
-  [extra: string]: unknown // anything else in Stichwortliste.json is passed through unchanged
+  id: string // K01 … K11
+  label: string // German, e.g. "Zugangswörter"
+  de: string[] // Standard German phrases
+  gsw: string[] // Swiss German phrases
+  rules?: string[] // e.g. ["R01", "R02"]; absent on some keywords
+  harmless: string
+  enabled: boolean
+  status: string // e.g. "provisional_example"
+  case_sensitive?: boolean
+  match_unit: string // e.g. "whole_phrase"
+  partial_words_count_as_full_hit: boolean
 }
 
+/** Stichwortliste.json as stored and returned. Families include the numbers helper. */
 export interface KeywordList {
-  families: Record<string, { label: string; task?: string; keywords: string[] }>
+  version: string
+  status: string
+  official_source: string
+  families: Record<Family | HelperFamily, { label: string; keywords: string[]; task: string }>
   keywords: KeywordEntry[]
-  policy_examples: Record<string, string>
-  [extra: string]: unknown
+  alarm_scope: string
+  policy_examples: Record<Family | HelperFamily, string>
+  corpus_binding: string
 }
 
 export interface KeywordsConfig {
@@ -398,6 +393,15 @@ export interface EvalRunRequest {
 }
 
 // ---------- Pipeline ----------
+
+export interface WatchRequest {
+  enabled: boolean
+}
+
+/** POST /api/pipeline/watch */
+export interface WatchResponse {
+  watching: boolean
+}
 
 export interface PipelineItem {
   call_id: string

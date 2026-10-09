@@ -12,6 +12,7 @@ import type {
   Family,
   Feedback,
   FeedbackRequest,
+  HistoryEntry,
   KeywordsConfig,
   KeywordsUpdate,
   KeywordSuggestResponse,
@@ -20,12 +21,14 @@ import type {
   ProcessFolderResponse,
   RecheckResponse,
   RescanResponse,
+  RetryResponse,
   ScoresResponse,
   SettingsResponse,
   ThresholdsConfig,
   ThresholdsUpdate,
   Variant,
   Verdict,
+  WatchResponse,
 } from './types'
 
 import callsFixture from '@/fixtures/calls.json'
@@ -70,6 +73,8 @@ export interface CallFilters {
   family?: Family[]
   level?: Level[]
   variant?: Variant[]
+  advisor?: string[]
+  since?: string // ISO time; processed_at at or after it
   q?: string
   flagged_only?: boolean
 }
@@ -79,6 +84,8 @@ function matches(c: CallSummary, f: CallFilters): boolean {
   if (f.family?.length && (!c.family || !f.family.includes(c.family))) return false
   if (f.level?.length && (!c.level || !f.level.includes(c.level))) return false
   if (f.variant?.length && (!c.variant || !f.variant.includes(c.variant))) return false
+  if (f.advisor?.length && (!c.advisor_name || !f.advisor.includes(c.advisor_name))) return false
+  if (f.since && (!c.processed_at || c.processed_at < f.since)) return false
   if (f.flagged_only && c.verdict !== 'alarm' && c.verdict !== 'review') return false
   if (f.q) {
     const q = f.q.toLowerCase()
@@ -123,6 +130,12 @@ export const postFeedback = (callId: string, body: FeedbackRequest) =>
 export const recheckCall = (callId: string) =>
   USE_FIXTURES ? noFixture('Recheck') : send<RecheckResponse>('POST', `/calls/${encodeURIComponent(callId)}/recheck`)
 
+export const retryCall = (callId: string) =>
+  USE_FIXTURES ? noFixture('Retry') : send<RetryResponse>('POST', `/calls/${encodeURIComponent(callId)}/retry`)
+
+export const getCallHistory = (callId: string) =>
+  USE_FIXTURES ? noFixture('Call history') : request<HistoryEntry[]>(`/calls/${encodeURIComponent(callId)}/history`)
+
 // ---------- Scores ----------
 
 export async function getScores(): Promise<ScoresResponse> {
@@ -147,6 +160,7 @@ export const rescanKeywords = () => send<RescanResponse>('POST', '/keywords/resc
 export const runEval = (body: EvalRunRequest) => send<EvalRun>('POST', '/eval/run', body)
 export const getLatestEval = () => (USE_FIXTURES ? noFixture('Evaluation') : request<EvalRun>('/eval/latest'))
 export const getPipelineStatus = () => (USE_FIXTURES ? noFixture('Pipeline status') : request<PipelineStatus>('/pipeline/status'))
+export const setWatching = (enabled: boolean) => send<WatchResponse>('POST', '/pipeline/watch', { enabled })
 export const processFolder = (path: string) => send<ProcessFolderResponse>('POST', '/pipeline/process-folder', { path })
 export const exportUrl = (format: 'json' | 'csv') => `/api/pipeline/export?format=${format}`
 export const eventsUrl = '/api/events'

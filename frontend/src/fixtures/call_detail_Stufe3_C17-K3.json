@@ -42,8 +42,7 @@
       "open_question": null,
       "reason": "No trade, recommendation or company news comes up in the call.",
       "reason_de": null,
-      "benign_explanation": "Nothing in the call points to this.",
-      "uncertainty_note": null
+      "benign_explanation": "Nothing in the call points to this."
     },
     {
       "family": "splitting",
@@ -55,8 +54,7 @@
       "open_question": null,
       "reason": "No payment or transfer is discussed.",
       "reason_de": null,
-      "benign_explanation": "Nothing in the call points to this.",
-      "uncertainty_note": null
+      "benign_explanation": "Nothing in the call points to this."
     },
     {
       "family": "access",
@@ -68,8 +66,7 @@
       "open_question": "Was the code still valid when it was read out?",
       "reason": "Customer reads six digits from a bank letter to the advisor. The call never says when the letter arrived, so it is unclear whether the code still worked.",
       "reason_de": "Die Kundin liest der Beratung sechs Ziffern aus einem Brief der Bank vor. Im Gespräch wird nie gesagt, wann der Brief kam, deshalb ist unklar, ob der Code noch gültig war.",
-      "benign_explanation": "The letter may be old, and codes on bank letters expire after a set time. Then the digits give no access.",
-      "uncertainty_note": "Two runs found a code read out with no sign it had expired. One run treated the old letter as an expired code. With the runs split and the key fact absent, Klartext hands the call to a person instead of guessing."
+      "benign_explanation": "The letter may be old, and codes on bank letters expire after a set time. Then the digits give no access."
     },
     {
       "family": "disclosure",
@@ -81,8 +78,7 @@
       "open_question": null,
       "reason": "Only the account holder is on the line.",
       "reason_de": null,
-      "benign_explanation": "Nothing in the call points to this.",
-      "uncertainty_note": null
+      "benign_explanation": "Nothing in the call points to this."
     },
     {
       "family": "documentation",
@@ -94,24 +90,9 @@
       "open_question": null,
       "reason": "The call is a support call. Nothing had to be recorded for advice.",
       "reason_de": null,
-      "benign_explanation": null,
-      "uncertainty_note": null
+      "benign_explanation": null
     }
   ],
-  "numbers": {
-    "objects": [
-      {
-        "seg_id": "S008",
-        "start_s": 125.0,
-        "end_s": 132.0,
-        "digits": "291508",
-        "kind": "login_code",
-        "label": "Code, source unknown"
-      }
-    ],
-    "agreement": 0.6666666666666666,
-    "samples": 3
-  },
   "evidence": [
     {
       "id": 1,
@@ -133,7 +114,7 @@
       "start_s": 110.0,
       "end_s": 118.0,
       "speaker_role": "advisor",
-      "quote": "Haben Sie den Brief von uns noch? Auf dem steht ein Code.",
+      "quote": "Haben Sie den Brief von uns noch? Auf dem steht ein Bestätigungscode.",
       "note": "The advisor points the customer to the code on the letter.",
       "snippet_url": "/api/calls/Stufe3_C17-K3/snippets/S007"
     },
@@ -150,7 +131,17 @@
       "snippet_url": "/api/calls/Stufe3_C17-K3/snippets/S008"
     }
   ],
-  "keyword_hits": [],
+  "keyword_hits": [
+    {
+      "keyword_id": "K10",
+      "family": "access",
+      "phrase": "Bestätigungscode",
+      "seg_id": "S007",
+      "start_s": 115.0,
+      "end_s": 116.2,
+      "label": "relevant"
+    }
+  ],
   "segments": [
     {
       "seg_id": "S001",
@@ -205,7 +196,7 @@
       "start_s": 110.0,
       "end_s": 118.0,
       "role": "advisor",
-      "text": "Haben Sie den Brief von uns noch? Auf dem steht ein Code.",
+      "text": "Haben Sie den Brief von uns noch? Auf dem steht ein Bestätigungscode.",
       "low_confidence": false
     },
     {

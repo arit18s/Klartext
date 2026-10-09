@@ -16,7 +16,9 @@ const EVENTS = ['present', 'absent', 'undetermined', 'not_applicable', 'failed']
 const STATUSES = ['queued', 'transcribing', 'checking', 'done', 'failed', 'waiting_for_asr']
 const ROLES = ['advisor', 'customer', 'unknown']
 const EVIDENCE_ROLES = ['context', 'trigger', 'exclusion']
-const NUMBER_KINDS = ['login_code', 'account_number', 'amount', 'date', 'phone_number', 'reference', 'unknown']
+// Keyword → family, from families[*].keywords in Stichwortliste.json (example-0.2). K09 is the numbers helper.
+const KEYWORD_FAMILY = { K01: 'trade', K02: 'trade', K03: 'trade', K04: 'trade', K05: 'trade', K06: 'documentation',
+  K07: 'splitting', K08: 'splitting', K09: 'numbers', K10: 'access', K11: 'disclosure' }
 const ID = /^(Stufe[123]_[CD]\d{2})-K([1-4])$/
 
 function keys(where, obj, required) {
@@ -78,7 +80,7 @@ for (const file of detailFiles) {
   const d = load(file)
   const w = file
   details[d.call.call_id] = d
-  keys(w, d, ['call', 'decision', 'checks', 'numbers', 'evidence', 'keyword_hits', 'segments', 'twin', 'feedback', 'triggers'])
+  keys(w, d, ['call', 'decision', 'checks', 'evidence', 'keyword_hits', 'segments', 'twin', 'feedback', 'triggers'])
   checkSummary(`${w}.call`, d.call)
   if (file !== `call_detail_${d.call.call_id}.json`) fail(w, 'file name does not match call_id')
   const row = list.items.find((c) => c.call_id === d.call.call_id)
@@ -117,7 +119,7 @@ for (const file of detailFiles) {
   d.checks.forEach((c, i) => {
     const cw = `${w}.checks[${i}]`
     keys(cw, c, ['family', 'score', 'event_majority', 'agreement', 'samples', 'needs_human_votes', 'open_question',
-      'reason', 'reason_de', 'benign_explanation', 'uncertainty_note'])
+      'reason', 'reason_de', 'benign_explanation'])
     oneOf(`${cw}.event_majority`, c.event_majority, EVENTS)
     if (c.event_majority === 'failed' ? c.score !== null : !(c.score >= 0 && c.score <= 100)) fail(cw, `score ${c.score}`)
     if (c.agreement !== null && !(c.agreement > 0 && c.agreement <= 1)) fail(cw, `agreement ${c.agreement}`)
@@ -125,16 +127,6 @@ for (const file of detailFiles) {
   })
   const best = d.checks.filter((c) => c.score !== null).reduce((a, b) => (b.score > a.score ? b : a))
   if (dec.score !== best.score || dec.family !== best.family) fail(`${w}.decision`, `score/family must be the max family (${best.family} ${best.score})`)
-
-  // numbers helper
-  if (d.numbers) {
-    keys(`${w}.numbers`, d.numbers, ['objects', 'agreement', 'samples'])
-    d.numbers.objects.forEach((n, i) => {
-      keys(`${w}.numbers.objects[${i}]`, n, ['seg_id', 'start_s', 'end_s', 'digits', 'kind', 'label'])
-      oneOf(`${w}.numbers.objects[${i}].kind`, n.kind, NUMBER_KINDS)
-      inSeg(`${w}.numbers.objects[${i}]`, n.seg_id, n.start_s, n.end_s)
-    })
-  }
 
   // evidence
   let prev = -1
@@ -156,6 +148,9 @@ for (const file of detailFiles) {
   d.keyword_hits.forEach((k, i) => {
     keys(`${w}.keyword_hits[${i}]`, k, ['keyword_id', 'family', 'phrase', 'seg_id', 'start_s', 'end_s', 'label'])
     oneOf(`${w}.keyword_hits[${i}].family`, k.family, FAMILIES)
+    if (KEYWORD_FAMILY[k.keyword_id] !== k.family) fail(`${w}.keyword_hits[${i}]`, `${k.keyword_id} belongs to ${KEYWORD_FAMILY[k.keyword_id]}`)
+    const seg = segIds.get(k.seg_id)
+    if (seg && !seg.text.toLowerCase().includes(k.phrase.toLowerCase())) fail(`${w}.keyword_hits[${i}]`, `phrase "${k.phrase}" not in ${k.seg_id}`)
     oneOf(`${w}.keyword_hits[${i}].label`, k.label, ['relevant', 'benign'], true)
     inSeg(`${w}.keyword_hits[${i}]`, k.seg_id, k.start_s, k.end_s)
   })
