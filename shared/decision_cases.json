@@ -1,0 +1,921 @@
+{
+  "description": "Shared decision-rule cases (05_BACKEND_STRUCTURE.md section 5). Run by backend/tests/test_decision_cases.py (decide.py) and frontend/src/lib/decide.test.ts (decide.ts). Input fields follow DecisionInput in backend/app/pipeline/decide.py; families are enabled verdict families only. Expected keys are compared exactly; keys left out are not checked. Scores are compared with a tolerance of 1e-9.",
+  "cases": [
+    {
+      "name": "alarm_clear",
+      "why": "Top score above T_alarm",
+      "input": {
+        "families": [
+          {
+            "family": "access",
+            "score": 100,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": "Live code read out."
+          },
+          {
+            "family": "trade",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "splitting",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "disclosure",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "documentation",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "alarm",
+        "family": "access",
+        "score": 100,
+        "rule": "score_alarm",
+        "reason": "Live code read out.",
+        "open_question": null
+      }
+    },
+    {
+      "name": "alarm_at_boundary_70",
+      "why": "S == T_alarm is an alarm (>=)",
+      "input": {
+        "families": [
+          {
+            "family": "access",
+            "score": 70,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": "r"
+          },
+          {
+            "family": "trade",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "splitting",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "disclosure",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "documentation",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "alarm",
+        "family": "access",
+        "score": 70,
+        "rule": "score_alarm"
+      }
+    },
+    {
+      "name": "review_just_below_70",
+      "why": "69.99 < T_alarm, >= T_review",
+      "input": {
+        "families": [
+          {
+            "family": "access",
+            "score": 69.99,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": "Was the code live?",
+            "reason": "r"
+          },
+          {
+            "family": "trade",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "splitting",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "disclosure",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "documentation",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "review",
+        "family": "access",
+        "score": 69.99,
+        "rule": "score_review",
+        "open_question": "Was the code live?"
+      }
+    },
+    {
+      "name": "review_at_boundary_30",
+      "why": "S == T_review is a review (>=)",
+      "input": {
+        "families": [
+          {
+            "family": "trade",
+            "score": 30,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": "Was the news public?",
+            "reason": "r"
+          },
+          {
+            "family": "splitting",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "access",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "review",
+        "family": "trade",
+        "score": 30,
+        "rule": "score_review",
+        "open_question": "Was the news public?"
+      }
+    },
+    {
+      "name": "no_alert_just_below_30",
+      "why": "29.99 < T_review, no other rule",
+      "input": {
+        "families": [
+          {
+            "family": "access",
+            "score": 29.99,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": "Sample code."
+          },
+          {
+            "family": "trade",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "splitting",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "disclosure",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "documentation",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "no_alert",
+        "family": "access",
+        "score": 29.99,
+        "rule": "no_alert",
+        "reason": "Sample code.",
+        "open_question": null
+      }
+    },
+    {
+      "name": "coarse_step_66_7_review",
+      "why": "k=3 step: 2 present + 0 absent of 3 = 66.67",
+      "input": {
+        "families": [
+          {
+            "family": "splitting",
+            "score": 66.66666666666667,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": "r"
+          },
+          {
+            "family": "access",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "review",
+        "family": "splitting",
+        "score": 66.66666666666667,
+        "rule": "score_review"
+      }
+    },
+    {
+      "name": "coarse_step_83_3_alarm",
+      "why": "k=3 step: present, present, undetermined = 83.33",
+      "input": {
+        "families": [
+          {
+            "family": "disclosure",
+            "score": 83.33333333333333,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": "r"
+          },
+          {
+            "family": "access",
+            "score": 16.666666666666668,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "alarm",
+        "family": "disclosure",
+        "score": 83.33333333333333,
+        "rule": "score_alarm"
+      }
+    },
+    {
+      "name": "all_undetermined_50_review",
+      "why": "All samples undetermined score 50: unclear facts go to a human",
+      "input": {
+        "families": [
+          {
+            "family": "access",
+            "score": 50,
+            "failed": false,
+            "needs_human_votes": 3,
+            "open_question": "Was the code still valid?",
+            "reason": "r"
+          },
+          {
+            "family": "trade",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "splitting",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "disclosure",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "documentation",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "review",
+        "family": "access",
+        "score": 50,
+        "rule": "score_review",
+        "open_question": "Was the code still valid?"
+      }
+    },
+    {
+      "name": "family_failed_beats_alarm",
+      "why": "Any failed family -> review, even with a high score elsewhere; family = the failed one, score = max of the rest",
+      "input": {
+        "families": [
+          {
+            "family": "trade",
+            "score": null,
+            "failed": true,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "access",
+            "score": 100,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": "r"
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "review",
+        "family": "trade",
+        "score": 100,
+        "rule": "family_failed",
+        "reason": "A check could not complete. Needs a human.",
+        "open_question": null
+      }
+    },
+    {
+      "name": "family_failed_by_null_score",
+      "why": "score null counts as failed even without the flag",
+      "input": {
+        "families": [
+          {
+            "family": "access",
+            "score": 10,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "documentation",
+            "score": null,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "review",
+        "family": "documentation",
+        "score": 10,
+        "rule": "family_failed",
+        "reason": "A check could not complete. Needs a human."
+      }
+    },
+    {
+      "name": "needs_human_majority",
+      "why": "Low score, but 2 of 3 runs ask for a human",
+      "input": {
+        "families": [
+          {
+            "family": "access",
+            "score": 16.666666666666668,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "disclosure",
+            "score": 16.666666666666668,
+            "failed": false,
+            "needs_human_votes": 2,
+            "open_question": "Is she authorised?",
+            "reason": "Caller says she is the daughter."
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "review",
+        "family": "disclosure",
+        "score": 16.666666666666668,
+        "rule": "needs_human",
+        "reason": "Caller says she is the daughter.",
+        "open_question": "Is she authorised?"
+      }
+    },
+    {
+      "name": "needs_human_minority",
+      "why": "1 of 3 votes is not a majority",
+      "input": {
+        "families": [
+          {
+            "family": "access",
+            "score": 16.666666666666668,
+            "failed": false,
+            "needs_human_votes": 1,
+            "open_question": "q",
+            "reason": "r"
+          },
+          {
+            "family": "trade",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "splitting",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "disclosure",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "documentation",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "no_alert",
+        "family": "access",
+        "score": 16.666666666666668,
+        "rule": "no_alert"
+      }
+    },
+    {
+      "name": "needs_human_exactly_half_k4",
+      "why": "votes must be > k/2; 2 of 4 is not",
+      "input": {
+        "families": [
+          {
+            "family": "access",
+            "score": 12.5,
+            "failed": false,
+            "needs_human_votes": 2,
+            "open_question": "q",
+            "reason": "r"
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 4,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "no_alert",
+        "family": "access",
+        "score": 12.5,
+        "rule": "no_alert"
+      }
+    },
+    {
+      "name": "score_review_beats_needs_human",
+      "why": "S >= T_review fires before the needs_human rule; open question from the top family",
+      "input": {
+        "families": [
+          {
+            "family": "access",
+            "score": 33.333333333333336,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": "top question",
+            "reason": "top"
+          },
+          {
+            "family": "trade",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 3,
+            "open_question": "other question",
+            "reason": "other"
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "review",
+        "family": "access",
+        "score": 33.333333333333336,
+        "rule": "score_review",
+        "reason": "top",
+        "open_question": "top question"
+      }
+    },
+    {
+      "name": "asr_uncertain_at_half_review",
+      "why": "asr_uncertain and S >= T_review/2 (15)",
+      "input": {
+        "families": [
+          {
+            "family": "access",
+            "score": 15,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": "r"
+          },
+          {
+            "family": "trade",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "splitting",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "disclosure",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "documentation",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": true
+      },
+      "expected": {
+        "verdict": "review",
+        "family": "access",
+        "score": 15,
+        "rule": "asr_uncertain",
+        "reason": "Transcription unclear at the key passage.",
+        "open_question": null
+      }
+    },
+    {
+      "name": "asr_uncertain_below_half",
+      "why": "asr_uncertain but S < T_review/2",
+      "input": {
+        "families": [
+          {
+            "family": "access",
+            "score": 14.99,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": "r"
+          },
+          {
+            "family": "trade",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "splitting",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "disclosure",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "documentation",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": true
+      },
+      "expected": {
+        "verdict": "no_alert",
+        "family": "access",
+        "score": 14.99,
+        "rule": "no_alert"
+      }
+    },
+    {
+      "name": "asr_certain_same_score",
+      "why": "Same score without asr_uncertain is no alert",
+      "input": {
+        "families": [
+          {
+            "family": "access",
+            "score": 15,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": "r"
+          },
+          {
+            "family": "trade",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "splitting",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "disclosure",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          },
+          {
+            "family": "documentation",
+            "score": 0,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": null
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "no_alert",
+        "family": "access",
+        "score": 15,
+        "rule": "no_alert"
+      }
+    },
+    {
+      "name": "tie_first_family_wins",
+      "why": "Equal top scores: the first in input order wins",
+      "input": {
+        "families": [
+          {
+            "family": "trade",
+            "score": 83.33333333333333,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": "trade"
+          },
+          {
+            "family": "access",
+            "score": 83.33333333333333,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": "access"
+          }
+        ],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "alarm",
+        "family": "trade",
+        "score": 83.33333333333333,
+        "rule": "score_alarm",
+        "reason": "trade"
+      }
+    },
+    {
+      "name": "custom_thresholds",
+      "why": "Thresholds are inputs: review 40, alarm 80",
+      "input": {
+        "families": [
+          {
+            "family": "access",
+            "score": 75,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": "r"
+          }
+        ],
+        "t_review": 40,
+        "t_alarm": 80,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "review",
+        "family": "access",
+        "score": 75,
+        "rule": "score_review"
+      }
+    },
+    {
+      "name": "custom_thresholds_below_review",
+      "why": "Same score 35 is no alert with review 40",
+      "input": {
+        "families": [
+          {
+            "family": "access",
+            "score": 35,
+            "failed": false,
+            "needs_human_votes": 0,
+            "open_question": null,
+            "reason": "r"
+          }
+        ],
+        "t_review": 40,
+        "t_alarm": 80,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "no_alert",
+        "family": "access",
+        "score": 35,
+        "rule": "no_alert"
+      }
+    },
+    {
+      "name": "no_families",
+      "why": "Nothing enabled: no alert, no family, score 0",
+      "input": {
+        "families": [],
+        "t_review": 30,
+        "t_alarm": 70,
+        "samples": 3,
+        "asr_uncertain": false
+      },
+      "expected": {
+        "verdict": "no_alert",
+        "family": null,
+        "score": 0,
+        "rule": "no_alert",
+        "reason": null,
+        "open_question": null
+      }
+    }
+  ]
+}
