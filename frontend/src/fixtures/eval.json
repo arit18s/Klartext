@@ -1,0 +1,634 @@
+{
+  "run_id": "eval-0001",
+  "split": "dev",
+  "source": "asr",
+  "created_at": "2026-10-10T20:14:00Z",
+  "config_versions": {
+    "keywords": 1,
+    "families": 2,
+    "thresholds": 3,
+    "model": null
+  },
+  "metrics": {
+    "n_calls": 3,
+    "binary": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "tn": 1,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "exact": {
+      "correct": 3,
+      "total": 3,
+      "accuracy": 1.0
+    },
+    "confusion": {
+      "labels": [
+        "alarm",
+        "review",
+        "no_alert"
+      ],
+      "matrix": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ]
+    },
+    "breakdown": [
+      {
+        "group": "level",
+        "key": "2",
+        "calls": 2,
+        "cases": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": null
+      },
+      {
+        "group": "level",
+        "key": "3",
+        "calls": 1,
+        "cases": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": null
+      },
+      {
+        "group": "family",
+        "key": "access",
+        "calls": 3,
+        "cases": 2,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": null
+      },
+      {
+        "group": "variant",
+        "key": "clean",
+        "calls": 3,
+        "cases": 2,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": null
+      }
+    ],
+    "stufe2_pairs": [
+      {
+        "pair": [
+          "Stufe2_C09",
+          "Stufe2_C10"
+        ],
+        "family": "access",
+        "fraud_side": "alarm",
+        "harmless_side": "no_alert",
+        "both_right": true
+      }
+    ],
+    "stufe3_review": {
+      "reviewed": 1,
+      "total": 1
+    },
+    "clean_noisy_agreement": {
+      "agree": 0,
+      "total": 0
+    },
+    "evidence_overlap": null,
+    "family_accuracy": {
+      "correct": 2,
+      "total": 2
+    },
+    "pr_curve": [
+      {
+        "t_review": 0,
+        "precision": 0.6667,
+        "recall": 1.0
+      },
+      {
+        "t_review": 1,
+        "precision": 0.6667,
+        "recall": 1.0
+      },
+      {
+        "t_review": 2,
+        "precision": 0.6667,
+        "recall": 1.0
+      },
+      {
+        "t_review": 3,
+        "precision": 0.6667,
+        "recall": 1.0
+      },
+      {
+        "t_review": 4,
+        "precision": 0.6667,
+        "recall": 1.0
+      },
+      {
+        "t_review": 5,
+        "precision": 0.6667,
+        "recall": 1.0
+      },
+      {
+        "t_review": 6,
+        "precision": 0.6667,
+        "recall": 1.0
+      },
+      {
+        "t_review": 7,
+        "precision": 0.6667,
+        "recall": 1.0
+      },
+      {
+        "t_review": 8,
+        "precision": 0.6667,
+        "recall": 1.0
+      },
+      {
+        "t_review": 9,
+        "precision": 0.6667,
+        "recall": 1.0
+      },
+      {
+        "t_review": 10,
+        "precision": 0.6667,
+        "recall": 1.0
+      },
+      {
+        "t_review": 11,
+        "precision": 0.6667,
+        "recall": 1.0
+      },
+      {
+        "t_review": 12,
+        "precision": 0.6667,
+        "recall": 1.0
+      },
+      {
+        "t_review": 13,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 14,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 15,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 16,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 17,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 18,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 19,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 20,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 21,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 22,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 23,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 24,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 25,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 26,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 27,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 28,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 29,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 30,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 31,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 32,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 33,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 34,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 35,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 36,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 37,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 38,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 39,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 40,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 41,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 42,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 43,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 44,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 45,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 46,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 47,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 48,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 49,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 50,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 51,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 52,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 53,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 54,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 55,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 56,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 57,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 58,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 59,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 60,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 61,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 62,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 63,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 64,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 65,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 66,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 67,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 68,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 69,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 70,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 71,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 72,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 73,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 74,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 75,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 76,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 77,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 78,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 79,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 80,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 81,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 82,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 83,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 84,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 85,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 86,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 87,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 88,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 89,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 90,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 91,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      {
+        "t_review": 92,
+        "precision": 1.0,
+        "recall": 0.5
+      },
+      {
+        "t_review": 93,
+        "precision": 1.0,
+        "recall": 0.5
+      },
+      {
+        "t_review": 94,
+        "precision": 1.0,
+        "recall": 0.5
+      },
+      {
+        "t_review": 95,
+        "precision": 1.0,
+        "recall": 0.5
+      },
+      {
+        "t_review": 96,
+        "precision": 1.0,
+        "recall": 0.5
+      },
+      {
+        "t_review": 97,
+        "precision": 1.0,
+        "recall": 0.5
+      },
+      {
+        "t_review": 98,
+        "precision": 1.0,
+        "recall": 0.5
+      },
+      {
+        "t_review": 99,
+        "precision": 1.0,
+        "recall": 0.5
+      },
+      {
+        "t_review": 100,
+        "precision": 1.0,
+        "recall": 0.5
+      }
+    ],
+    "keyword_baseline": {
+      "tp": 2,
+      "fp": 1,
+      "fn": 0,
+      "tn": 0,
+      "precision": 0.6667,
+      "recall": 1.0,
+      "f1": 0.8,
+      "flagged": 3
+    },
+    "mismatches": []
+  }
+}

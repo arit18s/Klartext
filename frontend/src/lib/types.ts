@@ -269,7 +269,7 @@ export interface KeywordEntry {
   de: string[] // Standard German phrases
   gsw: string[] // Swiss German phrases
   rules?: string[] // e.g. ["R01", "R02"]; absent on some keywords
-  harmless: string
+  harmless?: string // absent on K09–K11 in example-0.2
   enabled: boolean
   status: string // e.g. "provisional_example"
   case_sensitive?: boolean
