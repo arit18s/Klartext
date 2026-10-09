@@ -18,6 +18,7 @@ class EvidenceItem(BaseModel):
     seg_id: str
     role: Literal["context", "trigger", "exclusion"]
     quote: str
+    note: str  # one short line on why this passage matters (API_CONTRACT: Evidence.note)
 
 
 class KeywordJudgement(BaseModel):

@@ -44,7 +44,7 @@ def dialogue_set(name: str) -> list[str]:
 def decision_for(cc: CallChecks, thresholds: dict, k: int):
     fams = [
         FamilyScore(family=f, score=r.score, failed=r.failed, needs_human_votes=r.needs_human_votes,
-                    open_question=r.open_question, reason=r.reason)
+                    open_question=r.open_question, reason=r.reason, reason_de=r.reason_de)
         for f, r in cc.families.items()
     ]
     return decide(DecisionInput(families=fams, t_review=thresholds["review"], t_alarm=thresholds["alarm"], samples=k))

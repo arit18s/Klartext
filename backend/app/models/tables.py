@@ -101,6 +101,7 @@ class Decision(SQLModel, table=True):
     family: str | None = None
     score: float | None = None
     reason: str | None = None
+    reason_de: str | None = None
     open_question: str | None = None
     asr_uncertain: bool = False
     twin_call_id: str | None = None
@@ -120,6 +121,7 @@ class Evidence(SQLModel, table=True):
     end_s: float
     speaker_role: str | None = None
     quote: str
+    note: str | None = None
     snippet_path: str | None = None
 
 

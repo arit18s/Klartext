@@ -12,7 +12,9 @@ from pydantic import BaseModel
 Verdict = Literal["alarm", "review", "no_alert"]
 
 FAILED_REASON = "A check could not complete. Needs a human."
+FAILED_REASON_DE = "Eine Prüfung konnte nicht abgeschlossen werden. Braucht einen Menschen."
 ASR_REASON = "Transcription unclear at the key passage."
+ASR_REASON_DE = "Die Transkription ist an der entscheidenden Stelle unklar."
 
 
 class FamilyScore(BaseModel):
@@ -22,6 +24,7 @@ class FamilyScore(BaseModel):
     needs_human_votes: int = 0
     open_question: str | None = None
     reason: str | None = None
+    reason_de: str | None = None
 
 
 class DecisionInput(BaseModel):
@@ -37,6 +40,7 @@ class DecisionOutput(BaseModel):
     family: str | None
     score: float
     reason: str | None
+    reason_de: str | None
     open_question: str | None
     rule: str  # which branch fired, for traceability
 
@@ -49,14 +53,14 @@ def decide(inp: DecisionInput) -> DecisionOutput:
 
     failed = next((f for f in inp.families if f.failed or f.score is None), None)
     if failed:
-        return DecisionOutput(verdict="review", family=failed.family, score=s, reason=FAILED_REASON, open_question=None, rule="family_failed")
+        return DecisionOutput(verdict="review", family=failed.family, score=s, reason=FAILED_REASON, reason_de=FAILED_REASON_DE, open_question=None, rule="family_failed")
     if top and s >= inp.t_alarm:
-        return DecisionOutput(verdict="alarm", family=fam, score=s, reason=top.reason, open_question=None, rule="score_alarm")
+        return DecisionOutput(verdict="alarm", family=fam, score=s, reason=top.reason, reason_de=top.reason_de, open_question=None, rule="score_alarm")
     if top and s >= inp.t_review:
-        return DecisionOutput(verdict="review", family=fam, score=s, reason=top.reason, open_question=top.open_question, rule="score_review")
+        return DecisionOutput(verdict="review", family=fam, score=s, reason=top.reason, reason_de=top.reason_de, open_question=top.open_question, rule="score_review")
     human = next((f for f in inp.families if f.needs_human_votes > inp.samples / 2), None)
     if human:
-        return DecisionOutput(verdict="review", family=human.family, score=s, reason=human.reason, open_question=human.open_question, rule="needs_human")
+        return DecisionOutput(verdict="review", family=human.family, score=s, reason=human.reason, reason_de=human.reason_de, open_question=human.open_question, rule="needs_human")
     if inp.asr_uncertain and s >= inp.t_review / 2:
-        return DecisionOutput(verdict="review", family=fam, score=s, reason=ASR_REASON, open_question=None, rule="asr_uncertain")
-    return DecisionOutput(verdict="no_alert", family=fam, score=s, reason=top.reason if top else None, open_question=None, rule="no_alert")
+        return DecisionOutput(verdict="review", family=fam, score=s, reason=ASR_REASON, reason_de=ASR_REASON_DE, open_question=None, rule="asr_uncertain")
+    return DecisionOutput(verdict="no_alert", family=fam, score=s, reason=top.reason if top else None, reason_de=top.reason_de if top else None, open_question=None, rule="no_alert")

@@ -110,8 +110,8 @@ Transcript (segment id, time, role, text):
   "reason": "One or two sentences in English: who did what, why it matters.",
   "reason_de": "Same in German.",
   "evidence": [
-    { "seg_id": "S004", "role": "context",   "quote": "Ich habe gerade selber die Anmeldung gestartet" },
-    { "seg_id": "S010", "role": "trigger",   "quote": "acht, drei, sechs, eins, sieben, vier" }
+    { "seg_id": "S004", "role": "context",   "quote": "Ich habe gerade selber die Anmeldung gestartet", "note": "She started the login herself, so any code that follows is live." },
+    { "seg_id": "S010", "role": "trigger",   "quote": "acht, drei, sechs, eins, sieben, vier", "note": "A valid one-time login code is read out to another person." }
   ],
   "keyword_judgements": [
     { "keyword_id": "K10", "seg_id": "S008", "label": "relevant | benign" }
@@ -187,8 +187,8 @@ POST {TRIGGER_API_URL}/triggers
 | `keyword_hits` | `id`, `call_id`, `config_version_id`, `keyword_id`, `family`, `phrase`, `seg_id`, `start_s`, `end_s` |
 | `check_runs` | `id`, `call_id`, `family`, `sample_idx`, `model`, `config_version_id`, `output_json`, `valid`, `latency_ms`, `created_at` |
 | `check_results` | `call_id`, `family` (pk pair), `score`, `event_majority`, `agreement`, `needs_human_votes`, `open_question`, `reason`, `reason_de`, `benign_explanation` |
-| `decisions` | `call_id` (pk), `verdict`, `family`, `score`, `reason`, `open_question`, `asr_uncertain`, `twin_call_id`, `twin_note`, `thresholds_version_id`, `decided_at` |
-| `evidence` | `id`, `call_id`, `family`, `seg_id`, `role`, `start_s`, `end_s`, `speaker_role`, `quote`, `snippet_path` |
+| `decisions` | `call_id` (pk), `verdict`, `family`, `score`, `reason`, `reason_de`, `open_question`, `asr_uncertain`, `twin_call_id`, `twin_note`, `thresholds_version_id`, `decided_at` |
+| `evidence` | `id`, `call_id`, `family`, `seg_id`, `role`, `start_s`, `end_s`, `speaker_role`, `quote`, `note`, `snippet_path` |
 | `feedback` | `id`, `call_id`, `label` (correct / false_alarm / missed / escalated_to_alarm / closed_no_alert), `note` (optional), `created_at` |
 | `triggers_sent` | `id`, `call_id`, `remote_id`, `url`, `status_code`, `created_at` |
 | `eval_runs` | `id`, `split`, `config_snapshot_json`, `metrics_json`, `created_at` |

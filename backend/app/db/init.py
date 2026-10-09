@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from sqlalchemy import text
 from sqlmodel import Session, SQLModel, select
 
 from app.config import get_settings
@@ -19,6 +20,8 @@ from app.models.tables import AuditLog, ConfigVersion
 VERDICT_FAMILIES = ["trade", "splitting", "access", "disclosure", "documentation"]
 HELPER_FAMILIES = ["numbers"]
 DEFAULT_THRESHOLDS = {"review": 30, "alarm": 70}
+# Columns added after the first release of a table: (table, column, SQLite type). create_all() skips existing tables.
+ADDED_COLUMNS = [("decisions", "reason_de", "TEXT"), ("evidence", "note", "TEXT")]
 
 
 def load_keyword_list() -> dict[str, Any]:
@@ -65,9 +68,21 @@ def seed_config(session: Session, kind: str, data: dict[str, Any], note: str) ->
     return True
 
 
+def add_missing_columns(engine) -> list[str]:
+    added = []
+    with engine.begin() as conn:
+        for table, column, sql_type in ADDED_COLUMNS:
+            existing = {row[1] for row in conn.execute(text(f"PRAGMA table_info({table})"))}
+            if column not in existing:
+                conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {column} {sql_type}"))
+                added.append(f"{table}.{column}")
+    return added
+
+
 def init_db() -> None:
     engine = get_engine()
     SQLModel.metadata.create_all(engine)
+    added = add_missing_columns(engine)
     kw = load_keyword_list()
     with Session(engine) as session:
         seeded = {
@@ -77,6 +92,7 @@ def init_db() -> None:
         }
         session.commit()
     print(f"Database: {get_settings().db_path}")
+    print(f"  columns    {'added ' + ', '.join(added) if added else 'up to date'}")
     for kind, done in seeded.items():
         print(f"  {kind:<11} {'seeded' if done else 'already active, unchanged'}")
 
