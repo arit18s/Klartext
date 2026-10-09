@@ -1,6 +1,7 @@
 """Run family checks + decision on SCRIPT transcripts (development only, plan B10).
 
-Default set: dev Stufe2 pairs + Stufe3_C17 + Stufe3_C18 (never holdout).
+Sets: --set small = dev Stufe2 pairs + Stufe3_C17 + Stufe3_C18 (default), --set dev = whole dev split.
+Holdout dialogues are refused (rule 4).
 Writes data/checks_script/reasoning-<on|off>/<dialogue>.json and prints per-dialogue results,
 binary precision/recall against the ground truth (evaluation only) and cost totals.
 
@@ -33,12 +34,11 @@ SPLITS = Path(__file__).resolve().parents[1] / "app/eval/splits.json"
 SHORT = {"trade": "trd", "splitting": "spl", "access": "acc", "disclosure": "dis", "documentation": "doc"}
 
 
-def small_dev_set() -> list[str]:
+def dialogue_set(name: str) -> list[str]:
     splits = json.loads(SPLITS.read_text())
-    holdout = set(splits["holdout"])
-    chosen = [d for d in splits["dev"] if d.startswith("Stufe2_")] + ["Stufe3_C17", "Stufe3_C18"]
-    assert not holdout & set(chosen), "holdout dialogue in the run set"
-    return chosen
+    if name == "dev":
+        return list(splits["dev"])
+    return [d for d in splits["dev"] if d.startswith("Stufe2_")] + ["Stufe3_C17", "Stufe3_C18"]
 
 
 def decision_for(cc: CallChecks, thresholds: dict, k: int):
@@ -53,7 +53,8 @@ def decision_for(cc: CallChecks, thresholds: dict, k: int):
 def main() -> int:
     s = get_settings()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--dialogues", nargs="*", help="Dialogue IDs (default: small dev set)")
+    ap.add_argument("--dialogues", nargs="*", help="Dialogue IDs (overrides --set)")
+    ap.add_argument("--set", choices=["small", "dev"], default="small", dest="set_name")
     ap.add_argument("--reasoning", choices=["on", "off"], default=s.llm_reasoning)
     ap.add_argument("--samples", type=int, default=s.llm_samples)
     ap.add_argument("--concurrency", type=int, default=s.llm_concurrency)
@@ -64,7 +65,7 @@ def main() -> int:
     logging.getLogger("httpx2").setLevel(logging.WARNING)
 
     splits = json.loads(SPLITS.read_text())
-    ids = args.dialogues or small_dev_set()
+    ids = args.dialogues or dialogue_set(args.set_name)
     if set(ids) & set(splits["holdout"]):
         print("Refusing to run on holdout dialogues (rule 4): " + ", ".join(sorted(set(ids) & set(splits["holdout"]))))
         return 2
