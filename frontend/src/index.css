@@ -15,7 +15,7 @@
   --canvas: 245 245 243; /* #F5F5F3 */
   --canvas-hover: 236 236 232; /* #ECECE8 nav hover, from Klartext.html */
   --line: 230 230 226; /* #E6E6E2 */
-  --muted: 102 106 114; /* #666A72, passes 4.5:1 on canvas and the soft fills (decision D1 in docs/DECISIONS.md) */
+  --muted: 102 106 114; /* #666A72, passes 4.5:1 on canvas and the soft fills (decision D40 in docs/DECISIONS.md) */
   --signal: 242 199 68; /* #F2C744 */
   --signal-soft: 252 241 201; /* #FCF1C9 */
   --alarm: 194 54 31; /* #C2361F */

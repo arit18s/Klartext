@@ -60,7 +60,7 @@ Last update: Sat 10 Oct, 08:15 (B14 done on the GPU; B15 next).
 | B30 Hidden test set dry run | todo | – | |
 | B31 Robustness pass | todo | – | |
 | B32 Freeze | todo | – | Sat 22:00 |
-| B33 Pitch material | todo | – | Pyannote community-1 works offline: feasibility point |
+| B33 Pitch material | draft done | (this commit) | `docs/pitch/`: architecture and operating concept slides (HTML, PNG, PDF), timed demo script, Q&A sheet. Numbers marked `[B29]` until the holdout run on ASR |
 | B34 Demo rehearsal | todo | – | |
 | B35 Final run | todo | – | Sun 06:00 |
 | B36 Submit | todo | – | Before Sun 08:30 |
