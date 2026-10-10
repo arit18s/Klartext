@@ -60,7 +60,7 @@ Review is blue, not amber, on purpose: amber would clash with the yellow passage
 
 Rules:
 - Never put text in `signal` on white (fails contrast). Text on yellow is always `graphite`.
-- Body text contrast ≥ 4.5:1. `muted` passes on `paper` (5.4:1), `canvas` (5.0:1) and every soft fill; do not go lighter. (Was `#6E727A`, which is only 4.42:1 on `canvas`; see `DECISIONS.md`.)
+- Body text contrast ≥ 4.5:1. `muted` passes on `paper` (5.4:1), `canvas` (5.0:1) and every soft fill; do not go lighter. (Was `#6E727A`, which is only 4.42:1 on `canvas`; see D40 in `DECISIONS.md`.)
 - Dark mode is out of scope for the MVP. Keep all colours as CSS variables so it can be added.
 
 Tailwind config:
