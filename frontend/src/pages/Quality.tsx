@@ -12,15 +12,20 @@ import { ApiError, getLatestEval, runEval } from '@/lib/api'
 import { FAMILY_LABEL, FAMILY_SHORT, VARIANT_LABEL, VERDICT_LABEL, formatProcessed } from '@/lib/format'
 import type { BreakdownRow, EvalMetrics, EvalRun, EvalSplit, Family, Variant } from '@/lib/types'
 import { cn } from '@/lib/utils'
+import { labels, t, tn } from '@/i18n'
 
 // Targets from 01_PRD.md section 8.
 const TARGET = { recall: 0.95, precision: 0.8, evidence: 0.9, cleanNoisy: 0.9, pairs: 8 }
-const SPLIT_LABEL: Record<EvalSplit, string> = { dev: 'Dev', holdout: 'Holdout', all: 'All' }
-const LEVEL_LABEL: Record<string, string> = {
-  '1': 'Stufe 1 · keyword calls',
-  '2': 'Stufe 2 · context pairs',
-  '3': 'Stufe 3 · open cases',
-}
+const SPLIT_LABEL: Record<EvalSplit, string> = labels({
+  dev: 'quality.split.dev',
+  holdout: 'quality.split.holdout',
+  all: 'quality.split.all',
+})
+const LEVEL_LABEL: Record<string, string> = labels({
+  '1': 'quality.level.1',
+  '2': 'quality.level.2',
+  '3': 'quality.level.3',
+})
 const two = (x: number | null) => (x === null ? '–' : x.toFixed(2))
 const pct = (x: number) => `${Math.round(x * 100)}%`
 const shortId = (id: string) => id.replace(/^Stufe\d_/, '')
@@ -32,20 +37,20 @@ function StatusLine({ status }: { status: Status }) {
     return (
       <span className="inline-flex items-center gap-1.5 text-small font-medium text-clear">
         <Check size={14} strokeWidth={1.75} aria-hidden="true" />
-        Meets target
+        {t('quality.meets')}
       </span>
     )
   if (status === 'below')
     return (
       <span className="inline-flex items-center gap-1.5 text-small font-medium text-alarm">
         <X size={14} strokeWidth={1.75} aria-hidden="true" />
-        Below target
+        {t('quality.below')}
       </span>
     )
   return (
     <span className="inline-flex items-center gap-1.5 text-small text-muted">
       <Minus size={14} strokeWidth={1.75} aria-hidden="true" />
-      {status === 'none' ? 'No target set' : 'Not measured yet'}
+      {status === 'none' ? t('quality.noTarget') : t('quality.unmeasured')}
     </span>
   )
 }
@@ -69,49 +74,49 @@ function kpis(m: EvalMetrics) {
   const flagged = b.tp + b.fp
   const ev = m.evidence_overlap
   const cn_ = m.clean_noisy_agreement
-  const meets = (v: number, t: number): Status => (v >= t ? 'meets' : 'below')
+  const meets = (v: number, target: number): Status => (v >= target ? 'meets' : 'below')
   return [
     {
-      label: 'Recall',
+      label: t('quality.recall'),
       value: cases ? two(b.recall) : '–',
-      detail: `${b.tp} of ${cases} cases caught · target ${TARGET.recall.toFixed(2)}`,
+      detail: t('quality.recallDetail', { tp: b.tp, cases, target: TARGET.recall.toFixed(2) }),
       status: cases ? meets(b.recall, TARGET.recall) : ('unmeasured' as Status),
     },
     {
-      label: 'Precision',
+      label: t('quality.precision'),
       value: flagged ? two(b.precision) : '–',
-      detail: `${b.tp} of ${flagged} flagged are real · target ${TARGET.precision.toFixed(2)}`,
+      detail: t('quality.precisionDetail', { tp: b.tp, flagged, target: TARGET.precision.toFixed(2) }),
       status: flagged ? meets(b.precision, TARGET.precision) : ('unmeasured' as Status),
     },
     {
-      label: 'Exact verdict match',
+      label: t('quality.exact'),
       value: two(m.exact.accuracy),
-      detail: `${m.exact.correct} of ${m.exact.total} calls`,
+      detail: t('quality.exactDetail', { a: m.exact.correct, b: m.exact.total }),
       status: 'none' as Status,
     },
     {
-      label: 'Evidence overlap',
+      label: t('quality.evidence'),
       value: ev && ev.measurable ? pct(ev.hit / ev.measurable) : '–',
       detail: ev
-        ? `${ev.hit} of ${ev.measurable} alerts hit an expected turn · target ${pct(TARGET.evidence)}`
-        : `Needs ASR turn alignment · target ${pct(TARGET.evidence)}`,
+        ? t('quality.evidenceDetail', { hit: ev.hit, n: ev.measurable, target: pct(TARGET.evidence) })
+        : t('quality.evidenceNone', { target: pct(TARGET.evidence) }),
       status: ev && ev.measurable ? meets(ev.hit / ev.measurable, TARGET.evidence) : ('unmeasured' as Status),
     },
     {
-      label: 'Clean vs noisy agreement',
+      label: t('quality.cleanNoisy'),
       value: cn_.total ? pct(cn_.agree / cn_.total) : '–',
       detail: cn_.total
-        ? `${cn_.agree} of ${cn_.total} scripts · target ${pct(TARGET.cleanNoisy)}`
-        : `No noisy recordings in this run · target ${pct(TARGET.cleanNoisy)}`,
+        ? t('quality.cleanNoisyDetail', { a: cn_.agree, b: cn_.total, target: pct(TARGET.cleanNoisy) })
+        : t('quality.cleanNoisyNone', { target: pct(TARGET.cleanNoisy) }),
       status: cn_.total ? meets(cn_.agree / cn_.total, TARGET.cleanNoisy) : ('unmeasured' as Status),
     },
   ]
 }
 
-const GROUPS: { key: BreakdownRow['group']; label: string }[] = [
-  { key: 'level', label: 'By level' },
-  { key: 'family', label: 'By family' },
-  { key: 'variant', label: 'By audio' },
+const GROUPS: { key: BreakdownRow['group']; label: 'quality.byLevel' | 'quality.byFamily' | 'quality.byAudio' }[] = [
+  { key: 'level', label: 'quality.byLevel' },
+  { key: 'family', label: 'quality.byFamily' },
+  { key: 'variant', label: 'quality.byAudio' },
 ]
 
 function groupLabel(r: BreakdownRow): string {
@@ -128,21 +133,21 @@ function Breakdown({ m }: { m: EvalMetrics }) {
   const note = (r: BreakdownRow) =>
     r.note ??
     (r.group === 'level' && r.key === '3' && m.stufe3_review.total
-      ? `${m.stufe3_review.reviewed} of ${m.stufe3_review.total} sent to review`
+      ? t('quality.sentToReview', { a: m.stufe3_review.reviewed, b: m.stufe3_review.total })
       : '')
   return (
-    <section aria-label="Breakdown" className="overflow-hidden rounded-panel border border-line bg-paper">
+    <section aria-label={t('quality.breakdown')} className="overflow-hidden rounded-panel border border-line bg-paper">
       <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
-        <h3 className="text-subtitle font-medium">Breakdown</h3>
+        <h3 className="text-subtitle font-medium">{t('quality.breakdown')}</h3>
         <Segmented
-          label="Breakdown"
+          label={t('quality.breakdown')}
           value={show}
           onChange={setShow}
           options={[
-            { value: 'all', label: 'All' },
-            { value: 'level', label: 'Level' },
-            { value: 'family', label: 'Family' },
-            { value: 'variant', label: 'Audio' },
+            { value: 'all', label: t('common.all') },
+            { value: 'level', label: t('quality.level') },
+            { value: 'family', label: t('quality.family') },
+            { value: 'variant', label: t('quality.audio') },
           ]}
         />
       </div>
@@ -150,12 +155,12 @@ function Breakdown({ m }: { m: EvalMetrics }) {
         <table className="w-full border-collapse">
           <thead>
             <tr>
-              <th className={th}>Group</th>
-              <th className={cn(th, 'text-right')}>Calls</th>
-              <th className={cn(th, 'text-right')}>Cases</th>
-              <th className={cn(th, 'text-right')}>Recall</th>
-              <th className={cn(th, 'text-right')}>Precision</th>
-              <th className={th}>Note</th>
+              <th className={th}>{t('quality.group')}</th>
+              <th className={cn(th, 'text-right')}>{t('quality.calls')}</th>
+              <th className={cn(th, 'text-right')}>{t('quality.cases')}</th>
+              <th className={cn(th, 'text-right')}>{t('quality.recall')}</th>
+              <th className={cn(th, 'text-right')}>{t('quality.precision')}</th>
+              <th className={th}>{t('quality.note')}</th>
             </tr>
           </thead>
           {GROUPS.filter((g) => show === 'all' || show === g.key).map((g) => (
@@ -166,10 +171,10 @@ function Breakdown({ m }: { m: EvalMetrics }) {
                   scope="colgroup"
                   className="h-8 border-b border-line bg-canvas px-4 text-left text-small font-normal text-muted"
                 >
-                  {g.label}
+                  {t(g.label)}
                   {g.key === 'family' &&
                     m.family_accuracy.total > 0 &&
-                    ` · family right on ${m.family_accuracy.correct} of ${m.family_accuracy.total} flagged calls`}
+                    t('quality.familyRight', { a: m.family_accuracy.correct, b: m.family_accuracy.total })}
                 </th>
               </tr>
               {m.breakdown
@@ -196,24 +201,24 @@ function Pairs({ m }: { m: EvalMetrics }) {
   const right = m.stufe2_pairs.filter((p) => p.both_right).length
   return (
     <section
-      aria-label="Stufe 2 pairs on clean audio"
+      aria-label={t('quality.pairs')}
       className="overflow-hidden rounded-panel border border-line bg-paper"
     >
       <div className="flex flex-wrap items-baseline justify-between gap-3 px-4 py-3">
-        <h3 className="text-subtitle font-medium">Stufe 2 pairs on clean audio</h3>
+        <h3 className="text-subtitle font-medium">{t('quality.pairs')}</h3>
         <span className="text-small text-muted">
-          {right} of {m.stufe2_pairs.length} both sides right · target {TARGET.pairs}
+          {t('quality.pairsRight', { a: right, b: m.stufe2_pairs.length, target: TARGET.pairs })}
         </span>
       </div>
       <div className="overflow-x-auto border-t border-line">
         <table className="w-full border-collapse">
           <thead>
             <tr>
-              <th className={th}>Pair</th>
-              <th className={th}>Family</th>
-              <th className={th}>Fraud side</th>
-              <th className={th}>Harmless side</th>
-              <th className={th}>Both right</th>
+              <th className={th}>{t('quality.pair')}</th>
+              <th className={th}>{t('quality.family')}</th>
+              <th className={th}>{t('quality.fraudSide')}</th>
+              <th className={th}>{t('quality.harmlessSide')}</th>
+              <th className={th}>{t('quality.bothRight')}</th>
             </tr>
           </thead>
           <tbody>
@@ -227,12 +232,12 @@ function Pairs({ m }: { m: EvalMetrics }) {
                   {p.both_right ? (
                     <span className="inline-flex items-center gap-1.5 font-medium text-clear">
                       <Check size={16} strokeWidth={1.75} aria-hidden="true" />
-                      Yes
+                      {t('common.yes')}
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1.5 font-medium text-alarm">
                       <X size={16} strokeWidth={1.75} aria-hidden="true" />
-                      No
+                      {t('common.no')}
                     </span>
                   )}
                 </td>
@@ -240,7 +245,7 @@ function Pairs({ m }: { m: EvalMetrics }) {
             ))}
           </tbody>
         </table>
-        {m.stufe2_pairs.length === 0 && <p className="m-0 px-4 py-6 text-muted">No Stufe 2 pairs in this run.</p>}
+        {m.stufe2_pairs.length === 0 && <p className="m-0 px-4 py-6 text-muted">{t('quality.noPairs')}</p>}
       </div>
     </section>
   )
@@ -250,28 +255,28 @@ function Mismatches({ m }: { m: EvalMetrics }) {
   const name = (id: string) => {
     const k = /-K([1-4])$/.exec(id)
     const base = shortId(id.replace(/-K[1-4]$/, ''))
-    return k ? `${base} · ${['1', '3'].includes(k[1]) ? 'Clean' : 'Noisy'}` : id
+    return k ? `${base} · ${VARIANT_LABEL[['1', '3'].includes(k[1]) ? 'clean' : 'noisy']}` : id
   }
   return (
-    <section aria-label="Every mismatch" className="overflow-hidden rounded-panel border border-line bg-paper">
+    <section aria-label={t('quality.mismatches')} className="overflow-hidden rounded-panel border border-line bg-paper">
       <div className="flex flex-wrap items-baseline justify-between gap-3 px-4 py-3">
-        <h3 className="text-subtitle font-medium">Every mismatch</h3>
+        <h3 className="text-subtitle font-medium">{t('quality.mismatches')}</h3>
         <Link to="/calls?mismatches=1" className="text-small underline hover:text-muted">
-          Show in All calls
+          {t('quality.showInAll')}
         </Link>
       </div>
       {m.mismatches.length === 0 ? (
         <p className="m-0 border-t border-line px-4 py-6 text-muted">
-          Every call in this run got its expected verdict.
+          {t('quality.noMismatch')}
         </p>
       ) : (
         <div className="overflow-x-auto border-t border-line">
           <table className="w-full border-collapse">
             <thead>
               <tr>
-                <th className={th}>Call</th>
-                <th className={th}>Expected → Klartext</th>
-                <th className={th}>Why</th>
+                <th className={th}>{t('quality.call')}</th>
+                <th className={th}>{t('quality.expectedVs')}</th>
+                <th className={th}>{t('quality.why')}</th>
               </tr>
             </thead>
             <tbody>
@@ -286,7 +291,7 @@ function Mismatches({ m }: { m: EvalMetrics }) {
                     {VERDICT_LABEL[x.expected]} → {VERDICT_LABEL[x.predicted]}
                   </td>
                   <td className={cn(td, 'py-2 text-muted')}>
-                    {x.caught ? 'Caught. ' : ''}
+                    {x.caught ? t('quality.caught') : ''}
                     {x.reason ?? ''}
                   </td>
                 </tr>
@@ -304,16 +309,16 @@ function KeywordBaseline({ m }: { m: EvalMetrics }) {
   const b = m.binary
   return (
     <section
-      aria-label="Compared with a keyword filter"
+      aria-label={t('quality.baseline')}
       className="flex flex-col gap-3 rounded-panel border border-line bg-paper p-5"
     >
-      <h3 className="text-subtitle font-medium">Compared with a keyword filter</h3>
+      <h3 className="text-subtitle font-medium">{t('quality.baseline')}</h3>
       <table className="w-full border-collapse">
         <thead>
           <tr>
             <td />
             <th scope="col" className="pb-1 text-right text-small font-normal text-muted">
-              Keyword filter
+              {t('quality.keywordFilter')}
             </th>
             <th scope="col" className="pb-1 pl-6 text-right text-small font-normal text-muted">
               Klartext
@@ -322,9 +327,9 @@ function KeywordBaseline({ m }: { m: EvalMetrics }) {
         </thead>
         <tbody>
           {[
-            ['Flagged calls', String(k.flagged), String(b.tp + b.fp)],
-            ['Precision', two(k.precision), two(b.precision)],
-            ['Recall', two(k.recall), two(b.recall)],
+            [t('quality.flaggedCalls'), String(k.flagged), String(b.tp + b.fp)],
+            [t('quality.precision'), two(k.precision), two(b.precision)],
+            [t('quality.recall'), two(k.recall), two(b.recall)],
           ].map(([label, a, c]) => (
             <tr key={label}>
               <th scope="row" className="py-1 text-left font-normal">
@@ -337,7 +342,7 @@ function KeywordBaseline({ m }: { m: EvalMetrics }) {
         </tbody>
       </table>
       <p className="m-0 text-small text-muted">
-        Same calls, same expected verdicts. The keyword filter flags any call where an enabled keyword is said.
+        {t('quality.baselineNote')}
       </p>
     </section>
   )
@@ -368,24 +373,27 @@ export default function Quality() {
       qc.setQueryData(['eval', 'dev'], r)
       qc.invalidateQueries({ queryKey: ['eval'] })
       setPicked('dev')
-      toast(`Ran evaluation ${r.run_id} on dev`)
+      toast(t('quality.ran', { id: r.run_id }))
     },
-    onError: (e: Error) => toast(`The evaluation did not run. ${e.message}`, 'error'),
+    onError: (e: Error) => toast(t('quality.notRun', { message: e.message }), 'error'),
   })
   const data = latest.data
   const m = data?.metrics
   const missing = is404(latest.error)
 
   return (
-    <Page title="Quality">
+    <Page title={t('nav.quality')}>
       <section className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="text-display">Detection quality</h2>
+          <h2 className="text-display">{t('quality.heading')}</h2>
           {data && m && (
             <p className="mt-1 max-w-[72ch] text-muted">
-              {SPLIT_LABEL[data.split]} split, {m.n_calls} {m.n_calls === 1 ? 'call' : 'calls'} from{' '}
-              {data.source === 'asr' ? 'speech recognition' : 'script text (development)'}. Run {data.run_id}{' '}
-              {formatProcessed(data.created_at)} on thresholds version {data.config_versions.thresholds ?? '–'}.
+              {tn(data.source === 'asr' ? 'quality.introAsr' : 'quality.introScript', m.n_calls, {
+                split: SPLIT_LABEL[data.split],
+                id: data.run_id,
+                when: formatProcessed(data.created_at),
+                version: data.config_versions.thresholds ?? '–',
+              })}
             </p>
           )}
         </div>
@@ -393,46 +401,46 @@ export default function Quality() {
           {data && (
             <Button onClick={() => downloadReport(data)}>
               <Download strokeWidth={1.75} aria-hidden="true" />
-              Download report
+              {t('quality.download')}
             </Button>
           )}
           <Segmented
-            label="Run shown"
+            label={t('quality.runShown')}
             value={view}
             onChange={setPicked}
             options={[
-              { value: 'holdout', label: 'Holdout · final', disabled: is404(holdout.error) },
-              { value: 'dev', label: 'Dev · latest' },
+              { value: 'holdout', label: t('quality.holdoutFinal'), disabled: is404(holdout.error) },
+              { value: 'dev', label: t('quality.devLatest') },
             ]}
           />
           <Button variant="primary" onClick={() => run.mutate()} disabled={run.isPending}>
             <Play strokeWidth={1.75} aria-hidden="true" />
-            {run.isPending ? 'Running…' : 'Run evaluation on dev'}
+            {run.isPending ? t('quality.running') : t('quality.runDev')}
           </Button>
         </div>
       </section>
       <p className="-mt-4 m-0 text-small text-muted">
         {view === 'holdout'
-          ? 'Read-only. The holdout run happened once, with prompts and thresholds frozen; it is never re-run from here.'
-          : 'Dev is the split prompts and thresholds were tuned on. New runs from this page always use it.'}
+          ? t('quality.holdoutNote')
+          : t('quality.devNote')}
       </p>
 
-      {latest.isPending && <p className="text-muted">Loading the evaluation…</p>}
+      {latest.isPending && <p className="text-muted">{t('quality.loading')}</p>}
       {missing && (
         <p className="m-0 rounded-panel border border-line p-6 text-muted">
-          No evaluation on dev has run yet. Run one with <b className="font-medium">Run evaluation on dev</b>.
+          {t('quality.noDevRun')} <b className="font-medium">{t('quality.runDev')}</b>.
         </p>
       )}
       {latest.error && !missing && (
         <div role="alert" className="flex flex-wrap items-center gap-3 rounded-panel border border-line p-4">
-          <span>Could not load the evaluation. {latest.error.message}</span>
-          <Button onClick={() => latest.refetch()}>Try again</Button>
+          <span>{t('quality.loadError', { message: latest.error.message })}</span>
+          <Button onClick={() => latest.refetch()}>{t('common.tryAgain')}</Button>
         </div>
       )}
 
       {m && (
         <>
-          <section aria-label="Headline numbers" className="grid grid-cols-[repeat(auto-fit,minmax(168px,1fr))] gap-4">
+          <section aria-label={t('quality.headline')} className="grid grid-cols-[repeat(auto-fit,minmax(168px,1fr))] gap-4">
             {kpis(m).map((k) => (
               <Kpi key={k.label} {...k} />
             ))}
@@ -447,10 +455,10 @@ export default function Quality() {
                 matrix={m.confusion.matrix}
                 total={m.n_calls}
                 highlightMissed
-                caption="Rows: expected. Columns: Klartext. Red cells are missed cases."
+                caption={t('quality.confusionCaption')}
               >
                 <p className="m-0 rounded-panel bg-canvas px-4 py-3">
-                  Alerts sent to review ({m.confusion.matrix[0][1]}) count as caught. Review is a hand-off, not a miss.
+                  {t('quality.reviewNote', { n: m.confusion.matrix[0][1] })}
                 </p>
               </ConfusionMatrix>
               <KeywordBaseline m={m} />

@@ -9,11 +9,12 @@ import { ScoreBar } from '../ScoreBar'
 import { Segmented } from '../Segmented'
 import { Button, type ButtonProps } from '../ui/button'
 import { NoteDialog } from './NoteDialog'
+import { t } from '@/i18n'
 
 /** Browser print to PDF (D30). The document title becomes the suggested PDF file name. */
 function printReport(callId: string) {
   const before = document.title
-  document.title = `Klartext report ${callId}`
+  document.title = t('verdictHeader.printTitle', { id: callId })
   window.addEventListener('afterprint', () => (document.title = before), { once: true })
   window.print()
 }
@@ -58,29 +59,31 @@ export function VerdictHeader({
   const is = (l: FeedbackLabel) => lastVerdict?.label === l
   const sent = [...detail.triggers]
     .reverse()
-    .find((t) => t.status_code !== null && t.status_code >= 200 && t.status_code < 300)
+    .find((tr) => tr.status_code !== null && tr.status_code >= 200 && tr.status_code < 300)
   const flagged = decision.verdict !== 'no_alert'
   const reason = lang === 'de' && decision.reason_de ? decision.reason_de : decision.reason
   const give = (label: FeedbackLabel) => () => onFeedback({ label })
 
   return (
     <section
-      aria-label="Verdict"
+      aria-label={t('verdictHeader.label')}
       className="flex break-inside-avoid flex-col gap-4 rounded-panel border border-line bg-paper p-6 print:p-4"
     >
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-3">
           <VerdictChip verdict={decision.verdict} size="lg" />
-          <h2 className="text-title">{decision.family ? FAMILY_LABEL[decision.family] : 'No family decided'}</h2>
-          <ScoreBar score={decision.score} verdict={decision.verdict} wide label="Score" />
+          <h2 className="text-title">{decision.family ? FAMILY_LABEL[decision.family] : t('verdictHeader.noFamily')}</h2>
+          <ScoreBar score={decision.score} verdict={decision.verdict} wide label={t('verdictHeader.score')} />
           {flagged && detail.call.raised_by && (
-            <span className="text-small text-muted">Raised by: {RAISED_BY_LABEL[detail.call.raised_by]}</span>
+            <span className="text-small text-muted">
+              {t('verdictHeader.raisedBy', { who: RAISED_BY_LABEL[detail.call.raised_by] })}
+            </span>
           )}
         </div>
         {decision.reason_de && (
           <Segmented
             className="print:hidden"
-            label="Reason language"
+            label={t('verdictHeader.reasonLanguage')}
             value={lang}
             onChange={setLang}
             options={[
@@ -101,7 +104,7 @@ export function VerdictHeader({
         <div className="flex max-w-[860px] items-start gap-3 rounded-panel bg-review-soft p-4">
           <CircleHelp size={20} strokeWidth={1.75} aria-hidden="true" className="mt-0.5 flex-none text-review" />
           <div>
-            <div className="font-semibold">Missing to decide</div>
+            <div className="font-semibold">{t('verdictHeader.missing')}</div>
             <div>{decision.open_question}</div>
           </div>
         </div>
@@ -112,40 +115,40 @@ export function VerdictHeader({
           {decision.verdict === 'review' ? (
             <>
               <ActionButton icon={Siren} pressed={is('escalated_to_alarm')} onClick={give('escalated_to_alarm')}>
-                Escalate as alert
+                {t('verdictHeader.escalate')}
               </ActionButton>
               <ActionButton icon={Check} pressed={is('closed_no_alert')} onClick={give('closed_no_alert')}>
-                Close as no alert
+                {t('verdictHeader.close')}
               </ActionButton>
               <NoteDialog
-                title="Add note"
-                description="A note for the record. It does not escalate or close the call. Notes are written to the audit log."
-                actions={[{ label: 'note', text: 'Save note', primary: true, needsNote: true }]}
+                title={t('verdictHeader.addNote')}
+                description={t('verdictHeader.addNoteDesc')}
+                actions={[{ label: 'note', text: t('verdictHeader.saveNote'), primary: true, needsNote: true }]}
                 onSubmit={onFeedback}
               >
                 <ActionButton icon={MessageSquare} pressed={false}>
-                  Add note
+                  {t('verdictHeader.addNote')}
                 </ActionButton>
               </NoteDialog>
             </>
           ) : (
             <>
               <ActionButton icon={Check} pressed={is('correct')} onClick={give('correct')}>
-                Correct
+                {t('verdictHeader.correct')}
               </ActionButton>
               {flagged && (
                 <ActionButton icon={X} pressed={is('false_alarm')} onClick={give('false_alarm')}>
-                  False alert
+                  {t('verdictHeader.falseAlert')}
                 </ActionButton>
               )}
               <NoteDialog
-                title="Missed something"
-                description="Say what Klartext missed in this call. The note is written to the audit log."
-                actions={[{ label: 'missed', text: 'Mark as missed', primary: true }]}
+                title={t('verdictHeader.missed')}
+                description={t('verdictHeader.missedDesc')}
+                actions={[{ label: 'missed', text: t('verdictHeader.markMissed'), primary: true }]}
                 onSubmit={onFeedback}
               >
                 <ActionButton icon={ZoomIn} pressed={is('missed')}>
-                  Missed something
+                  {t('verdictHeader.missed')}
                 </ActionButton>
               </NoteDialog>
             </>
@@ -154,24 +157,24 @@ export function VerdictHeader({
         <div className="flex flex-wrap items-center gap-3">
           {latest && (
             <span className="text-small text-muted">
-              {FEEDBACK_DONE[latest.label]} at {formatClock(latest.created_at)}
+              {t('verdictHeader.doneAt', { what: FEEDBACK_DONE[latest.label], time: formatClock(latest.created_at) })}
             </span>
           )}
           {sent ? (
             <span className="inline-flex items-center gap-1.5 text-small text-muted">
               <Send size={14} strokeWidth={1.75} aria-hidden="true" />
-              Sent to Outcept at {formatClock(sent.created_at)}
+              {t('verdictHeader.sentAt', { time: formatClock(sent.created_at) })}
             </span>
           ) : (
-            flagged && <span className="text-small text-muted">Not sent to Outcept</span>
+            flagged && <span className="text-small text-muted">{t('verdictHeader.notSent')}</span>
           )}
           <Button className="print:hidden" onClick={() => printReport(detail.call.call_id)}>
             <Printer strokeWidth={1.75} aria-hidden="true" />
-            Print report
+            {t('verdictHeader.print')}
           </Button>
           <Button variant="primary" className="print:hidden" onClick={onOpenFullCall}>
             <Play strokeWidth={1.75} aria-hidden="true" />
-            Open full call
+            {t('verdictHeader.openFull')}
           </Button>
         </div>
       </div>

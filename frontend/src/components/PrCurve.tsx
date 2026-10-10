@@ -1,5 +1,6 @@
 import { CartesianGrid, Line, LineChart, ReferenceDot, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import type { PrPoint } from '@/lib/tuning'
+import { t } from '@/i18n'
 
 const fmt = (n: number) => n.toFixed(2)
 
@@ -17,15 +18,15 @@ export function PrCurve({
   const ticks = [lo, (lo + 1) / 2, 1]
   return (
     <section
-      aria-label="Precision vs recall"
+      aria-label={t('pr.title')}
       className="flex flex-col gap-3 rounded-panel border border-line bg-paper p-5"
     >
       <div className="flex items-baseline justify-between">
-        <h3 className="text-subtitle font-medium">Precision vs recall</h3>
-        <span className="text-small text-muted">dot = review from {current.review}</span>
+        <h3 className="text-subtitle font-medium">{t('pr.title')}</h3>
+        <span className="text-small text-muted">{t('pr.dot', { n: current.review })}</span>
       </div>
       {data.length === 0 ? (
-        <p className="m-0 text-muted">No expected verdicts to draw the curve from.</p>
+        <p className="m-0 text-muted">{t('pr.empty')}</p>
       ) : (
         <div className="h-[220px]">
           <ResponsiveContainer width="100%" height="100%">
@@ -40,7 +41,7 @@ export function PrCurve({
                 tick={{ fontSize: 11, fill: 'rgb(var(--muted))' }}
                 stroke="rgb(var(--line))"
                 label={{
-                  value: 'Recall',
+                  value: t('pr.recall'),
                   position: 'insideBottom',
                   offset: -10,
                   fontSize: 11,
@@ -56,7 +57,7 @@ export function PrCurve({
                 tick={{ fontSize: 11, fill: 'rgb(var(--muted))' }}
                 stroke="rgb(var(--line))"
                 label={{
-                  value: 'Precision',
+                  value: t('pr.precision'),
                   angle: -90,
                   position: 'insideLeft',
                   offset: 12,
@@ -71,9 +72,9 @@ export function PrCurve({
                   if (!p) return null
                   return (
                     <div className="rounded-control border border-line bg-paper px-3 py-2 text-small shadow-modal">
-                      <div className="font-medium">Review from {p.t_review}</div>
+                      <div className="font-medium">{t('pr.tipTitle', { n: p.t_review })}</div>
                       <div className="tabular text-muted">
-                        Precision {fmt(p.precision)} · recall {fmt(p.recall)}
+                        {t('pr.tipBody', { p: fmt(p.precision), r: fmt(p.recall) })}
                       </div>
                     </div>
                   )

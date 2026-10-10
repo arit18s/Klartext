@@ -2,6 +2,7 @@ import type { CallDetail, Segment } from '@/lib/types'
 import { FAMILY_LABEL, VERDICT_LABEL, formatDuration, formatTimestamp, recordingName } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import { speaker } from './labels'
+import { locale, t } from '@/i18n'
 
 // Print-only parts of the call report (D30: "Download report" = browser print to PDF, A4 portrait).
 // Hidden on screen; the rest of the report is the call view itself with its controls hidden in print.
@@ -10,7 +11,7 @@ const CONTEXT_LINES = 1 // transcript lines kept before and after each evidence 
 
 const absolute = (iso: string | null) =>
   iso
-    ? new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Europe/Zurich' }).format(
+    ? new Intl.DateTimeFormat(locale(), { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Europe/Zurich' }).format(
         new Date(iso),
       )
     : '–'
@@ -20,22 +21,25 @@ export function PrintHeader({ detail }: { detail: CallDetail }) {
   const { call, decision } = detail
   const rec = recordingName(call)
   const rows: [string, string][] = [
-    ['Recording', `${call.call_id}${rec.variant ? ` (${rec.variant})` : ''}`],
-    ['Advisor', call.advisor_name ?? '–'],
-    ['Length', formatDuration(call.duration_s)],
-    ['Processed', absolute(call.processed_at)],
+    [t('print.recording'), `${call.call_id}${rec.variant ? ` (${rec.variant})` : ''}`],
+    [t('print.advisor'), call.advisor_name ?? '–'],
+    [t('print.length'), formatDuration(call.duration_s)],
+    [t('print.processed'), absolute(call.processed_at)],
     [
-      'Decided',
-      `${absolute(decision?.decided_at ?? null)} · thresholds version ${decision?.thresholds_version_id ?? '–'}`,
+      t('print.decided'),
+      t('print.decidedValue', {
+        when: absolute(decision?.decided_at ?? null),
+        version: decision?.thresholds_version_id ?? '–',
+      }),
     ],
-    ['Printed', absolute(new Date().toISOString())],
+    [t('print.printed'), absolute(new Date().toISOString())],
   ]
   return (
     <section aria-hidden="true" className="hidden print:block">
       <div className="flex items-baseline justify-between border-b border-graphite pb-2">
-        <span className="text-title font-semibold">Klartext call report</span>
+        <span className="text-title font-semibold">{t('print.title')}</span>
         <span className="text-small text-muted">
-          {decision ? VERDICT_LABEL[decision.verdict] : 'Not decided'}
+          {decision ? VERDICT_LABEL[decision.verdict] : t('print.notDecided')}
           {decision?.family ? ` · ${FAMILY_LABEL[decision.family]}` : ''}
         </span>
       </div>
@@ -74,10 +78,8 @@ export function PrintTranscript({ segments, evidenceSegs }: { segments: Segment[
   if (lines.length === 0) return null
   return (
     <section aria-hidden="true" className="hidden break-before-auto print:block">
-      <h3 className="text-subtitle font-medium">Transcript around the evidence</h3>
-      <p className="m-0 mb-2 text-small text-muted">
-        Evidence lines highlighted, one line before and after each. As transcribed; listen before acting.
-      </p>
+      <h3 className="text-subtitle font-medium">{t('print.transcriptTitle')}</h3>
+      <p className="m-0 mb-2 text-small text-muted">{t('print.transcriptNote')}</p>
       <div className="flex flex-col">
         {lines.map((s, i) =>
           s ? (
@@ -92,7 +94,7 @@ export function PrintTranscript({ segments, evidenceSegs }: { segments: Segment[
               <span className="text-small font-medium text-graphite-soft">{speaker(s.role)}</span>
               <span>
                 {s.text}
-                {s.low_confidence && <span className="text-small text-muted"> (low transcription confidence)</span>}
+                {s.low_confidence && <span className="text-small text-muted">{t('print.lowConfidence')}</span>}
               </span>
             </div>
           ) : (
@@ -109,8 +111,7 @@ export function PrintTranscript({ segments, evidenceSegs }: { segments: Segment[
 export function PrintFooter() {
   return (
     <p aria-hidden="true" className="m-0 hidden border-t border-line pt-2 text-small text-muted print:block">
-      The verdict is computed by Klartext&apos;s decision rule from the check results; it is a hint for a compliance
-      officer, not a finding. Quotes are shown as transcribed.
+      {t('print.footer')}
     </p>
   )
 }

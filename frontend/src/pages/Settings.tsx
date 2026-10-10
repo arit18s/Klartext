@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Page } from '@/app/Page'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { getSettings } from '@/lib/api'
+import { t } from '@/i18n'
 
 /** One setting: label, value (or "Not set"), and what it means. */
 function Row({ label, value, help }: { label: string; value: ReactNode; help?: string }) {
@@ -19,7 +20,7 @@ function Row({ label, value, help }: { label: string; value: ReactNode; help?: s
 }
 
 const notSet = (v: string) =>
-  v ? <span className="tabular">{v}</span> : <span className="text-muted">Not set. Add it to .env on the server.</span>
+  v ? <span className="tabular">{v}</span> : <span className="text-muted">{t('settings.notSet')}</span>
 
 function Panel({
   title,
@@ -48,63 +49,63 @@ export default function Settings() {
   const v = data?.config_versions
   return (
     <Page
-      title="Settings"
-      heading="Settings"
-      intro="Where Klartext's models run and where its alerts go. These values come from the server's configuration and are read-only here."
+      title={t('nav.settings')}
+      heading={t('nav.settings')}
+      intro={t('settings.intro')}
     >
-      {isPending && <p className="m-0 text-muted">Loading settings…</p>}
+      {isPending && <p className="m-0 text-muted">{t('settings.loading')}</p>}
       {error && (
         <div role="alert" className="flex flex-wrap items-center gap-3 rounded-panel border border-line p-4">
-          <span>Could not load the settings. {error.message}</span>
-          <Button onClick={() => refetch()}>Try again</Button>
+          <span>{t('settings.loadError', { message: error.message })}</span>
+          <Button onClick={() => refetch()}>{t('common.tryAgain')}</Button>
         </div>
       )}
       {data && (
         <div className="grid grid-cols-[repeat(auto-fit,minmax(420px,1fr))] gap-6">
           <Panel
-            title="Language model"
-            intro="Runs the family checks. Any OpenAI-compatible address works: OpenRouter for the sprint, a self-hosted vLLM server inside the bank later."
+            title={t('settings.llm')}
+            intro={t('settings.llmIntro')}
           >
             <Row
-              label="Endpoint URL"
+              label={t('settings.endpoint')}
               value={notSet(data.llm_base_url)}
-              help="Change this one value to move to vLLM. Nothing else needs to change."
+              help={t('settings.endpointHelp')}
             />
-            <Row label="Model" value={notSet(data.llm_model)} help="Open-weight models only." />
-            <Row label="API key" value={<span className="text-muted">Stored on the server. Never shown here.</span>} />
+            <Row label={t('settings.model')} value={notSet(data.llm_model)} help={t('settings.openWeight')} />
+            <Row label={t('settings.apiKey')} value={<span className="text-muted">{t('settings.apiKeyValue')}</span>} />
           </Panel>
           <Panel
-            title="Speech to text"
-            intro="Transcribes Swiss German with word timestamps and separates advisor from customer. Runs on our own GPU."
+            title={t('settings.asr')}
+            intro={t('settings.asrIntro')}
           >
-            <Row label="Speech model" value={notSet(data.asr_model)} />
+            <Row label={t('settings.speechModel')} value={notSet(data.asr_model)} />
           </Panel>
           <Panel
-            title="Outcept trigger API"
-            intro="Klartext posts every alert and review here, with a link that opens the call at the suspicious passage."
+            title={t('settings.trigger')}
+            intro={t('settings.triggerIntro')}
           >
-            <Row label="Trigger API URL" value={notSet(data.trigger_api_url)} />
+            <Row label={t('settings.triggerUrl')} value={notSet(data.trigger_api_url)} />
             <Row
-              label="Send alerts and reviews"
-              value={data.trigger_api_enabled ? 'On' : 'Off'}
-              help="Each post links to /calls/{call_id}?t={seconds}."
+              label={t('settings.send')}
+              value={data.trigger_api_enabled ? t('common.on') : t('common.off')}
+              help={t('settings.sendHelp')}
             />
           </Panel>
           <Panel
-            title="Active config versions"
-            intro="Every change to rules, keywords or thresholds writes a new version to the audit log."
+            title={t('settings.versions')}
+            intro={t('settings.versionsIntro')}
             footer={
               <div className="pt-1">
                 <Link to="/rules" className={buttonVariants({ size: 'md' })}>
-                  Open rules
+                  {t('settings.openRules')}
                 </Link>
               </div>
             }
           >
-            <Row label="Keywords" value={v?.keywords ?? '–'} />
-            <Row label="Families" value={v?.families ?? '–'} />
-            <Row label="Thresholds" value={v?.thresholds ?? '–'} />
-            <Row label="Model" value={v?.model ?? '–'} />
+            <Row label={t('settings.keywords')} value={v?.keywords ?? '–'} />
+            <Row label={t('settings.families')} value={v?.families ?? '–'} />
+            <Row label={t('settings.thresholds')} value={v?.thresholds ?? '–'} />
+            <Row label={t('settings.model')} value={v?.model ?? '–'} />
           </Panel>
         </div>
       )}

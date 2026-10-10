@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from '../ui/dialog'
 import { Button } from '../ui/button'
+import { t } from '@/i18n'
 
 const input = 'h-9 w-full rounded-control border border-line bg-paper px-3 text-body'
 const split = (s: string) => [
@@ -49,28 +50,28 @@ export function AddKeywordDialog({ onAdd }: { onAdd: (k: NewKeyword) => void }) 
       <DialogTrigger asChild>
         <Button variant="primary">
           <Plus strokeWidth={1.75} aria-hidden="true" />
-          Add keyword
+          {t('addKeyword.button')}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add keyword</DialogTitle>
+          <DialogTitle>{t('addKeyword.button')}</DialogTitle>
           <DialogDescription>
-            Keywords point the checks at a passage. They never raise an alert on their own.
+            {t('addKeyword.desc')}
           </DialogDescription>
         </DialogHeader>
         <DialogBody>
           <label className="flex flex-col gap-1.5">
-            <span className="font-medium">Keyword</span>
+            <span className="font-medium">{t('addKeyword.keyword')}</span>
             <input
               className={input}
               value={label}
               onChange={(e) => setLabel(e.target.value)}
-              placeholder="e.g. Kartenprüfziffer"
+              placeholder={t('addKeyword.placeholder')}
             />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className="font-medium">Family</span>
+            <span className="font-medium">{t('addKeyword.family')}</span>
             <select
               className={input}
               value={family}
@@ -84,21 +85,21 @@ export function AddKeywordDialog({ onAdd }: { onAdd: (k: NewKeyword) => void }) 
             </select>
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className="font-medium">Standard German phrases</span>
+            <span className="font-medium">{t('addKeyword.de')}</span>
             <input
               className={input}
               value={de}
               onChange={(e) => setDe(e.target.value)}
-              placeholder="Separate with commas"
+              placeholder={t('addKeyword.separate')}
             />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className="font-medium">Swiss German phrases</span>
+            <span className="font-medium">{t('addKeyword.gsw')}</span>
             <input
               className={input}
               value={gsw}
               onChange={(e) => setGsw(e.target.value)}
-              placeholder="Separate with commas"
+              placeholder={t('addKeyword.separate')}
             />
           </label>
         </DialogBody>
@@ -111,7 +112,7 @@ export function AddKeywordDialog({ onAdd }: { onAdd: (k: NewKeyword) => void }) 
               setOpen(false)
             }}
           >
-            Add keyword
+            {t('addKeyword.button')}
           </Button>
         </DialogFooter>
       </DialogContent>

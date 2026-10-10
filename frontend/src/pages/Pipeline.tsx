@@ -18,32 +18,35 @@ import {
 import { VERDICT_LABEL, formatClock, formatDuration } from '@/lib/format'
 import type { PipelineItem, PipelineStage, PipelineStatus } from '@/lib/types'
 import { cn } from '@/lib/utils'
+import { labels, t } from '@/i18n'
 
 const STAGES: PipelineStage[] = ['transcribing', 'diarizing', 'checking', 'deciding']
-const STAGE_LABEL: Record<PipelineStage, string> = {
-  queued: 'Waiting',
-  transcribing: 'Transcribing',
-  diarizing: 'Separating speakers',
-  checking: 'Checking',
-  deciding: 'Deciding',
-  done: 'Done',
-  failed: 'Failed',
-  waiting_for_asr: 'Waiting for speech service',
-}
+const STAGE_LABEL: Record<PipelineStage, string> = labels({
+  queued: 'stage.queued',
+  transcribing: 'stage.transcribing',
+  diarizing: 'stage.diarizing',
+  checking: 'stage.checking',
+  deciding: 'stage.deciding',
+  done: 'stage.done',
+  failed: 'stage.failed',
+  waiting_for_asr: 'stage.waiting_for_asr',
+})
 
 function ago(iso: string | null): string {
-  if (!iso) return 'no file yet'
+  if (!iso) return t('pipeline.noFile')
   const s = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 1000))
-  if (s < 60) return 'last file just now'
+  if (s < 60) return t('pipeline.justNow')
   const m = Math.round(s / 60)
-  if (m < 60) return `last file ${m} min ago`
-  return `last file at ${formatClock(iso)}`
+  if (m < 60) return t('pipeline.minAgo', { n: m })
+  return t('pipeline.lastAt', { time: formatClock(iso) })
 }
 
 function took(s: number | null) {
   if (s === null) return null
   const r = Math.round(s)
-  return r < 60 ? `${r} s` : `${Math.floor(r / 60)} min ${String(r % 60).padStart(2, '0')} s`
+  return r < 60
+    ? t('pipeline.seconds', { s: r })
+    : t('pipeline.minutes', { m: Math.floor(r / 60), s: String(r % 60).padStart(2, '0') })
 }
 
 /** Four segments, one per stage: done segments graphite, the current one mid grey. */
@@ -64,16 +67,16 @@ function StageBar({ stage }: { stage: PipelineStage }) {
 function ProgressCell({ item }: { item: PipelineItem }) {
   if (item.stage === 'failed')
     return (
-      <span className="block min-w-[260px] whitespace-normal text-graphite">{item.error ?? 'Processing failed.'}</span>
+      <span className="block min-w-[260px] whitespace-normal text-graphite">{item.error ?? t('pipeline.failedProcessing')}</span>
     )
   if (item.stage === 'done')
     return (
       <span className="text-small text-muted">
-        {[took(item.elapsed_s), item.trigger_sent ? 'sent to Outcept' : null].filter(Boolean).join(' · ') || '–'}
+        {[took(item.elapsed_s), item.trigger_sent ? t('pipeline.sentToOutcept') : null].filter(Boolean).join(' · ') || '–'}
       </span>
     )
   if (item.progress === null || item.progress === undefined)
-    return <span className="text-small text-muted">{item.progress_note ?? 'Working…'}</span>
+    return <span className="text-small text-muted">{item.progress_note ?? t('pipeline.working')}</span>
   const pct = Math.round(item.progress * 100)
   return (
     <span className="flex items-center gap-2">
@@ -109,11 +112,11 @@ function Queue({
   // Working and failed items first, then the latest finished ones.
   const rows = [...status.queue, ...status.recent.slice(0, 5)]
   return (
-    <section aria-label="Queue" className="overflow-hidden rounded-panel border border-line bg-paper">
+    <section aria-label={t('pipeline.queue')} className="overflow-hidden rounded-panel border border-line bg-paper">
       <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
-        <h3 className="text-subtitle font-medium">Queue</h3>
+        <h3 className="text-subtitle font-medium">{t('pipeline.queue')}</h3>
         <div className="flex flex-wrap items-center gap-1.5 text-small text-muted">
-          Stages
+          {t('pipeline.stages')}
           {STAGES.map((s) => (
             <span
               key={s}
@@ -128,11 +131,11 @@ function Queue({
         <table className="w-full border-collapse">
           <thead>
             <tr>
-              <th className={th}>File</th>
-              <th className={th}>Stage</th>
-              <th className={th}>Progress</th>
-              <th className={cn(th, 'text-right')}>Length</th>
-              <th className={th}>Result</th>
+              <th className={th}>{t('pipeline.file')}</th>
+              <th className={th}>{t('pipeline.stage')}</th>
+              <th className={th}>{t('pipeline.progress')}</th>
+              <th className={cn(th, 'text-right')}>{t('pipeline.length')}</th>
+              <th className={th}>{t('pipeline.result')}</th>
             </tr>
           </thead>
           <tbody aria-live="polite">
@@ -146,7 +149,7 @@ function Queue({
                   {q.stage === 'failed' ? (
                     <span className="inline-flex items-center gap-1.5 font-medium text-alarm">
                       <TriangleAlert size={16} strokeWidth={1.75} aria-hidden="true" />
-                      Failed
+                      {STAGE_LABEL.failed}
                     </span>
                   ) : (
                     <span className="flex min-w-[150px] items-center gap-2.5 whitespace-normal">
@@ -163,7 +166,7 @@ function Queue({
                   {q.stage === 'failed' ? (
                     <Button size="sm" onClick={() => onRetry(q.call_id)} disabled={retrying}>
                       <RotateCw strokeWidth={1.75} aria-hidden="true" />
-                      Retry
+                      {t('common.retry')}
                     </Button>
                   ) : q.verdict ? (
                     <VerdictChip verdict={q.verdict} />
@@ -177,7 +180,7 @@ function Queue({
         </table>
         {rows.length === 0 && (
           <p className="m-0 px-4 py-8 text-center text-muted">
-            Nothing processed yet. Drop a WAV file or process a folder.
+            {t('pipeline.nothing')}
           </p>
         )}
       </div>
@@ -195,7 +198,7 @@ function DropZone({ onFiles, busy }: { onFiles: (files: File[]) => void; busy: b
   }
   return (
     <section
-      aria-label="Drop a recording"
+      aria-label={t('pipeline.dropLabel')}
       onDragOver={(e) => {
         e.preventDefault()
         setOver(true)
@@ -208,9 +211,9 @@ function DropZone({ onFiles, busy }: { onFiles: (files: File[]) => void; busy: b
       )}
     >
       <CloudUpload size={24} strokeWidth={1.75} aria-hidden="true" className="text-muted" />
-      <span className="font-medium">Drop a WAV file here</span>
+      <span className="font-medium">{t('pipeline.dropTitle')}</span>
       <span className="max-w-[44ch] text-small text-muted">
-        It is copied into the inbox folder. The watcher picks it up like any other recording.
+        {t('pipeline.dropBody')}
       </span>
       <input
         ref={input}
@@ -226,7 +229,7 @@ function DropZone({ onFiles, busy }: { onFiles: (files: File[]) => void; busy: b
         }}
       />
       <Button className="mt-1" onClick={() => input.current?.click()} disabled={busy}>
-        Choose file
+        {t('pipeline.choose')}
       </Button>
     </section>
   )
@@ -245,32 +248,30 @@ function Batch({ status }: { status: PipelineStatus }) {
     mutationFn: () => processFolder(path.trim()),
     onSuccess: (r) => {
       const parts = [
-        `${r.enqueued} queued`,
-        r.skipped_duplicates ? `${r.skipped_duplicates} already processed` : null,
-        r.rejected.length ? `${r.rejected.length} rejected` : null,
+        t('pipeline.queued', { n: r.enqueued }),
+        r.skipped_duplicates ? t('pipeline.already', { n: r.skipped_duplicates }) : null,
+        r.rejected.length ? t('pipeline.rejected', { n: r.rejected.length }) : null,
       ]
-      toast(`Processing ${r.path}: ${parts.filter(Boolean).join(', ')}`)
+      toast(t('pipeline.processingPath', { path: r.path, parts: parts.filter(Boolean).join(', ') }))
       for (const x of r.rejected) toast(`${x.file_name}: ${x.error}`, 'error')
     },
-    onError: (e: Error) => toast(`The folder was not processed. ${e.message}`, 'error'),
+    onError: (e: Error) => toast(t('pipeline.folderFailed', { message: e.message }), 'error'),
   })
   const download = (format: 'json' | 'csv') => async () => {
     try {
       save(format === 'json' ? await exportJson() : await exportCsv(), `klartext-results.${format}`)
-      toast(`Downloaded ${format.toUpperCase()}`)
+      toast(t('pipeline.downloaded', { format: format.toUpperCase() }))
     } catch (e) {
-      toast(`The download failed. ${(e as Error).message}`, 'error')
+      toast(t('pipeline.downloadFailed', { message: (e as Error).message }), 'error')
     }
   }
   const b = status.last_batch
   return (
-    <section aria-label="Batch mode" className="flex flex-col gap-3 rounded-panel border border-line bg-paper p-5">
-      <h3 className="text-subtitle font-medium">Batch mode</h3>
-      <p className="m-0 text-muted">
-        For the hidden test set. Point Klartext at a folder, process every file, then download one results file.
-      </p>
+    <section aria-label={t('pipeline.batch')} className="flex flex-col gap-3 rounded-panel border border-line bg-paper p-5">
+      <h3 className="text-subtitle font-medium">{t('pipeline.batch')}</h3>
+      <p className="m-0 text-muted">{t('pipeline.batchIntro')}</p>
       <label className="flex flex-col gap-1.5">
-        <span className="font-medium">Folder</span>
+        <span className="font-medium">{t('pipeline.folder')}</span>
         <input
           value={path}
           onChange={(e) => setPath(e.target.value)}
@@ -280,19 +281,21 @@ function Batch({ status }: { status: PipelineStatus }) {
       </label>
       <div className="flex flex-wrap gap-2">
         <Button variant="primary" disabled={!path.trim() || run.isPending} onClick={() => run.mutate()}>
-          {run.isPending ? 'Processing…' : 'Process folder'}
+          {run.isPending ? t('pipeline.processing') : t('pipeline.processFolder')}
         </Button>
         <Button onClick={download('json')}>
           <Download strokeWidth={1.75} aria-hidden="true" />
-          Download JSON
+          {t('pipeline.downloadJson')}
         </Button>
         <Button onClick={download('csv')}>
           <Download strokeWidth={1.75} aria-hidden="true" />
-          Download CSV
+          {t('pipeline.downloadCsv')}
         </Button>
       </div>
       <span className="text-small text-muted">
-        {b ? `Last batch: ${b.files} files, ${took(b.duration_s)}, ${b.failed} failed` : 'No batch has run yet.'}
+        {b
+          ? t('pipeline.lastBatch', { files: b.files, took: took(b.duration_s) ?? '–', failed: b.failed })
+          : t('pipeline.noBatch')}
       </span>
     </section>
   )
@@ -303,9 +306,9 @@ function RecentRuns({ status }: { status: PipelineStatus }) {
     b.updated_at.localeCompare(a.updated_at),
   )
   return (
-    <section aria-label="Recent runs" className="flex flex-col gap-1 rounded-panel border border-line bg-paper p-5">
-      <h3 className="mb-2 text-subtitle font-medium">Recent runs</h3>
-      {items.length === 0 && <p className="m-0 text-muted">No runs yet.</p>}
+    <section aria-label={t('pipeline.recent')} className="flex flex-col gap-1 rounded-panel border border-line bg-paper p-5">
+      <h3 className="mb-2 text-subtitle font-medium">{t('pipeline.recent')}</h3>
+      {items.length === 0 && <p className="m-0 text-muted">{t('pipeline.noRuns')}</p>}
       <ol className="m-0 list-none p-0">
         {items.slice(0, 8).map((q) => (
           <li
@@ -316,8 +319,8 @@ function RecentRuns({ status }: { status: PipelineStatus }) {
             <span className={q.stage === 'failed' ? 'text-alarm' : ''}>
               {q.file_name}
               {q.stage === 'failed'
-                ? ' · transcription failed'
-                : ` · ${q.verdict ? VERDICT_LABEL[q.verdict] : 'Done'}${q.score !== null ? `, score ${Math.round(q.score)}` : ''}${q.trigger_sent ? ' · posted to Outcept' : ''}`}
+                ? t('pipeline.transcriptionFailed')
+                : ` · ${q.verdict ? VERDICT_LABEL[q.verdict] : STAGE_LABEL.done}${q.score !== null ? t('pipeline.scoreN', { n: Math.round(q.score) }) : ''}${q.trigger_sent ? t('pipeline.posted') : ''}`}
             </span>
           </li>
         ))}
@@ -333,17 +336,17 @@ export default function Pipeline() {
   const watch = useMutation({
     mutationFn: (enabled: boolean) => setWatching(enabled),
     onSuccess: (r) => {
-      toast(r.watching ? 'Resumed watching' : 'Paused watching')
+      toast(r.watching ? t('pipeline.resumed') : t('pipeline.paused'))
       qc.setQueryData<PipelineStatus>(['pipeline'], (old) => (old ? { ...old, watching: r.watching } : old))
     },
-    onError: (e: Error) => toast(`Watching did not change. ${e.message}`, 'error'),
+    onError: (e: Error) => toast(t('pipeline.watchFailed', { message: e.message }), 'error'),
   })
   const upload = useMutation({
     mutationFn: async (files: File[]) => {
       for (const f of files) {
         const r = await uploadToInbox(f)
         toast(
-          r.duplicate ? `${r.file_name} was processed before. Skipped.` : `Copied ${r.file_name} into the inbox folder`,
+          r.duplicate ? t('pipeline.duplicate', { name: r.file_name }) : t('pipeline.copied', { name: r.file_name }),
         )
       }
     },
@@ -351,34 +354,33 @@ export default function Pipeline() {
   })
   const retry = useMutation({
     mutationFn: (id: string) => retryCall(id),
-    onSuccess: (r) => toast(`Retrying ${r.call_id}`),
-    onError: (e: Error) => toast(`Retry failed. ${e.message}`, 'error'),
+    onSuccess: (r) => toast(t('pipeline.retrying', { id: r.call_id })),
+    onError: (e: Error) => toast(t('call.retryFailed', { message: e.message }), 'error'),
   })
   const s = status.data
 
   return (
     <Page
-      title="Pipeline"
-      heading="Runs on its own"
-      intro="Klartext watches the inbox folder. Every recording that lands there is transcribed, checked and decided with no one clicking anything."
+      title={t('nav.pipeline')}
+      heading={t('pipeline.heading')}
+      intro={t('pipeline.intro')}
     >
       {USE_FIXTURES && (
         <p className="-mt-4 m-0 text-small text-muted">
-          Fixture mode: no backend is running. A dropped file or a processed folder plays back a stored result through
-          every stage.
+          {t('pipeline.fixture')}
         </p>
       )}
-      {status.isPending && <p className="m-0 text-muted">Loading the pipeline…</p>}
+      {status.isPending && <p className="m-0 text-muted">{t('pipeline.loading')}</p>}
       {status.error && (
         <div role="alert" className="flex flex-wrap items-center gap-3 rounded-panel border border-line p-4">
-          <span>Could not load the pipeline. {status.error.message}</span>
-          <Button onClick={() => status.refetch()}>Try again</Button>
+          <span>{t('pipeline.loadError', { message: status.error.message })}</span>
+          <Button onClick={() => status.refetch()}>{t('common.tryAgain')}</Button>
         </div>
       )}
       {s && (
         <>
           <section
-            aria-label="Inbox folder"
+            aria-label={t('pipeline.inbox')}
             className="flex flex-wrap items-center justify-between gap-4 rounded-panel border border-line bg-paper p-5"
           >
             <div className="flex items-center gap-4">
@@ -387,7 +389,7 @@ export default function Pipeline() {
               </span>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-medium">Inbox folder</span>
+                  <span className="font-medium">{t('pipeline.inbox')}</span>
                   <span
                     className={cn(
                       'inline-flex h-[22px] items-center gap-1.5 rounded-full px-2 text-[12px] font-medium',
@@ -398,11 +400,11 @@ export default function Pipeline() {
                       className={cn('h-1.5 w-1.5 rounded-full', s.watching ? 'bg-clear' : 'bg-muted')}
                       aria-hidden="true"
                     />
-                    {s.watching ? 'Watching' : 'Paused'}
+                    {s.watching ? t('pipeline.watching') : t('pipeline.pausedChip')}
                   </span>
                 </div>
                 <span className="text-muted">
-                  {s.inbox_dir} · checked every {s.poll_interval_s} s · {ago(s.last_file_at)}
+                  {s.inbox_dir} · {t('pipeline.checkedEvery', { n: s.poll_interval_s })} · {ago(s.last_file_at)}
                 </span>
               </div>
             </div>
@@ -412,12 +414,12 @@ export default function Pipeline() {
               ) : (
                 <Play strokeWidth={1.75} aria-hidden="true" />
               )}
-              {s.watching ? 'Pause watching' : 'Resume watching'}
+              {s.watching ? t('pipeline.pause') : t('pipeline.resume')}
             </Button>
           </section>
           {!s.watching && s.queue.some((q) => q.stage === 'queued') && (
             <p className="-mt-4 m-0 text-small text-muted">
-              Watching is paused. New files wait in the queue until you resume.
+              {t('pipeline.pausedNote')}
             </p>
           )}
 

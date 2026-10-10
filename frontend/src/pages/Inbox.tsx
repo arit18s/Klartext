@@ -17,12 +17,13 @@ import { INBOX_FILTERS, applyFilters, filterChips, removeChip, sortCalls, type F
 import { recordingName } from '@/lib/format'
 import { useFeedback } from '@/lib/hooks'
 import type { PipelineStatus } from '@/lib/types'
+import { t, tn } from '@/i18n'
 
 function pipelineLine(status: PipelineStatus | undefined): string {
-  if (!status) return 'Open pipeline'
-  if (!status.watching) return 'Watching paused'
+  if (!status) return t('inbox.openPipeline')
+  if (!status.watching) return t('inbox.watchingPaused')
   const waiting = status.queue.filter((q) => q.stage !== 'failed').length
-  return waiting ? `${waiting} ${waiting === 1 ? 'call' : 'calls'} in the queue` : 'Pipeline idle, inbox folder empty'
+  return waiting ? tn('inbox.inQueue', waiting) : t('inbox.idle')
 }
 
 export default function Inbox() {
@@ -44,17 +45,17 @@ export default function Inbox() {
   const header = (
     <section className="flex flex-wrap items-end justify-between gap-4">
       <div>
-        <h2 className="text-display">Needs attention</h2>
-        <p className="mt-1 text-muted">Alerts first, then reviews, highest score on top.</p>
+        <h2 className="text-display">{t('inbox.heading')}</h2>
+        <p className="mt-1 text-muted">{t('inbox.intro')}</p>
       </div>
       <div className="flex flex-wrap items-center gap-2">
         {USE_FIXTURES && (
           <Button
             variant="ghost"
-            title="Fixture mode: plays a stored recording through the pipeline, as if it had just been dropped into the inbox folder"
-            onClick={() => toast(`Simulating ${simulateIncomingCall()} arriving in the inbox folder`)}
+            title={t('inbox.simulateTitle')}
+            onClick={() => toast(t('inbox.simulating', { id: simulateIncomingCall() }))}
           >
-            Simulate a new recording
+            {t('inbox.simulate')}
           </Button>
         )}
         <DateRangeButton value={filters.date} onChange={(date) => setFilters({ ...filters, date })} />
@@ -65,20 +66,20 @@ export default function Inbox() {
 
   if (calls.isPending) {
     return (
-      <Page title="Inbox">
+      <Page title={t('nav.inbox')}>
         {header}
-        <p className="text-muted">Loading calls…</p>
+        <p className="text-muted">{t('inbox.loading')}</p>
       </Page>
     )
   }
 
   if (calls.error) {
     return (
-      <Page title="Inbox">
+      <Page title={t('nav.inbox')}>
         {header}
         <div role="alert" className="flex flex-wrap items-center gap-3 rounded-panel border border-line p-4">
-          <span>Could not load the calls. {calls.error.message}</span>
-          <Button onClick={() => calls.refetch()}>Try again</Button>
+          <span>{t('inbox.loadError', { message: calls.error.message })}</span>
+          <Button onClick={() => calls.refetch()}>{t('common.tryAgain')}</Button>
         </div>
       </Page>
     )
@@ -86,60 +87,59 @@ export default function Inbox() {
 
   if (counts && counts.flagged === 0) {
     return (
-      <Page title="Inbox">
+      <Page title={t('nav.inbox')}>
         <EmptyState
           icon={Check}
-          title="No calls need attention."
+          title={t('inbox.emptyTitle')}
           actions={
             <>
               <Link to="/calls" className={buttonVariants({ variant: 'primary' })}>
-                View all calls
+                {t('inbox.viewAll')}
               </Link>
               <Link to="/pipeline" className={buttonVariants()}>
-                Open pipeline
+                {t('inbox.openPipeline')}
               </Link>
             </>
           }
         >
-          {counts.done} of {counts.total} calls checked. New recordings appear here as soon as the pipeline decides they
-          need a look.
+          {t('inbox.emptyBody', { done: counts.done, total: counts.total })}
         </EmptyState>
       </Page>
     )
   }
 
   return (
-    <Page title="Inbox">
+    <Page title={t('nav.inbox')}>
       {header}
 
       {counts && (
-        <section aria-label="Summary" className="grid grid-cols-[repeat(auto-fit,minmax(168px,1fr))] gap-4">
+        <section aria-label={t('inbox.summary')} className="grid grid-cols-[repeat(auto-fit,minmax(168px,1fr))] gap-4">
           <StatCard
-            label="Alerts"
+            label={t('inbox.alerts')}
             value={counts.alarm}
             icon={Siren}
             tone="alarm"
-            footer={`${withoutFeedback} without feedback`}
+            footer={t('inbox.withoutFeedback', { n: withoutFeedback })}
             onClick={() => setFilters({ ...filters, verdict: ['alarm'] })}
           />
           <StatCard
-            label="Reviews"
+            label={t('inbox.reviews')}
             value={counts.review}
             icon={UserSearch}
             tone="review"
-            footer="Each with an open question"
+            footer={t('inbox.openQuestion')}
             onClick={() => setFilters({ ...filters, verdict: ['review'] })}
           />
           <StatCard
-            label="Checked today"
+            label={t('inbox.checkedToday')}
             value={counts.checked_today}
             icon={Check}
-            footer="View all calls"
+            footer={t('inbox.viewAll')}
             to="/calls"
           />
           <StatCard
-            label="Coverage"
-            value={`${counts.done} of ${counts.total}`}
+            label={t('inbox.coverage')}
+            value={t('common.ofTotal', { a: counts.done, b: counts.total })}
             icon={Clock}
             footer={pipelineLine(pipeline.data)}
             to="/pipeline"
@@ -147,40 +147,41 @@ export default function Inbox() {
         </section>
       )}
 
-      <section aria-label="Flagged calls" className="overflow-hidden rounded-panel border border-line bg-paper">
+      <section aria-label={t('inbox.flaggedCalls')} className="overflow-hidden rounded-panel border border-line bg-paper">
         <div className="flex flex-wrap items-center justify-between gap-3 px-4 pb-3 pt-4">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-muted">{chips.length ? 'Active filters' : 'No filters'}</span>
+            <span className="text-muted">{chips.length ? t('inbox.activeFilters') : t('inbox.noFilters')}</span>
             {chips.map((chip) => (
               <Tag
                 key={chip.key}
                 className="text-graphite"
                 onRemove={() => setFilters(removeChip(filters, chip.key))}
-                removeLabel={`Remove filter ${chip.label}`}
+                removeLabel={t('inbox.removeFilter', { label: chip.label })}
               >
                 {chip.label}
               </Tag>
             ))}
           </div>
-          <div className="flex items-center gap-1.5 text-small text-muted" aria-label="Keyboard shortcuts">
+          <div className="flex items-center gap-1.5 text-small text-muted" aria-label={t('inbox.shortcuts')}>
             <Kbd>↑</Kbd>
-            <Kbd>↓</Kbd> move <Kbd>Enter</Kbd> open <Kbd>A</Kbd> correct <Kbd>F</Kbd> false alert
+            <Kbd>↓</Kbd> {t('inbox.kbdMove')} <Kbd>Enter</Kbd> {t('inbox.kbdOpen')} <Kbd>A</Kbd> {t('inbox.kbdCorrect')}{' '}
+            <Kbd>F</Kbd> {t('inbox.kbdFalse')}
           </div>
         </div>
         <div className="border-t border-line">
           <CallsTable
             items={shown}
             variant="inbox"
-            noun="flagged calls"
-            label="Flagged calls"
+            noun={t('inbox.flaggedNoun')}
+            label={t('inbox.flaggedCalls')}
             onFeedback={(call, label) =>
               feedback.mutate({ callId: call.call_id, label, name: recordingName(call).name })
             }
             empty={
               <div className="flex flex-col items-center gap-3 px-4 py-10 text-center">
-                <p className="m-0 text-muted">No flagged calls match these filters.</p>
+                <p className="m-0 text-muted">{t('inbox.noMatch')}</p>
                 <Button onClick={() => setFilters({ ...INBOX_FILTERS, verdict: [], variant: [], date: 'all' })}>
-                  Clear filters
+                  {t('common.clearFilters')}
                 </Button>
               </div>
             }

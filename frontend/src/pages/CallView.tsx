@@ -21,6 +21,7 @@ import { PAD_S, evidenceForTime, parseT, segmentAt } from '@/lib/deeplink'
 import { formatDuration, formatProcessed, recordingName } from '@/lib/format'
 import { useFeedback } from '@/lib/hooks'
 import type { CallDetail, Evidence } from '@/lib/types'
+import { t, tn } from '@/i18n'
 
 function NotDecided({ detail }: { detail: CallDetail }) {
   const qc = useQueryClient()
@@ -28,10 +29,10 @@ function NotDecided({ detail }: { detail: CallDetail }) {
   const retry = useMutation({
     mutationFn: () => retryCall(detail.call.call_id),
     onSuccess: () => {
-      toast('Retried')
+      toast(t('call.retried'))
       qc.invalidateQueries({ queryKey: ['call', detail.call.call_id] })
     },
-    onError: (e: Error) => toast(`Retry failed. ${e.message}`, 'error'),
+    onError: (e: Error) => toast(t('call.retryFailed', { message: e.message }), 'error'),
   })
   const failed = detail.call.status === 'failed'
   return (
@@ -44,15 +45,15 @@ function NotDecided({ detail }: { detail: CallDetail }) {
       <div className="flex flex-col gap-3">
         <p className="m-0">
           {failed
-            ? (detail.call.error ?? 'Processing failed for this call.')
+            ? (detail.call.error ?? t('call.processingFailed'))
             : detail.call.status === 'waiting_for_asr'
-              ? 'This call has no transcript yet. It waits for the speech service; the checks run as soon as it is transcribed.'
-              : 'Klartext is still checking this call. The verdict appears here when it is ready.'}
+              ? t('call.waitingAsr')
+              : t('call.stillChecking')}
         </p>
         {failed && (
           <div>
             <Button onClick={() => retry.mutate()} disabled={retry.isPending}>
-              Retry
+              {t('common.retry')}
             </Button>
           </div>
         )}
@@ -76,12 +77,12 @@ function CallPage({ id }: { id: string }) {
   const rec = recordingName(call ?? { call_id: id, dialogue_id: null, variant: null })
 
   // Deep link: ?t= cues the call; the matching evidence card is focused. Clicks keep ?t= in sync.
-  const t = parseT(params.get('t'))
-  const [fromLink, setFromLink] = useState(() => t !== null)
+  const linkT = parseT(params.get('t'))
+  const [fromLink, setFromLink] = useState(() => linkT !== null)
   const [activeSeg, setActiveSeg] = useState<string | null>(null)
   const cardRefs = useRef(new Map<number, HTMLElement>())
   // From a link: the card matching t. After a click: the card of the clicked line, if it is evidence.
-  const linked = useMemo(() => (data && t !== null ? evidenceForTime(data.evidence, t) : null), [data, t])
+  const linked = useMemo(() => (data && linkT !== null ? evidenceForTime(data.evidence, linkT) : null), [data, linkT])
   const focused = fromLink ? linked : (data?.evidence.find((e) => e.seg_id === activeSeg) ?? null)
   const evidenceSegs = useMemo(() => new Set(data?.evidence.map((e) => e.seg_id)), [data])
 
@@ -136,7 +137,7 @@ function CallPage({ id }: { id: string }) {
     <>
       <Link to="/" className="inline-flex items-center gap-1 text-muted hover:text-graphite">
         <ChevronLeft size={16} strokeWidth={1.75} aria-hidden="true" />
-        Inbox
+        {t('nav.inbox')}
       </Link>
       <span className="text-line" aria-hidden="true">
         /
@@ -145,7 +146,7 @@ function CallPage({ id }: { id: string }) {
       {rec.variant && <Tag>{rec.variant}</Tag>}
       {call && (
         <span className="text-small text-muted">
-          {[formatDuration(call.duration_s), call.advisor_name, `processed ${formatProcessed(call.processed_at)}`]
+          {[formatDuration(call.duration_s), call.advisor_name, t('call.processedAt', { when: formatProcessed(call.processed_at) })]
             .filter(Boolean)
             .join(' · ')}
         </span>
@@ -156,15 +157,15 @@ function CallPage({ id }: { id: string }) {
   if (isPending || error || !data) {
     return (
       <Page title={title}>
-        {isPending && <p className="text-muted">Loading call…</p>}
+        {isPending && <p className="text-muted">{t('call.loading')}</p>}
         {error && (
           <p role="alert">
-            Could not open {id}. {error.message}{' '}
+            {t('call.openError', { id, message: error.message })}{' '}
             {error instanceof ApiError && error.status === 404 && (
               <>
-                Check the link, or open the call from{' '}
+                {t('call.checkLink')}{' '}
                 <Link to="/calls" className="underline">
-                  All calls
+                  {t('nav.allCalls')}
                 </Link>
                 .
               </>
@@ -185,7 +186,7 @@ function CallPage({ id }: { id: string }) {
 
   const decision = data.decision
   const decidedCheck = data.checks.find((c) => c.family === decision.family)
-  const cueSeconds = t ?? 0
+  const cueSeconds = linkT ?? 0
 
   return (
     <Page title={title}>
@@ -221,14 +222,14 @@ function CallPage({ id }: { id: string }) {
           </div>
 
           <div className="flex items-baseline justify-between gap-3 pt-2">
-            <h3 className="text-subtitle font-medium">Evidence, in time order</h3>
+            <h3 className="text-subtitle font-medium">{t('call.evidenceTitle')}</h3>
             <span className="text-small text-muted">
-              {data.evidence.length} {data.evidence.length === 1 ? 'passage' : 'passages'}
-              <span className="print:hidden"> · play adds 10 s before and after</span>
+              {tn('call.passages', data.evidence.length)}
+              <span className="print:hidden">{t('call.playPadding')}</span>
             </span>
           </div>
           {data.evidence.length === 0 && (
-            <p className="m-0 rounded-panel border border-line p-4 text-muted">No passages were cited for this call.</p>
+            <p className="m-0 rounded-panel border border-line p-4 text-muted">{t('call.noPassages')}</p>
           )}
           {data.evidence.map((e) => (
             <EvidenceCard

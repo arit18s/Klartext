@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom'
 import { Page } from '@/app/Page'
+import { t } from '@/i18n'
 
 export default function NotFound() {
   return (
-    <Page title="Page not found" heading="This page does not exist.">
+    <Page title={t('notFound.title')} heading={t('notFound.heading')}>
       <p>
-        Check the link, or go back to the{' '}
+        {t('notFound.body')}{' '}
         <Link to="/" className="underline">
-          Inbox
+          {t('nav.inbox')}
         </Link>
         .
       </p>

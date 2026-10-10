@@ -17,6 +17,7 @@ import { VerdictChip } from './VerdictChip'
 import { ScoreBar } from './ScoreBar'
 import { Tag } from './Tag'
 import { Button } from './ui/button'
+import { t } from '@/i18n'
 
 type Variant = 'inbox' | 'all'
 
@@ -104,16 +105,16 @@ export function CallsTable({
         <table className="w-full border-collapse" aria-label={label}>
           <thead>
             <tr>
-              <th className={th}>Verdict</th>
-              <th className={th}>Call</th>
-              <th className={th}>Family</th>
-              <th className={th}>Reason</th>
-              <th className={cn(th, 'text-right')}>Score</th>
-              {showEval && <th className={th}>Expected</th>}
-              {showEval && <th className={th}>Match</th>}
-              <th className={cn(th, 'text-right')}>Duration</th>
-              {variant === 'inbox' && <th className={cn(th, 'text-right')}>Processed</th>}
-              {variant === 'inbox' && <th className={th}>Status</th>}
+              <th className={th}>{t('table.verdict')}</th>
+              <th className={th}>{t('table.call')}</th>
+              <th className={th}>{t('table.family')}</th>
+              <th className={th}>{t('table.reason')}</th>
+              <th className={cn(th, 'text-right')}>{t('table.score')}</th>
+              {showEval && <th className={th}>{t('table.expected')}</th>}
+              {showEval && <th className={th}>{t('table.match')}</th>}
+              <th className={cn(th, 'text-right')}>{t('table.duration')}</th>
+              {variant === 'inbox' && <th className={cn(th, 'text-right')}>{t('table.processed')}</th>}
+              {variant === 'inbox' && <th className={th}>{t('table.status')}</th>}
             </tr>
           </thead>
           <tbody>
@@ -148,7 +149,7 @@ export function CallsTable({
                         <VerdictChip verdict={c.verdict} />
                       </span>
                     ) : (
-                      <span className="text-muted">Checking…</span>
+                      <span className="text-muted">{t('table.checking')}</span>
                     )}
                   </td>
                   <td className={td}>
@@ -182,10 +183,10 @@ export function CallsTable({
                     <td className={td}>
                       <div className="flex gap-2 text-muted">
                         {c.feedback_label && (
-                          <MessageSquareCheck size={16} strokeWidth={1.75} role="img" aria-label="Feedback given" />
+                          <MessageSquareCheck size={16} strokeWidth={1.75} role="img" aria-label={t('table.feedbackGiven')} />
                         )}
                         {c.trigger_sent && (
-                          <Send size={16} strokeWidth={1.75} role="img" aria-label="Sent to Outcept" />
+                          <Send size={16} strokeWidth={1.75} role="img" aria-label={t('table.sentToOutcept')} />
                         )}
                       </div>
                     </td>
@@ -199,15 +200,13 @@ export function CallsTable({
       </div>
       {items.length > 0 && (
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line px-4 py-3 text-small text-muted">
-          <span>
-            Showing {visible.length} of {items.length} {noun}
-          </span>
+          <span>{t('table.showing', { shown: visible.length, total: items.length, noun })}</span>
           <div className="flex gap-2">
             <Button size="md" disabled={current === 0} onClick={() => setPage(current - 1)}>
-              Previous
+              {t('common.previous')}
             </Button>
             <Button size="md" disabled={current >= pages - 1} onClick={() => setPage(current + 1)}>
-              Next
+              {t('common.next')}
             </Button>
           </div>
         </div>

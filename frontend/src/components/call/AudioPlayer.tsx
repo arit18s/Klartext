@@ -6,6 +6,7 @@ import type { Evidence, Segment } from '@/lib/types'
 import { formatDuration, formatTimestamp } from '@/lib/format'
 import { Button } from '../ui/button'
 import { speaker } from './labels'
+import { labels, t } from '@/i18n'
 
 export interface AudioPlayerHandle {
   /** Seek without playing. */
@@ -19,7 +20,7 @@ const RATES = [1, 1.5, 2, 0.75]
 const BAR = '#C9CBCF'
 const PLAYED = '#1E2126'
 const EVIDENCE = 'rgba(242, 199, 68, 0.85)'
-const ROLE = { context: 'Context', trigger: 'Trigger', exclusion: 'Exclusion' }
+const ROLE = labels({ context: 'evidence.context', trigger: 'evidence.trigger', exclusion: 'evidence.exclusion' })
 
 function ticks(duration: number): number[] {
   const step = [15, 30, 45, 60, 120, 300].find((s) => duration / s <= 6) ?? 600
@@ -124,17 +125,19 @@ export const AudioPlayer = forwardRef<
   const pct = (t: number) => `${(clamp(t) / duration) * 100}%`
   // segments can run past the decoded audio (rounded ASR times); never draw beyond the time axis
   const span = (start: number, end: number) => `${((clamp(end) - clamp(start)) / duration) * 100}%`
-  const regionText = evidence.map((e) => `${formatTimestamp(e.start_s)} to ${formatTimestamp(e.end_s)}`).join(', ')
+  const regionText = evidence
+    .map((e) => t('audio.range', { from: formatTimestamp(e.start_s), to: formatTimestamp(e.end_s) }))
+    .join(', ')
 
   return (
-    <section aria-label="Audio" className="flex flex-col gap-3 rounded-panel border border-line bg-paper p-5">
+    <section aria-label={t('audio.label')} className="flex flex-col gap-3 rounded-panel border border-line bg-paper p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <Button
             variant="primary"
             className="w-9 px-0"
             disabled={!ready}
-            aria-label={playing ? 'Pause' : `Play call from ${formatTimestamp(time)}`}
+            aria-label={playing ? t('audio.pause') : t('audio.playFrom', { time: formatTimestamp(time) })}
             onClick={() => ws.current?.playPause()}
           >
             {playing ? <Pause strokeWidth={1.75} aria-hidden="true" /> : <Play strokeWidth={1.75} aria-hidden="true" />}
@@ -147,15 +150,15 @@ export const AudioPlayer = forwardRef<
         <div className="flex flex-wrap items-center gap-4 text-small text-muted">
           <span className="inline-flex items-center gap-1.5">
             <span className="h-2.5 w-2.5 rounded-sm bg-signal" aria-hidden="true" />
-            Evidence passage
+            {t('audio.evidence')}
           </span>
           <span className="inline-flex items-center gap-1.5">
             <span className="h-2.5 w-2.5 rounded-sm bg-graphite" aria-hidden="true" />
-            Played
+            {t('audio.played')}
           </span>
           <Button
             size="sm"
-            aria-label={`Playback speed ${RATES[rate]}×`}
+            aria-label={t('audio.speed', { rate: RATES[rate] })}
             onClick={() => {
               const next = (rate + 1) % RATES.length
               setRate(next)
@@ -170,10 +173,10 @@ export const AudioPlayer = forwardRef<
       <div
         ref={box}
         role="img"
-        aria-label={`Waveform of the call.${evidence.length ? ` Evidence passages at ${regionText}.` : ''}`}
+        aria-label={t('audio.waveform') + (evidence.length ? t('audio.waveformEvidence', { list: regionText }) : '')}
         className="relative h-[72px] cursor-pointer"
       />
-      {failed && <p className="m-0 text-small text-alarm">The recording could not be loaded. {failed}</p>}
+      {failed && <p className="m-0 text-small text-alarm">{t('audio.loadFailed', { message: failed })}</p>}
 
       <div className="grid grid-cols-[64px_minmax(0,1fr)] items-center gap-y-1.5 text-small">
         {lanes.map(({ role, segs }) => (

@@ -3,13 +3,14 @@ import { ChevronRight } from 'lucide-react'
 import type { CheckResult, Decision } from '@/lib/types'
 import { EVENT_LABEL, FAMILY_LABEL, formatAgreement, roundScore } from '@/lib/format'
 import { cn } from '@/lib/utils'
+import { t } from '@/i18n'
 
 const th =
   'h-10 whitespace-nowrap border-b border-line px-3 first:pl-4 last:pr-4 text-left text-small font-medium text-muted'
 const td = 'h-11 whitespace-nowrap border-b border-line px-3 py-2 first:pl-4 last:pr-4'
 
 function EventCell({ check, decided, decision }: { check: CheckResult; decided: boolean; decision: Decision }) {
-  if (check.event_majority === 'failed') return <span className="text-alarm">Check failed</span>
+  if (check.event_majority === 'failed') return <span className="text-alarm">{t('checks.failed')}</span>
   const label = EVENT_LABEL[check.event_majority]
   if (decided) {
     const tone =
@@ -42,21 +43,21 @@ export function ChecksTable({ checks, decision }: { checks: CheckResult[]; decis
 
   return (
     <section
-      aria-label="Checks"
+      aria-label={t('checks.title')}
       className="break-inside-avoid overflow-hidden rounded-panel border border-line bg-paper"
     >
       <div className="flex items-center justify-between px-4 pb-2 pt-4">
-        <h3 className="text-subtitle font-medium">Checks</h3>
-        <span className="text-small text-muted">{runs} runs per check</span>
+        <h3 className="text-subtitle font-medium">{t('checks.title')}</h3>
+        <span className="text-small text-muted">{t('checks.runs', { n: runs })}</span>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
             <tr>
-              <th className={th}>Family</th>
-              <th className={th}>Event</th>
-              <th className={cn(th, 'text-right')}>Score</th>
-              <th className={cn(th, 'text-right')}>Agreement</th>
+              <th className={th}>{t('checks.family')}</th>
+              <th className={th}>{t('checks.event')}</th>
+              <th className={cn(th, 'text-right')}>{t('checks.score')}</th>
+              <th className={cn(th, 'text-right')}>{t('checks.agreement')}</th>
             </tr>
           </thead>
           <tbody>
@@ -97,25 +98,25 @@ export function ChecksTable({ checks, decision }: { checks: CheckResult[]; decis
                         <dl className="m-0 grid max-w-[72ch] gap-2 text-small">
                           {c.reason && (
                             <div>
-                              <dt className="font-medium">Reason</dt>
+                              <dt className="font-medium">{t('checks.reason')}</dt>
                               <dd className="m-0">{c.reason}</dd>
                             </div>
                           )}
                           {c.benign_explanation && (
                             <div>
-                              <dt className="font-medium">Harmless reading</dt>
+                              <dt className="font-medium">{t('checks.harmless')}</dt>
                               <dd className="m-0">{c.benign_explanation}</dd>
                             </div>
                           )}
                           {c.open_question && (
                             <div>
-                              <dt className="font-medium">Missing to decide</dt>
+                              <dt className="font-medium">{t('checks.missing')}</dt>
                               <dd className="m-0">{c.open_question}</dd>
                             </div>
                           )}
                           {c.needs_human_votes > 0 && (
                             <div className="text-muted">
-                              {c.needs_human_votes} of {c.samples} runs asked for a person to decide.
+                              {t('checks.humanVotes', { n: c.needs_human_votes, total: c.samples })}
                             </div>
                           )}
                         </dl>
