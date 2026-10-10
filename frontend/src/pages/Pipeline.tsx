@@ -371,7 +371,7 @@ export default function Pipeline() {
       {status.isPending && <p className="m-0 text-muted">Loading the pipeline…</p>}
       {status.error && (
         <div role="alert" className="flex flex-wrap items-center gap-3 rounded-panel border border-line p-4">
-          <span>The pipeline is not reachable. {status.error.message} Start the backend and try again.</span>
+          <span>Could not load the pipeline. {status.error.message}</span>
           <Button onClick={() => status.refetch()}>Try again</Button>
         </div>
       )}

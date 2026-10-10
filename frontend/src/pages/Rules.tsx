@@ -399,10 +399,14 @@ export default function Rules() {
         ]}
       />
 
+      {!current && !error && <p className="m-0 text-muted">Loading the {tab}…</p>}
       {error && (
-        <p role="alert" className="m-0">
-          Could not load the {tab}. {error.message}
-        </p>
+        <div role="alert" className="flex flex-wrap items-center gap-3 rounded-panel border border-line p-4">
+          <span>
+            Could not load the {tab}. {error.message}
+          </span>
+          <Button onClick={() => (tab === 'families' ? families.refetch() : keywords.refetch())}>Try again</Button>
+        </div>
       )}
       {tab === 'families' && families.data && <FamiliesTab saved={families.data} />}
       {tab === 'keywords' && keywords.data && (

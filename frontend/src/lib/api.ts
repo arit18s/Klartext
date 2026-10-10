@@ -44,6 +44,7 @@ import scoresFixture from '@/fixtures/scores.json'
 import familiesFixture from '@/fixtures/families.json'
 import keywordsFixture from '@/fixtures/keywords.json'
 import evalFixture from '@/fixtures/eval.json'
+import settingsFixture from '@/fixtures/settings.json'
 
 export const USE_FIXTURES = import.meta.env.VITE_USE_FIXTURES === 'true'
 
@@ -85,15 +86,29 @@ export class ApiError extends Error {
   }
 }
 
+export const UNREACHABLE = 'The Klartext server is not reachable. Check that the backend is running, then try again.'
+
+/** Turns a failed response into a sentence for the officer; the backend's `detail` wins when there is one. */
+async function failure(res: Response): Promise<ApiError> {
+  const body = await res.json().catch(() => null)
+  if (typeof body?.detail === 'string') return new ApiError(res.status, body.detail)
+  // No JSON body: a gateway or the dev proxy answered because the backend is down.
+  if (res.status >= 500) return new ApiError(res.status, UNREACHABLE)
+  if (res.status === 404) return new ApiError(404, 'Not found.')
+  return new ApiError(res.status, `The server refused the request (${res.status}).`)
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`/api${path}`, {
-    ...init,
-    headers: init?.body ? { 'Content-Type': 'application/json', ...init.headers } : init?.headers,
-  })
-  if (!res.ok) {
-    const body = await res.json().catch(() => null)
-    throw new ApiError(res.status, body?.detail ?? `${res.status} ${res.statusText}`)
+  let res: Response
+  try {
+    res = await fetch(`/api${path}`, {
+      ...init,
+      headers: init?.body ? { 'Content-Type': 'application/json', ...init.headers } : init?.headers,
+    })
+  } catch {
+    throw new ApiError(0, UNREACHABLE)
   }
+  if (!res.ok) throw await failure(res)
   return res.json() as Promise<T>
 }
 
@@ -547,6 +562,15 @@ export async function setWatching(enabled: boolean): Promise<WatchResponse> {
   return { watching: enabled }
 }
 
+/** Fixture mode only (demo): a new recording lands in the inbox folder. Each press uses the next free noisy C09 copy. */
+export function simulateIncomingCall(): string {
+  if (!USE_FIXTURES) throw new ApiError(400, 'Simulation only exists in fixture mode.')
+  for (let n = 4; ; n++) {
+    const name = n === 4 ? 'Stufe2_C09-K4.wav' : `Stufe2_C09-K4-${n - 4}.wav`
+    if (simEnqueue(name) === 'queued') return name
+  }
+}
+
 export async function processFolder(path: string): Promise<ProcessFolderResponse> {
   if (!USE_FIXTURES) return send<ProcessFolderResponse>('POST', '/pipeline/process-folder', { path })
   const r = simEnqueue('Stufe2_C09-K4.wav')
@@ -565,11 +589,10 @@ export async function uploadToInbox(file: File): Promise<UploadResponse> {
   if (!USE_FIXTURES) {
     const body = new FormData()
     body.append('file', file)
-    const res = await fetch('/api/pipeline/inbox', { method: 'POST', body })
-    if (!res.ok) {
-      const err = await res.json().catch(() => null)
-      throw new ApiError(res.status, err?.detail ?? `Upload failed (${res.status}).`)
-    }
+    const res = await fetch('/api/pipeline/inbox', { method: 'POST', body }).catch(() => {
+      throw new ApiError(0, UNREACHABLE)
+    })
+    if (!res.ok) throw await failure(res)
     return res.json() as Promise<UploadResponse>
   }
   const r = simEnqueue(file.name)
@@ -586,8 +609,10 @@ const csvCell = (v: unknown) => {
 /** Results as CSV (contract: GET /pipeline/export?format=csv). Fixture mode builds it from the fixtures. */
 export async function exportCsv(): Promise<Blob> {
   if (!USE_FIXTURES) {
-    const res = await fetch(exportUrl('csv'))
-    if (!res.ok) throw new ApiError(res.status, `Export failed (${res.status}).`)
+    const res = await fetch(exportUrl('csv')).catch(() => {
+      throw new ApiError(0, UNREACHABLE)
+    })
+    if (!res.ok) throw await failure(res)
     return res.blob()
   }
   const header = ['call_id', 'file_name', 'verdict', 'family', 'score', 'reason', 'open_question', 'evidence']
@@ -603,8 +628,10 @@ export async function exportCsv(): Promise<Blob> {
 /** Results as JSON (contract: GET /pipeline/export?format=json). */
 export async function exportJson(): Promise<Blob> {
   if (!USE_FIXTURES) {
-    const res = await fetch(exportUrl('json'))
-    if (!res.ok) throw new ApiError(res.status, `Export failed (${res.status}).`)
+    const res = await fetch(exportUrl('json')).catch(() => {
+      throw new ApiError(0, UNREACHABLE)
+    })
+    if (!res.ok) throw await failure(res)
     return res.blob()
   }
   const rows = await Promise.all(
@@ -619,5 +646,18 @@ export async function exportJson(): Promise<Blob> {
 }
 
 export const eventsUrl = '/api/events'
-export const getSettings = () => (USE_FIXTURES ? noFixture('Settings') : request<SettingsResponse>('/settings'))
+export async function getSettings(): Promise<SettingsResponse> {
+  if (!USE_FIXTURES) return request<SettingsResponse>('/settings')
+  const base = settingsFixture as unknown as SettingsResponse
+  // Config versions follow edits made in this tab (fixture mode keeps them in memory).
+  return {
+    ...base,
+    config_versions: {
+      ...base.config_versions,
+      keywords: fixtureKeywords.version_id,
+      families: fixtureFamilies.version_id,
+      thresholds: fixtureThresholds?.version_id ?? base.config_versions.thresholds,
+    },
+  }
+}
 export const getAdvisors = () => (USE_FIXTURES ? noFixture('Advisors') : request<AdvisorRow[]>('/advisors'))

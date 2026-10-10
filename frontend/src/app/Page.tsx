@@ -26,12 +26,3 @@ export function Page({ title, heading, intro, children }: PageProps) {
     </>
   )
 }
-
-/** Stand-in body for pages built in later steps. */
-export function NotBuiltYet({ step }: { step: string }) {
-  return (
-    <div className="rounded-panel border border-dashed border-line px-6 py-12 text-center text-muted">
-      This page is built in step {step}.
-    </div>
-  )
-}

@@ -244,6 +244,13 @@ if (b.tp + b.fp + b.fn + b.tn !== m.n_calls) fail('eval.json.binary', 'tp+fp+fn+
 if (m.pr_curve.length !== 101 || m.pr_curve.some((p, i) => p.t_review !== i)) fail('eval.json.pr_curve', 'one point per t_review 0..100')
 for (const x of m.mismatches) if (!list.items.some((c) => c.call_id === x.call_id)) fail('eval.json.mismatches', `${x.call_id} unknown`)
 
+// ---- settings.json ----
+const st = load('settings.json')
+keys('settings.json', st, ['llm_model', 'llm_base_url', 'asr_model', 'trigger_api_url', 'trigger_api_enabled', 'config_versions'])
+keys('settings.json.config_versions', st.config_versions, ['keywords', 'families', 'thresholds', 'model'])
+if (JSON.stringify(st).match(/key|secret|token/i) && /sk-|or-v1/.test(JSON.stringify(st))) fail('settings.json', 'looks like it contains a key')
+if (st.config_versions.thresholds !== scores.thresholds.version_id) fail('settings.json', 'thresholds version differs from scores.json')
+
 if (problems.length) {
   console.error(`Fixture check failed (${problems.length}):\n  ` + problems.join('\n  '))
   process.exit(1)

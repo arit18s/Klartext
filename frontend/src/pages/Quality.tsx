@@ -308,22 +308,34 @@ function KeywordBaseline({ m }: { m: EvalMetrics }) {
       className="flex flex-col gap-3 rounded-panel border border-line bg-paper p-5"
     >
       <h3 className="text-subtitle font-medium">Compared with a keyword filter</h3>
-      <dl className="m-0 grid grid-cols-[1fr_auto_auto] gap-x-6 gap-y-2">
-        <span />
-        <dt className="text-right text-small text-muted">Keyword filter</dt>
-        <dt className="text-right text-small text-muted">Klartext</dt>
-        {[
-          ['Flagged calls', String(k.flagged), String(b.tp + b.fp)],
-          ['Precision', two(k.precision), two(b.precision)],
-          ['Recall', two(k.recall), two(b.recall)],
-        ].map(([label, a, c]) => (
-          <div key={label} className="contents">
-            <dt>{label}</dt>
-            <dd className="tabular m-0 text-right">{a}</dd>
-            <dd className="tabular m-0 text-right font-semibold">{c}</dd>
-          </div>
-        ))}
-      </dl>
+      <table className="w-full border-collapse">
+        <thead>
+          <tr>
+            <td />
+            <th scope="col" className="pb-1 text-right text-small font-normal text-muted">
+              Keyword filter
+            </th>
+            <th scope="col" className="pb-1 pl-6 text-right text-small font-normal text-muted">
+              Klartext
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            ['Flagged calls', String(k.flagged), String(b.tp + b.fp)],
+            ['Precision', two(k.precision), two(b.precision)],
+            ['Recall', two(k.recall), two(b.recall)],
+          ].map(([label, a, c]) => (
+            <tr key={label}>
+              <th scope="row" className="py-1 text-left font-normal">
+                {label}
+              </th>
+              <td className="tabular py-1 text-right">{a}</td>
+              <td className="tabular py-1 pl-6 text-right font-semibold">{c}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <p className="m-0 text-small text-muted">
         Same calls, same expected verdicts. The keyword filter flags any call where an enabled keyword is said.
       </p>

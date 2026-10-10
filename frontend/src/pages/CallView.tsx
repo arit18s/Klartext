@@ -15,7 +15,7 @@ import { KeywordHits } from '@/components/call/KeywordHits'
 import { Transcript } from '@/components/call/Transcript'
 import { VerdictHeader, type FeedbackAction } from '@/components/call/VerdictHeader'
 import { WhyUnclear, isUnclear } from '@/components/call/WhyUnclear'
-import { audioSource, getCall, retryCall } from '@/lib/api'
+import { ApiError, audioSource, getCall, retryCall } from '@/lib/api'
 import { PAD_S, evidenceForTime, parseT, segmentAt } from '@/lib/deeplink'
 import { formatDuration, formatProcessed, recordingName } from '@/lib/format'
 import { useFeedback } from '@/lib/hooks'
@@ -156,11 +156,16 @@ function CallPage({ id }: { id: string }) {
         {isPending && <p className="text-muted">Loading call…</p>}
         {error && (
           <p role="alert">
-            Could not open {id}. {error.message} Open it again from{' '}
-            <Link to="/calls" className="underline">
-              All calls
-            </Link>
-            .
+            Could not open {id}. {error.message}{' '}
+            {error instanceof ApiError && error.status === 404 && (
+              <>
+                Check the link, or open the call from{' '}
+                <Link to="/calls" className="underline">
+                  All calls
+                </Link>
+                .
+              </>
+            )}
           </p>
         )}
       </Page>

@@ -36,7 +36,7 @@ export function TopBar({ children }: { children: ReactNode }) {
     <header className="flex min-h-topbar flex-wrap items-center justify-between gap-3 border-b border-line px-8 py-2.5">
       <div className="flex min-w-0 flex-wrap items-center gap-3">{children}</div>
       <form role="search" onSubmit={submit} className="w-[min(360px,100%)]">
-        <label className="flex h-9 w-full items-center gap-2 rounded-control border border-line bg-paper px-3 text-muted">
+        <label className="flex h-9 w-full items-center focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-graphite gap-2 rounded-control border border-line bg-paper px-3 text-muted">
           <Search size={16} strokeWidth={1.75} aria-hidden="true" className="flex-none" />
           <input
             ref={input}
