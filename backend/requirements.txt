@@ -37,3 +37,4 @@ typing-extensions==4.16.0
 typing-inspection==0.4.4
 uvicorn==0.54.0
 watchdog==6.0.0
+pytest==9.1.1  # tests only (python -m pytest from backend/)
