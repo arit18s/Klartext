@@ -2,13 +2,13 @@
 
 Updated with every step's commit. Steps and checks: `06_IMPLEMENTATION_PLAN.md`. Submission Sunday 08:30, feature freeze Saturday 22:00.
 
-Last update: Sat 10 Oct, 09:35 (B28 thresholds v4, B29 holdout run done; demo file ready).
+Last update: Sat 10 Oct, 09:45 (B30, B31 done; clean final run of all 60 calls on the frozen config).
 
 ## Next up
 
 | Track | Next 3 steps |
 |---|---|
-| Backend | **B30** hidden test set dry run (renamed files) → **B31** robustness pass → **B32** freeze (Sat 22:00) |
+| Backend | **B32** freeze (Sat 22:00) → **B34** demo rehearsal ×3 + backup recording → **B35** final run Sunday 06:00 (repeat the clean re-run below) |
 | Frontend | **F10** Switch to real API (needs B24–B26, incl. SSE `/api/events` and `POST /pipeline/inbox`) → integration bugs → demo rehearsal with B34 |
 
 ## Demo prep (todo)
@@ -16,6 +16,10 @@ Last update: Sat 10 Oct, 09:35 (B28 thresholds v4, B29 holdout run done; demo fi
 - [x] **Live-drop call:** a re-encoded copy of **Stufe2_C09-K3** (the PRD demo alarm, 2:23, twin C10 in the batch): `ffmpeg -i case-data/Audio/Stufe2_C09-K3.wav -af adelay=300 -ar 16000 -ac 1 demo_call.wav`. Different bytes → not skipped as a duplicate; neutral name → no level/variant chip (hidden-set behaviour). Keep it out of the batch by never putting it in case-data/Audio.
 - [x] **Its transcript:** decided (D42): copy of Stufe2_C09-K3's transcript as `data/transcripts/demo_call.json`; no live ASR. File: `data/demo/demo_call.wav` (byte-different, identical audio). Rehearsed: drop → alarm, access, twin C10, in 6 s with cached LLM answers (30–60 s with an empty cache).
 - [ ] **Reset after each rehearsal:** `python scripts/purge_call.py demo_call --keep-transcript`, then `DELETE /triggers` on the Outcept API if its list should be clean.
+
+## Clean demo state (Sat 09:45)
+
+Final run on the frozen config (check prompts a8ee57dbcc41, thresholds v4, large-v3, k=5, reasoning off): 60/60 calls done, decisions identical to before the reset (60/60 verdict, family, score, reason, twin), 35 triggers in the Outcept list, 166 evidence rows with snippets, 53 calls with an advisor name (25 distinct). Config versions and the 4 eval runs kept; per-call rows and stage files rebuilt. Backup of the previous DB: `data/klartext.backup-20261010-0941.db`. `demo_call` is not in the DB; `data/demo/demo_call.wav` and its transcript are ready.
 
 ## Risks / open items
 
@@ -65,8 +69,8 @@ Last update: Sat 10 Oct, 09:35 (B28 thresholds v4, B29 holdout run done; demo fi
 | B27 Fixture export | todo | – | |
 | B28 Threshold tuning on dev | done | (this commit) | Review 30 / alarm 70 saved as thresholds version 4 (via PUT /config/thresholds, audit logged), all 60 decisions re-decided on it. Recall 1.00 holds 10–50 on dev; 30 keeps a two-vote margin (DECISIONS D11) |
 | B29 Holdout run | done | (this commit) | Once, frozen (check prompts a8ee57dbcc41, thresholds v4, large-v3, k=5, reasoning off): 20 holdout recordings P 0.91 R 1.00, exact 18/20, Stufe2 pairs 3/3, Stufe3 review 1/2 (C19-K4 alarm, caught), clean/noisy 8/10, evidence overlap 9/9, family 10/10; keyword-only P 0.67 R 0.40. Extra flag: C15-K4 (review). Nothing tuned afterwards. `data/eval/eval-20261010-073258-holdout-asr.json` |
-| B30 Hidden test set dry run | todo | – | |
-| B31 Robustness pass | todo | – | |
+| B30 Hidden test set dry run | done | (this commit) | Isolated DATA_DIR, 6 dev recordings renamed to random names, via POST /pipeline/process-folder + GET /pipeline/export (JSON + CSV): 6/6 verdict, family and score identical to the original names, 0 new LLM requests (no prompt contains a name), level/variant/dialogue null, notes.txt rejected. Static check: names are parsed only in `display_fields()` (display) |
+| B31 Robustness pass | done | (this commit) | Trigger API killed mid-run: calls still done, failed post recorded ("Connection refused"), re-run `--from notify` delivers it. Bad LLM key (empty cache): all checks failed → review "A check could not complete. Needs a human.", roles fall back, key never stored. Corrupt / empty WAV: rejected (process-folder) or failed (watcher) with a plain message, watcher keeps running. Fixed: empty file no longer blocks the watcher 60 s |
 | B32 Freeze | todo | – | Sat 22:00 |
 | B33 Pitch material | draft done | (this commit) | `docs/pitch/`: architecture and operating concept slides (HTML, PNG, PDF), timed demo script, Q&A sheet. Numbers marked `[B29]` until the holdout run on ASR |
 | B34 Demo rehearsal | todo | – | |

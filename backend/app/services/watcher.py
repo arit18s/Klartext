@@ -94,11 +94,11 @@ class InboxWatcher:
     # ----- worker -----
     def _wait_stable(self, path: Path) -> bool:
         last = -1
-        for _ in range(60):
+        for i in range(60):
             if not path.exists():
                 return False
             size = path.stat().st_size
-            if size == last and size > 0:
+            if size == last and (size > 0 or i >= 3):  # an empty file counts as stable after 3 checks
                 return True
             last = size
             time.sleep(STABLE_S)
