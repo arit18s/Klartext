@@ -27,7 +27,7 @@ from app.db.config_store import get_active_config  # noqa: E402
 from app.eval.ground_truth import load_ground_truth  # noqa: E402
 from app.models.checks import SampleRecord  # noqa: E402
 from app.pipeline.checks import CallChecks, run_checks_many, run_numbers_many  # noqa: E402
-from app.pipeline.decide import DecisionInput, FamilyScore, decide  # noqa: E402
+from app.pipeline.check_stage import decision_for  # noqa: E402
 from app.pipeline.sources import ScriptTranscriptSource  # noqa: E402
 
 SPLITS = Path(__file__).resolve().parents[1] / "app/eval/splits.json"
@@ -39,15 +39,6 @@ def dialogue_set(name: str) -> list[str]:
     if name == "dev":
         return list(splits["dev"])
     return [d for d in splits["dev"] if d.startswith("Stufe2_")] + ["Stufe3_C17", "Stufe3_C18"]
-
-
-def decision_for(cc: CallChecks, thresholds: dict, k: int):
-    fams = [
-        FamilyScore(family=f, score=r.score, failed=r.failed, needs_human_votes=r.needs_human_votes,
-                    open_question=r.open_question, reason=r.reason, reason_de=r.reason_de)
-        for f, r in cc.families.items()
-    ]
-    return decide(DecisionInput(families=fams, t_review=thresholds["review"], t_alarm=thresholds["alarm"], samples=k))
 
 
 def main() -> int:
