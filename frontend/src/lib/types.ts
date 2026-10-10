@@ -487,13 +487,16 @@ export interface SettingsResponse {
 }
 
 /** GET /api/advisors (stretch). */
+/** GET /api/advisors (R12): one row per advisor name; calls without a recognised name are left out. */
 export interface AdvisorRow {
   advisor_name: string
-  calls: number
+  calls: number // every call, decided or not
   alarm: number
   review: number
   no_alert: number
-  families: Family[]
+  families: Family[] // families of the alarms and reviews, fixed family order
+  last_call_at: string | null
+  last_call_id: string | null
 }
 
 /** Error body for every non-2xx response (FastAPI default). */

@@ -37,6 +37,22 @@ def iso(dt: datetime | None) -> str | None:
     return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def parse_since(since: str | None) -> datetime | None:
+    if not since:
+        return None
+    try:
+        dt = datetime.fromisoformat(since.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail="since must be an ISO time, e.g. 2026-10-10T08:00:00Z.") from exc
+    return (dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)).astimezone(timezone.utc)
+
+
+def utc(dt: datetime | None) -> datetime | None:
+    if dt is None:
+        return None
+    return dt.replace(tzinfo=timezone.utc) if dt.tzinfo is None else dt.astimezone(timezone.utc)
+
+
 def family_rank(family: str) -> int:
     return FAMILY_ORDER.index(family) if family in FAMILY_ORDER else len(FAMILY_ORDER)
 

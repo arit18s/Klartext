@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "check:fixtures": "node scripts/check-fixtures.mjs",
-    "test": "node --test src/lib/decide.test.ts"
+    "test": "node --test src/lib/decide.test.ts src/lib/advisors.test.ts"
   },
   "dependencies": {
     "@fontsource/instrument-sans": "5.3.0",

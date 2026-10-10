@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from collections import Counter
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Annotated, Any, Literal
 from zoneinfo import ZoneInfo
 
@@ -15,7 +15,7 @@ from sqlmodel import Session, select
 
 from app.api import jobs
 from app.api.common import (
-    VERDICT_RANK, PlainErrorRoute, CallSummary, audit, call_summary, confined, expected_verdicts, family_rank, get_call_or_404, iso,
+    VERDICT_RANK, PlainErrorRoute, parse_since, utc, CallSummary, audit, call_summary, confined, expected_verdicts, family_rank, get_call_or_404, iso,
     latest_feedback_labels, parse_json, triggered_call_ids,
 )
 from app.config import get_settings
@@ -156,27 +156,11 @@ def _split(value: str | None, allowed: set[str] | None = None, name: str = "") -
     return items or None
 
 
-def _parse_since(since: str | None) -> datetime | None:
-    if not since:
-        return None
-    try:
-        dt = datetime.fromisoformat(since.replace("Z", "+00:00"))
-    except ValueError as exc:
-        raise HTTPException(status_code=422, detail="since must be an ISO time, e.g. 2026-10-10T08:00:00Z.") from exc
-    return (dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)).astimezone(timezone.utc)
-
-
-def _utc(dt: datetime | None) -> datetime | None:
-    if dt is None:
-        return None
-    return dt.replace(tzinfo=timezone.utc) if dt.tzinfo is None else dt.astimezone(timezone.utc)
-
-
 def _counts(calls: list[Call], decisions: dict[str, Decision]) -> CallCounts:
     ids = {c.id for c in calls}
     verdicts = Counter(d.verdict for d in decisions.values() if d.call_id in ids)
     today = datetime.now(ZURICH).date()
-    checked_today = sum(1 for c in calls if c.processed_at and _utc(c.processed_at).astimezone(ZURICH).date() == today)
+    checked_today = sum(1 for c in calls if c.processed_at and utc(c.processed_at).astimezone(ZURICH).date() == today)
     return CallCounts(
         total=len(calls), done=sum(1 for c in calls if c.status == "done"),
         flagged=verdicts["alarm"] + verdicts["review"], alarm=verdicts["alarm"], review=verdicts["review"],
@@ -207,7 +191,7 @@ def list_calls(
     levels = _split(level, {"1", "2", "3"}, "level")
     variants = _split(variant, VARIANTS, "variant")
     advisors = _split(advisor)
-    since_dt = _parse_since(since)
+    since_dt = parse_since(since)
 
     calls = list(session.exec(select(Call)))
     decisions = {d.call_id: d for d in session.exec(select(Decision))}
@@ -231,7 +215,7 @@ def list_calls(
             return False
         if advisors and c.advisor_name not in advisors:
             return False
-        if since_dt and (c.processed_at is None or _utc(c.processed_at) < since_dt):
+        if since_dt and (c.processed_at is None or utc(c.processed_at) < since_dt):
             return False
         if needle and not (needle in c.id.lower() or needle in (c.advisor_name or "").lower() or c.id in text_hits):
             return False

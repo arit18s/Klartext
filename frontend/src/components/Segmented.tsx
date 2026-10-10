@@ -34,7 +34,7 @@ export function Segmented<T extends string>({
           disabled={o.disabled}
           onClick={() => onChange(o.value)}
           className={cn(
-            'h-[30px] flex-1 rounded px-3 text-[13px] font-medium leading-5 text-muted disabled:cursor-not-allowed disabled:opacity-50',
+            'h-[30px] flex-1 whitespace-nowrap rounded px-3 text-[13px] font-medium leading-5 text-muted disabled:cursor-not-allowed disabled:opacity-50',
             o.value === value && 'bg-paper text-graphite shadow-[0_0_0_1px_rgb(var(--line))]',
           )}
         >

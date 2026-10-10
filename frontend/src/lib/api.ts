@@ -1,5 +1,6 @@
 // Typed client for the backend API (docs/API_CONTRACT.md). With VITE_USE_FIXTURES=true the read endpoints
 // that have fixtures answer from src/fixtures; every other call needs the backend.
+import { advisorRows } from './advisors'
 import type {
   AdvisorRow,
   CallDetail,
@@ -660,4 +661,8 @@ export async function getSettings(): Promise<SettingsResponse> {
     },
   }
 }
-export const getAdvisors = () => (USE_FIXTURES ? noFixture('Advisors') : request<AdvisorRow[]>('/advisors'))
+/** GET /api/advisors (R12). Fixture mode groups the fixture calls with the same rules (lib/advisors.ts). */
+export async function getAdvisors(since: string | null = null): Promise<AdvisorRow[]> {
+  if (!USE_FIXTURES) return request<AdvisorRow[]>(`/advisors${since ? `?since=${encodeURIComponent(since)}` : ''}`)
+  return advisorRows(fixtureItems(), since)
+}

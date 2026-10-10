@@ -20,7 +20,11 @@ const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one :
 export default function AllCalls() {
   const [params, setParams] = useSearchParams()
   const q = params.get('q') ?? ''
-  const [filters, setFilters] = useState<FilterState>(EMPTY_FILTERS)
+  // ?advisor=… (from the Advisors page) opens with that advisor's calls
+  const [filters, setFilters] = useState<FilterState>(() => ({
+    ...EMPTY_FILTERS,
+    advisor: params.get('advisor') || null,
+  }))
   const [evalMode, setEvalMode] = useState(() => params.get('mismatches') === '1' || readFlag(EVAL_KEY, true))
   // ?mismatches=1 (from the Quality page) opens with evaluation mode and only mismatches on.
   const [onlyMismatches, setOnlyMismatches] = useState(() => params.get('mismatches') === '1')
@@ -100,6 +104,23 @@ export default function AllCalls() {
             Evaluation mode compares each verdict with the expected one from the test set. A fraud call sent to review
             counts as caught.
           </span>
+        </div>
+      )}
+
+      {filters.advisor && (
+        <div className="-mt-2 flex items-center gap-2">
+          <span className="text-muted">Calls of</span>
+          <Tag
+            className="text-graphite"
+            onRemove={() => {
+              setFilters({ ...filters, advisor: null })
+              params.delete('advisor')
+              setParams(params)
+            }}
+            removeLabel="Show every advisor"
+          >
+            {filters.advisor}
+          </Tag>
         </div>
       )}
 
