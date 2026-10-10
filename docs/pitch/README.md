@@ -9,6 +9,7 @@
 | `demo-script.md` | The 5-minute demo from `01_PRD.md` section 10: what to click, what to say, timed, with fallbacks. |
 | `qa.md` | Q&A sheet from the pitch lines in `DECISIONS.md`. |
 | `video-aufnahmen.md` | Shot list (German) for the ten backup demo videos: setup, what to click per clip, what not to click, reset afterwards. Videos go to `videos/` (git-ignored). |
+| `build-video-deck.js` | Builds `videos/klartext-slides-videos.pptx`: slides 0–3 as PNG, then a backup divider and one slide per demo video (muted, autoplay, poster = first frame). Clip 10 (Outcept) still missing: its slide holds an empty frame. Needs `pptxgenjs`, `sharp`, `jszip` and ffprobe. |
 
 ## Slide order
 
