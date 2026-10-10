@@ -5,6 +5,7 @@
 | `slides.html` | The deck, 1920 × 1080 per slide, Klartext design system, font embedded. Open in a browser; print to PDF gives one slide per page. The backup slides load their images from `screens/`, so keep that folder next to the file. |
 | `0-title.png` … `14-backup-j-outcept.png` | Every slide as an image, for any deck tool (order below). |
 | `klartext-slides.pdf` | All 15 slides as PDF. |
+| `klartext-pitch.pptx` | PowerPoint for the 5-minute pitch (English, two speakers): 7 pitch slides, 10 backup demo slides (screenshots to replace with the videos), 3 Q&A slides. The spoken script is in the speaker notes. Arial, so it looks the same on any PC. |
 | `screens/` | The raw demo screenshots (1920 × 1080, 100 % zoom) used on the backup slides. |
 | `demo-script.md` | The 5-minute demo from `01_PRD.md` section 10: what to click, what to say, timed, with fallbacks. |
 | `qa.md` | Q&A sheet from the pitch lines in `DECISIONS.md`. |
