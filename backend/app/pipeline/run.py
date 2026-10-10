@@ -15,6 +15,7 @@ import hashlib
 import json
 import logging
 import re
+import time
 from collections.abc import Callable
 from datetime import datetime, timezone
 from pathlib import Path
@@ -44,6 +45,10 @@ PENDING_STAGES: list[str] = []
 MIN_WORDS = 5  # fewer recognised words than this: "No speech recognised"
 NO_SPEECH_REASON = "No speech recognised. Needs a human."
 NO_SPEECH_REASON_DE = "Keine Sprache erkannt. Braucht einen Menschen."
+
+# Pipeline status stages of API_CONTRACT.md (GET /pipeline/status)
+STATUS_STAGE = {"asr": "transcribing", "roles": "diarizing", "normalise": "checking", "keywords": "checking",
+                "checks": "checking", "decide": "deciding", "evidence": "deciding", "twin": "deciding", "notify": "deciding"}
 
 _NAME_RE = re.compile(r"^(Stufe([123])_[A-Z]\d{2})-(K[1-4])$")
 
@@ -94,6 +99,22 @@ def display_fields(stem: str) -> tuple[str | None, str | None, int | None]:
     return m.group(1), "clean" if m.group(3) in ("K1", "K3") else "noisy", int(m.group(2))
 
 
+def _live(call_id: str | None = None, stage: str | None = None, queue_changed: bool = False) -> None:
+    """Report to the API's live state (SSE + /pipeline/status). Thread-safe on the API side; never raises here."""
+    try:
+        from app.api import events, pipeline_state
+
+        if call_id and stage:
+            pipeline_state.report_progress(call_id, STATUS_STAGE.get(stage, stage), (STAGES.index(stage) + 1) / len(STAGES),
+                                           f"{stage} ({STAGES.index(stage) + 1} of {len(STAGES)})")
+        if call_id:
+            events.notify_call_updated(call_id)
+        if queue_changed:
+            events.notify_pipeline_status()
+    except Exception:
+        log.debug("Live update failed", exc_info=True)
+
+
 def _set_status(call_id: str, status: str, error: str | None = None) -> None:
     with Session(get_engine()) as session:
         call = session.get(Call, call_id)
@@ -103,6 +124,7 @@ def _set_status(call_id: str, status: str, error: str | None = None) -> None:
                 call.processed_at = _now()
             session.add(call)
             session.commit()
+    _live(call_id, queue_changed=True)
 
 
 # ---------- registration ----------
@@ -124,7 +146,8 @@ def register(path: Path) -> tuple[Call, bool]:
         session.add(call)
         session.commit()
         session.refresh(call)
-        return call, True
+    _live(call.id, queue_changed=True)
+    return call, True
 
 
 # ---------- stages ----------
@@ -315,6 +338,7 @@ def process(call_ids: list[str], from_stage: str = "asr") -> RunSummary:
     if from_stage not in STAGES:
         raise ValueError(f"Unknown stage '{from_stage}'. Stages: {', '.join(STAGES)}")
     start = STAGES.index(from_stage)
+    started = time.monotonic()
     summary = RunSummary()
     active = list(call_ids)
 
@@ -322,7 +346,12 @@ def process(call_ids: list[str], from_stage: str = "asr") -> RunSummary:
         nonlocal active
         if STAGES.index(stage) < start:
             return
-        active = [cid for cid in active if _guard(cid, summary, lambda cid=cid: fn(cid))]
+        kept = []
+        for cid in active:
+            _live(cid, stage)
+            if _guard(cid, summary, lambda cid=cid: fn(cid)):
+                kept.append(cid)
+        active = kept
 
     if start == 0:
         ready = []
@@ -335,6 +364,8 @@ def process(call_ids: list[str], from_stage: str = "asr") -> RunSummary:
     run_each("normalise", stage_normalise)
     run_each("keywords", stage_keywords)
     if STAGES.index("checks") >= start and active:
+        for cid in active:
+            _live(cid, "checks")
         try:
             stage_checks(active)
         except Exception as exc:
@@ -360,4 +391,11 @@ def process(call_ids: list[str], from_stage: str = "asr") -> RunSummary:
     for cid in active:
         _set_status(cid, "done")
         summary.done.append(cid)
+    try:
+        from app.api import pipeline_state
+
+        pipeline_state.batch_finished(files=len(call_ids), failed=len(summary.failed), duration_s=round(time.monotonic() - started, 1))
+    except Exception:
+        log.debug("Batch report failed", exc_info=True)
+    _live(queue_changed=True)
     return summary
