@@ -29,6 +29,8 @@ ssh ubuntu@138.124.210.190 'nvidia-smi --query-gpu=name,memory.used --format=csv
 
 If SSH times out: check that the instance runs and that the firewall allows SSH from your current IP (security group).
 
+> Shortcut for steps 2–5: `backend/scripts/transcribe_on_gpu.sh <folder> hidden-test-set` prepares, uploads, transcribes and fetches the transcripts in one go (HF_TOKEN from `.env` or asked, never shown). See also `GUIDE_NEW_AUDIO.md`.
+
 ## 2. Prepare the recordings on the laptop (2 min)
 
 Put the organisers' files into a folder (e.g. `~/Downloads/hidden`), then:

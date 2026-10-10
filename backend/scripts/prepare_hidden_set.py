@@ -23,6 +23,13 @@ import soundfile as sf
 AUDIO_EXT = {".wav", ".mp3", ".m4a", ".mp4", ".flac", ".ogg"}  # .mp4: only its audio track is used
 
 
+def safe_call_id(stem: str) -> str:
+    """ASCII only (safe for scp, shell and URLs), without leading/trailing "_" or ".", so the name stays the same
+    when the Pipeline drop zone cleans it (app.api.pipeline.safe_stem); otherwise a dropped file no longer matches
+    its transcript ("Recording (2).mp4" -> "Recording__2" both ways)."""
+    return re.sub(r"[^A-Za-z0-9_.-]", "_", stem).strip("._")[:80] or "recording"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--in", dest="inp", type=Path, required=True)
@@ -33,7 +40,7 @@ def main() -> int:
     for p in sorted(args.inp.iterdir()):
         if not p.is_file() or p.name.startswith(".") or p.suffix.lower() not in AUDIO_EXT:
             continue
-        stem = re.sub(r"[^A-Za-z0-9_.-]", "_", p.stem)  # ASCII only: safe for scp, shell and URLs
+        stem = safe_call_id(p.stem)
         call_id, n = stem, 2
         while call_id in used:
             call_id, n = f"{stem}_{n}", n + 1

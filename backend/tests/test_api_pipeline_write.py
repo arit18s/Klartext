@@ -175,3 +175,18 @@ def test_export_csv(client, seeded):
     new = next(x for x in rows if x["call_id"] == "New-K1")
     assert new["verdict"] == "" and new["evidence"] == ""
     assert client.get("/api/pipeline/export?format=xml").status_code == 422
+
+
+@pytest.mark.parametrize("original", [
+    "WhatsApp Audio 2026-10-10 at 16.24.30 (2).mp4", "Anruf (1).mp3", "_leading.wav", "Kunde Müller.m4a", "...odd.ogg",
+])
+def test_prepared_name_survives_the_drop_zone(original):
+    # prepare_hidden_set.py names the WAV and its transcript; a drop of that WAV must keep the same call ID.
+    import importlib.util
+    from pathlib import Path as P
+    from app.api.pipeline import safe_stem
+    spec = importlib.util.spec_from_file_location("prep", P(__file__).resolve().parents[1] / "scripts" / "prepare_hidden_set.py")
+    prep = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(prep)
+    call_id = prep.safe_call_id(P(original).stem)
+    assert safe_stem(f"{call_id}.wav") == call_id
