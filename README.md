@@ -70,8 +70,102 @@ Errors always fail towards review, never towards silence. A real case sent to re
 
 ## Stack
 
-Python 3.11 · FastAPI · SQLite (SQLModel) · faster-whisper / WhisperX · pyannote · open-weight LLMs via an OpenAI-compatible API · React + TypeScript (Vite, Tailwind) · wavesurfer.js
+Python 3.11 · FastAPI · SQLite (SQLModel) · faster-whisper (Whisper large-v3) · pyannote community-1 · open-weight LLM (Qwen3.6 27B) via an OpenAI-compatible API · React + TypeScript (Vite, Tailwind) · wavesurfer.js
 
-## Status
+## Run it
 
-Work in progress during the sprint. Setup and run instructions will follow.
+From a fresh clone. Needs macOS or Linux with [uv](https://docs.astral.sh/uv/), ffmpeg, Docker, Node 22+, an OpenAI-compatible endpoint for an open-weight model (OpenRouter during the sprint), and for speech recognition a GPU machine with an NVIDIA card and a Hugging Face token.
+
+### 1. Backend setup
+
+```bash
+git clone https://github.com/Dinesh18S/Klartext.git && cd Klartext
+uv venv --python 3.11 .venv
+uv pip install --python .venv/bin/python -r backend/requirements.txt
+cp .env.example .env        # then fill in LLM_API_KEY, LLM_MODEL (e.g. qwen/qwen3.6-27b), HF_TOKEN
+```
+
+Keep `LLM_SAMPLES=5` and `LLM_REASONING=off`: the evaluated configuration. Keys stay in `.env`, which git ignores.
+
+### 2. Case data and database
+
+```bash
+git clone --depth 1 https://github.com/Outcept/inventx-case-study /tmp/inventx-case-study
+mkdir -p case-data && cp -R /tmp/inventx-case-study/data/. case-data/
+cd backend && ../.venv/bin/python -m app.db.init && cd ..   # creates data/klartext.db with the seeded configs
+```
+
+`case-data/`, `data/` and `inbox/` are git-ignored: no audio or results in the repository.
+
+### 3. Outcept trigger API
+
+```bash
+docker compose up -d trigger-api    # list at http://localhost:8080, bound to localhost only
+```
+
+### 4. Speech recognition (GPU machine)
+
+Klartext transcribes on its own GPU; the laptop pipeline reads the transcripts from `data/transcripts/<call_id>.json`.
+
+```bash
+scp backend/scripts/run_asr.py backend/scripts/setup_gpu.sh <user>@<gpu-host>:~/
+ssh <user>@<gpu-host>
+read -s HF_TOKEN && export HF_TOKEN          # accept the terms of pyannote/speaker-diarization-community-1 first
+bash ~/setup_gpu.sh && source ~/klartext-gpu/env.sh
+python ~/run_asr.py --in ~/klartext-gpu/case-data/Audio --out ~/klartext-gpu/out/large-v3 --model large-v3 --diarize
+```
+
+Back on the laptop: `scp "<user>@<gpu-host>:~/klartext-gpu/out/large-v3/*.json" data/transcripts/`, then stop the GPU machine.
+
+### 5. Process all calls
+
+```bash
+cd backend && ../.venv/bin/python scripts/process_all.py && cd ..
+```
+
+Runs every stage for the 60 recordings (roles, numbers, keywords, family checks, decision, evidence snippets, twin calls, Outcept triggers) and prints the counts. Re-runs reuse stored results; `--from <stage>` re-runs from a stage, `--list` prints every verdict.
+
+### 6. API server with the inbox watcher
+
+```bash
+cd backend && ../.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+API docs at http://127.0.0.1:8000/docs. The watcher starts with the server: a WAV dropped into `inbox/` is processed with no click (it needs its transcript in `data/transcripts/`). `WATCHER_ENABLED=false` turns it off.
+
+### 7. Frontend
+
+```bash
+cd frontend && npm install && npm run dev       # http://127.0.0.1:5173, proxies /api to port 8000
+```
+
+Without a backend: set `VITE_USE_FIXTURES=true` in `frontend/.env.development` (fixtures with a simulated pipeline).
+
+### 8. Evaluation
+
+```bash
+cd backend
+../.venv/bin/python scripts/evaluate.py --split dev --source asr     # precision, recall, confusion matrix, pairs, evidence overlap
+../.venv/bin/python scripts/asr_benchmark.py                         # ASR models by critical token recall (dev)
+../.venv/bin/python scripts/injection_test.py                        # prompt injection must not change verdicts
+```
+
+The holdout split is evaluated once with frozen prompts and thresholds (`--split holdout --holdout`); results are on the Quality page.
+
+### 9. A new folder of recordings (hidden test set) and export
+
+```bash
+.venv/bin/python backend/scripts/prepare_hidden_set.py --in <folder> --out data/hidden-test-set
+# transcribe data/hidden-test-set/*.wav on the GPU machine (step 4) into data/transcripts/
+cd backend && ../.venv/bin/python scripts/process_all.py --folder ../data/hidden-test-set
+../.venv/bin/python scripts/export_results.py --folder ../data/hidden-test-set --out ../data/export/hidden_results
+```
+
+Full step-by-step procedure: [`docs/RUNBOOK_HIDDEN_SET.md`](docs/RUNBOOK_HIDDEN_SET.md). All calls at once: `GET /api/pipeline/export?format=json` or `format=csv`.
+
+### Tests
+
+```bash
+cd backend && ../.venv/bin/python -m pytest -q        # API, pipeline, shared decision cases
+cd frontend && npm test                               # decide.ts against the same shared/decision_cases.json
+```
