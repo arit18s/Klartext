@@ -141,7 +141,10 @@ def register(path: Path) -> tuple[Call, bool]:
             duration = round(sf.info(str(path)).duration, 2)
         except RuntimeError:
             duration = None
-        call = Call(id=path.stem, file_path=str(path.resolve()), file_hash=digest, dialogue_id=dialogue_id,
+        call_id = path.stem
+        if session.get(Call, call_id) is not None:  # same name, different audio: keep both
+            call_id = f"{path.stem}-{digest[:6]}"
+        call = Call(id=call_id, file_path=str(path.resolve()), file_hash=digest, dialogue_id=dialogue_id,
                     variant=variant, level=level, duration_s=duration, status="queued")
         session.add(call)
         session.commit()

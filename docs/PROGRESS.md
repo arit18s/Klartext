@@ -2,7 +2,7 @@
 
 Updated with every step's commit. Steps and checks: `06_IMPLEMENTATION_PLAN.md`. Submission Sunday 08:30, feature freeze Saturday 22:00.
 
-Last update: Sat 10 Oct, 10:15 (B16 done; B18 run on 60 calls in progress; fine-tunes still on the GPU).
+Last update: Sat 10 Oct, 08:45 (B24 merged; live updates; B26 done; B18 60-call run in progress).
 
 ## Next up
 
@@ -49,13 +49,13 @@ Last update: Sat 10 Oct, 10:15 (B16 done; B18 run on 60 calls in progress; fine-
 | B17 Optional ASR service | todo | – | |
 | B18 Pipeline orchestrator | in progress | (this commit) | `pipeline/run.py` + `scripts/process_all.py`: stages asr → roles → normalise → keywords → checks → decide, disk + DB, `--from`, hash dedup, statuses. Tested: 1 done / 59 waiting_for_asr; broken transcript → failed with message; no speech → review. Evidence/notify stages are B20/B22. Check needs the 60 ASR transcripts |
 | B19 Keyword stage + rescan diff | done | `6714166` | Keyword stage in the pipeline (B18) + `pipeline.keywords.rescan()` returning the POST /keywords/rescan body (`dry_run` option). Check: active config reproduces 78 stored hits; adding "Franken" → 124 hits, 30 changed calls, keyword-only flags 20 → 39. Endpoint wiring is the teammate's (api/). Keyword hints still not in the check prompts (risk) |
-| B20 Evidence and snippets | in progress | (this commit) | Stage `evidence` (`pipeline/evidence.py`): rows for the decided family, quotes snapped to exact substrings, times from word timestamps, ffmpeg snippets ±10 s. Offline tests pass (exact/fuzzy snapping, 25.98 s snippet). End-to-end check after the B18 run |
-| B21 Twin call | in progress | (this commit) | Global stage `twin` (`pipeline/twin.py`): flagged vs not-flagged pairs by trigger similarity ≥ 60, one LLM sentence per pair. Check on dev pairs (C15/C16 is holdout) after the B18 run |
-| B22 Trigger API integration | in progress | (this commit) | Stage `notify` (`pipeline/notify.py`): once per decision, deep link `?t=floor(trigger−10)`, triggers_sent + audit row. Check after the B18 run |
+| B20 Evidence and snippets | in progress | `614de6d` | Stage `evidence` (`pipeline/evidence.py`): rows for the decided family, quotes snapped to exact substrings, times from word timestamps, ffmpeg snippets ±10 s. Offline tests pass (exact/fuzzy snapping, 25.98 s snippet). End-to-end check after the B18 run |
+| B21 Twin call | in progress | `614de6d` | Global stage `twin` (`pipeline/twin.py`): flagged vs not-flagged pairs by trigger similarity ≥ 60, one LLM sentence per pair. Check on dev pairs (C15/C16 is holdout) after the B18 run |
+| B22 Trigger API integration | in progress | `614de6d` | Stage `notify` (`pipeline/notify.py`): once per decision, deep link `?t=floor(trigger−10)`, triggers_sent + audit row. Check after the B18 run |
 | B23 Evaluation on ASR | todo | – | |
 | B24 Read API | done | `5ee4bfc` | All GET endpoints of `API_CONTRACT.md` incl. SSE `/api/events`, routers in `app/api/`. 53 API tests on a seeded temp DB; the three call details, list, scores, thresholds, keywords, eval and settings equal the frontend fixtures. Open for the pipeline track: evidence falls back to `data/checks/<id>.json` until B20 fills the `evidence` table; `/pipeline/status` is derived from `calls` until the watcher (B26) reports to `app/api/pipeline_state.py` (`watching` is false until then); the pipeline should call `app.api.events.notify_call_updated(call_id)` / `notify_pipeline_status()`; `checks` lists only families with a `check_results` row; audio is served only from DATA_DIR, INBOX_DIR or CASE_DATA_DIR; tests need `pytest` (dev only, not in `requirements.txt`) |
 | B25 Write API | todo | – | Feedback labels incl. `note`; `POST /pipeline/inbox` (multipart `file`, WAV ≤ 200 MB, safe name into INBOX_DIR, 202 / duplicate / 415 / 413; needs `python-multipart`) |
-| B26 Inbox watcher | todo | – | |
+| B26 Inbox watcher | done | (this commit) | `services/watcher.py` + `scripts/watch_inbox.py`: watchdog + 5 s scan, stable-size wait, ffmpeg conversion to 16 kHz mono, one worker thread, hash dedup, reports to `api/pipeline_state` (watching, file seen, progress, batch). Check: 44.1 kHz stereo drop → done in 56 s with 3 evidence rows + snippets and an Outcept trigger; duplicate skipped. Starting it with the API server needs a hook in `main.py` (teammate / open) |
 | B27 Fixture export | todo | – | |
 | B28 Threshold tuning on dev | todo | – | k = 5 decided (D18). Pick the review threshold on the ASR PR curve: recall 1.00 at best precision; record value + why in DECISIONS D11 |
 | B29 Holdout run | todo | – | Once, frozen prompts and thresholds |
