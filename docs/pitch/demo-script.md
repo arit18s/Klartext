@@ -89,7 +89,7 @@ The brief asks for a harmless call that still contains a keyword. C10 has no reg
 
 **Do:**
 1. Sidebar → **Tuning**. Read the sentence: *At these settings Klartext catches … of … cases and sends … harmless calls to review.*
-2. Drag **Alert from** down, then **Review from** up. Counts, **Expected vs Klartext** and **Precision vs recall** move with every step; no server call.
+2. Drag **Review from** up from 30 to **55**: the hits drop from 35 to 31 and the sentence says Klartext now catches 29 of 32 real cases (three missed). That is the visible effect the brief asks for: stricter means fewer hits, but real cases slip through. Drag it back to 30. **Alert from** below 50 only moves calls between alert and review (the number of hits stays 35). Counts, **Expected vs Klartext** and **Precision vs recall** move with every step; no server call. Don't use the preset buttons here: on these 60 calls they change no number.
 3. Click **Catch everything**, then **Balanced**.
 4. Sidebar → **Rules** → **Categories**. Switch one category off (e.g. **Relevant information left out**) → **Save rules**. Back to **Tuning**: the numbers change.
    *Alternative:* **Keywords** tab → remove one phrase → **Save keywords** → banner *Keyword hits: … → …*.
