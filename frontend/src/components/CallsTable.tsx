@@ -160,11 +160,10 @@ export function CallsTable({
                     </div>
                   </td>
                   <td className={td}>{c.family ? FAMILY_LABEL[c.family] : '–'}</td>
-                  <td
-                    className={cn(td, 'max-w-[340px] overflow-hidden text-ellipsis text-muted')}
-                    title={c.reason ?? undefined}
-                  >
-                    {c.reason ?? c.error ?? '–'}
+                  {/* Reason takes the width the other (nowrap) columns leave and truncates, so the table never
+                      outgrows its panel, also with the evaluation columns on. */}
+                  <td className={cn(td, 'w-full min-w-[160px] max-w-0 text-muted')} title={c.reason ?? undefined}>
+                    <span className="block truncate">{c.reason ?? c.error ?? '–'}</span>
                   </td>
                   <td className={cn(td, 'text-right')}>
                     <ScoreBar score={c.score} verdict={c.verdict} />
