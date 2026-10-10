@@ -8,14 +8,14 @@ from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlmodel import Session, select
 
-from app.api.common import active_config, expected_verdicts, family_rank, iso
+from app.api.common import PlainErrorRoute, active_config, expected_verdicts, family_rank, iso
 from app.api.configs import ThresholdsOut
 from app.config import get_settings
 from app.db import get_session
 from app.models.tables import Call, CheckResult, Decision
 from app.pipeline.decide import FAMILY_ORDER
 
-router = APIRouter(prefix="/api", tags=["scores"])
+router = APIRouter(prefix="/api", tags=["scores"], route_class=PlainErrorRoute)
 SessionDep = Annotated[Session, Depends(get_session)]
 
 

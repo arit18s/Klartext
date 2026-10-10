@@ -120,7 +120,10 @@ export const AudioPlayer = forwardRef<
     () => (['advisor', 'customer'] as const).map((role) => ({ role, segs: segments.filter((s) => s.role === role) })),
     [segments],
   )
-  const pct = (t: number) => `${(Math.max(0, Math.min(duration, t)) / duration) * 100}%`
+  const clamp = (t: number) => Math.max(0, Math.min(duration, t))
+  const pct = (t: number) => `${(clamp(t) / duration) * 100}%`
+  // segments can run past the decoded audio (rounded ASR times); never draw beyond the time axis
+  const span = (start: number, end: number) => `${((clamp(end) - clamp(start)) / duration) * 100}%`
   const regionText = evidence.map((e) => `${formatTimestamp(e.start_s)} to ${formatTimestamp(e.end_s)}`).join(', ')
 
   return (
@@ -185,7 +188,7 @@ export const AudioPlayer = forwardRef<
                   aria-label={`${speaker(role)} ${formatTimestamp(s.start_s)}`}
                   onClick={() => ws.current?.setTime(s.start_s)}
                   className={`absolute top-0 h-2 rounded ${role === 'advisor' ? 'bg-muted' : 'bg-[#A9ACB2]'}`}
-                  style={{ left: pct(s.start_s), width: pct(s.end_s - s.start_s) }}
+                  style={{ left: pct(s.start_s), width: span(s.start_s, s.end_s) }}
                 />
               ))}
             </div>
