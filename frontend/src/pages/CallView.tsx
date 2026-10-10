@@ -44,7 +44,9 @@ function NotDecided({ detail }: { detail: CallDetail }) {
         <p className="m-0">
           {failed
             ? (detail.call.error ?? 'Processing failed for this call.')
-            : 'Klartext is still checking this call. The verdict appears here when it is ready.'}
+            : detail.call.status === 'waiting_for_asr'
+              ? 'This call has no transcript yet. It waits for the speech service; the checks run as soon as it is transcribed.'
+              : 'Klartext is still checking this call. The verdict appears here when it is ready.'}
         </p>
         {failed && (
           <div>

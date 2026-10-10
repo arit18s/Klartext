@@ -52,7 +52,8 @@ function Group({ label }: { label: string }) {
 function PipelineDot() {
   const { data, error } = useQuery({ queryKey: ['pipeline'], queryFn: getPipelineStatus, retry: false })
   const connection = useLiveConnection()
-  const working = data?.queue.filter((q) => q.stage !== 'failed').length ?? 0
+  const working = data?.queue.filter((q) => q.stage !== 'failed' && q.stage !== 'waiting_for_asr').length ?? 0
+  const waiting = data?.queue.filter((q) => q.stage === 'waiting_for_asr').length ?? 0
   const [tone, text] = error
     ? ['bg-alarm', 'Pipeline not reachable']
     : connection === 'lost'
@@ -63,7 +64,9 @@ function PipelineDot() {
           ? ['bg-muted', 'Watching paused']
           : working
             ? ['bg-review', `Processing ${working} ${working === 1 ? 'call' : 'calls'}`]
-            : ['bg-clear', 'Pipeline watching']
+            : waiting
+              ? ['bg-review', `${waiting} to transcribe`]
+              : ['bg-clear', 'Pipeline watching']
   return (
     <div
       role="status"

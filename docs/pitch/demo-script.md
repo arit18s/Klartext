@@ -10,7 +10,7 @@ Times are the target *end* of each part. If you are late at 2:50, shorten part 4
 - [ ] All 60 calls processed and cached. Thresholds back to **review from 30, alarm from 70** (Tuning → **Reset to saved**, or **Balanced**).
 - [ ] No feedback left on C09, C10, C17 from rehearsals.
 - [ ] Holdout evaluation run once (B29), latest run shown on Quality.
-- [ ] One short recording ready to drop: `Stufe2_C09-K4.wav` (noisy C09), not yet processed. Live ASR only if the GPU box is up; otherwise its transcript is cached and the watcher uses it (decision open in `DECISIONS.md`).
+- [ ] One short recording ready to drop: `Stufe2_C09-K4.wav` (noisy C09), not yet processed. **If the full 60-call batch included it, the drop answers *processed before. Skipped.*** (dedup by file hash): delete its call row before the demo, or leave it out of the batch. Live ASR only if the GPU box is up; otherwise its transcript is cached and the watcher uses it (decision open in `DECISIONS.md`).
 - [ ] Browser at 100 % zoom, 1440 px or wider, sidebar visible. Sound on, tested.
 - [ ] Fallback if the backend fails: frontend in fixture mode (`VITE_USE_FIXTURES=true`), Inbox → **Simulate a new recording** plays the same flow. Backup video ready (B34).
 
