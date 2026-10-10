@@ -72,7 +72,7 @@ Final run on the frozen config (check prompts a8ee57dbcc41, thresholds v4, large
 | B30 Hidden test set dry run | done | (this commit) | Isolated DATA_DIR, 6 dev recordings renamed to random names, via POST /pipeline/process-folder + GET /pipeline/export (JSON + CSV): 6/6 verdict, family and score identical to the original names, 0 new LLM requests (no prompt contains a name), level/variant/dialogue null, notes.txt rejected. Static check: names are parsed only in `display_fields()` (display) |
 | B31 Robustness pass | done | (this commit) | Trigger API killed mid-run: calls still done, failed post recorded ("Connection refused"), re-run `--from notify` delivers it. Bad LLM key (empty cache): all checks failed → review "A check could not complete. Needs a human.", roles fall back, key never stored. Corrupt / empty WAV: rejected (process-folder) or failed (watcher) with a plain message, watcher keeps running. Fixed: empty file no longer blocks the watcher 60 s |
 | B32 Freeze | todo | – | Sat 22:00 |
-| B33 Pitch material | draft done | (this commit) | `docs/pitch/`: architecture and operating concept slides (HTML, PNG, PDF), timed demo script, Q&A sheet. Numbers marked `[B29]` until the holdout run on ASR |
+| B33 Pitch material | done | (this commit) | `docs/pitch/`: three slides (architecture, operating concept, detection quality with holdout vs dev vs keyword-only precision/recall; HTML, PNG, PDF), timed demo script with readiness check and the `demo_call.wav` drop (D42), Q&A sheet with the B29 numbers |
 | B34 Demo rehearsal | todo | – | |
 | B35 Final run | todo | – | Sun 06:00 |
 | B36 Submit | todo | – | Before Sun 08:30 |

@@ -2,14 +2,14 @@
 
 Short answers for the jury, built from the pitch lines in `docs/DECISIONS.md` (decision numbers in brackets). Lead with the line in **bold**, add one sentence of detail only if asked again.
 
-**Numbers:** anything in `[brackets]` is filled in after the holdout run on ASR (B29). Until then, only quote the dev numbers marked *dev, script text*, and say so.
+**Numbers:** *holdout* is the B29 run: 20 recordings on real speech recognition, run once with prompts and thresholds frozen (review 30, alarm 70, version 4). *Dev* is the 40 recordings we tuned on, also on speech recognition. Quote holdout first.
 
 ---
 
 ## Problem and approach
 
 **Why not just a keyword filter?**
-**"Same six digits, two verdicts. Keywords tell us where to look; context tells us what it means."** (D5) Many Stufe 1 hits are harmless and the Stufe 2 and 3 cases have no keyword at all. On dev, script text, a keyword filter alone reached precision 0.57 and recall 0.36.
+**"Same six digits, two verdicts. Keywords tell us where to look; context tells us what it means."** (D5) Many Stufe 1 hits are harmless and the Stufe 2 and 3 cases have no keyword at all. On the holdout a keyword filter alone caught 4 of the 10 real cases (recall 0.40, precision 0.67); on dev its recall was 0.36.
 
 **What exactly does it detect?**
 **"Five specialised checks instead of one vague 'is this fraud?' question. Each hit names its rule."** (D6) Trading on non-public information, splitting to avoid approval, access code shared, information given to a third party, relevant information left out. A number-type helper tells them what kind of number was read out; it never decides on its own.
@@ -46,13 +46,13 @@ Transcripts are treated as untrusted data in every prompt, outputs are checked a
 ## Quality
 
 **How good is it?**
-**"Our numbers come from calls we never tuned on."** (D22) Holdout, on real ASR: recall `[B29]`, precision `[B29]`, Stufe 2 pairs `[B29]` of 8, Stufe 3 sent to review `[B29]`. *So far, dev, script text:* recall 0.91 to 1.00 and precision 0.91 to 0.92 across runs. The keyword filter alone: precision 0.57, recall 0.36.
+**"Our numbers come from calls we never tuned on."** (D22) Holdout, on real speech recognition: recall 1.00 (10 of 10 real cases caught, none missed), precision 0.91 (one extra review on a harmless call, no false alarm), exact verdict 18 of 20, Stufe 2 pairs 3 of 3, evidence on the expected passage for 9 of 9 measurable alarms, Stufe 3 sent to review 1 of 2 (the other went to alarm, so it was still caught). Dev: precision 0.92, recall 1.00, exact 37 of 40. The keyword filter alone: recall 0.40 on holdout, 0.36 on dev.
 
 **How do you avoid overfitting to 30 dialogues?**
 **"We encode the compliance rules, not the test calls."** (D8) Fixed dev/holdout split by dialogue group (pairs and both recordings stay together), prompts and thresholds tuned on dev only, holdout run once. Nothing depends on file names, so the hidden test set works as is. (D22, D24)
 
 **Swiss German speech recognition is hard. How do you deal with it?**
-We picked the ASR model by whether digits, names and key phrases survive, not by word error rate. (D19) Low-confidence lines are marked *Listen to confirm*, and an unclear key passage sends the call to review. Clean vs noisy agreement: `[B29]`.
+We picked the ASR model by whether digits, names and key phrases survive, not by word error rate. (D19) Whisper large-v3 recognises 95% of the digits and key phrases on dev. Low-confidence lines are marked *Listen to confirm*, and an unclear key passage sends the call to review. Clean and noisy recordings of the same call agree on 8 of 10 holdout pairs.
 
 **Which LLM, and why reasoning off?**
 **"We measured it: the faster setting also caught more."** (D17) Qwen3.6 27B, open-weight. On dev, reasoning off: recall 1.00, precision 0.92, 6.6 s per request; reasoning on: recall 0.91, about 5× slower.
@@ -75,7 +75,7 @@ Per decision: model, prompt version, config versions (rules, keywords, threshold
 **"Every error fails towards a human, never towards silence."** (D33) A failed check, unreadable audio or an empty transcript goes to review with the reason. Trigger API or LLM outages never lose a call; it stays queued.
 
 **How fast, and does it scale?**
-Within minutes after the call. One batch of 60 recordings runs its checks in about 13 minutes at 8 parallel requests (dev, reasoning off). It scales with GPUs; each call is independent.
+Within minutes after the call. One batch of 60 recordings runs its checks in about 22 minutes at 8 parallel requests, with five runs per check (D18, reasoning off). It scales with GPUs; each call is independent.
 
 **Did you build on an existing product?**
 No. CallQuanta, the closest open-source analogue, is AGPL-3.0, which would force open-sourcing an Inventx MVP; we took ideas only (audio next to findings, webhook ingestion, local speech-to-text, feedback buttons). (D32)
