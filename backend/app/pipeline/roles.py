@@ -1,8 +1,10 @@
 """Role labelling: which diarized speaker is the advisor (05_BACKEND_STRUCTURE.md section 2, plan B16).
 
-Rule first: the speaker whose opening lines carry an institution or service greeting is the advisor.
-If the cues do not decide, one short LLM call does (open-weight model, temperature 0, cached).
-If that fails too, the first speaker is the advisor (the bank answers the call), with low confidence.
+One short LLM call decides on every call (open-weight model, temperature 0, cached): who acts for the bank
+(identifies the caller, sees the account, explains processes). Greeting words alone are not reliable: a customer
+who says "mein Name ist …, ich bin Kunde bei Ihrer Bank" outscores an advisor who answers "Ja, hallo?" (D46).
+Only if the LLM call fails: the speaker whose opening lines carry an institution or service greeting, and if
+that does not decide either, the first speaker (the bank answers the call), with low confidence.
 """
 
 from __future__ import annotations
@@ -24,6 +26,12 @@ ADVISOR_CUES = [
     r"verbunden", r"was kann ich für sie tun", r"wie kann ich (ihnen|euch) helfen", r"wie chan ich",
     r"was chan ich", r"mein name ist", r"\bgrüezi\b.*\bsind\b", r"guten tag.*\bsind\b",
 ]
+# Role words that "ich bin …" / "hier ist …" put where a name would be ("ich bin Kunde bei Ihrer Bank").
+ROLE_WORDS = {
+    "kunde", "kundin", "inhaber", "inhaberin", "berater", "beraterin", "kundenberater", "kundenberaterin",
+    "mitarbeiter", "mitarbeiterin", "vertreter", "vertreterin", "bevollmächtigter", "bevollmächtigte",
+    "tochter", "sohn", "mutter", "vater", "bank", "team", "kundendienst", "kundenservice", "beratung",
+}
 NAME_RE = re.compile(r"(?:mein name ist|(?:hier|da) ist|ich bin|ich heisse|ich heiße)\s+([A-ZÄÖÜ][\w-]+(?:\s+[A-ZÄÖÜ][\w-]+)?)")
 
 
@@ -31,7 +39,7 @@ class RoleResult(BaseModel):
     transcript: Transcript
     advisor_speaker: str | None
     role_confidence: float  # 0.9 cue, 0.85 / 0.6 LLM high / low, 0.5 first-speaker fallback, 0 unknown
-    method: str  # cue / llm / first_speaker / single_speaker / no_speakers
+    method: str  # llm / cue / first_speaker (both only when the LLM fails) / single_speaker / no_speakers
 
 
 class RoleAnswer(BaseModel):
@@ -65,6 +73,17 @@ def canonical_name(name: str | None, known: dict[str, int]) -> str | None:
     return max(matches, key=lambda nc: (nc[1], fuzz.ratio(name.casefold(), nc[0].casefold())))[0]
 
 
+def _clean_name(name: str | None, advisor_texts: list[str]) -> str | None:
+    """A name only if it is no role word and the advisor said it in their own lines (never the customer's name)."""
+    if not name or not name.strip():
+        return None
+    tokens = name.strip().split()
+    if any(tok.casefold().strip(".,") in ROLE_WORDS for tok in tokens):
+        return None
+    said = " ".join(advisor_texts).casefold()
+    return name.strip() if any(len(tok) >= 3 and tok.casefold() in said for tok in tokens) else None
+
+
 def _cue_score(texts: list[str]) -> int:
     joined = " ".join(texts).casefold()
     return sum(1 for cue in ADVISOR_CUES if re.search(cue, joined))
@@ -77,17 +96,20 @@ def label_roles(t: Transcript, use_llm: bool = True) -> RoleResult:
     if len(speakers) == 1:
         return RoleResult(transcript=_with_roles(t, None), advisor_speaker=None, role_confidence=0.0, method="single_speaker")
     openings = {spk: [s.text for s in t.segments if s.speaker == spk][:OPENING_SEGMENTS] for spk in speakers}
-    scores = {spk: _cue_score(txt) for spk, txt in openings.items()}
-    ranked = sorted(speakers, key=lambda spk: -scores[spk])
     llm_name = None
-    if scores[ranked[0]] > scores[ranked[1]]:
-        advisor, conf, method = ranked[0], 0.9, "cue"
-    elif use_llm and (answer := _llm_advisor(t, speakers)):
+    if use_llm and (answer := _llm_advisor(t, speakers)):
         advisor, conf, method, llm_name = answer.advisor_speaker, 0.85 if answer.confidence == "high" else 0.6, "llm", answer.advisor_name
-    else:
-        advisor, conf, method = speakers[0], 0.5, "first_speaker"
+    else:  # fallback only: greeting cues, then the first speaker
+        scores = {spk: _cue_score(txt) for spk, txt in openings.items()}
+        ranked = sorted(speakers, key=lambda spk: -scores[spk])
+        if scores[ranked[0]] > scores[ranked[1]]:
+            advisor, conf, method = ranked[0], 0.9, "cue"
+        else:
+            advisor, conf, method = speakers[0], 0.5, "first_speaker"
     labelled = _with_roles(t, advisor)
-    name = llm_name or next((m.group(1) for txt in openings[advisor] if (m := NAME_RE.search(txt))), None)
+    advisor_texts = [s.text for s in t.segments if s.speaker == advisor]
+    regex_names = (m.group(1) for txt in openings[advisor] if (m := NAME_RE.search(txt)))
+    name = _clean_name(llm_name, advisor_texts) or next((n for n in map(lambda x: _clean_name(x, advisor_texts), regex_names) if n), None)
     labelled = labelled.model_copy(update={"advisor_name": name or t.advisor_name})
     return RoleResult(transcript=labelled, advisor_speaker=advisor, role_confidence=conf, method=method)
 

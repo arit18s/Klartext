@@ -43,6 +43,9 @@ Quotes must match a real transcript segment or the evidence is dropped; a "happe
 **Doesn't the Advisors view blame advisors for what customers ask?**
 **"Klartext doesn't blame the advisor for what the customer asked. It shows who raised the risk, so the Advisors view only highlights advisors whose own behaviour was flagged."** (D43) Who raised it comes from the speaker of the trigger passage; customer-raised flags still appear, in a muted "Customer requests" column, and the call view says "Raised by: Customer".
 
+**How do you know who is the advisor and who is the customer?**
+**"We decide roles by what people say, not by who speaks first, and we tested the tricky openings. The officer always sees who said what and hears the audio. In a bank it gets easier: recording systems usually keep the bank and the caller on separate channels, so the roles are known for certain."** (D46) The case recordings were mono, so in the sprint Klartext separates the voices itself and an open-weight LLM decides which speaker acts for the bank (identifies the caller, sees the account, explains processes). If pushed: **"Next step: when the role assignment is uncertain, Klartext sends the call to review instead of guessing."** (planned, not built before the freeze)
+
 **What if a caller tries to trick the model ("ignore your instructions")?**
 Transcripts are treated as untrusted data in every prompt, outputs are checked against a strict schema, and the verdict is computed by code, not taken from model text. (D34)
 

@@ -2,7 +2,7 @@
 
 Updated with every step's commit. Steps and checks: `06_IMPLEMENTATION_PLAN.md`. Submission Sunday 08:30, feature freeze Saturday 22:00.
 
-Last update: Sat 10 Oct (German UI merged; German wording "Alert", German reasons in Inbox/All calls via `reason_de`, reason toggle follows the interface language).
+Last update: Sat 10 Oct (roles: LLM decides the advisor on every call, names never role words, D46; 60/60 verdicts and B29 holdout metrics unchanged).
 
 ## Next up
 
