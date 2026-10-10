@@ -22,3 +22,6 @@ frontend/dist/
 .idea/
 
 
+
+# Real pipeline results exported as frontend fixtures (B27): results stay out of git (07_SECURITY section 1)
+frontend/src/fixtures-real/
