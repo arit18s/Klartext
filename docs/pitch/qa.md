@@ -83,5 +83,8 @@ Within minutes after the call. One batch of 60 recordings runs its checks in abo
 **Did you build on an existing product?**
 No. CallQuanta, the closest open-source analogue, is AGPL-3.0, which would force open-sourcing an Inventx MVP; we took ideas only (audio next to findings, webhook ingestion, local speech-to-text, feedback buttons). (D32)
 
-**What's next after the sprint?**
-Live warnings for access codes, feedback-driven threshold suggestions, the advisor pattern view, and the recording-system webhook instead of the inbox folder.
+**How would Inventx sell this?**
+**"Inventx runs one platform; each bank gets its own rule package. The checks, keywords and thresholds are configuration, not code."** Families, keywords and thresholds are already edited on the Rules and Tuning pages without a developer, and every change is a versioned config with an audit entry (D11, D35). Onboarding a bank means loading its rule package, not a new deployment.
+
+**What would you do next?**
+**"Same pipeline, new rule package: promised guaranteed returns, missing risk warnings. The bank adds a family, not a new system."** Today's five families are about fraud and abuse. The natural next family is advisory quality under FIDLEG, the Swiss Financial Services Act: an advisor saying *"Das isch garantiert sicher"* (a guaranteed return), or a recommendation without a risk warning. After that: live warnings for access codes, where seconds matter, and the recording-system webhook instead of the inbox folder. Threshold suggestions from feedback (D44) and the advisor view (D43) are already built.
