@@ -8,9 +8,9 @@ import { ThresholdSlider } from '@/components/ThresholdSlider'
 import { useToast } from '@/components/Toast'
 import { VerdictChip } from '@/components/VerdictChip'
 import { Button } from '@/components/ui/button'
-import { getScores, putThresholds } from '@/lib/api'
+import { getScores, getThresholdSuggestion, putThresholds } from '@/lib/api'
 import { PRESETS, evaluate, prCurve, type TuningResult } from '@/lib/tuning'
-import type { Thresholds, Verdict } from '@/lib/types'
+import type { ThresholdSuggestion, Thresholds, Verdict } from '@/lib/types'
 import { cn } from '@/lib/utils'
 
 const calls = (n: number) => `${n} ${n === 1 ? 'call' : 'calls'}`
@@ -94,6 +94,12 @@ export default function Tuning() {
   )
   const dirty = !!saved && (saved.review !== t.review || saved.alarm !== t.alarm)
 
+  // R11: a suggestion only moves the handles; the officer still applies it (never automatic).
+  const suggest = useMutation({
+    mutationFn: getThresholdSuggestion,
+    onError: (e: Error) => toast(`No suggestion. ${e.message}`, 'error'),
+  })
+
   const apply = useMutation({
     mutationFn: () => putThresholds({ review: t.review, alarm: t.alarm }),
     onSuccess: (v) => {
@@ -175,14 +181,17 @@ export default function Tuning() {
               <Button disabled={!dirty} onClick={() => setValue({ review: saved.review, alarm: saved.alarm })}>
                 Reset to saved
               </Button>
-              <Button disabled title="Needs feedback on flagged calls first (stretch goal R11)">
+              <Button onClick={() => suggest.mutate()} disabled={suggest.isPending}>
                 <Sparkles strokeWidth={1.75} aria-hidden="true" />
-                Suggest from feedback
+                {suggest.isPending ? 'Looking at feedback…' : 'Suggest from feedback'}
               </Button>
               <Button variant="primary" disabled={!dirty || apply.isPending} onClick={() => apply.mutate()}>
                 Apply thresholds
               </Button>
             </div>
+            {suggest.data && (
+              <SuggestionCard s={suggest.data} current={t} onUse={setValue} onClose={() => suggest.reset()} />
+            )}
           </section>
 
           <section aria-label="Live counts" className="grid grid-cols-[repeat(auto-fit,minmax(168px,1fr))] gap-4">
@@ -229,5 +238,55 @@ export default function Tuning() {
         </>
       )}
     </Page>
+  )
+}
+
+/** The suggestion from feedback, with its effect. "Use suggestion" only moves the handles. */
+function SuggestionCard({
+  s,
+  current,
+  onUse,
+  onClose,
+}: {
+  s: ThresholdSuggestion
+  current: Thresholds
+  onUse: (t: Thresholds) => void
+  onClose: () => void
+}) {
+  const sug = s.suggestion
+  const inUse = !!sug && sug.review === current.review && sug.alarm === current.alarm
+  return (
+    <div role="status" className="flex flex-col gap-3 rounded-panel border border-line bg-canvas p-4">
+      <div className="flex items-start gap-3">
+        <Sparkles size={18} strokeWidth={1.75} aria-hidden="true" className="mt-0.5 flex-none" />
+        <div className="flex flex-col gap-1">
+          {sug ? (
+            <span className="font-semibold">
+              Suggested from feedback on {calls(s.labelled_calls)}: review from {sug.review}, alarm from {sug.alarm}
+            </span>
+          ) : (
+            <span className="font-semibold">
+              {s.labelled_calls ? `Feedback on ${calls(s.labelled_calls)}` : 'No feedback yet'}
+            </span>
+          )}
+          <span>{s.summary}</span>
+          {sug && s.suggested_effect && (
+            <span className="text-small text-muted">
+              Flags {calls(s.suggested_effect.flagged)} in total, now {s.current_effect.flagged}. Only calls with
+              feedback are judged; the counts below show the effect on every call once you use it.
+            </span>
+          )}
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {sug && (
+          <Button variant="primary" disabled={inUse} onClick={() => onUse({ review: sug.review, alarm: sug.alarm })}>
+            {inUse ? 'Suggestion in use' : 'Use suggestion'}
+          </Button>
+        )}
+        <Button onClick={onClose}>Dismiss</Button>
+        {sug && <span className="self-center text-small text-muted">Nothing is saved until you apply.</span>}
+      </div>
+    </div>
   )
 }

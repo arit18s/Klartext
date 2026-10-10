@@ -487,6 +487,27 @@ export interface SettingsResponse {
 }
 
 /** GET /api/advisors (stretch). */
+/** GET /api/scores/suggestion (R11): thresholds that would have fitted the officers' feedback. Never saved by itself. */
+export interface SuggestionEffect {
+  missed: number // marked real (missed, escalated, correct alarm/review) but no alert
+  false_alarms: number // marked harmless but alarm
+  extra_reviews: number // marked harmless but review
+  unmet_escalations: number // escalated to alarm but still review
+  changed_confirmed: number // marked correct, verdict would change (still caught)
+  flagged: number // alarms + reviews among all decided calls
+}
+
+export interface ThresholdSuggestion {
+  current: Thresholds
+  thresholds_version_id: number
+  labelled_calls: number
+  labels: Partial<Record<FeedbackLabel, number>>
+  suggestion: Thresholds | null
+  current_effect: SuggestionEffect
+  suggested_effect: SuggestionEffect | null
+  summary: string
+}
+
 /** GET /api/advisors (R12): one row per advisor name; calls without a recognised name are left out. */
 export interface AdvisorRow {
   advisor_name: string

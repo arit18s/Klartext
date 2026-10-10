@@ -43,3 +43,14 @@ def test_falls_back_to_eval_runs_table(client, seeded):
     assert_shape(body, fx)
     assert body["split"] == "dev" and body["source"] == "script" and body["created_at"] == "2026-10-10T20:14:00Z"
     assert body["config_versions"] == fx["config_versions"] and body["metrics"] == fx["metrics"]
+
+
+def test_latest_by_split(client, data_dir):
+    fx = load_fixture("eval.json")
+    write_run(data_dir, {**fx, "run_id": "eval-holdout", "split": "holdout", "created_at": "2026-10-10T07:32:58Z"})
+    write_run(data_dir, {**fx, "run_id": "eval-dev", "split": "dev", "created_at": "2026-10-10T09:00:00Z"})
+    assert client.get("/api/eval/latest").json()["run_id"] == "eval-dev"
+    assert client.get("/api/eval/latest", params={"split": "holdout"}).json()["run_id"] == "eval-holdout"
+    r = client.get("/api/eval/latest", params={"split": "all"})
+    assert r.status_code == 404 and r.json()["detail"] == "No evaluation run on the all split yet."
+    assert client.get("/api/eval/latest", params={"split": "test"}).status_code == 422
