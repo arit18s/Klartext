@@ -6,12 +6,18 @@ Keyword hits are hints for the family checks and the keyword-only baseline. They
 
 from __future__ import annotations
 
+import json
 import re
 from typing import Any
 
 from pydantic import BaseModel
 from rapidfuzz import fuzz
+from sqlmodel import Session, delete, select
 
+from app.config import get_settings
+from app.db import get_engine
+from app.db.config_store import get_active_config
+from app.models.tables import KeywordHit as KeywordHitRow
 from app.models.transcript import Transcript
 
 MIN_RATIO = 88
@@ -92,3 +98,64 @@ def format_hints(hits: list[KeywordHit]) -> str:
     if not hits:
         return "none"
     return "; ".join(f"{h.keyword_id} '{h.phrase}' in {h.seg_id} ({h.family or 'no family'})" for h in hits)
+
+
+# ---------- rescan (POST /keywords/rescan, API_CONTRACT.md) ----------
+
+class ChangedCall(BaseModel):
+    call_id: str
+    hits_before: int
+    hits_after: int
+
+
+class FlaggedCounts(BaseModel):
+    before: int
+    after: int
+
+
+class RescanResult(BaseModel):
+    """Response body of POST /keywords/rescan. Verdicts do not change: keywords are hints; a recheck changes verdicts."""
+
+    config_version_id: int | None
+    before: int
+    after: int
+    changed_calls: list[ChangedCall]
+    keyword_only_flagged: FlaggedCounts
+
+
+def rescan(keyword_list: dict[str, Any] | None = None, dry_run: bool = False) -> RescanResult:
+    """Re-run the keyword stage on every call with a labelled transcript (data/roles/), compare with the
+    stored hits, and (unless dry_run) replace them. Default config: the active keywords version.
+    Runs in milliseconds per call; no LLM."""
+    version_id = None
+    if keyword_list is None:
+        active = get_active_config("keywords")
+        keyword_list, version_id = active.data, active.version_id
+    roles_dir = get_settings().data_path / "roles"
+    with Session(get_engine()) as session:
+        before_rows = session.exec(select(KeywordHitRow)).all()
+        before: dict[str, int] = {}
+        for row in before_rows:
+            before[row.call_id] = before.get(row.call_id, 0) + 1
+        after: dict[str, list[KeywordHit]] = {}
+        for path in sorted(roles_dir.glob("*.json")):
+            t = Transcript.model_validate(json.loads(path.read_text(encoding="utf-8"))["transcript"])
+            after[t.call_id] = match_keywords(t, keyword_list)
+        if not dry_run:
+            for call_id, hits in after.items():
+                session.exec(delete(KeywordHitRow).where(KeywordHitRow.call_id == call_id))
+                for h in hits:
+                    session.add(KeywordHitRow(call_id=call_id, config_version_id=version_id or 0, keyword_id=h.keyword_id,
+                                              family=h.family or "", phrase=h.phrase, seg_id=h.seg_id, start_s=h.start_s, end_s=h.end_s))
+            session.commit()
+    ids = sorted(set(before) | set(after))
+    changed = [ChangedCall(call_id=c, hits_before=before.get(c, 0), hits_after=len(after.get(c, [])))
+               for c in ids if before.get(c, 0) != len(after.get(c, []))]
+    return RescanResult(
+        config_version_id=version_id,
+        before=sum(before.values()),
+        after=sum(len(h) for h in after.values()),
+        changed_calls=changed,
+        keyword_only_flagged=FlaggedCounts(before=sum(1 for c in ids if before.get(c, 0) > 0),
+                                           after=sum(1 for c in ids if after.get(c))),
+    )
