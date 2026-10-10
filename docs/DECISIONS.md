@@ -56,7 +56,8 @@ The LLM returns structured fields (event, evidence, open question). A fixed, tes
 k runs per check; present = 1, undetermined = 0.5, absent = 0. An all-"unclear" check scores 50 and lands in review by default. We do not use the model's self-reported confidence (unreliable according to recent research).
 *"Confidence comes from agreement between independent runs, not from the model grading itself."*
 
-**D11. Default thresholds: review from 30, alarm from 70.** Officer-adjustable on the Tuning page with live effect. The review threshold is re-chosen in B28 on the PR curve from ASR transcripts on dev (aim: recall 1.00 at the best precision); the chosen value and why go here. Until then it stays 30.
+**D11. Default thresholds: review from 30, alarm from 70.** Officer-adjustable on the Tuning page with live effect. **B28 (dev, ASR, k = 5): review stays at 30, saved as thresholds version 4.** Recall 1.00 holds for any review threshold from 10 to 50 (precision 0.92 throughout; the real cases' lowest scores are 0 via needs_human and 50 for unclear, harmless calls score 0 except the accepted C14 false alarm at 100). 30 keeps a two-vote margin below the cases at 50 (one "unclear" vote = 10 points at k = 5) instead of sitting on the edge at 50.
+*"We set the threshold where real cases can lose two votes and still reach a human."*
 
 **D12. Rule order (final):**
 1. No family enabled → review ("No checks enabled.")
@@ -145,6 +146,14 @@ Echoes the case deck, where the suspicious part of the waveform is yellow. Revie
 The F9 accessibility pass (axe-core, WCAG 2 A/AA) found `#6E727A` reaches only 4.42:1 on the `canvas` background, below the 4.5:1 in `04_FRONTEND_GUIDELINES.md` section 9 (sidebar group labels, stat tile footers, keyboard hints, table group rows). `#666A72` is the smallest darker step that passes on every surface muted text sits on: paper 5.43, canvas 4.97, nav hover 4.58, review soft 4.63, alarm soft 4.62, signal soft 4.80 (old value: 4.83 / 4.42 / 4.07 / 4.12 / 4.11 / 4.27). Barely visible; the guideline allows darker ("do not go lighter"). Applied in `04_FRONTEND_GUIDELINES.md` and `frontend/src/index.css`; axe now reports 0 violations on all 12 routes and the filter modal. Frontend commit `9c368a0`, approved by the team on Sat 10 Oct.
 *"Every screen passes WCAG AA contrast, checked automatically on every page."*
 
+**D41. Advisor names from speech are snapped to known names; in production the advisor ID comes from telephony.**
+Role labelling reads the advisor's name from the greeting. ASR spells the same name differently between recordings, so a new name is snapped to an already known one at ≥ 85 % similarity (31 → 25 distinct names on the 60 calls; clean/noisy pairs with the same name 15 → 20 of 30). This only serves the Advisors view in the prototype.
+*"In the bank, the advisor ID comes from the telephony system's call metadata, not from speech recognition."*
+
+**D42. No live ASR in the demo: the dropped call uses a cached transcript.**
+The live drop is `demo_call.wav`, a byte-different copy of Stufe2_C09-K3 with identical audio (re-encoded WAV header, so the duplicate check by content does not skip it). Its transcript is a copy of Stufe2_C09-K3's large-v3 transcript, which is exactly what ASR returns for that audio. The watcher, checks, decision, evidence, twin and trigger then run as in production. The GPU box stays off during the demo.
+*"Speech recognition runs as a batch on our GPU; the demo shows what happens from the moment a transcript exists."*
+
 ## 7. Integrations
 
 **D31. Outcept trigger API: run their Docker image, don't fork it.** Every alarm and review is posted with a deep link to the passage, 10 s before the trigger.
@@ -171,5 +180,4 @@ The F9 accessibility pass (axe-core, WCAG 2 A/AA) found `#6E727A` reaches only 4
 | Item | Options | Decide when |
 |---|---|---|
 | Review threshold | Chosen on the PR curve (ASR, dev), recall 1.00 at best precision; stays 30 until then (D11) | B28 |
-| Live ASR in the demo | GPU service running vs cached transcripts | Saturday evening |
 | Failed-check note wording | Family key ("trade") vs display name | If time allows |

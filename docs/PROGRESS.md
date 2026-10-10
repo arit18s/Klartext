@@ -2,19 +2,19 @@
 
 Updated with every step's commit. Steps and checks: `06_IMPLEMENTATION_PLAN.md`. Submission Sunday 08:30, feature freeze Saturday 22:00.
 
-Last update: Sat 10 Oct, 09:45 (B15, B18, B20–B23 done; large-v3 chosen; B25/F10 merged).
+Last update: Sat 10 Oct, 09:35 (B28 thresholds v4, B29 holdout run done; demo file ready).
 
 ## Next up
 
 | Track | Next 3 steps |
 |---|---|
-| Backend | **Demo prep** (todo below) → **B28** threshold on the ASR PR curve (dev: recall 1.00 up to review 50) → **B29** holdout run (once, frozen) |
+| Backend | **B30** hidden test set dry run (renamed files) → **B31** robustness pass → **B32** freeze (Sat 22:00) |
 | Frontend | **F10** Switch to real API (needs B24–B26, incl. SSE `/api/events` and `POST /pipeline/inbox`) → integration bugs → demo rehearsal with B34 |
 
 ## Demo prep (todo)
 
-- [ ] **Live-drop call:** a re-encoded copy of **Stufe2_C09-K3** (the PRD demo alarm, 2:23, twin C10 in the batch): `ffmpeg -i case-data/Audio/Stufe2_C09-K3.wav -af adelay=300 -ar 16000 -ac 1 demo_call.wav`. Different bytes → not skipped as a duplicate; neutral name → no level/variant chip (hidden-set behaviour). Keep it out of the batch by never putting it in case-data/Audio.
-- [ ] **Its transcript:** run `run_asr.py` on `demo_call.wav` on the GPU box ahead and put `demo_call.json` into `data/transcripts/` (processed from cached ASR, transcribed on our GPU); live ASR only if B17 is built and the GPU runs during the demo.
+- [x] **Live-drop call:** a re-encoded copy of **Stufe2_C09-K3** (the PRD demo alarm, 2:23, twin C10 in the batch): `ffmpeg -i case-data/Audio/Stufe2_C09-K3.wav -af adelay=300 -ar 16000 -ac 1 demo_call.wav`. Different bytes → not skipped as a duplicate; neutral name → no level/variant chip (hidden-set behaviour). Keep it out of the batch by never putting it in case-data/Audio.
+- [x] **Its transcript:** decided (D42): copy of Stufe2_C09-K3's transcript as `data/transcripts/demo_call.json`; no live ASR. File: `data/demo/demo_call.wav` (byte-different, identical audio). Rehearsed: drop → alarm, access, twin C10, in 6 s with cached LLM answers (30–60 s with an empty cache).
 - [ ] **Reset after each rehearsal:** `python scripts/purge_call.py demo_call --keep-transcript`, then `DELETE /triggers` on the Outcept API if its list should be clean.
 
 ## Risks / open items
@@ -63,8 +63,8 @@ Last update: Sat 10 Oct, 09:45 (B15, B18, B20–B23 done; large-v3 chosen; B25/F
 | B25 Write API | done | `fd85059` | All write endpoints of `API_CONTRACT.md` plus `GET /calls/{id}/history`; 65 new API tests (119 backend tests pass). PUTs write a new active version + `audit_log` (`config_changed`, target `<kind>:<id>`), families get `changed_at`/`changed_by` per changed family; recheck runs `process(from_stage="checks")`, retry from `asr`, process-folder registers + processes in one background worker (`app/api/jobs.py`); `/eval/run` runs `scripts/evaluate.py --source asr` (holdout/all pass `--holdout`; failure → 409 with the script's message); inbox duplicate answers 202 `{queued: false, duplicate: true}` as in the contract (not 409); 422 details are one plain sentence; suggest calls `llm_client.complete_json` with an injection guard; `python-multipart==0.0.32` added |
 | B26 Inbox watcher | done | `c637b25` | Started with the API server (`bbc5b59`).  `services/watcher.py` + `scripts/watch_inbox.py`: watchdog + 5 s scan, stable-size wait, ffmpeg conversion to 16 kHz mono, one worker thread, hash dedup, reports to `api/pipeline_state` (watching, file seen, progress, batch). Check: 44.1 kHz stereo drop → done in 56 s with 3 evidence rows + snippets and an Outcept trigger; duplicate skipped. Starting it with the API server needs a hook in `main.py` (teammate / open) |
 | B27 Fixture export | todo | – | |
-| B28 Threshold tuning on dev | todo | – | k = 5 decided (D18). Pick the review threshold on the ASR PR curve: recall 1.00 at best precision; record value + why in DECISIONS D11 |
-| B29 Holdout run | todo | – | Once, frozen prompts and thresholds |
+| B28 Threshold tuning on dev | done | (this commit) | Review 30 / alarm 70 saved as thresholds version 4 (via PUT /config/thresholds, audit logged), all 60 decisions re-decided on it. Recall 1.00 holds 10–50 on dev; 30 keeps a two-vote margin (DECISIONS D11) |
+| B29 Holdout run | done | (this commit) | Once, frozen (check prompts a8ee57dbcc41, thresholds v4, large-v3, k=5, reasoning off): 20 holdout recordings P 0.91 R 1.00, exact 18/20, Stufe2 pairs 3/3, Stufe3 review 1/2 (C19-K4 alarm, caught), clean/noisy 8/10, evidence overlap 9/9, family 10/10; keyword-only P 0.67 R 0.40. Extra flag: C15-K4 (review). Nothing tuned afterwards. `data/eval/eval-20261010-073258-holdout-asr.json` |
 | B30 Hidden test set dry run | todo | – | |
 | B31 Robustness pass | todo | – | |
 | B32 Freeze | todo | – | Sat 22:00 |

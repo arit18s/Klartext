@@ -35,7 +35,7 @@ from app.pipeline.evidence import build_rows, cut_snippet
 from app.pipeline.keywords import match_keywords
 from app.pipeline.normalise import digit_sequences_from_words
 from app.pipeline.notify import notify
-from app.pipeline.roles import label_roles
+from app.pipeline.roles import canonical_name, label_roles
 from app.pipeline.twin import find_twins, load_view
 
 log = logging.getLogger(__name__)
@@ -171,9 +171,20 @@ def stage_asr(call_id: str) -> Transcript | None:
     return t
 
 
+def _known_advisor_names(exclude: str) -> dict[str, int]:
+    with Session(get_engine()) as session:
+        rows = session.exec(select(Call.advisor_name).where(Call.id != exclude, Call.advisor_name.is_not(None))).all()
+    known: dict[str, int] = {}
+    for n in rows:
+        known[n] = known.get(n, 0) + 1
+    return known
+
+
 def stage_roles(call_id: str) -> None:
     t = Transcript.model_validate(_read("asr", call_id))
     r = label_roles(t)
+    name = canonical_name(r.transcript.advisor_name, _known_advisor_names(call_id))
+    r = r.model_copy(update={"transcript": r.transcript.model_copy(update={"advisor_name": name})})
     _write("roles", call_id, {"transcript": r.transcript.model_dump(), "advisor_speaker": r.advisor_speaker,
                               "role_confidence": r.role_confidence, "method": r.method})
     with Session(get_engine()) as session:

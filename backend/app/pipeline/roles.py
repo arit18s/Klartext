@@ -11,6 +11,7 @@ import re
 from typing import Literal
 
 from pydantic import BaseModel
+from rapidfuzz import fuzz
 
 from app.models.transcript import Transcript
 from app.prompts import load
@@ -47,6 +48,21 @@ def _llm_advisor(t: Transcript, speakers: list[str]) -> RoleAnswer | None:
     if not r.ok or r.value is None or r.value.advisor_speaker not in speakers:
         return None
     return r.value
+
+
+NAME_SNAP_RATIO = 85
+
+
+def canonical_name(name: str | None, known: dict[str, int]) -> str | None:
+    """Snap an ASR-spelled advisor name to an already known one (>= NAME_SNAP_RATIO % similar, case-insensitive),
+    so "Simone Wenger" and "Simone Wenga" count as one advisor. known: name -> number of calls with it.
+    Most frequent wins among qualifying names. In production the advisor ID comes from telephony metadata."""
+    if not name:
+        return None
+    matches = [(n, c) for n, c in known.items() if fuzz.ratio(name.casefold(), n.casefold()) >= NAME_SNAP_RATIO]
+    if not matches:
+        return name
+    return max(matches, key=lambda nc: (nc[1], fuzz.ratio(name.casefold(), nc[0].casefold())))[0]
 
 
 def _cue_score(texts: list[str]) -> int:
