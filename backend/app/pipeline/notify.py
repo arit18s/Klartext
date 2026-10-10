@@ -18,7 +18,7 @@ from app.models.tables import AuditLog, Decision, Evidence, TriggerSent
 from app.prompts import FAMILY_NAMES
 from app.services.trigger_client import send_trigger
 
-VERDICT_LABEL = {"alarm": "Alarm", "review": "Review"}
+VERDICT_LABEL = {"alarm": "Alert", "review": "Review"}  # display text; the verdict value stays "alarm"
 
 
 def _mmss(s: float) -> str:

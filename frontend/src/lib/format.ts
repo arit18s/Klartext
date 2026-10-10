@@ -21,7 +21,7 @@ export const EVENT_LABEL: Record<CheckEvent, string> = {
 }
 
 export const VERDICT_LABEL: Record<Verdict, string> = {
-  alarm: 'Alarm',
+  alarm: 'Alert',
   review: 'Review',
   no_alert: 'No alert',
 }
@@ -141,8 +141,8 @@ export function matchKind(expected: Verdict | null, actual: Verdict | null): Mat
 export const MATCH_LABEL: Record<MatchKind, string> = {
   match: 'Match',
   extra_review: 'Extra review',
-  false_alarm: 'False alarm',
+  false_alarm: 'False alert',
   caught_as_review: 'Caught as review',
-  caught_as_alarm: 'Caught as alarm',
+  caught_as_alarm: 'Caught as alert',
   missed: 'Missed',
 }

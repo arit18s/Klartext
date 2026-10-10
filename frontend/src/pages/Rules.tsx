@@ -383,7 +383,7 @@ export default function Rules() {
           <p className="mt-1 max-w-[72ch] text-muted">
             {tab === 'families'
               ? 'Each family is one check. Write the rule the way you would explain it to a new colleague. Every save creates a new config version.'
-              : 'Keywords point the checks at the right passages. A keyword alone never raises an alarm: the family check decides from context.'}
+              : 'Keywords point the checks at the right passages. A keyword alone never raises an alert: the family check decides from context.'}
           </p>
         </div>
         {current && <VersionLine version={current.version_id} at={current.created_at} />}

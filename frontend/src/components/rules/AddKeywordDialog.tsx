@@ -56,7 +56,7 @@ export function AddKeywordDialog({ onAdd }: { onAdd: (k: NewKeyword) => void }) 
         <DialogHeader>
           <DialogTitle>Add keyword</DialogTitle>
           <DialogDescription>
-            Keywords point the checks at a passage. They never raise an alarm on their own.
+            Keywords point the checks at a passage. They never raise an alert on their own.
           </DialogDescription>
         </DialogHeader>
         <DialogBody>

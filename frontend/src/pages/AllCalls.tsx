@@ -64,7 +64,7 @@ export default function AllCalls() {
           <h2 className="text-display">Every processed call</h2>
           {counts && (
             <p className="mt-1 text-muted">
-              {plural(counts.total, 'call', 'calls')} · {plural(counts.alarm, 'alarm', 'alarms')} ·{' '}
+              {plural(counts.total, 'call', 'calls')} · {plural(counts.alarm, 'alert', 'alerts')} ·{' '}
               {plural(counts.review, 'review', 'reviews')} · {counts.no_alert} no alert
             </p>
           )}

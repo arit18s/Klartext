@@ -33,7 +33,7 @@ export const EMPTY_FILTERS: FilterState = {
   date: 'all',
 }
 
-/** Inbox default as in the design: "Verdict: alarm, review" and "Audio: clean and noisy", last 7 days. */
+/** Inbox default as in the design: "Verdict: alert, review" and "Audio: clean and noisy", last 7 days. */
 export const INBOX_FILTERS: FilterState = {
   ...EMPTY_FILTERS,
   verdict: ['alarm', 'review'],

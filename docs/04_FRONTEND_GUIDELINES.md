@@ -116,9 +116,9 @@ Call view wireframe:
 ┌ sidebar ┬──────────────────────────────────────────────────────────────┐
 │ ■ Klartext │ ◀ Inbox   Stufe2_C09  [Clean]                    search  │
 │          ├──────────────────────────────────────────────────────────────┤
-│ Inbox    │ [Alarm] Access code shared            score 91               │
+│ Inbox    │ [Alert] Access code shared            score 91               │
 │ All calls│ Customer reads a live six-digit login code to the advisor.   │
-│ Tuning   │ [Correct] [False alarm] [Missed something]  Sent to Outcept  │
+│ Tuning   │ [Correct] [False alert] [Missed something]  Sent to Outcept  │
 │ Rules    ├───────────────────────────────────┬──────────────────────────┤
 │ Quality  │ ▁▂▃▅▂▁▂▃██▃▂▁▂▃▅▃▂▁▂▃██▃▂▁ (yellow)│ Checks                  │
 │ Pipeline │ Advisor  ▬▬  ▬▬▬    ▬▬            │ access   present 91 3/3 │
@@ -129,7 +129,7 @@ Call view wireframe:
 │          │  Anmeldung gestartet…"   ▶ play   │  00:31 Customer ...      │
 │          │ Trigger  01:41–01:48  Customer    │  01:41 Customer ... (hl) │
 │          │ "acht, drei, sechs, eins…" ▶ play │                          │
-│          │ Similar call without alarm: C10   │                          │
+│          │ Similar call without alert: C10   │                          │
 └──────────┴───────────────────────────────────┴──────────────────────────┘
 ```
 
@@ -137,7 +137,7 @@ Content is left-aligned. Numbers in tables right-aligned.
 
 ## 6. Components
 
-**Verdict chip.** Pill, soft background, strong text and icon, 12.5 px 500. Labels: "Alarm", "Review", "No alert". Large variant (20 px) in the call header.
+**Verdict chip.** Pill, soft background, strong text and icon, 12.5 px 500. Labels: "Alert", "Review", "No alert". Large variant (20 px) in the call header.
 
 **Score bar.** 48 × 4 px track in `line`, fill in verdict strong colour, number to the right (tabular). Score 0–100.
 
@@ -147,11 +147,11 @@ Content is left-aligned. Numbers in tables right-aligned.
 
 **Open question box** (review only). `review.soft` background, 10 px radius, title "Missing to decide", one sentence.
 
-**Twin call box.** Plain panel with `line` border: "Similar call without alarm" + one-sentence difference + link.
+**Twin call box.** Plain panel with `line` border: "Similar call without alert" + one-sentence difference + link.
 
 **Checks table.** Columns: family, event, score, agreement ("3 of 3 runs agree"). Undetermined event shown in review colour.
 
-**Threshold slider.** Single track with two handles ("Review from", "Alarm from"). Track segments coloured clear / review / alarm soft colours. Values shown above handles. Live summary sentence under it.
+**Threshold slider.** Single track with two handles ("Review from", "Alert from"). Track segments coloured clear / review / alarm soft colours. Values shown above handles. Live summary sentence under it.
 
 **Tables.** 44 px rows, 1 px `line` dividers, hover `canvas`. Sticky header. Keyboard navigable.
 
@@ -159,7 +159,7 @@ Content is left-aligned. Numbers in tables right-aligned.
 
 **Banners.** After rule or threshold changes: `canvas` background, graphite text, states the effect in one sentence with numbers.
 
-**Buttons.** Primary: graphite background, white text. Secondary: white, `line` border. Destructive: alarm strong text on white. Labels are verbs: "Play passage", "Mark as false alarm", "Apply thresholds", "Process folder". No arrows appended to labels.
+**Buttons.** Primary: graphite background, white text. Secondary: white, `line` border. Destructive: alarm strong text on white. Labels are verbs: "Play passage", "Mark as false alert", "Apply thresholds", "Process folder". No arrows appended to labels.
 
 **Focus.** 2 px graphite ring with 2 px white offset on every interactive element.
 
@@ -183,7 +183,7 @@ Content is left-aligned. Numbers in tables right-aligned.
 - Reasons: one or two sentences, start with who did what, end with why it matters.
 - Errors state what happened and what to do: "Transcription failed for Stufe1_D04. The file is not 16 kHz mono. Convert it and drop it into the inbox again."
 - Empty states invite action: "No calls need attention. 60 of 60 calls checked."
-- Toast after an action uses the same verb as the button: "Mark as false alarm" → "Marked as false alarm".
+- Toast after an action uses the same verb as the button: "Mark as false alert" → "Marked as false alert".
 - Swiss German quotes are shown as transcribed. A toggle "Show script wording" exists only in evaluation mode.
 
 ## 9. Accessibility checklist

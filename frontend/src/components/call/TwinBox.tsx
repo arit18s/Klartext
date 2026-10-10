@@ -12,11 +12,11 @@ export function TwinBox({ twin, verdict }: { twin: Twin; verdict: Verdict }) {
   const href = `/calls/${encodeURIComponent(twin.call_id)}`
   const title =
     verdict === 'review'
-      ? 'No similar call without alarm'
+      ? 'No similar call without alert'
       : twin.verdict === 'no_alert'
-        ? `Similar call without alarm: ${name}`
+        ? `Similar call without alert: ${name}`
         : twin.verdict === 'alarm'
-          ? `Similar call with alarm: ${name}`
+          ? `Similar call with alert: ${name}`
           : `Similar call (${VERDICT_LABEL[twin.verdict].toLowerCase()}): ${name}`
   return (
     <section

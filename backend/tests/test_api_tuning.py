@@ -64,7 +64,7 @@ def test_false_alarm_suggested_when_dev_recall_holds(client, seeded, data_dir, d
     label(seeded, ("Stufe2_C09-K3", "false_alarm"), ("Stufe3_C17-K3", "correct"))
     body = client.get("/api/scores/suggestion").json()
     assert body["suggestion"] == {"review": 95, "alarm": 95}
-    assert body["summary"] == "Would avoid 1 false alarm, misses nothing."
+    assert body["summary"] == "Would avoid 1 false alert, misses nothing."
     assert body["dev_recall"] == {"run_id": "eval-newer-dev", "current": 1.0, "suggested": 1.0}
 
 
@@ -102,7 +102,7 @@ def test_escalation_lowers_the_alarm_threshold(client, seeded):
     label(seeded, ("Stufe3_C17-K3", "escalated_to_alarm"), ("Stufe2_C09-K3", "correct"))
     body = client.get("/api/scores/suggestion").json()
     assert body["suggestion"] == {"review": 30, "alarm": 55}
-    assert body["summary"] == "Would raise 1 escalated call to alarm, misses nothing."
+    assert body["summary"] == "Would raise 1 escalated call to alert, misses nothing."
 
 
 def test_missed_lowers_the_review_threshold(client, seeded):

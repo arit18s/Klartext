@@ -112,7 +112,7 @@ export function VerdictHeader({
           {decision.verdict === 'review' ? (
             <>
               <ActionButton icon={Siren} pressed={is('escalated_to_alarm')} onClick={give('escalated_to_alarm')}>
-                Escalate as alarm
+                Escalate as alert
               </ActionButton>
               <ActionButton icon={Check} pressed={is('closed_no_alert')} onClick={give('closed_no_alert')}>
                 Close as no alert
@@ -135,7 +135,7 @@ export function VerdictHeader({
               </ActionButton>
               {flagged && (
                 <ActionButton icon={X} pressed={is('false_alarm')} onClick={give('false_alarm')}>
-                  False alarm
+                  False alert
                 </ActionButton>
               )}
               <NoteDialog

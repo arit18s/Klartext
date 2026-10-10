@@ -44,7 +44,7 @@ function MatchCell({ call }: { call: CallSummary }) {
 
 /**
  * Calls as table rows (never cards). Keyboard: ↑/↓ move, Enter opens; with onFeedback also A = correct,
- * F = false alarm. Rows use a roving tabindex so Tab enters the table once.
+ * F = false alert. Rows use a roving tabindex so Tab enters the table once.
  */
 export function CallsTable({
   items,

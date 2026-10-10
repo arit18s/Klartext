@@ -173,7 +173,7 @@
       <div class="card code" id="c6">
         <span class="n">6</span>
         <h2>Decision rule</h2>
-        <p>Code, not the model: alarm, review or no alert. Any error goes to review.</p>
+        <p>Code, not the model: alert, review or no alert. Any error goes to review.</p>
         <span class="tag own"><span class="dot"></span>Self-hosted</span>
       </div>
       <div class="card" id="c7">
@@ -195,7 +195,7 @@
       </div>
       <div class="card out" id="o2" style="grid-column: 7; grid-row: 2;">
         <h2>Outcept trigger</h2>
-        <p>Each alarm and review, with a deep link to the passage.</p>
+        <p>Each alert and review, with a deep link to the passage.</p>
       </div>
       <svg class="wires" id="wires" aria-hidden="true"></svg>
     </div>
@@ -218,7 +218,7 @@
     <div class="step"><span class="n">1</span><b>Call ends</b><span>The recording system stores it, as today.</span></div>
     <div class="step"><span class="n">2</span><b>Recording arrives</b><span>Webhook to Klartext. Nobody uploads anything.</span></div>
     <div class="step"><span class="n">3</span><b>Checked in minutes</b><span>Transcribed, separated, five checks, decided.</span></div>
-    <div class="step"><span class="n">4</span><b>Alarm or review posted</b><span>To Outcept, with a link to the passage.</span></div>
+    <div class="step"><span class="n">4</span><b>Alert or review posted</b><span>To Outcept, with a link to the passage.</span></div>
     <div class="step listen"><span class="n">5</span><b>Officer listens</b><span>The 20 seconds that matter, with the reason.</span></div>
     <div class="step"><span class="n">6</span><b>Decision logged</b><span>Feedback and every change are versioned.</span></div>
   </div>
@@ -273,16 +273,16 @@
     <div>
       <p class="facts-title">Holdout, 20 recordings, run once</p>
       <ul class="facts">
-        <li><span class="num">10 of 10</span><p>real cases caught as alarm or review. None missed.</p></li>
-        <li><span class="num">1</span><p>extra review on a harmless call. No false alarm.</p></li>
-        <li><span class="num">18 of 20</span><p>exact verdicts: alarm, review or no alert as expected.</p></li>
+        <li><span class="num">10 of 10</span><p>real cases caught as alert or review. None missed.</p></li>
+        <li><span class="num">1</span><p>extra review on a harmless call. No false alert.</p></li>
+        <li><span class="num">18 of 20</span><p>exact verdicts: alert, review or no alert as expected.</p></li>
         <li><span class="num">3 of 3</span><p>context pairs right on both sides: same words, different verdict.</p></li>
-        <li><span class="num">9 of 9</span><p>measurable alarms point to the passage the case names as evidence.</p></li>
+        <li><span class="num">9 of 9</span><p>measurable alerts point to the passage the case names as evidence.</p></li>
       </ul>
     </div>
   </div>
 
-  <p class="method">Both splits on real speech recognition (Whisper large-v3, 95% of digits and key phrases recognised on dev), Qwen3.6 27B with five runs per check. Prompts and thresholds (review from 30, alarm from 70, version 4) were set on dev only, then frozen for the single holdout run. On dev the keyword filter alone reached recall 0.36.</p>
+  <p class="method">Both splits on real speech recognition (Whisper large-v3, 95% of digits and key phrases recognised on dev), Qwen3.6 27B with five runs per check. Prompts and thresholds (review from 30, alert from 70, version 4) were set on dev only, then frozen for the single holdout run. On dev the keyword filter alone reached recall 0.36.</p>
 
   <div class="foot"><span>Every bank call heard. Every alert explained.</span><span>Built for Inventx and Outcept</span></div>
 </section>

@@ -9,7 +9,7 @@ interface ToastItem {
 
 const ToastContext = createContext<(text: string, tone?: ToastItem['tone']) => void>(() => {})
 
-/** Toasts use the same verb as the button: "Mark as false alarm" → "Marked as false alarm". */
+/** Toasts use the same verb as the button: "False alert" → "Marked as false alert". */
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<ToastItem[]>([])
   const nextId = useRef(1)

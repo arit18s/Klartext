@@ -93,7 +93,7 @@ function kpis(m: EvalMetrics) {
       label: 'Evidence overlap',
       value: ev && ev.measurable ? pct(ev.hit / ev.measurable) : '–',
       detail: ev
-        ? `${ev.hit} of ${ev.measurable} alarms hit an expected turn · target ${pct(TARGET.evidence)}`
+        ? `${ev.hit} of ${ev.measurable} alerts hit an expected turn · target ${pct(TARGET.evidence)}`
         : `Needs ASR turn alignment · target ${pct(TARGET.evidence)}`,
       status: ev && ev.measurable ? meets(ev.hit / ev.measurable, TARGET.evidence) : ('unmeasured' as Status),
     },
@@ -450,7 +450,7 @@ export default function Quality() {
                 caption="Rows: expected. Columns: Klartext. Red cells are missed cases."
               >
                 <p className="m-0 rounded-panel bg-canvas px-4 py-3">
-                  Alarms sent to review ({m.confusion.matrix[0][1]}) count as caught. Review is a hand-off, not a miss.
+                  Alerts sent to review ({m.confusion.matrix[0][1]}) count as caught. Review is a hand-off, not a miss.
                 </p>
               </ConfusionMatrix>
               <KeywordBaseline m={m} />

@@ -19,11 +19,11 @@ const ratio = (x: number | null) => (x === null ? '–' : x.toFixed(2))
 /** "At these settings Klartext catches 35 of 36 cases and sends 3 harmless calls to review." */
 function summary(r: TuningResult): string {
   if (r.evaluated === 0) {
-    return `At these settings Klartext raises ${r.counts.alarm} ${r.counts.alarm === 1 ? 'alarm' : 'alarms'} and sends ${calls(r.counts.review)} to review.`
+    return `At these settings Klartext raises ${r.counts.alarm} ${r.counts.alarm === 1 ? 'alert' : 'alerts'} and sends ${calls(r.counts.review)} to review.`
   }
   const costs = [
     r.extraReviews ? `sends ${r.extraReviews} harmless ${r.extraReviews === 1 ? 'call' : 'calls'} to review` : null,
-    r.falseAlarms ? `raises ${r.falseAlarms} false ${r.falseAlarms === 1 ? 'alarm' : 'alarms'}` : null,
+    r.falseAlarms ? `raises ${r.falseAlarms} false ${r.falseAlarms === 1 ? 'alert' : 'alerts'}` : null,
   ].filter(Boolean)
   const cases = `catches ${r.caught} of ${r.positives} ${r.positives === 1 ? 'case' : 'cases'}`
   return `At these settings Klartext ${cases} and ${costs.length ? costs.join(' and ') : 'flags no harmless call'}.`
@@ -103,7 +103,7 @@ export default function Tuning() {
   const apply = useMutation({
     mutationFn: () => putThresholds({ review: t.review, alarm: t.alarm }),
     onSuccess: (v) => {
-      toast(`Applied thresholds: review from ${v.review}, alarm from ${v.alarm}`)
+      toast(`Applied thresholds: review from ${v.review}, alert from ${v.alarm}`)
       qc.invalidateQueries({ queryKey: ['scores'] })
       qc.invalidateQueries({ queryKey: ['calls'] })
     },
@@ -174,7 +174,7 @@ export default function Tuning() {
               {summary(result)}
             </p>
             <p className="m-0 text-small text-muted">
-              Current saved version {saved.version_id}: review from {saved.review}, alarm from {saved.alarm}. Every
+              Current saved version {saved.version_id}: review from {saved.review}, alert from {saved.alarm}. Every
               apply writes a new version to the audit log.
             </p>
             <div className="flex flex-wrap gap-2">
@@ -215,7 +215,7 @@ export default function Tuning() {
                   {[
                     ['Caught', `${result.caught} of ${result.positives}`, false],
                     ['Missed', result.missed, result.missed > 0],
-                    ['False alarms', result.falseAlarms, false],
+                    ['False alerts', result.falseAlarms, false],
                     ['Extra reviews on harmless calls', result.extraReviews, false],
                   ].map(([label, v, bad]) => (
                     <div
@@ -262,7 +262,7 @@ function SuggestionCard({
         <div className="flex flex-col gap-1">
           {sug ? (
             <span className="font-semibold">
-              Suggested from feedback on {calls(s.labelled_calls)}: review from {sug.review}, alarm from {sug.alarm}
+              Suggested from feedback on {calls(s.labelled_calls)}: review from {sug.review}, alert from {sug.alarm}
             </span>
           ) : (
             <span className="font-semibold">

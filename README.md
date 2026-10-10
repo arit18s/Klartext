@@ -21,7 +21,7 @@ WAV in inbox folder
   → number normalisation
   → keyword hints
   → one context-aware check per risk family
-  → decision: alarm / review / no alert
+  → decision: alert / review / no alert
   → evidence snippets + twin call
   → alert to Outcept with a deep link to the passage
 ```
@@ -30,7 +30,7 @@ WAV in inbox folder
 
 **2. Speech to text built for dialect.** Open-weight Whisper models (including Swiss German fine-tunes) run on our own GPU. We choose the model by how reliably it captures the words that matter (digits, company names, key phrases), not by overall word error rate. Speaker separation labels each line as advisor or customer.
 
-**3. Keywords are hints, not verdicts.** A configurable keyword list (Standard German and Swiss German phrases) points the checks at the right passages. A keyword alone never raises an alarm.
+**3. Keywords are hints, not verdicts.** A configurable keyword list (Standard German and Swiss German phrases) points the checks at the right passages. A keyword alone never raises an alert.
 
 **4. One check per risk family, reading the whole context.** Each family has its own check run by an open-weight language model:
 
@@ -46,7 +46,7 @@ Each check must state the most plausible harmless reading first, cite the exact 
 
 **5. Code decides, not the model.** The language model returns structured findings. A small, transparent rule turns them into the verdict:
 
-- **Alarm** when the evidence is strong.
+- **Alert** when the evidence is strong.
 - **Review** when the score is in the middle band, when the facts needed to decide are missing (the open question is written out), when the transcript is unclear at the key passage, or when a check fails.
 - **No alert** otherwise.
 

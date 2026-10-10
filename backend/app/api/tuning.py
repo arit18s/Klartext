@@ -159,11 +159,11 @@ def _n(n: int, one: str, many: str) -> str:
 def _summary(cur: Effect, new: Effect) -> str:
     parts = []
     if (d := cur.false_alarms - new.false_alarms) > 0:
-        parts.append(f"avoid {_n(d, 'false alarm', 'false alarms')}")
+        parts.append(f"avoid {_n(d, 'false alert', 'false alerts')}")
     if (d := cur.extra_reviews - new.extra_reviews) > 0:
         parts.append(f"avoid {_n(d, 'extra review', 'extra reviews')}")
     if (d := cur.unmet_escalations - new.unmet_escalations) > 0:
-        parts.append(f"raise {_n(d, 'escalated call', 'escalated calls')} to alarm")
+        parts.append(f"raise {_n(d, 'escalated call', 'escalated calls')} to alert")
     if (d := cur.missed - new.missed) > 0:
         parts.append(f"catch {_n(d, 'missed call', 'missed calls')}")
     text = "Would " + ", ".join(parts) if parts else "Would change nothing the feedback marks"
@@ -196,7 +196,7 @@ def get_suggestion(session: SessionDep) -> SuggestionOut:
                          labels=counts, suggestion=None, current_effect=current, suggested_effect=None, dev_recall=None,
                          summary="")
     if not labelled:
-        base.summary = "No feedback on calls yet. Mark calls as correct, false alarm or missed to get a suggestion."
+        base.summary = "No feedback on calls yet. Mark calls as correct, false alert or missed to get a suggestion."
         return base
     dev = _dev_curve(session)
     if dev is None:

@@ -45,7 +45,7 @@ export default function Inbox() {
     <section className="flex flex-wrap items-end justify-between gap-4">
       <div>
         <h2 className="text-display">Needs attention</h2>
-        <p className="mt-1 text-muted">Alarms first, then reviews, highest score on top.</p>
+        <p className="mt-1 text-muted">Alerts first, then reviews, highest score on top.</p>
       </div>
       <div className="flex flex-wrap items-center gap-2">
         {USE_FIXTURES && (
@@ -115,7 +115,7 @@ export default function Inbox() {
       {counts && (
         <section aria-label="Summary" className="grid grid-cols-[repeat(auto-fit,minmax(168px,1fr))] gap-4">
           <StatCard
-            label="Alarms"
+            label="Alerts"
             value={counts.alarm}
             icon={Siren}
             tone="alarm"
@@ -164,7 +164,7 @@ export default function Inbox() {
           </div>
           <div className="flex items-center gap-1.5 text-small text-muted" aria-label="Keyboard shortcuts">
             <Kbd>↑</Kbd>
-            <Kbd>↓</Kbd> move <Kbd>Enter</Kbd> open <Kbd>A</Kbd> correct <Kbd>F</Kbd> false alarm
+            <Kbd>↓</Kbd> move <Kbd>Enter</Kbd> open <Kbd>A</Kbd> correct <Kbd>F</Kbd> false alert
           </div>
         </div>
         <div className="border-t border-line">

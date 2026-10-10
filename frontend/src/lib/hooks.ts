@@ -6,9 +6,9 @@ import type { FeedbackLabel } from './types'
 /** Toast text per feedback label: past tense of the button verb. */
 export const FEEDBACK_DONE: Record<FeedbackLabel, string> = {
   correct: 'Marked as correct',
-  false_alarm: 'Marked as false alarm',
+  false_alarm: 'Marked as false alert',
   missed: 'Marked as missed',
-  escalated_to_alarm: 'Escalated as alarm',
+  escalated_to_alarm: 'Escalated as alert',
   closed_no_alert: 'Closed as no alert',
   note: 'Note added',
 }

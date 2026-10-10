@@ -2,7 +2,7 @@
 
 Short answers for the jury, built from the pitch lines in `docs/DECISIONS.md` (decision numbers in brackets). Lead with the line in **bold**, add one sentence of detail only if asked again.
 
-**Numbers:** *holdout* is the B29 run: 20 recordings on real speech recognition, run once with prompts and thresholds frozen (review 30, alarm 70, version 4). *Dev* is the 40 recordings we tuned on, also on speech recognition. Quote holdout first.
+**Numbers:** *holdout* is the B29 run: 20 recordings on real speech recognition, run once with prompts and thresholds frozen (review 30, alert 70, version 4). *Dev* is the 40 recordings we tuned on, also on speech recognition. Quote holdout first.
 
 ---
 
@@ -26,13 +26,13 @@ Short answers for the jury, built from the pitch lines in `docs/DECISIONS.md` (d
 ## Trust and explainability
 
 **How do I know why it flagged a call?**
-**"The officer sees the 20 seconds that matter, highlighted, with a reason, before anything else."** (D26) Every alarm shows the passages with timestamps and speaker, plays them with 10 s of context, and names the rule it supports.
+**"The officer sees the 20 seconds that matter, highlighted, with a reason, before anything else."** (D26) Every alert shows the passages with timestamps and speaker, plays them with 10 s of context, and names the rule it supports.
 
 **Why didn't it flag a call that looks similar?**
-**"Klartext doesn't just say 'alarm', it shows why a near-identical call wasn't one."** (D27) The twin-call box shows the most similar call with a different verdict and the one-sentence difference (C09 live login code vs C10 expired sample from the manual).
+**"Klartext doesn't just say 'alert', it shows why a near-identical call wasn't one."** (D27) The twin-call box shows the most similar call with a different verdict and the one-sentence difference (C09 live login code vs C10 expired sample from the manual).
 
 **Does the AI make the decision?**
-**"The AI reads the call; a transparent rule makes the decision. Every verdict is reproducible for an auditor."** (D9) The model returns structured findings with quotes; quotes that don't match the transcript are dropped. One tested rule, the same on server and screen (22 shared test cases), turns them into alarm, review or no alert. (D12, D13)
+**"The AI reads the call; a transparent rule makes the decision. Every verdict is reproducible for an auditor."** (D9) The model returns structured findings with quotes; quotes that don't match the transcript are dropped. One tested rule, the same on server and screen (22 shared test cases), turns them into alert, review or no alert. (D12, D13)
 
 **How confident is it, and where does that come from?**
 **"Confidence comes from agreement between independent runs, not from the model grading itself."** (D10) Each check runs several times; the score is the share of runs that say it happened, with "unclear" counted as half.
@@ -49,7 +49,7 @@ Transcripts are treated as untrusted data in every prompt, outputs are checked a
 ## Quality
 
 **How good is it?**
-**"Our numbers come from calls we never tuned on."** (D22) Holdout, on real speech recognition: recall 1.00 (10 of 10 real cases caught, none missed), precision 0.91 (one extra review on a harmless call, no false alarm), exact verdict 18 of 20, Stufe 2 pairs 3 of 3, evidence on the expected passage for 9 of 9 measurable alarms, Stufe 3 sent to review 1 of 2 (the other went to alarm, so it was still caught). Dev: precision 0.92, recall 1.00, exact 37 of 40. The keyword filter alone: recall 0.40 on holdout, 0.36 on dev.
+**"Our numbers come from calls we never tuned on."** (D22) Holdout, on real speech recognition: recall 1.00 (10 of 10 real cases caught, none missed), precision 0.91 (one extra review on a harmless call, no false alert), exact verdict 18 of 20, Stufe 2 pairs 3 of 3, evidence on the expected passage for 9 of 9 measurable alerts, Stufe 3 sent to review 1 of 2 (the other went to alert, so it was still caught). Dev: precision 0.92, recall 1.00, exact 37 of 40. The keyword filter alone: recall 0.40 on holdout, 0.36 on dev.
 
 **How do you avoid overfitting to 30 dialogues?**
 **"We encode the compliance rules, not the test calls."** (D8) Fixed dev/holdout split by dialogue group (pairs and both recordings stay together), prompts and thresholds tuned on dev only, holdout run once. Nothing depends on file names, so the hidden test set works as is. (D22, D24)
@@ -72,7 +72,7 @@ We picked the ASR model by whether digits and key phrases survive, not by word e
 Compliance. Two thresholds on the Tuning page with the cost shown live; rules and keywords edited in plain language; every change is a versioned config with an audit entry. (D11, D35)
 
 **What does an auditor or FINMA get?**
-Per decision: model, prompt version, config versions (rules, keywords, thresholds) and every raw run. Every config change and every officer action (correct, false alarm, missed, escalate, close, note) is in the audit log. (D28, D35)
+Per decision: model, prompt version, config versions (rules, keywords, thresholds) and every raw run. Every config change and every officer action (correct, false alert, missed, escalate, close, note) is in the audit log. (D28, D35)
 
 **What if something breaks?**
 **"Every error fails towards a human, never towards silence."** (D33) A failed check, unreadable audio or an empty transcript goes to review with the reason. Trigger API or LLM outages never lose a call; it stays queued.

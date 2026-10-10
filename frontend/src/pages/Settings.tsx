@@ -81,11 +81,11 @@ export default function Settings() {
           </Panel>
           <Panel
             title="Outcept trigger API"
-            intro="Klartext posts every alarm and review here, with a link that opens the call at the suspicious passage."
+            intro="Klartext posts every alert and review here, with a link that opens the call at the suspicious passage."
           >
             <Row label="Trigger API URL" value={notSet(data.trigger_api_url)} />
             <Row
-              label="Send alarms and reviews"
+              label="Send alerts and reviews"
               value={data.trigger_api_enabled ? 'On' : 'Off'}
               help="Each post links to /calls/{call_id}?t={seconds}."
             />

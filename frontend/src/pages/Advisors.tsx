@@ -20,7 +20,7 @@ const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one :
 
 /** Why the row is highlighted, in words (the coloured edge alone would not be enough). Advisor-raised only. */
 function pattern(r: AdvisorRow): { text: string; tone: 'alarm' | 'review' } | null {
-  if (r.advisor_alarm > 0) return { text: plural(r.advisor_alarm, 'alarm', 'alarms'), tone: 'alarm' }
+  if (r.advisor_alarm > 0) return { text: plural(r.advisor_alarm, 'alert', 'alerts'), tone: 'alarm' }
   if (r.advisor_review >= 2) return { text: `${r.advisor_review} reviews`, tone: 'review' }
   return null
 }
@@ -28,7 +28,7 @@ function pattern(r: AdvisorRow): { text: string; tone: 'alarm' | 'review' } | nu
 /** Alarms and reviews raised by what the customer said: shown, never counted against the advisor. */
 function customerRequests(r: AdvisorRow): string | null {
   const parts = [
-    r.customer_alarm ? plural(r.customer_alarm, 'alarm', 'alarms') : '',
+    r.customer_alarm ? plural(r.customer_alarm, 'alert', 'alerts') : '',
     r.customer_review ? plural(r.customer_review, 'review', 'reviews') : '',
   ].filter(Boolean)
   return parts.length ? parts.join(', ') : null
@@ -55,7 +55,7 @@ export default function Advisors() {
         <div>
           <h2 className="text-display">Patterns per advisor</h2>
           <p className="mt-1 max-w-[72ch] text-muted">
-            One call can be a mistake. An alarm, or repeated reviews for the same advisor, are worth a conversation.
+            One call can be a mistake. An alert, or repeated reviews for the same advisor, are worth a conversation.
             Only flags raised by the advisor&rsquo;s own words count here; what the customer asked for is listed under
             Customer requests.
           </p>
@@ -71,7 +71,7 @@ export default function Advisors() {
       {advisors.data && rows.length > 0 && (
         <p className="-mt-2 m-0 text-muted">
           {plural(rows.length, 'advisor', 'advisors')} ·{' '}
-          {flagged ? `${plural(flagged, 'advisor', 'advisors')} worth a look` : 'none with an advisor-raised alarm or 2+ reviews'} ·{' '}
+          {flagged ? `${plural(flagged, 'advisor', 'advisors')} worth a look` : 'none with an advisor-raised alert or 2+ reviews'} ·{' '}
           {DATE_LABEL[period].toLowerCase()}
         </p>
       )}
@@ -98,7 +98,7 @@ export default function Advisors() {
                 <tr>
                   <th className={th}>Advisor</th>
                   <th className={cn(th, 'text-right')}>Calls</th>
-                  <th className={cn(th, 'text-right')}>Alarms</th>
+                  <th className={cn(th, 'text-right')}>Alerts</th>
                   <th className={cn(th, 'text-right')}>Reviews</th>
                   <th className={th}>Customer requests</th>
                   <th className={cn(th, 'text-right')}>No alert</th>
