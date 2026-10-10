@@ -510,7 +510,15 @@ export interface ThresholdSuggestion {
   suggestion: Thresholds | null
   current_effect: SuggestionEffect
   suggested_effect: SuggestionEffect | null
+  dev_recall: DevRecall | null // null without a dev evaluation run (then no suggestion, D44)
   summary: string
+}
+
+/** Recall on the latest dev evaluation run at the active and the suggested review threshold (from its PR curve). */
+export interface DevRecall {
+  run_id: string
+  current: number | null
+  suggested: number | null
 }
 
 /** GET /api/advisors (R12): one row per advisor name; calls without a recognised name are left out. */

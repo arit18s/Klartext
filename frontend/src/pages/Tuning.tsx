@@ -276,6 +276,12 @@ function SuggestionCard({
               feedback are judged; the counts below show the effect on every call once you use it.
             </span>
           )}
+          {sug && s.dev_recall?.suggested != null && (
+            <span className="text-small text-muted">
+              Recall on the latest Dev run stays {s.dev_recall.suggested.toFixed(2)} (now{' '}
+              {s.dev_recall.current?.toFixed(2) ?? '–'}). Suggestions never lower it.
+            </span>
+          )}
         </div>
       </div>
       <div className="flex flex-wrap gap-2">
