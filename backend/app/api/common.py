@@ -9,14 +9,17 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from fastapi import HTTPException
+from fastapi import HTTPException, Request, Response
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from fastapi.routing import APIRoute
 from pydantic import BaseModel
 from sqlmodel import Session, select
 
 from app.config import get_settings
 from app.db import get_engine
 from app.db.config_store import ActiveConfig, get_active_config
-from app.models.tables import Call, ConfigVersion, Decision, Feedback, TriggerSent
+from app.models.tables import AuditLog, Call, ConfigVersion, Decision, Feedback, TriggerSent
 from app.pipeline.decide import FAMILY_ORDER
 
 log = logging.getLogger(__name__)
@@ -153,3 +156,35 @@ def parse_json(text: str | None) -> Any:
         return json.loads(text)
     except ValueError:
         return None
+
+
+ACTOR = "Compliance officer"  # no login in the MVP; every officer action is attributed to this role
+
+
+def audit(session: Session, action: str, target: str, details: dict[str, Any] | None = None, actor: str = ACTOR) -> None:
+    """Add an audit_log row to the session (the caller commits)."""
+    session.add(AuditLog(actor=actor, action=action, target=target,
+                         details_json=json.dumps(details, ensure_ascii=False) if details is not None else None))
+
+
+def _plain(err: dict[str, Any]) -> str:
+    loc = ".".join(str(p) for p in err.get("loc", ()) if p not in ("body", "query", "path"))
+    msg = str(err.get("msg", "Invalid value.")).removeprefix("Value error, ")
+    return f"{loc}: {msg}" if loc and not msg.endswith(".") else msg
+
+
+class PlainErrorRoute(APIRoute):
+    """422 as {"detail": "<one sentence>"} (API_CONTRACT conventions), not FastAPI's list of error objects."""
+
+    def get_route_handler(self):  # type: ignore[no-untyped-def]
+        handler = super().get_route_handler()
+
+        async def route(request: Request) -> Response:
+            try:
+                return await handler(request)
+            except RequestValidationError as exc:
+                errors = list(exc.errors())
+                detail = "; ".join(_plain(e) for e in errors[:3]) or "Invalid request."
+                return JSONResponse(status_code=422, content={"detail": detail})
+
+        return route

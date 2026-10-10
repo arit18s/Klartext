@@ -8,11 +8,11 @@ from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlmodel import Session
 
-from app.api.common import config_versions
+from app.api.common import PlainErrorRoute, config_versions
 from app.config import get_settings
 from app.db import get_session
 
-router = APIRouter(prefix="/api", tags=["settings"])
+router = APIRouter(prefix="/api", tags=["settings"], route_class=PlainErrorRoute)
 SessionDep = Annotated[Session, Depends(get_session)]
 
 

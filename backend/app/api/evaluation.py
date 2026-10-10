@@ -1,21 +1,24 @@
-"""GET /eval/latest: the newest evaluation run written by scripts/evaluate.py (B12)."""
+"""Evaluation API: GET /eval/latest (newest run of scripts/evaluate.py, B12) and POST /eval/run."""
 
 from __future__ import annotations
 
 import json
 import logging
-from typing import Annotated, Any
+import subprocess
+import sys
+from pathlib import Path
+from typing import Annotated, Any, Literal
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlmodel import Session, select
 
-from app.api.common import iso, parse_json
+from app.api.common import PlainErrorRoute, audit, iso, parse_json
 from app.config import get_settings
 from app.db import get_session
 from app.models.tables import EvalRun
 
-router = APIRouter(prefix="/api/eval", tags=["eval"])
+router = APIRouter(prefix="/api/eval", tags=["eval"], route_class=PlainErrorRoute)
 SessionDep = Annotated[Session, Depends(get_session)]
 log = logging.getLogger(__name__)
 
@@ -66,3 +69,44 @@ def get_latest(session: SessionDep) -> EvalRunOut:
     return EvalRunOut(run_id=run["run_id"], split=run["split"], source=run["source"], created_at=run["created_at"],
                       config_versions={k: cv.get(k) for k in ("keywords", "families", "thresholds", "model")},
                       metrics=run["metrics"])
+
+
+# ---------- POST /eval/run ----------
+
+BACKEND = Path(__file__).resolve().parents[2]
+EVAL_TIMEOUT_S = 600
+
+
+class EvalRunRequest(BaseModel):
+    split: Literal["dev", "holdout", "all"]
+
+
+def run_evaluate_script(split: str) -> subprocess.CompletedProcess[str]:
+    """scripts/evaluate.py on the pipeline's stored results (--source asr: no LLM calls). Holdout and all need the
+    script's --holdout confirmation; the officer gives it by choosing that split (the Quality page warns first)."""
+    cmd = [sys.executable, "scripts/evaluate.py", "--split", split, "--source", "asr"]
+    if split in ("holdout", "all"):
+        cmd.append("--holdout")
+    return subprocess.run(cmd, cwd=BACKEND, capture_output=True, text=True, timeout=EVAL_TIMEOUT_S)
+
+
+def _last_line(text: str) -> str:
+    lines = [ln.strip() for ln in text.splitlines() if ln.strip() and not ln.startswith(("Traceback", " "))]
+    return lines[-1] if lines else ""
+
+
+@router.post("/run", response_model=EvalRunOut)
+def post_run(body: EvalRunRequest, session: SessionDep) -> EvalRunOut:
+    before = (_latest_file() or {}).get("run_id")
+    try:
+        proc = run_evaluate_script(body.split)
+    except subprocess.TimeoutExpired as exc:
+        raise HTTPException(status_code=504, detail="The evaluation took too long. Run scripts/evaluate.py from the terminal.") from exc
+    run = _latest_file()
+    if proc.returncode != 0 or run is None or run.get("run_id") == before:
+        reason = _last_line(proc.stdout) or _last_line(proc.stderr) or "The evaluation did not finish."
+        log.warning("Evaluation failed (exit %s)", proc.returncode)
+        raise HTTPException(status_code=409, detail=reason[:300])
+    audit(session, "eval_run", "eval", {"run_id": run["run_id"], "split": body.split})
+    session.commit()
+    return get_latest(session)

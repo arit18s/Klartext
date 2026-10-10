@@ -1,30 +1,31 @@
-"""Calls read API: list, detail, audio, snippets (API_CONTRACT.md "Calls")."""
+"""Calls API (API_CONTRACT.md "Calls"): list, detail, audio, snippets, history; feedback, recheck, retry."""
 
 from __future__ import annotations
 
 import json
 from collections import Counter
 from datetime import datetime, timezone
-from typing import Annotated
+from typing import Annotated, Any, Literal
 from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, model_validator
 from sqlmodel import Session, select
 
+from app.api import jobs
 from app.api.common import (
-    VERDICT_RANK, CallSummary, call_summary, confined, expected_verdicts, family_rank, get_call_or_404, iso,
-    latest_feedback_labels, triggered_call_ids,
+    VERDICT_RANK, PlainErrorRoute, CallSummary, audit, call_summary, confined, expected_verdicts, family_rank, get_call_or_404, iso,
+    latest_feedback_labels, parse_json, triggered_call_ids,
 )
 from app.config import get_settings
 from app.db import get_session
 from app.models.tables import (
-    Call, CheckResult, CheckRun, Decision, Evidence, Feedback, KeywordHit, Segment, TriggerSent,
+    AuditLog, Call, CheckResult, CheckRun, Decision, Evidence, Feedback, KeywordHit, Segment, TriggerSent,
 )
 from app.pipeline.decide import FAMILY_ORDER
 
-router = APIRouter(prefix="/api/calls", tags=["calls"])
+router = APIRouter(prefix="/api/calls", tags=["calls"], route_class=PlainErrorRoute)
 SessionDep = Annotated[Session, Depends(get_session)]
 ZURICH = ZoneInfo("Europe/Zurich")
 
@@ -392,3 +393,113 @@ def get_snippet(call_id: str, seg_id: str, session: SessionDep) -> FileResponse:
     if path is None:
         raise HTTPException(status_code=404, detail=f"No snippet for {seg_id} in {call_id}.")
     return FileResponse(path, media_type="audio/wav")
+
+
+# ---------- GET /calls/{id}/history ----------
+
+class HistoryEntry(BaseModel):
+    id: int
+    actor: str
+    action: str
+    target: str | None
+    details: dict[str, Any] | None
+    created_at: str | None
+
+
+@router.get("/{call_id}/history", response_model=list[HistoryEntry])
+def get_history(call_id: str, session: SessionDep) -> list[HistoryEntry]:
+    get_call_or_404(session, call_id)
+    rows = session.exec(select(AuditLog).where(AuditLog.target == f"call:{call_id}")
+                        .order_by(AuditLog.created_at.desc(), AuditLog.id.desc()))  # type: ignore[union-attr]
+    out = []
+    for r in rows:
+        details = parse_json(r.details_json)
+        out.append(HistoryEntry(id=r.id or 0, actor=r.actor, action=r.action, target=r.target,
+                                details=details if isinstance(details, dict) else None, created_at=iso(r.created_at)))
+    return out
+
+
+# ---------- POST /calls/{id}/feedback ----------
+
+FeedbackLabel = Literal["correct", "false_alarm", "missed", "escalated_to_alarm", "closed_no_alert", "note"]
+NOTE_MAX = 2000
+
+
+class FeedbackRequest(BaseModel):
+    label: FeedbackLabel
+    note: str | None = Field(default=None, max_length=NOTE_MAX)
+
+    @model_validator(mode="after")
+    def _note_rules(self) -> "FeedbackRequest":
+        self.note = (self.note or "").strip() or None
+        if self.label == "note" and not self.note:
+            raise ValueError("A note needs text. Write the note and save it again.")
+        return self
+
+
+@router.post("/{call_id}/feedback", status_code=201, response_model=FeedbackOut)
+def post_feedback(call_id: str, body: FeedbackRequest, session: SessionDep) -> FeedbackOut:
+    get_call_or_404(session, call_id)
+    fb = Feedback(call_id=call_id, label=body.label, note=body.note)
+    session.add(fb)
+    audit(session, "feedback", f"call:{call_id}", {"label": body.label, "note": body.note})
+    session.commit()
+    session.refresh(fb)
+    _notify(call_id)
+    return FeedbackOut(id=fb.id or 0, call_id=fb.call_id, label=fb.label, note=fb.note, created_at=iso(fb.created_at))
+
+
+# ---------- POST /calls/{id}/recheck, /retry ----------
+
+class JobAccepted(BaseModel):
+    call_id: str
+    status: str
+
+
+def _notify(call_id: str) -> None:
+    from app.api.events import notify_call_updated
+
+    try:
+        notify_call_updated(call_id)
+    except Exception:  # live updates are best effort; the write already succeeded
+        pass
+
+
+def _process(call_id: str, from_stage: str) -> None:
+    from app.pipeline.run import process
+
+    process([call_id], from_stage=from_stage)
+
+
+def _set_status(call_id: str, status: str) -> None:
+    from app.pipeline.run import _set_status as set_status
+
+    set_status(call_id, status)
+
+
+@router.post("/{call_id}/recheck", status_code=202, response_model=JobAccepted)
+def post_recheck(call_id: str, session: SessionDep) -> JobAccepted:
+    """Checks and decision again from the stored transcript, with the active config (verdicts may change)."""
+    call = get_call_or_404(session, call_id)
+    if call.status not in ("done", "failed"):
+        raise HTTPException(status_code=409, detail=f"{call_id} is still being processed ({call.status}). Wait until it is done, then recheck.")
+    if not (get_settings().data_path / "roles" / f"{call_id}.json").is_file():
+        raise HTTPException(status_code=409, detail=f"{call_id} has no transcript yet, so there is nothing to recheck. Retry the call instead.")
+    audit(session, "recheck", f"call:{call_id}", {"previous_status": call.status})
+    session.commit()
+    _set_status(call_id, "checking")
+    jobs.submit(f"recheck {call_id}", lambda: _process(call_id, "checks"))
+    return JobAccepted(call_id=call_id, status="checking")
+
+
+@router.post("/{call_id}/retry", status_code=202, response_model=JobAccepted)
+def post_retry(call_id: str, session: SessionDep) -> JobAccepted:
+    """Re-queue a failed call and run it from the first stage."""
+    call = get_call_or_404(session, call_id)
+    if call.status != "failed":
+        raise HTTPException(status_code=409, detail=f"{call_id} has not failed, so there is nothing to retry.")
+    audit(session, "retry", f"call:{call_id}", {"error": call.error})
+    session.commit()
+    _set_status(call_id, "queued")
+    jobs.submit(f"retry {call_id}", lambda: _process(call_id, "asr"))
+    return JobAccepted(call_id=call_id, status="queued")

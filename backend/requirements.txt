@@ -23,6 +23,7 @@ pydantic==2.14.0
 pydantic-core==2.50.0
 pydantic-settings==2.15.0
 python-dotenv==1.2.4
+python-multipart==0.0.32  # POST /pipeline/inbox (B25)
 rapidfuzz==3.14.6
 scikit-learn==1.9.1
 scipy==1.17.1

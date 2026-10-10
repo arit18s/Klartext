@@ -17,10 +17,11 @@ from fastapi.responses import StreamingResponse
 from sqlmodel import Session
 
 from app.api.pipeline import build_status
+from app.api.common import PlainErrorRoute
 from app.db import get_engine
 from app.models.tables import Call, Decision
 
-router = APIRouter(prefix="/api", tags=["events"])
+router = APIRouter(prefix="/api", tags=["events"], route_class=PlainErrorRoute)
 KEEPALIVE_S = 15.0
 QUEUE_MAX = 100
 
