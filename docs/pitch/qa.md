@@ -52,7 +52,7 @@ Transcripts are treated as untrusted data in every prompt, outputs are checked a
 **"We encode the compliance rules, not the test calls."** (D8) Fixed dev/holdout split by dialogue group (pairs and both recordings stay together), prompts and thresholds tuned on dev only, holdout run once. Nothing depends on file names, so the hidden test set works as is. (D22, D24)
 
 **Swiss German speech recognition is hard. How do you deal with it?**
-We picked the ASR model by whether digits, names and key phrases survive, not by word error rate. (D19) Whisper large-v3 recognises 95% of the digits and key phrases on dev. Low-confidence lines are marked *Listen to confirm*, and an unclear key passage sends the call to review. Clean and noisy recordings of the same call agree on 8 of 10 holdout pairs.
+We picked the ASR model by whether digits and key phrases survive, not by word error rate. (D19) Whisper large-v3 recognises 95% of the digits and key phrases on dev. Low-confidence lines are marked *Listen to confirm*, and an unclear key passage sends the call to review. Clean and noisy recordings of the same call agree on 8 of 10 holdout pairs.
 
 **Which LLM, and why reasoning off?**
 **"We measured it: the faster setting also caught more."** (D17) Qwen3.6 27B, open-weight. On dev, reasoning off: recall 1.00, precision 0.92, 6.6 s per request; reasoning on: recall 0.91, about 5× slower.
