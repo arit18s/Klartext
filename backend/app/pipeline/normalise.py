@@ -120,5 +120,6 @@ def digit_sequences(words: list[str], min_spelled: int = 3, min_value: int = 100
 
 def tokenize(text: str) -> list[str]:
     """Words for number detection: keeps "4'500" / "4.500" together, splits "acht, drü" at commas."""
+    text = re.sub(r"(?<=\d)\s*['’]\s*(?=\d{3}\b)", "'", text)  # ASR writes Swiss amounts as "10 '000": -> "10'000"
     text = re.sub(r"(?<=\d)[ ](?=\d{3}\b)", "'", text)  # "4 500" -> "4'500"
     return [t for t in re.split(r"[\s,;:!?«»\"()–]+", text) if t and t not in ("-", ".")]

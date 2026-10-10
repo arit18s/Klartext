@@ -2,7 +2,7 @@
 
 Updated with every step's commit. Steps and checks: `06_IMPLEMENTATION_PLAN.md`. Submission Sunday 08:30, feature freeze Saturday 22:00.
 
-Last update: Sat 10 Oct, 09:30 (B15 laptop side ready; B16 rules + normaliser; B18 orchestrator built, waiting for the 60 ASR transcripts).
+Last update: Sat 10 Oct, 10:15 (B16 done; B18 run on 60 calls in progress; fine-tunes still on the GPU).
 
 ## Next up
 
@@ -44,8 +44,8 @@ Last update: Sat 10 Oct, 09:30 (B15 laptop side ready; B16 rules + normaliser; B
 | B12 Evaluation runner | done | `d0fc9c0` | `scripts/evaluate.py`: GET /eval/latest shape, keyword-only baseline, `--holdout` guard. Dev/script, reasoning off: P 0.91 R 0.91, exact 17/20; on: 1.00 / 1.00, 20/20; keyword baseline P 0.57 R 0.36 |
 | B13 First tuning loop | done | `961dc84` | 5 iterations on dev, reasoning off: precision 0.92, recall 1.00, exact 18/20. Reasoning on: 0.91 / 0.91, 5× slower; default off. Stability check after B12: see risk 1 (`run_checks.py --sample-offset` for independent repeat runs) |
 | B14 ASR script for GPU box | done | (this commit) | Check passed on the GPU box: Stufe1_D01-K1 (166 s) in 11.7 s with diarization (39 s incl. model load). Schema valid, 343 words (script: 343), speakers match script roles in 40/42 segments. Versions in `backend/requirements-gpu.lock.txt`. env.sh fixed (nvidia namespace packages) |
-| B15 ASR bake-off | in progress | (this commit) | `scripts/asr_benchmark.py`: digit recall (Swiss German script vs Standard German ASR, both normalised), keyword recall, rough WER, speaker agreement; model chosen on **dev** only. D01-K1 large-v3: digits 1/1, keywords 1/1, speaker 95%. Waiting for the 60 × 3 transcripts |
-| B16 Role labelling and normaliser | in progress | (this commit) | Number normaliser (`pipeline/normalise.py`: de + gsw compounds, 4'500 / 4.500, digit runs) and rule-based roles (`pipeline/roles.py`: greeting cues, else first speaker; advisor name). Open: LLM fallback for unclear roles, 10-call role check |
+| B15 ASR bake-off | in progress | (this commit) | `scripts/asr_benchmark.py` (dev only by default). large-v3 on dev: digits 57/60 (95%), keywords 46/48 (96%), critical 95%, speaker 93%, WER 58% vs dialect script. Fixed: ASR writes Swiss amounts as "10 '000" (normaliser), amounts must match exactly. Waiting for Flix + gcoli transcripts |
+| B16 Role labelling and normaliser | done | (this commit) | Cue rule + LLM fallback (`prompts/roles_system.md`, temperature 0) + first-speaker fallback. Check on all 40 dev recordings: key (evidence) turns 94% right, 39/40 calls right (C14-K4 noisy: diarization), all segments 89%; advisor name in 33/40. Normaliser handles "10 '000" |
 | B17 Optional ASR service | todo | – | |
 | B18 Pipeline orchestrator | in progress | (this commit) | `pipeline/run.py` + `scripts/process_all.py`: stages asr → roles → normalise → keywords → checks → decide, disk + DB, `--from`, hash dedup, statuses. Tested: 1 done / 59 waiting_for_asr; broken transcript → failed with message; no speech → review. Evidence/notify stages are B20/B22. Check needs the 60 ASR transcripts |
 | B19 Keyword stage + rescan diff | todo | – | Matcher core done in B12 (`pipeline/keywords.py`, 40/40 annotated pairs, 0 extra); hints not yet fed to the checks |
