@@ -77,7 +77,7 @@ class InboxWatcher:
         path = path.resolve()
         if path.parent != self.inbox or path.suffix.lower() not in AUDIO_EXT or path.name.startswith("."):
             return
-        if str(path) in self.seen:
+        if str(path) in self.seen and path.exists():
             return
         self.seen.add(str(path))
         self.queue.put(path)
@@ -87,6 +87,9 @@ class InboxWatcher:
             pass
 
     def scan(self) -> None:
+        # Forget files that left the inbox (demo reset, retake), so a new copy with the same name is offered again.
+        # Same audio twice is still skipped in handle() by file hash.
+        self.seen = {p for p in self.seen if Path(p).exists()}
         for p in sorted(self.inbox.iterdir()):
             if p.is_file():
                 self.offer(p)

@@ -88,9 +88,7 @@ Hinweis: Die Buttons **Catch everything** / **Balanced** / **Fewer reviews** än
 
 Nach den Aufnahmen ist `demo_call` in der Datenbank und in der Outcept-Liste. Bitte Dinesh Bescheid geben, er setzt die Demo zurück:
 
-1. `inbox/demo_call.wav` löschen (Kopie von `data/demo/demo_call.wav`; sonst verarbeitet der Watcher sie nach dem Purge erneut).
-2. Aus `backend/`: `python scripts/purge_call.py demo_call --keep-transcript`.
-3. Outcept-Liste: leeren und die 35 Batch-Alerts und -Reviews neu senden (wie beim Screenshot-Lauf, siehe `README.md`), sonst bleibt der `demo_call`-Eintrag stehen.
-4. Prüfen: Inbox zeigt 35, `http://localhost:8080` zeigt 35 Einträge, Tuning steht auf 30 / 70.
+1. Aus `backend/`: `python scripts/reset_demo.py` (löscht die Kopie in `inbox/`, entfernt `demo_call`, behält das Transkript und setzt die Outcept-Liste auf die 35 Batch-Einträge zurück).
+2. Prüfen: Inbox zeigt 35, `http://localhost:8080` zeigt 35 Einträge, Tuning steht auf 30 / 70.
 
-Wenn ein Clip misslingt: einfach den Clip neu aufnehmen. Nur Clip 01 braucht vorher den Reset (Schritte 1–2), weil `demo_call` sonst schon existiert.
+Wenn ein Clip misslingt: einfach den Clip neu aufnehmen. Nur Clip 01 braucht vorher den Reset (`python scripts/reset_demo.py`), weil `demo_call` sonst schon existiert.

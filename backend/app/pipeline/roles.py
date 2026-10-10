@@ -31,8 +31,13 @@ ROLE_WORDS = {
     "kunde", "kundin", "inhaber", "inhaberin", "berater", "beraterin", "kundenberater", "kundenberaterin",
     "mitarbeiter", "mitarbeiterin", "vertreter", "vertreterin", "bevollmächtigter", "bevollmächtigte",
     "tochter", "sohn", "mutter", "vater", "bank", "team", "kundendienst", "kundenservice", "beratung",
+    # formal pronouns are capitalised in German: "hier ist Ihr Konto", "da ist Ihre Zahlung"
+    "ihr", "ihre", "ihren", "ihrem", "ihrer", "sie",
 }
-NAME_RE = re.compile(r"(?:mein name ist|(?:hier|da) ist|ich bin|ich heisse|ich heiße)\s+([A-ZÄÖÜ][\w-]+(?:\s+[A-ZÄÖÜ][\w-]+)?)")
+# "mein Name ist" / "ich heisse" in any case ("Mein Name ist", "mein Name ist"). "hier ist" / "da ist" / "ich bin" stay
+# lower case only: at a sentence start they precede too much that is no name (ASR: "Da ist Twitter -Kund vom Service").
+# The name itself must start upper case.
+NAME_RE = re.compile(r"(?:(?i:mein name ist|ich heisse|ich heiße)|(?:hier|da) ist|ich bin)\s+([A-ZÄÖÜ][\w-]+(?:\s+[A-ZÄÖÜ][\w-]+)?)")
 
 
 class RoleResult(BaseModel):
