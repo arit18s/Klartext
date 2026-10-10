@@ -391,7 +391,11 @@ export default function Quality() {
             label="Split to evaluate"
             value={split}
             onChange={setSplit}
-            options={(Object.keys(SPLIT_LABEL) as EvalSplit[]).map((s) => ({ value: s, label: SPLIT_LABEL[s] }))}
+            options={(Object.keys(SPLIT_LABEL) as EvalSplit[]).map((s) => ({
+              value: s,
+              label: SPLIT_LABEL[s],
+              disabled: s !== 'dev', // rule 4: holdout runs once, in B29, with frozen prompts and thresholds
+            }))}
           />
           <Button variant="primary" onClick={() => run.mutate()} disabled={run.isPending}>
             <Play strokeWidth={1.75} aria-hidden="true" />
@@ -399,11 +403,7 @@ export default function Quality() {
           </Button>
         </div>
       </section>
-      {split === 'holdout' && (
-        <p className="-mt-4 m-0 text-small text-muted">
-          Holdout numbers are for reporting only. Prompts and thresholds are never tuned on them.
-        </p>
-      )}
+      <p className="-mt-4 m-0 text-small text-muted">Holdout opens for the final run.</p>
 
       {latest.isPending && <p className="text-muted">Loading the latest evaluation…</p>}
       {missing && (
