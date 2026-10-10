@@ -2,13 +2,13 @@
 
 Updated with every step's commit. Steps and checks: `06_IMPLEMENTATION_PLAN.md`. Submission Sunday 08:30, feature freeze Saturday 22:00.
 
-Last update: Sat 10 Oct, 08:15 (B14 done on the GPU; B15 next).
+Last update: Sat 10 Oct, 09:30 (B15 laptop side ready; B16 rules + normaliser; B18 orchestrator built, waiting for the 60 ASR transcripts).
 
 ## Next up
 
 | Track | Next 3 steps |
 |---|---|
-| Backend | **B15** ASR bake-off: 60 calls × 3 models on the GPU (by you, ~1 h) + `asr_benchmark.py` (me) → **B16** role labelling and number normaliser → **B18** pipeline orchestrator |
+| Backend | **B15** run the GPU bake-off (by you, ~1 h), then `asr_benchmark.py` picks the model on dev → **B18** check: all 60 calls `done` on ASR transcripts → **B20** evidence and snippets |
 | Frontend | **F10** Switch to real API (needs B24–B26, incl. SSE `/api/events` and `POST /pipeline/inbox`) → integration bugs → demo rehearsal with B34 |
 
 ## Risks / open items
@@ -23,6 +23,8 @@ Last update: Sat 10 Oct, 08:15 (B14 done on the GPU; B15 next).
 8. **Full LLM run cost/time.** Reasoning off: ~13 min for 60 recordings at concurrency 8. Rate limits at that load are untested.
 9. **Trigger API image** `ghcr.io/outcept/inventx-case-study` is not publicly pullable; compose builds it from the case repo instead.
 10. **Exoscale instance** must be stopped after every session and destroyed after the event (07_SECURITY section 8).
+11. **Keyword hints are not in the check prompts yet.** Section 4 designs them in, but the prompts were tuned without them. Turning them on is a prompt change: decide in B19 with a dev re-run.
+12. **Your `.env` still overrides k:** the pipeline run printed k=3. Set `LLM_SAMPLES=5` in `.env` (D18).
 
 ## Backend (Track B)
 
@@ -42,10 +44,10 @@ Last update: Sat 10 Oct, 08:15 (B14 done on the GPU; B15 next).
 | B12 Evaluation runner | done | `d0fc9c0` | `scripts/evaluate.py`: GET /eval/latest shape, keyword-only baseline, `--holdout` guard. Dev/script, reasoning off: P 0.91 R 0.91, exact 17/20; on: 1.00 / 1.00, 20/20; keyword baseline P 0.57 R 0.36 |
 | B13 First tuning loop | done | `961dc84` | 5 iterations on dev, reasoning off: precision 0.92, recall 1.00, exact 18/20. Reasoning on: 0.91 / 0.91, 5× slower; default off. Stability check after B12: see risk 1 (`run_checks.py --sample-offset` for independent repeat runs) |
 | B14 ASR script for GPU box | done | (this commit) | Check passed on the GPU box: Stufe1_D01-K1 (166 s) in 11.7 s with diarization (39 s incl. model load). Schema valid, 343 words (script: 343), speakers match script roles in 40/42 segments. Versions in `backend/requirements-gpu.lock.txt`. env.sh fixed (nvidia namespace packages) |
-| B15 ASR bake-off | todo | – | whisper-large-v3 vs Flix-AI vs gcoli turbo, by critical token recall |
-| B16 Role labelling and normaliser | todo | – | |
+| B15 ASR bake-off | in progress | (this commit) | `scripts/asr_benchmark.py`: digit recall (Swiss German script vs Standard German ASR, both normalised), keyword recall, rough WER, speaker agreement; model chosen on **dev** only. D01-K1 large-v3: digits 1/1, keywords 1/1, speaker 95%. Waiting for the 60 × 3 transcripts |
+| B16 Role labelling and normaliser | in progress | (this commit) | Number normaliser (`pipeline/normalise.py`: de + gsw compounds, 4'500 / 4.500, digit runs) and rule-based roles (`pipeline/roles.py`: greeting cues, else first speaker; advisor name). Open: LLM fallback for unclear roles, 10-call role check |
 | B17 Optional ASR service | todo | – | |
-| B18 Pipeline orchestrator | todo | – | |
+| B18 Pipeline orchestrator | in progress | (this commit) | `pipeline/run.py` + `scripts/process_all.py`: stages asr → roles → normalise → keywords → checks → decide, disk + DB, `--from`, hash dedup, statuses. Tested: 1 done / 59 waiting_for_asr; broken transcript → failed with message; no speech → review. Evidence/notify stages are B20/B22. Check needs the 60 ASR transcripts |
 | B19 Keyword stage + rescan diff | todo | – | Matcher core done in B12 (`pipeline/keywords.py`, 40/40 annotated pairs, 0 extra); hints not yet fed to the checks |
 | B20 Evidence and snippets | todo | – | Snap quotes to exact substrings (contract) |
 | B21 Twin call | todo | – | |
