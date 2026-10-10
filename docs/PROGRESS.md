@@ -2,18 +2,18 @@
 
 Updated with every step's commit. Steps and checks: `06_IMPLEMENTATION_PLAN.md`. Submission Sunday 08:30, feature freeze Saturday 22:00.
 
-Last update: Sat 10 Oct, 02:40 (B12 done; F6, F7 merged; F8, F9 done on the frontend branch).
+Last update: Sat 10 Oct, 02:45 (stability check done; B14 written, not run yet; F8, F9 done).
 
 ## Next up
 
 | Track | Next 3 steps |
 |---|---|
-| Backend | Stability check: dev with `LLM_SAMPLES=5`, reasoning off ×2 and on ×1 (decides k and reasoning, risk 1) → **B14** ASR script for the GPU box (+ CUDA 12 pip libs) → **B15** ASR bake-off on the 60 calls |
+| Backend | **B14** run on the GPU box (setup + 1-call smoke test, by you) → **B15** ASR bake-off on the 60 calls → **B16** role labelling and number normaliser |
 | Frontend | **F10** Switch to real API (needs B24–B26, incl. SSE `/api/events` and `POST /pipeline/inbox`) → integration bugs → demo rehearsal with B34 |
 
 ## Risks / open items
 
-1. **Run-to-run variance at k = 3.** Same prompts on dev: reasoning off gave P/R 0.92 / 1.00 (B13) then 0.91 / 0.91 (B12); reasoning on gave 0.91 / 0.91 then 1.00 / 1.00. C14 and C20 flip between runs, so the reasoning choice rests on noise until k and stability are measured.
+1. **k = 3 is noisy, k = 5 is stable but shows lower recall.** Stability check (dev, reasoning off, two independent runs each): k=3 verdicts agree 18/20, max score diff 33; k=5 agree 19/20, max diff 10. At T_review 30, k=5 recall is 0.82 / 0.91 (k=3: 0.91 / 1.00, partly by luck). C20 (1 of 5 runs undetermined) and C18 (2 of 5 needs_human votes) are borderline for the model; C14 is a stable false alarm at 80. Decision pending: k=5 + review threshold ~15–20 in B28, or stay at k=3.
 2. **ASR not measured yet.** All check results so far run on script text. Swiss German ASR will drop digits and key phrases; expect dev numbers to fall. B15 picks the model by critical token recall.
 3. **GPU is smaller than planned.** RTX 3080 Ti 12 GB (AT-VIE-2), not A30/A5000 24 GB. Enough for faster-whisper large-v3 + pyannote, one model at a time. Driver 595 / CUDA 13.2: faster-whisper needs the CUDA 12 pip libs (`nvidia-cublas-cu12`, `nvidia-cudnn-cu12`).
 4. **k = 3 is coarse.** One stray sample scores 33, which crosses review at 30 (C14 extra review, D02 at 50). B12 PR curve (reasoning off): recall stays 1.00 only up to review threshold 16. Decide in B28: thresholds on the PR curve, or `LLM_SAMPLES=5`.
@@ -40,9 +40,9 @@ Last update: Sat 10 Oct, 02:40 (B12 done; F6, F7 merged; F8, F9 done on the fron
 | B9 LLM client | done | `d4dc1cc` | Structured output + JSON fallback, validation retry, backoff, fail safe |
 | B10 Family checks | done | `aad30a4` | Numbers helper, k samples in parallel, hallucination guard, disk cache, reasoning flag |
 | B11 Decision rule | done | `99d00ab` | `shared/decision_cases.json` (22 cases) passes in decide.py and decide.ts; no_checks, alarm despite failed family, fixed family order |
-| B12 Evaluation runner | done | (this commit) | `scripts/evaluate.py`: GET /eval/latest shape, keyword-only baseline, `--holdout` guard. Dev/script, reasoning off: P 0.91 R 0.91, exact 17/20; on: 1.00 / 1.00, 20/20; keyword baseline P 0.57 R 0.36 |
-| B13 First tuning loop | done | `961dc84` | 5 iterations on dev, reasoning off: precision 0.92, recall 1.00, exact 18/20. Reasoning on: 0.91 / 0.91, 5× slower; default off |
-| B14 ASR script for GPU box | todo | – | faster-whisper + pyannote community-1 (`token=`, cuda, `num_speakers=2`, exclusive diarization) |
+| B12 Evaluation runner | done | `d0fc9c0` | `scripts/evaluate.py`: GET /eval/latest shape, keyword-only baseline, `--holdout` guard. Dev/script, reasoning off: P 0.91 R 0.91, exact 17/20; on: 1.00 / 1.00, 20/20; keyword baseline P 0.57 R 0.36 |
+| B13 First tuning loop | done | `961dc84` | 5 iterations on dev, reasoning off: precision 0.92, recall 1.00, exact 18/20. Reasoning on: 0.91 / 0.91, 5× slower; default off. Stability check after B12: see risk 1 (`run_checks.py --sample-offset` for independent repeat runs) |
+| B14 ASR script for GPU box | in progress | (this commit) | `scripts/run_asr.py` + `scripts/setup_gpu.sh` written and tested offline (speaker splitting, schema). Not run on the GPU yet; check = 1 call in under a minute |
 | B15 ASR bake-off | todo | – | whisper-large-v3 vs Flix-AI vs gcoli turbo, by critical token recall |
 | B16 Role labelling and normaliser | todo | – | |
 | B17 Optional ASR service | todo | – | |

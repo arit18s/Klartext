@@ -170,14 +170,16 @@ def run_checks_many(
     model: str,
     families_version_id: int | None = None,
     keyword_hints: dict[str, str] | None = None,
+    sample_offset: int = 0,
 ) -> dict[str, CallChecks]:
+    """sample_offset shifts sample indices (cache keys), so a repeat run draws new, independent samples."""
     enabled = [f for f, c in families_cfg.items() if c.get("enabled") and not c.get("helper")]
     futures: dict[tuple[str, str], list] = {}
     for t in transcripts:
         nums = numbers[t.call_id].output if t.call_id in numbers else None
         for fam in enabled:
             user = _family_user_prompt(fam, families_cfg[fam], t, nums, (keyword_hints or {}).get(t.call_id, "none"))
-            futures[(t.call_id, fam)] = [executor.submit(_sample_job, user, t, i, reasoning) for i in range(k)]
+            futures[(t.call_id, fam)] = [executor.submit(_sample_job, user, t, sample_offset + i, reasoning) for i in range(k)]
 
     out: dict[str, CallChecks] = {}
     for t in transcripts:

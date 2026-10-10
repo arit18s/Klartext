@@ -49,6 +49,8 @@ def main() -> int:
     ap.add_argument("--reasoning", choices=["on", "off"], default=s.llm_reasoning)
     ap.add_argument("--samples", type=int, default=s.llm_samples)
     ap.add_argument("--concurrency", type=int, default=s.llm_concurrency)
+    ap.add_argument("--sample-offset", type=int, default=0, help="First sample index; a different offset gives independent samples (stability runs)")
+    ap.add_argument("--out", help="Output folder name under data/checks_script (default reasoning-<on|off>)")
     ap.add_argument("--verbose", action="store_true", help="Log every LLM request")
     args = ap.parse_args()
 
@@ -66,14 +68,14 @@ def main() -> int:
     thresholds = get_active_config("thresholds").data
     src = ScriptTranscriptSource()
     transcripts = [src.load(d) for d in ids]
-    out_dir = s.data_path / "checks_script" / f"reasoning-{args.reasoning}"
+    out_dir = s.data_path / "checks_script" / (args.out or f"reasoning-{args.reasoning}")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"Model {s.llm_model} | reasoning {args.reasoning} | k={args.samples} | concurrency {args.concurrency} | {len(ids)} dialogues")
     started = time.monotonic()
     with ThreadPoolExecutor(max_workers=args.concurrency) as ex:
         numbers = run_numbers_many(transcripts, ex, reasoning)
-        results = run_checks_many(transcripts, numbers, families.data, ex, args.samples, reasoning, s.llm_model, families.version_id)
+        results = run_checks_many(transcripts, numbers, families.data, ex, args.samples, reasoning, s.llm_model, families.version_id, sample_offset=args.sample_offset)
     wall = time.monotonic() - started
 
     gt = load_ground_truth()
