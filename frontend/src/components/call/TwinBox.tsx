@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import type { Twin, Verdict } from '@/lib/types'
 import { VERDICT_LABEL, recordingName } from '@/lib/format'
 import { buttonVariants } from '../ui/button'
+import { lc, t } from '@/i18n'
 
 /**
  * Twin call (05_BACKEND_STRUCTURE.md section 6): the most similar call with a different verdict.
@@ -12,12 +13,12 @@ export function TwinBox({ twin, verdict }: { twin: Twin; verdict: Verdict }) {
   const href = `/calls/${encodeURIComponent(twin.call_id)}`
   const title =
     verdict === 'review'
-      ? 'No similar call without alert'
+      ? t('twin.noneForReview')
       : twin.verdict === 'no_alert'
-        ? `Similar call without alert: ${name}`
+        ? t('twin.withoutAlert', { name })
         : twin.verdict === 'alarm'
-          ? `Similar call with alert: ${name}`
-          : `Similar call (${VERDICT_LABEL[twin.verdict].toLowerCase()}): ${name}`
+          ? t('twin.withAlert', { name })
+          : t('twin.other', { verdict: lc(VERDICT_LABEL[twin.verdict]), name })
   return (
     <section
       aria-label={title}
@@ -29,7 +30,7 @@ export function TwinBox({ twin, verdict }: { twin: Twin; verdict: Verdict }) {
       </div>
       {verdict !== 'review' && (
         <Link to={href} className={buttonVariants({ className: 'print:hidden' })}>
-          Open {name}
+          {t('twin.open', { name })}
         </Link>
       )}
     </section>

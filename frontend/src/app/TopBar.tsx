@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { Search } from 'lucide-react'
+import { t } from '@/i18n'
 
 /** 56 px top bar: page title (or breadcrumb) on the left, global search on the right. "/" focuses search. */
 export function TopBar({ children }: { children: ReactNode }) {
@@ -49,8 +50,8 @@ export function TopBar({ children }: { children: ReactNode }) {
               }
             }}
             type="search"
-            placeholder="Search call ID, advisor or transcript"
-            aria-label="Search calls"
+            placeholder={t('search.placeholder')}
+            aria-label={t('search.label')}
             className="min-w-0 flex-1 bg-transparent text-body text-graphite outline-none placeholder:text-muted focus-visible:outline-none"
           />
           <kbd className="inline-flex h-5 min-w-5 items-center justify-center rounded border border-line bg-canvas px-[5px] font-sans text-[11.5px] text-muted">

@@ -17,6 +17,7 @@ import { Button } from './ui/button'
 import { Tag } from './Tag'
 import { Segmented } from './Segmented'
 import { VerdictChip } from './VerdictChip'
+import { t, tn } from '@/i18n'
 
 function Section({ legend, children, className }: { legend: string; children: ReactNode; className?: string }) {
   return (
@@ -89,16 +90,16 @@ export function FilterModal({
       <DialogTrigger asChild>
         <Button>
           <Filter strokeWidth={1.75} aria-hidden="true" />
-          Filters
+          {t('filter.button')}
           {activeCount > 0 && <Tag className="h-5">{activeCount}</Tag>}
         </Button>
       </DialogTrigger>
-      <DialogContent closeLabel="Close filters">
+      <DialogContent closeLabel={t('filter.close')}>
         <DialogHeader>
-          <DialogTitle>Filter calls</DialogTitle>
+          <DialogTitle>{t('filter.title')}</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <Section legend="Verdict">
+          <Section legend={t('filter.verdict')}>
             <div className="flex flex-wrap gap-4">
               {verdicts.map((v) => (
                 <Check
@@ -113,7 +114,7 @@ export function FilterModal({
               ))}
             </div>
           </Section>
-          <Section legend="Family">
+          <Section legend={t('filter.family')}>
             {FAMILIES.map((f) => (
               <Check
                 key={f}
@@ -126,35 +127,35 @@ export function FilterModal({
               </Check>
             ))}
           </Section>
-          <Section legend="Level">
+          <Section legend={t('filter.level')}>
             <Segmented
-              label="Level"
+              label={t('filter.level')}
               value={draft.level === null ? 'all' : String(draft.level)}
               onChange={(v) => setDraft({ ...draft, level: v === 'all' ? null : (Number(v) as Level) })}
               options={[
-                { value: 'all', label: 'All' },
+                { value: 'all', label: t('common.all') },
                 { value: '1', label: 'Stufe 1' },
                 { value: '2', label: 'Stufe 2' },
                 { value: '3', label: 'Stufe 3' },
               ]}
             />
           </Section>
-          <Section legend="Audio">
+          <Section legend={t('filter.audio')}>
             <Segmented
-              label="Audio"
+              label={t('filter.audio')}
               value={draft.variant.length === 1 ? draft.variant[0] : 'both'}
               onChange={(v) => setDraft({ ...draft, variant: v === 'both' ? ['clean', 'noisy'] : [v as Variant] })}
               options={[
-                { value: 'both', label: 'Both' },
-                { value: 'clean', label: 'Clean' },
-                { value: 'noisy', label: 'Noisy' },
+                { value: 'both', label: t('filter.both') },
+                { value: 'clean', label: t('variant.clean') },
+                { value: 'noisy', label: t('variant.noisy') },
               ]}
             />
           </Section>
           <div className="flex gap-3">
-            <Section legend="Date" className="flex-1">
+            <Section legend={t('filter.date')} className="flex-1">
               <select
-                aria-label="Date range"
+                aria-label={t('filter.dateRange')}
                 className={selectClass}
                 value={draft.date}
                 onChange={(e) => setDraft({ ...draft, date: e.target.value as DateRange })}
@@ -166,14 +167,14 @@ export function FilterModal({
                 ))}
               </select>
             </Section>
-            <Section legend="Advisor" className="flex-1">
+            <Section legend={t('filter.advisor')} className="flex-1">
               <select
-                aria-label="Advisor"
+                aria-label={t('filter.advisor')}
                 className={selectClass}
                 value={draft.advisor ?? ''}
                 onChange={(e) => setDraft({ ...draft, advisor: e.target.value || null })}
               >
-                <option value="">All advisors</option>
+                <option value="">{t('filter.allAdvisors')}</option>
                 {advisors.map((a) => (
                   <option key={a} value={a}>
                     {a}
@@ -184,7 +185,7 @@ export function FilterModal({
           </div>
         </DialogBody>
         <DialogFooter>
-          <Button onClick={() => setDraft({ ...EMPTY_FILTERS, date: draft.date })}>Clear all</Button>
+          <Button onClick={() => setDraft({ ...EMPTY_FILTERS, date: draft.date })}>{t('filter.clearAll')}</Button>
           <Button
             variant="primary"
             onClick={() => {
@@ -192,7 +193,7 @@ export function FilterModal({
               setOpen(false)
             }}
           >
-            Apply filters · {count} {count === 1 ? 'call' : 'calls'}
+            {tn('filter.apply', count)}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Plus, X } from 'lucide-react'
+import { t } from '@/i18n'
 
 /** Phrase chips in quote type (they are words said in calls), with remove and an inline "+ Add". */
 export function PhraseList({
@@ -30,7 +31,7 @@ export function PhraseList({
           <button
             type="button"
             onClick={() => onChange(phrases.filter((x) => x !== p))}
-            aria-label={`Remove ${label} phrase ${p}`}
+            aria-label={t('phrase.remove', { label, phrase: p })}
             className="inline-flex h-4 w-4 items-center justify-center rounded-full font-sans not-italic text-muted hover:bg-line hover:text-graphite"
           >
             <X size={12} strokeWidth={1.75} aria-hidden="true" />
@@ -41,7 +42,7 @@ export function PhraseList({
         <input
           autoFocus
           value={text}
-          aria-label={`New ${label} phrase`}
+          aria-label={t('phrase.new', { label })}
           onChange={(e) => setText(e.target.value)}
           onBlur={commit}
           onKeyDown={(e) => {
@@ -57,11 +58,11 @@ export function PhraseList({
         <button
           type="button"
           onClick={() => setAdding(true)}
-          aria-label={`Add ${label} phrase`}
+          aria-label={t('phrase.add', { label })}
           className="inline-flex h-[26px] items-center gap-1 rounded-full border border-dashed border-line px-2 text-[12px] text-muted hover:border-muted hover:text-graphite"
         >
           <Plus size={12} strokeWidth={1.75} aria-hidden="true" />
-          Add
+          {t('common.add')}
         </button>
       )}
     </div>

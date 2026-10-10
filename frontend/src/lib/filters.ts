@@ -1,14 +1,23 @@
 import type { CallSummary, Family, Level, Variant, Verdict } from './types'
-import { FAMILY_LABEL, VERDICT_LABEL, startOfTodayIso } from './format'
+import { FAMILY_LABEL, VARIANT_LABEL, VERDICT_LABEL, startOfTodayIso } from './format'
+import { joinList, labels, lc, t } from '@/i18n'
 
 export type DateRange = 'today' | '7d' | '30d' | 'all'
 
-export const DATE_LABEL: Record<DateRange, string> = {
-  today: 'Today',
-  '7d': 'Last 7 days',
-  '30d': 'Last 30 days',
-  all: 'All time',
-}
+export const DATE_LABEL: Record<DateRange, string> = labels({
+  today: 'date.today',
+  '7d': 'date.7d',
+  '30d': 'date.30d',
+  all: 'date.all',
+})
+
+/** The range inside a sentence: "No calls … in the last 7 days." */
+export const DATE_IN: Record<DateRange, string> = labels({
+  today: 'date.inThe.today',
+  '7d': 'date.inThe.7d',
+  '30d': 'date.inThe.30d',
+  all: 'date.inThe.all',
+})
 
 /** What the filter modal edits. Empty list = no restriction. A list with every option = no restriction too. */
 export interface FilterState {
@@ -84,20 +93,18 @@ export interface FilterChip {
   label: string
 }
 
-const list = (words: string[]) =>
-  words.length <= 2 ? words.join(' and ') : `${words.slice(0, -1).join(', ')} and ${words.at(-1)}`
-
 /** Chips for the "Active filters" row. The date range has its own button and no chip. */
 export function filterChips(f: FilterState): FilterChip[] {
   const chips: FilterChip[] = []
   if (f.verdict.length)
-    chips.push({ key: 'verdict', label: `Verdict: ${f.verdict.map((v) => VERDICT_LABEL[v].toLowerCase()).join(', ')}` })
+    chips.push({ key: 'verdict', label: t('chip.verdict', { list: f.verdict.map((v) => lc(VERDICT_LABEL[v])).join(', ') }) })
   if (f.family.length && f.family.length < FAMILIES.length) {
-    chips.push({ key: 'family', label: `Family: ${f.family.map((x) => FAMILY_LABEL[x].toLowerCase()).join(', ')}` })
+    chips.push({ key: 'family', label: t('chip.family', { list: f.family.map((x) => lc(FAMILY_LABEL[x])).join(', ') }) })
   }
-  if (f.level !== null) chips.push({ key: 'level', label: `Level: Stufe ${f.level}` })
-  if (f.variant.length) chips.push({ key: 'variant', label: `Audio: ${list(f.variant)}` })
-  if (f.advisor !== null) chips.push({ key: 'advisor', label: `Advisor: ${f.advisor}` })
+  if (f.level !== null) chips.push({ key: 'level', label: t('chip.level', { level: f.level }) })
+  if (f.variant.length)
+    chips.push({ key: 'variant', label: t('chip.audio', { list: joinList(f.variant.map((v) => lc(VARIANT_LABEL[v]))) }) })
+  if (f.advisor !== null) chips.push({ key: 'advisor', label: t('chip.advisor', { name: f.advisor }) })
   return chips
 }
 

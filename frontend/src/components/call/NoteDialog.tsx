@@ -12,6 +12,7 @@ import {
 } from '../ui/dialog'
 import { Button } from '../ui/button'
 import type { FeedbackAction } from './VerdictHeader'
+import { t } from '@/i18n'
 
 /** Feedback with an optional note (max 2000 characters, as in the contract). */
 export function NoteDialog({
@@ -45,7 +46,7 @@ export function NoteDialog({
         </DialogHeader>
         <DialogBody>
           <label className="flex flex-col gap-1.5">
-            <span className="font-medium">Note</span>
+            <span className="font-medium">{t('note.label')}</span>
             <textarea
               value={note}
               maxLength={2000}

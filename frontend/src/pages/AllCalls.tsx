@@ -13,9 +13,9 @@ import { exportCsv, getCalls } from '@/lib/api'
 import { EMPTY_FILTERS, applyFilters, sortCalls, type FilterState } from '@/lib/filters'
 import { matchKind } from '@/lib/format'
 import { readFlag, writeFlag } from '@/lib/storage'
+import { t, tn } from '@/i18n'
 
 const EVAL_KEY = 'klartext.evalMode'
-const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`
 
 export default function AllCalls() {
   const [params, setParams] = useSearchParams()
@@ -51,21 +51,21 @@ export default function AllCalls() {
       const a = Object.assign(document.createElement('a'), { href: url, download: 'klartext-results.csv' })
       a.click()
       URL.revokeObjectURL(url)
-      toast('Exported CSV')
+      toast(t('all.exported'))
     } catch (e) {
-      toast(`Export failed. ${(e as Error).message}`, 'error')
+      toast(t('all.exportFailed', { message: (e as Error).message }), 'error')
     }
   }
 
   return (
-    <Page title="All calls">
+    <Page title={t('nav.allCalls')}>
       <section className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="text-display">Every processed call</h2>
+          <h2 className="text-display">{t('all.heading')}</h2>
           {counts && (
             <p className="mt-1 text-muted">
-              {plural(counts.total, 'call', 'calls')} · {plural(counts.alarm, 'alert', 'alerts')} ·{' '}
-              {plural(counts.review, 'review', 'reviews')} · {counts.no_alert} no alert
+              {tn('common.calls', counts.total)} · {tn('common.alerts', counts.alarm)} ·{' '}
+              {tn('common.reviews', counts.review)} · {t('all.noAlert', { n: counts.no_alert })}
             </p>
           )}
         </div>
@@ -76,7 +76,7 @@ export default function AllCalls() {
               setEvalMode(v)
               writeFlag(EVAL_KEY, v)
             }}
-            label="Evaluation mode"
+            label={t('all.evalMode')}
           />
           {evalMode && (
             <label className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-control border border-line px-3 hover:bg-canvas">
@@ -86,13 +86,13 @@ export default function AllCalls() {
                 checked={onlyMismatches}
                 onChange={(e) => setOnlyMismatches(e.target.checked)}
               />
-              Only mismatches <Tag className="h-5">{mismatches}</Tag>
+              {t('all.onlyMismatches')} <Tag className="h-5">{mismatches}</Tag>
             </label>
           )}
           <FilterModal value={filters} onApply={setFilters} items={all} />
           <Button onClick={download}>
             <Download strokeWidth={1.75} aria-hidden="true" />
-            Export CSV
+            {t('all.exportCsv')}
           </Button>
         </div>
       </section>
@@ -100,16 +100,13 @@ export default function AllCalls() {
       {evalMode && (
         <div className="-mt-2 flex items-center gap-3 rounded-panel bg-canvas px-4 py-3">
           <Info size={16} strokeWidth={1.75} aria-hidden="true" className="flex-none" />
-          <span>
-            Evaluation mode compares each verdict with the expected one from the test set. A fraud call sent to review
-            counts as caught.
-          </span>
+          <span>{t('all.evalInfo')}</span>
         </div>
       )}
 
       {filters.advisor && (
         <div className="-mt-2 flex items-center gap-2">
-          <span className="text-muted">Calls of</span>
+          <span className="text-muted">{t('all.callsOf')}</span>
           <Tag
             className="text-graphite"
             onRemove={() => {
@@ -117,7 +114,7 @@ export default function AllCalls() {
               params.delete('advisor')
               setParams(params)
             }}
-            removeLabel="Show every advisor"
+            removeLabel={t('all.everyAdvisor')}
           >
             {filters.advisor}
           </Tag>
@@ -126,26 +123,26 @@ export default function AllCalls() {
 
       {q && (
         <div className="-mt-2 flex items-center gap-2">
-          <span className="text-muted">Search results for</span>
+          <span className="text-muted">{t('all.searchFor')}</span>
           <Tag
             className="text-graphite"
             onRemove={() => {
               params.delete('q')
               setParams(params)
             }}
-            removeLabel="Clear search"
+            removeLabel={t('all.clearSearch')}
           >
             {q}
           </Tag>
         </div>
       )}
 
-      <section aria-label="All calls" className="overflow-hidden rounded-panel border border-line bg-paper">
-        {calls.isPending && <p className="m-0 px-4 py-6 text-muted">Loading calls…</p>}
+      <section aria-label={t('nav.allCalls')} className="overflow-hidden rounded-panel border border-line bg-paper">
+        {calls.isPending && <p className="m-0 px-4 py-6 text-muted">{t('inbox.loading')}</p>}
         {calls.error && (
           <div role="alert" className="flex flex-wrap items-center gap-3 px-4 py-4">
-            <span>Could not load the calls. {calls.error.message}</span>
-            <Button onClick={() => calls.refetch()}>Try again</Button>
+            <span>{t('inbox.loadError', { message: calls.error.message })}</span>
+            <Button onClick={() => calls.refetch()}>{t('common.tryAgain')}</Button>
           </div>
         )}
         {calls.data && (
@@ -153,11 +150,11 @@ export default function AllCalls() {
             items={shown}
             variant="all"
             evalMode={evalMode}
-            noun="calls"
-            label="All calls"
+            noun={t('all.noun')}
+            label={t('nav.allCalls')}
             empty={
               <div className="flex flex-col items-center gap-3 px-4 py-10 text-center">
-                <p className="m-0 text-muted">{q ? `No call matches “${q}”.` : 'No calls match these filters.'}</p>
+                <p className="m-0 text-muted">{q ? t('all.noQueryMatch', { q }) : t('all.noFilterMatch')}</p>
                 <Button
                   onClick={() => {
                     setFilters(EMPTY_FILTERS)
@@ -168,7 +165,7 @@ export default function AllCalls() {
                     }
                   }}
                 >
-                  Clear filters
+                  {t('common.clearFilters')}
                 </Button>
               </div>
             }

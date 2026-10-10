@@ -4,6 +4,7 @@ import type { Segment } from '@/lib/types'
 import { formatTimestamp } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import { speaker } from './labels'
+import { t } from '@/i18n'
 
 /** Speaker-labelled segments. Evidence lines are yellow; the active line has an inset ring. Click to jump there. */
 export function Transcript({
@@ -32,10 +33,10 @@ export function Transcript({
   }, [activeSeg])
 
   return (
-    <section aria-label="Transcript" className="flex flex-col print:hidden rounded-panel border border-line bg-paper">
+    <section aria-label={t('transcript.title')} className="flex flex-col print:hidden rounded-panel border border-line bg-paper">
       <div className="flex items-center justify-between px-4 pb-2 pt-4">
-        <h3 className="text-subtitle font-medium">Transcript</h3>
-        <span className="text-small text-muted">Click a line to jump there</span>
+        <h3 className="text-subtitle font-medium">{t('transcript.title')}</h3>
+        <span className="text-small text-muted">{t('transcript.hint')}</span>
       </div>
       <div ref={box} className="relative flex max-h-[560px] flex-col overflow-y-auto px-1 pb-3 pt-1">
         {segments.map((s) => {
@@ -74,7 +75,7 @@ export function Transcript({
                 {s.low_confidence && (
                   <span className="inline-flex items-center gap-1.5 text-small text-muted">
                     <TriangleAlert size={14} strokeWidth={1.75} aria-hidden="true" />
-                    Low transcription confidence. Listen to confirm.
+                    {t('transcript.lowConfidence')}
                   </span>
                 )}
               </span>

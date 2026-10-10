@@ -3,6 +3,7 @@ import type { Verdict } from '@/lib/types'
 import { VERDICT_LABEL } from '@/lib/format'
 import { VERDICT_ORDER } from '@/lib/tuning'
 import { cn } from '@/lib/utils'
+import { lc, t, tn } from '@/i18n'
 
 // Sequential, one hue (graphite), light → dark by count. Ink switches to white only on the two darkest steps.
 const STEPS = ['bg-canvas', 'bg-line', 'bg-[#C9CBCF]', 'bg-muted', 'bg-graphite-soft']
@@ -18,7 +19,7 @@ export function ConfusionMatrix({
   matrix,
   total,
   highlightMissed = false,
-  caption = 'Rows: expected verdict. Columns: Klartext verdict.',
+  caption = t('confusion.caption'),
   children,
 }: {
   matrix: number[][]
@@ -31,12 +32,12 @@ export function ConfusionMatrix({
   const max = Math.max(0, ...matrix.flat())
   return (
     <section
-      aria-label="Expected vs Klartext"
+      aria-label={t('confusion.title')}
       className="flex flex-col gap-3 rounded-panel border border-line bg-paper p-5"
     >
       <div className="flex items-baseline justify-between">
-        <h3 className="text-subtitle font-medium">Expected vs Klartext</h3>
-        <span className="text-small text-muted">{total} calls</span>
+        <h3 className="text-subtitle font-medium">{t('confusion.title')}</h3>
+        <span className="text-small text-muted">{tn('common.calls', total)}</span>
       </div>
       <table className="w-full border-separate border-spacing-0.5">
         <thead>
@@ -59,7 +60,7 @@ export function ConfusionMatrix({
                 const n = matrix[i][j]
                 const s = step(n, max)
                 const missed = highlightMissed && n > 0 && exp !== 'no_alert' && got === 'no_alert'
-                const label = `Expected ${VERDICT_LABEL[exp].toLowerCase()}, Klartext ${VERDICT_LABEL[got].toLowerCase()}: ${n} ${n === 1 ? 'call' : 'calls'}`
+                const label = tn('confusion.cell', n, { exp: lc(VERDICT_LABEL[exp]), got: lc(VERDICT_LABEL[got]) })
                 return (
                   <td
                     key={got}

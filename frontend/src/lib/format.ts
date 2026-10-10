@@ -1,32 +1,37 @@
 import type { CallSummary, CheckEvent, Family, HelperFamily, RaisedBy, Variant, Verdict } from './types'
+import { labels, locale, t } from '@/i18n'
 
-// Display names from 04_FRONTEND_GUIDELINES.md section 8.
+// Display names from 04_FRONTEND_GUIDELINES.md section 8, in the interface language (src/i18n).
 /** Who raised a flagged call (CallSummary.raised_by), for "Raised by: …". */
-export const RAISED_BY_LABEL: Record<RaisedBy, string> = { advisor: 'Advisor', customer: 'Customer', unclear: 'Unclear' }
+export const RAISED_BY_LABEL: Record<RaisedBy, string> = labels({
+  advisor: 'raisedBy.advisor',
+  customer: 'raisedBy.customer',
+  unclear: 'raisedBy.unclear',
+})
 
-export const FAMILY_LABEL: Record<Family | HelperFamily, string> = {
-  trade: 'Trading on non-public information',
-  splitting: 'Splitting to avoid approval',
-  access: 'Access code shared',
-  disclosure: 'Information given to a third party',
-  documentation: 'Relevant information left out',
-  numbers: 'Number type',
-}
+export const FAMILY_LABEL: Record<Family | HelperFamily, string> = labels({
+  trade: 'family.trade',
+  splitting: 'family.splitting',
+  access: 'family.access',
+  disclosure: 'family.disclosure',
+  documentation: 'family.documentation',
+  numbers: 'family.numbers',
+})
 
-export const EVENT_LABEL: Record<CheckEvent, string> = {
-  present: 'Happened',
-  absent: 'Did not happen',
-  undetermined: 'Unclear from the call',
-  not_applicable: 'Not relevant',
-}
+export const EVENT_LABEL: Record<CheckEvent, string> = labels({
+  present: 'event.present',
+  absent: 'event.absent',
+  undetermined: 'event.undetermined',
+  not_applicable: 'event.not_applicable',
+})
 
-export const VERDICT_LABEL: Record<Verdict, string> = {
-  alarm: 'Alert',
-  review: 'Review',
-  no_alert: 'No alert',
-}
+export const VERDICT_LABEL: Record<Verdict, string> = labels({
+  alarm: 'verdict.alarm',
+  review: 'verdict.review',
+  no_alert: 'verdict.no_alert',
+})
 
-export const VARIANT_LABEL: Record<Variant, string> = { clean: 'Clean', noisy: 'Noisy' }
+export const VARIANT_LABEL: Record<Variant, string> = labels({ clean: 'variant.clean', noisy: 'variant.noisy' })
 
 /** 101.4 → "01:41" (timestamps inside a call). */
 export function formatTimestamp(seconds: number): string {
@@ -62,29 +67,29 @@ export function formatProcessed(iso: string | null, now: Date = new Date()): str
   if (!iso) return '–'
   const d = new Date(iso)
   const time = d.toLocaleTimeString('de-CH', { timeZone: DISPLAY_TZ, hour: '2-digit', minute: '2-digit' })
-  if (dayKey(d) === dayKey(now)) return `today ${time}`
-  const day = d.toLocaleDateString('en-GB', { timeZone: DISPLAY_TZ, day: 'numeric', month: 'short' })
+  if (dayKey(d) === dayKey(now)) return `${t('common.today')} ${time}`
+  const day = d.toLocaleDateString(locale(), { timeZone: DISPLAY_TZ, day: 'numeric', month: 'short' })
   return `${day}, ${time}`
 }
 
 /** Short family names for dense tables (Rules design: "Access", "Third party"). */
-export const FAMILY_SHORT: Record<Family | HelperFamily, string> = {
-  trade: 'Trading',
-  splitting: 'Splitting',
-  access: 'Access',
-  disclosure: 'Third party',
-  documentation: 'Left out',
-  numbers: 'Number type',
-}
+export const FAMILY_SHORT: Record<Family | HelperFamily, string> = labels({
+  trade: 'familyShort.trade',
+  splitting: 'familyShort.splitting',
+  access: 'familyShort.access',
+  disclosure: 'familyShort.disclosure',
+  documentation: 'familyShort.documentation',
+  numbers: 'familyShort.numbers',
+})
 
 /** Name of a check in running text: "Why the access check is unclear". */
-export const FAMILY_CHECK: Record<Family, string> = {
-  trade: 'trading',
-  splitting: 'splitting',
-  access: 'access',
-  disclosure: 'third-party',
-  documentation: 'documentation',
-}
+export const FAMILY_CHECK: Record<Family, string> = labels({
+  trade: 'familyCheck.trade',
+  splitting: 'familyCheck.splitting',
+  access: 'familyCheck.access',
+  disclosure: 'familyCheck.disclosure',
+  documentation: 'familyCheck.documentation',
+})
 
 /** ISO time → "10:42" today, otherwise "8 Oct". For table columns. */
 export function formatProcessedShort(iso: string | null, now: Date = new Date()): string {
@@ -93,7 +98,7 @@ export function formatProcessedShort(iso: string | null, now: Date = new Date())
   if (dayKey(d) === dayKey(now)) {
     return d.toLocaleTimeString('de-CH', { timeZone: DISPLAY_TZ, hour: '2-digit', minute: '2-digit' })
   }
-  return d.toLocaleDateString('en-GB', { timeZone: DISPLAY_TZ, day: 'numeric', month: 'short' })
+  return d.toLocaleDateString(locale(), { timeZone: DISPLAY_TZ, day: 'numeric', month: 'short' })
 }
 
 /** ISO time → "10:43" (Zurich). */
@@ -123,7 +128,7 @@ export const roundScore = (score: number | null) => (score === null ? '–' : St
 /** "3 of 3" from agreement share and valid sample count. */
 export function formatAgreement(agreement: number | null, samples: number): string {
   if (agreement === null || samples === 0) return '–'
-  return `${Math.round(agreement * samples)} of ${samples}`
+  return t('common.ofTotal', { a: Math.round(agreement * samples), b: samples })
 }
 
 export type MatchKind = 'match' | 'extra_review' | 'false_alarm' | 'caught_as_review' | 'caught_as_alarm' | 'missed'
@@ -138,11 +143,11 @@ export function matchKind(expected: Verdict | null, actual: Verdict | null): Mat
   return actual === 'review' ? 'caught_as_review' : 'caught_as_alarm'
 }
 
-export const MATCH_LABEL: Record<MatchKind, string> = {
-  match: 'Match',
-  extra_review: 'Extra review',
-  false_alarm: 'False alert',
-  caught_as_review: 'Caught as review',
-  caught_as_alarm: 'Caught as alert',
-  missed: 'Missed',
-}
+export const MATCH_LABEL: Record<MatchKind, string> = labels({
+  match: 'match.match',
+  extra_review: 'match.extra_review',
+  false_alarm: 'match.false_alarm',
+  caught_as_review: 'match.caught_as_review',
+  caught_as_alarm: 'match.caught_as_alarm',
+  missed: 'match.missed',
+})

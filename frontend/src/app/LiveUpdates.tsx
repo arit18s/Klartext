@@ -5,6 +5,7 @@ import { USE_FIXTURES, eventsUrl } from '@/lib/api'
 import { VERDICT_LABEL } from '@/lib/format'
 import { markArrived, subscribe, type Connection } from '@/lib/live'
 import type { CallListResponse } from '@/lib/types'
+import { lc, t } from '@/i18n'
 
 const ConnectionContext = createContext<Connection>('connecting')
 export const useLiveConnection = () => useContext(ConnectionContext)
@@ -31,7 +32,7 @@ export function LiveUpdates({ children }: { children: ReactNode }) {
           const known = lists.some(([, d]) => d?.items.some((c) => c.call_id === call_id))
           if (!known && status === 'done') {
             markArrived(call_id)
-            if (verdict && verdict !== 'no_alert') toast(`New ${VERDICT_LABEL[verdict].toLowerCase()}: ${call_id}`)
+            if (verdict && verdict !== 'no_alert') toast(t('live.newCall', { verdict: lc(VERDICT_LABEL[verdict]), id: call_id }))
           }
           qc.invalidateQueries({ queryKey: ['calls'] })
           qc.invalidateQueries({ queryKey: ['call', call_id] })

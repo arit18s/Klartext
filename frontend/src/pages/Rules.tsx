@@ -22,18 +22,18 @@ import {
   suggestKeywordVariants,
 } from '@/lib/api'
 import { FAMILY_LABEL, FAMILY_SHORT, formatProcessed } from '@/lib/format'
+import { t, tn } from '@/i18n'
 import type { FamiliesConfig, Family, HelperFamily, KeywordList, KeywordsConfig, RescanResponse } from '@/lib/types'
 
 type Tab = 'families' | 'keywords'
 type AnyFamily = Family | HelperFamily
 const VERDICT_FAMILIES: Family[] = ['trade', 'splitting', 'access', 'disclosure', 'documentation']
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b)
-const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`
 
 function VersionLine({ version, at }: { version: number; at: string }) {
   return (
     <span className="text-small text-muted">
-      Config version {version} · saved {formatProcessed(at)}
+      {t('rules.version', { version, when: formatProcessed(at) })}
     </span>
   )
 }
@@ -50,11 +50,11 @@ function FamiliesTab({ saved }: { saved: FamiliesConfig }) {
   const save = useMutation({
     mutationFn: () => putFamilies({ families: draft }),
     onSuccess: (v) => {
-      toast(`Saved rules as config version ${v.version_id}`)
+      toast(t('rules.saved', { version: v.version_id }))
       qc.setQueryData(['families'], v)
       qc.invalidateQueries({ queryKey: ['scores'] })
     },
-    onError: (e: Error) => toast(`Rules were not saved. ${e.message}`, 'error'),
+    onError: (e: Error) => toast(t('rules.notSaved', { message: e.message }), 'error'),
   })
 
   return (
@@ -73,13 +73,12 @@ function FamiliesTab({ saved }: { saved: FamiliesConfig }) {
       </div>
       {changed.length > 0 && (
         <SaveBar
-          saveLabel="Save rules"
+          saveLabel={t('rules.save')}
           saving={save.isPending}
           onDiscard={() => setDraft(saved.families)}
           onSave={() => save.mutate()}
         >
-          {plural(changed.length, 'unsaved change', 'unsaved changes')} in{' '}
-          {changed.map((f) => FAMILY_LABEL[f]).join(', ')}. Saving writes a new config version.
+          {tn('rules.unsaved', changed.length, { families: changed.map((f) => FAMILY_LABEL[f]).join(', ') })}
         </SaveBar>
       )}
     </div>
@@ -153,15 +152,15 @@ function KeywordsTab({
     },
     onSuccess: ({ v, diff }) => {
       setRescan(diff)
-      toast(`Saved keywords as config version ${v.version_id}`)
+      toast(t('rules.keywordsSaved', { version: v.version_id }))
       qc.setQueryData(['keywords'], v)
     },
-    onError: (e: Error) => toast(`Keywords were not saved. ${e.message}`, 'error'),
+    onError: (e: Error) => toast(t('rules.keywordsNotSaved', { message: e.message }), 'error'),
   })
   const suggest = useMutation({
     mutationFn: (id: string) => suggestKeywordVariants(id),
     onSuccess: (r) => setSuggestions({ id: r.keyword_id, phrases: r.suggestions }),
-    onError: (e: Error) => toast(`No suggestions. ${e.message}`, 'error'),
+    onError: (e: Error) => toast(t('rules.noSuggestions', { message: e.message }), 'error'),
   })
 
   const keywordOnly = rescan?.keyword_only_flagged.after ?? keywordOnlyBaseline
@@ -175,9 +174,13 @@ function KeywordsTab({
         <div role="status" className="flex flex-wrap items-center gap-3 rounded-panel bg-canvas px-4 py-3">
           <Check size={16} strokeWidth={1.75} aria-hidden="true" />
           <span>
-            Keyword hits: {rescan.before} → {rescan.after}
-            {rescan.changed_calls.length ? ` in ${plural(rescan.changed_calls.length, 'call', 'calls')}` : ''}. Verdicts
-            stay as they are until the calls are checked again.
+            {t('rules.rescan', {
+              before: rescan.before,
+              after: rescan.after,
+              inCalls: rescan.changed_calls.length
+                ? t('rules.inCalls', { calls: tn('common.calls', rescan.changed_calls.length) })
+                : '',
+            })}
           </span>
         </div>
       )}
@@ -185,44 +188,44 @@ function KeywordsTab({
       {keywordOnly !== null && flaggedByKlartext !== null && (
         <div className="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-4">
           <section
-            aria-label="Keyword filter compared with Klartext"
+            aria-label={t('rules.compare')}
             className="flex items-center gap-6 rounded-panel border border-line bg-paper p-5"
           >
             <div>
-              <div className="text-muted">Keyword filter alone would flag</div>
-              <div className="tabular text-display">{plural(keywordOnly, 'call', 'calls')}</div>
+              <div className="text-muted">{t('rules.filterAlone')}</div>
+              <div className="tabular text-display">{tn('common.calls', keywordOnly)}</div>
             </div>
             <ArrowRight size={16} strokeWidth={1.75} aria-hidden="true" className="text-muted" />
             <div>
-              <div className="text-muted">Klartext flags</div>
-              <div className="tabular text-display">{plural(flaggedByKlartext, 'call', 'calls')}</div>
+              <div className="text-muted">{t('rules.klartextFlags')}</div>
+              <div className="tabular text-display">{tn('common.calls', flaggedByKlartext)}</div>
             </div>
           </section>
           <section
-            aria-label="Why the difference"
+            aria-label={t('rules.whyDiff')}
             className="flex flex-col gap-1 rounded-panel border border-line bg-paper p-5"
           >
-            <h3 className="font-medium">Why the difference</h3>
+            <h3 className="font-medium">{t('rules.whyDiff')}</h3>
             <p className="m-0 max-w-[72ch] text-muted">
               {harmlessByKeyword !== null && harmlessByKeyword > 0
-                ? `${plural(harmlessByKeyword, 'call says', 'calls say')} a keyword in a harmless way, like an expired sample code or a tracking number. Klartext reads the context and leaves ${harmlessByKeyword === 1 ? 'it' : 'them'} out.`
-                : 'Klartext flags calls from context, so it can catch cases where no keyword is said at all.'}
+                ? tn('rules.harmlessByKeyword', harmlessByKeyword)
+                : t('rules.fromContext')}
             </p>
           </section>
         </div>
       )}
 
-      <section aria-label="Keywords" className="overflow-hidden rounded-panel border border-line bg-paper">
+      <section aria-label={t('rules.keywords')} className="overflow-hidden rounded-panel border border-line bg-paper">
         <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
           <label className="flex items-center gap-2 text-small text-muted">
-            Family
+            {t('rules.family')}
             <select
-              aria-label="Filter keywords by family"
+              aria-label={t('rules.filterByFamily')}
               className="h-9 w-64 rounded-control border border-line bg-paper px-3 text-body text-graphite"
               value={filter}
               onChange={(e) => setFilter(e.target.value as AnyFamily | 'all')}
             >
-              <option value="all">All families</option>
+              <option value="all">{t('rules.allFamilies')}</option>
               {(Object.keys(FAMILY_LABEL) as AnyFamily[]).map((f) => (
                 <option key={f} value={f}>
                   {FAMILY_LABEL[f]}
@@ -236,13 +239,13 @@ function KeywordsTab({
           <table className="w-full border-collapse">
             <thead>
               <tr>
-                <th className={th}>Keyword</th>
-                <th className={th}>Family</th>
-                <th className={th}>Standard German phrases</th>
-                <th className={th}>Swiss German phrases</th>
-                <th className={th}>On</th>
+                <th className={th}>{t('rules.keyword')}</th>
+                <th className={th}>{t('rules.family')}</th>
+                <th className={th}>{t('rules.dePhrasesCol')}</th>
+                <th className={th}>{t('rules.gswPhrasesCol')}</th>
+                <th className={th}>{t('rules.on')}</th>
                 <th className={th}>
-                  <span className="sr-only">Actions</span>
+                  <span className="sr-only">{t('rules.actions')}</span>
                 </th>
               </tr>
             </thead>
@@ -260,29 +263,29 @@ function KeywordsTab({
                       <PhraseList
                         phrases={k.de}
                         onChange={(de) => update(k.id, { de })}
-                        label={`Standard German ${k.label}`}
+                        label={t('rules.dePhrasesOf', { label: k.label })}
                       />
                     </td>
                     <td className={`${td} min-w-[220px]`}>
                       <PhraseList
                         phrases={k.gsw}
                         onChange={(gsw) => update(k.id, { gsw })}
-                        label={`Swiss German ${k.label}`}
+                        label={t('rules.gswPhrasesOf', { label: k.label })}
                       />
                     </td>
                     <td className={td}>
                       <ToggleSwitch
                         checked={k.enabled}
                         onChange={(enabled) => update(k.id, { enabled })}
-                        label={`Keyword ${k.label}`}
+                        label={t('rules.keywordToggle', { label: k.label })}
                       />
                     </td>
                     <td className={`${td} whitespace-nowrap text-right`}>
                       <Button
                         variant="ghost"
                         size="icon"
-                        aria-label={`Suggest Swiss German variants for ${k.label}`}
-                        title="Suggest Swiss German variants"
+                        aria-label={t('rules.suggestFor', { label: k.label })}
+                        title={t('rules.suggestTitle')}
                         disabled={suggest.isPending}
                         onClick={() => suggest.mutate(k.id)}
                       >
@@ -291,8 +294,8 @@ function KeywordsTab({
                       <Button
                         variant="ghost"
                         size="icon"
-                        aria-label={`Delete keyword ${k.label}`}
-                        title="Delete keyword"
+                        aria-label={t('rules.deleteFor', { label: k.label })}
+                        title={t('rules.deleteTitle')}
                         onClick={() => remove(k.id)}
                       >
                         <Trash2 strokeWidth={1.75} aria-hidden="true" />
@@ -305,9 +308,9 @@ function KeywordsTab({
                         <div className="flex flex-wrap items-center gap-2">
                           <Sparkles size={16} strokeWidth={1.75} aria-hidden="true" />
                           <span>
-                            Suggested Swiss German variants for <b className="font-semibold">{k.label}</b>:
+                            {t('rules.suggestedFor')} <b className="font-semibold">{k.label}</b>:
                           </span>
-                          {suggestions.phrases.length === 0 && <span className="text-muted">none found.</span>}
+                          {suggestions.phrases.length === 0 && <span className="text-muted">{t('rules.noneFound')}</span>}
                           {suggestions.phrases.map((p) => (
                             <span key={p} className="inline-flex items-center gap-2">
                               <span className="font-quote text-[15px] italic">{p}</span>
@@ -321,7 +324,7 @@ function KeywordsTab({
                                   })
                                 }}
                               >
-                                Accept
+                                {t('rules.accept')}
                               </Button>
                               <Button
                                 size="sm"
@@ -332,7 +335,7 @@ function KeywordsTab({
                                   })
                                 }
                               >
-                                Reject
+                                {t('rules.reject')}
                               </Button>
                             </span>
                           ))}
@@ -344,18 +347,18 @@ function KeywordsTab({
               })}
             </tbody>
           </table>
-          {rows.length === 0 && <p className="m-0 px-4 py-8 text-center text-muted">No keywords in this family yet.</p>}
+          {rows.length === 0 && <p className="m-0 px-4 py-8 text-center text-muted">{t('rules.noKeywords')}</p>}
         </div>
       </section>
 
       {dirty && (
         <SaveBar
-          saveLabel="Save keywords"
+          saveLabel={t('rules.saveKeywords')}
           saving={save.isPending}
           onDiscard={() => setDraft(saved.keywords)}
           onSave={() => save.mutate()}
         >
-          Unsaved keyword changes. Saving re-runs the keyword stage on all cached transcripts.
+          {t('rules.unsavedKeywords')}
         </SaveBar>
       )}
     </div>
@@ -376,36 +379,38 @@ export default function Rules() {
   const keywordCount = useMemo(() => keywords.data?.keywords.keywords.length, [keywords.data])
 
   return (
-    <Page title="Rules">
+    <Page title={t('nav.rules')}>
       <section className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="text-display">What Klartext listens for</h2>
+          <h2 className="text-display">{t('rules.heading')}</h2>
           <p className="mt-1 max-w-[72ch] text-muted">
             {tab === 'families'
-              ? 'Each family is one check. Write the rule the way you would explain it to a new colleague. Every save creates a new config version.'
-              : 'Keywords point the checks at the right passages. A keyword alone never raises an alert: the family check decides from context.'}
+              ? t('rules.introFamilies')
+              : t('rules.introKeywords')}
           </p>
         </div>
         {current && <VersionLine version={current.version_id} at={current.created_at} />}
       </section>
 
       <Tabs
-        label="Rules"
+        label={t('rules.tabs')}
         value={tab}
-        onChange={(t) => setParams(t === 'families' ? {} : { tab: t }, { replace: true })}
+        onChange={(next) => setParams(next === 'families' ? {} : { tab: next }, { replace: true })}
         tabs={[
-          { value: 'families', label: 'Families', count: VERDICT_FAMILIES.length },
-          { value: 'keywords', label: 'Keywords', count: keywordCount },
+          { value: 'families', label: t('rules.families'), count: VERDICT_FAMILIES.length },
+          { value: 'keywords', label: t('rules.keywords'), count: keywordCount },
         ]}
       />
 
-      {!current && !error && <p className="m-0 text-muted">Loading the {tab}…</p>}
+      {!current && !error && (
+        <p className="m-0 text-muted">{t(tab === 'families' ? 'rules.loadingFamilies' : 'rules.loadingKeywords')}</p>
+      )}
       {error && (
         <div role="alert" className="flex flex-wrap items-center gap-3 rounded-panel border border-line p-4">
           <span>
-            Could not load the {tab}. {error.message}
+            {t(tab === 'families' ? 'rules.loadErrorFamilies' : 'rules.loadErrorKeywords', { message: error.message })}
           </span>
-          <Button onClick={() => (tab === 'families' ? families.refetch() : keywords.refetch())}>Try again</Button>
+          <Button onClick={() => (tab === 'families' ? families.refetch() : keywords.refetch())}>{t('common.tryAgain')}</Button>
         </div>
       )}
       {tab === 'families' && families.data && <FamiliesTab saved={families.data} />}

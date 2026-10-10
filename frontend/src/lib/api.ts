@@ -43,6 +43,7 @@ import type {
 import { emit } from './live'
 import { startOfTodayIso } from './format'
 import { placeholderWav } from './placeholderAudio'
+import { t, type Key } from '@/i18n'
 export const USE_FIXTURES = import.meta.env.VITE_USE_FIXTURES === 'true'
 
 // Fixture sets. src/fixtures-real/ is written by backend/scripts/export_fixtures.py from the real DB and is
@@ -100,16 +101,16 @@ export class ApiError extends Error {
   }
 }
 
-export const UNREACHABLE = 'The Klartext server is not reachable. Check that the backend is running, then try again.'
+const unreachable = () => t('api.unreachable')
 
 /** Turns a failed response into a sentence for the officer; the backend's `detail` wins when there is one. */
 async function failure(res: Response): Promise<ApiError> {
   const body = await res.json().catch(() => null)
   if (typeof body?.detail === 'string') return new ApiError(res.status, body.detail)
   // No JSON body: a gateway or the dev proxy answered because the backend is down.
-  if (res.status >= 500) return new ApiError(res.status, UNREACHABLE)
-  if (res.status === 404) return new ApiError(404, 'Not found.')
-  return new ApiError(res.status, `The server refused the request (${res.status}).`)
+  if (res.status >= 500) return new ApiError(res.status, unreachable())
+  if (res.status === 404) return new ApiError(404, t('api.notFound'))
+  return new ApiError(res.status, t('api.refused', { status: res.status }))
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -120,7 +121,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
       headers: init?.body ? { 'Content-Type': 'application/json', ...init.headers } : init?.headers,
     })
   } catch {
-    throw new ApiError(0, UNREACHABLE)
+    throw new ApiError(0, unreachable())
   }
   if (!res.ok) throw await failure(res)
   return res.json() as Promise<T>
@@ -138,8 +139,8 @@ function withFixtureFeedback(c: CallSummary): CallSummary {
   return latest ? { ...c, feedback_label: latest.label } : c
 }
 
-function noFixture(what: string): never {
-  throw new ApiError(503, `${what} needs the backend. Set VITE_USE_FIXTURES=false and start the API.`)
+function noFixture(what: Key): never {
+  throw new ApiError(503, t('api.needsBackend', { what: t(what) }))
 }
 
 // ---------- Calls ----------
@@ -196,7 +197,7 @@ export async function getCalls(filters: CallFilters = {}): Promise<CallListRespo
 export async function getCall(callId: string): Promise<CallDetail> {
   if (!USE_FIXTURES) return request(`/calls/${encodeURIComponent(callId)}`)
   const detail = fixtureDetail(callId)
-  if (!detail) throw new ApiError(404, `Call ${callId} not found.`)
+  if (!detail) throw new ApiError(404, t('api.callNotFound', { id: callId }))
   const extra = fixtureFeedback.get(callId) ?? []
   return { ...detail, call: withFixtureFeedback(detail.call), feedback: [...detail.feedback, ...extra] }
 }
@@ -233,12 +234,12 @@ export async function postFeedback(callId: string, body: FeedbackRequest): Promi
 }
 
 export const recheckCall = (callId: string) =>
-  USE_FIXTURES ? noFixture('Recheck') : send<RecheckResponse>('POST', `/calls/${encodeURIComponent(callId)}/recheck`)
+  USE_FIXTURES ? noFixture('api.what.recheck') : send<RecheckResponse>('POST', `/calls/${encodeURIComponent(callId)}/recheck`)
 
 export async function retryCall(callId: string): Promise<RetryResponse> {
   if (!USE_FIXTURES) return send<RetryResponse>('POST', `/calls/${encodeURIComponent(callId)}/retry`)
   const item = sim.queue.find((q) => q.call_id === callId && q.stage === 'failed')
-  if (!item) throw new ApiError(409, `${callId} has not failed, so there is nothing to retry.`)
+  if (!item) throw new ApiError(409, t('api.notFailed', { id: callId }))
   Object.assign(item, {
     stage: 'queued',
     progress: 0,
@@ -253,7 +254,7 @@ export async function retryCall(callId: string): Promise<RetryResponse> {
 }
 
 export const getCallHistory = (callId: string) =>
-  USE_FIXTURES ? noFixture('Call history') : request<HistoryEntry[]>(`/calls/${encodeURIComponent(callId)}/history`)
+  USE_FIXTURES ? noFixture('api.what.history') : request<HistoryEntry[]>(`/calls/${encodeURIComponent(callId)}/history`)
 
 // ---------- Scores ----------
 
@@ -278,7 +279,7 @@ export async function getScores(): Promise<ScoresResponse> {
 
 /** GET /api/scores/suggestion (R11). Needs the backend: it re-decides calls with the server's decision rule. */
 export const getThresholdSuggestion = () =>
-  USE_FIXTURES ? noFixture('Suggestions from feedback') : request<ThresholdSuggestion>('/scores/suggestion')
+  USE_FIXTURES ? noFixture('api.what.suggestion') : request<ThresholdSuggestion>('/scores/suggestion')
 
 export async function getThresholds(): Promise<ThresholdsConfig> {
   if (!USE_FIXTURES) return request<ThresholdsConfig>('/config/thresholds')
@@ -347,7 +348,7 @@ const nextVersion = () => {
 
 export const suggestKeywordVariants = (keywordId: string) =>
   USE_FIXTURES
-    ? noFixture('Suggesting Swiss German variants')
+    ? noFixture('api.what.variants')
     : send<KeywordSuggestResponse>('POST', '/config/keywords/suggest', { keyword_id: keywordId })
 
 /** Fixture mode stands in for the keyword stage with a plain case-insensitive phrase match over the fixture transcripts. */
@@ -389,7 +390,7 @@ export async function rescanKeywords(): Promise<RescanResponse> {
 // ---------- Evaluation, pipeline, settings ----------
 
 export const runEval = (body: EvalRunRequest) =>
-  USE_FIXTURES ? noFixture('Running the evaluation') : send<EvalRun>('POST', '/eval/run', body)
+  USE_FIXTURES ? noFixture('api.what.eval') : send<EvalRun>('POST', '/eval/run', body)
 
 /** GET /api/eval/latest, optionally the newest run of one split. Fixture mode has one run and ignores the split. */
 export async function getLatestEval(split?: EvalSplit): Promise<EvalRun> {
@@ -586,7 +587,7 @@ export async function setWatching(enabled: boolean): Promise<WatchResponse> {
 
 /** Fixture mode only (demo): a new recording lands in the inbox folder. Each press uses the next free noisy C09 copy. */
 export function simulateIncomingCall(): string {
-  if (!USE_FIXTURES) throw new ApiError(400, 'Simulation only exists in fixture mode.')
+  if (!USE_FIXTURES) throw new ApiError(400, t('api.simulationOnly'))
   for (let n = 4; ; n++) {
     const name = n === 4 ? 'Stufe2_C09-K4.wav' : `Stufe2_C09-K4-${n - 4}.wav`
     if (simEnqueue(name) === 'queued') return name
@@ -605,14 +606,14 @@ const MAX_UPLOAD = 200 * 1024 * 1024
 /** Drop zone: copy one recording into the inbox folder (contract: POST /api/pipeline/inbox). The watcher does the rest. */
 export async function uploadToInbox(file: File): Promise<UploadResponse> {
   if (!AUDIO.test(file.name))
-    throw new ApiError(415, `${file.name} is not a WAV file. Convert it to WAV and drop it again.`)
+    throw new ApiError(415, t('api.notWav', { name: file.name }))
   if (file.size > MAX_UPLOAD)
-    throw new ApiError(413, `${file.name} is larger than 200 MB. Split or compress it and drop it again.`)
+    throw new ApiError(413, t('api.tooLarge', { name: file.name }))
   if (!USE_FIXTURES) {
     const body = new FormData()
     body.append('file', file)
     const res = await fetch('/api/pipeline/inbox', { method: 'POST', body }).catch(() => {
-      throw new ApiError(0, UNREACHABLE)
+      throw new ApiError(0, unreachable())
     })
     if (!res.ok) throw await failure(res)
     return res.json() as Promise<UploadResponse>
@@ -632,7 +633,7 @@ const csvCell = (v: unknown) => {
 export async function exportCsv(): Promise<Blob> {
   if (!USE_FIXTURES) {
     const res = await fetch(exportUrl('csv')).catch(() => {
-      throw new ApiError(0, UNREACHABLE)
+      throw new ApiError(0, unreachable())
     })
     if (!res.ok) throw await failure(res)
     return res.blob()
@@ -651,7 +652,7 @@ export async function exportCsv(): Promise<Blob> {
 export async function exportJson(): Promise<Blob> {
   if (!USE_FIXTURES) {
     const res = await fetch(exportUrl('json')).catch(() => {
-      throw new ApiError(0, UNREACHABLE)
+      throw new ApiError(0, unreachable())
     })
     if (!res.ok) throw await failure(res)
     return res.blob()

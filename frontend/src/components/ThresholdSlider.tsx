@@ -1,5 +1,6 @@
 import * as SliderPrimitive from '@radix-ui/react-slider'
 import type { Thresholds } from '@/lib/types'
+import { t } from '@/i18n'
 
 /**
  * One track, two handles: "Review from" and "Alert from" (04_FRONTEND_GUIDELINES.md section 6).
@@ -18,7 +19,7 @@ export function ThresholdSlider({ value, onChange }: { value: Thresholds; onChan
         value={[review, alarm]}
         onValueChange={([r, a]) => onChange({ review: r, alarm: a })}
         className="relative flex h-6 touch-none select-none items-center"
-        aria-label="Thresholds on the score"
+        aria-label={t('slider.label')}
       >
         <SliderPrimitive.Track className="relative h-1 grow rounded-full" style={{ background: track }}>
           <SliderPrimitive.Range className="absolute h-full" />
@@ -26,12 +27,12 @@ export function ThresholdSlider({ value, onChange }: { value: Thresholds; onChan
         {(['review', 'alarm'] as const).map((k) => (
           <SliderPrimitive.Thumb
             key={k}
-            aria-label={k === 'review' ? 'Review from' : 'Alert from'}
+            aria-label={t(k === 'review' ? 'slider.reviewFrom' : 'slider.alertFrom')}
             className="relative block h-[22px] w-[22px] rounded-full border-2 border-graphite bg-paper focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             <span className="pointer-events-none absolute left-1/2 top-7 flex -translate-x-1/2 flex-col items-center whitespace-nowrap">
               <span className={`tabular text-title ${k === 'review' ? 'text-review' : 'text-alarm'}`}>{value[k]}</span>
-              <span className="text-small text-muted">{k === 'review' ? 'Review from' : 'Alert from'}</span>
+              <span className="text-small text-muted">{t(k === 'review' ? 'slider.reviewFrom' : 'slider.alertFrom')}</span>
             </span>
           </SliderPrimitive.Thumb>
         ))}

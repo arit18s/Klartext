@@ -7,29 +7,29 @@ import { Tag } from '@/components/Tag'
 import { Button } from '@/components/ui/button'
 import { needsAttention } from '@/lib/advisors'
 import { getAdvisors } from '@/lib/api'
-import { DATE_LABEL, sinceFor, type DateRange } from '@/lib/filters'
+import { DATE_IN, DATE_LABEL, sinceFor, type DateRange } from '@/lib/filters'
 import { FAMILY_LABEL, formatProcessed } from '@/lib/format'
 import type { AdvisorRow } from '@/lib/types'
 import { cn } from '@/lib/utils'
+import { lc, t, tn } from '@/i18n'
 
 const PERIODS: DateRange[] = ['7d', '30d', 'all']
 const th =
   'sticky top-0 z-[1] h-10 whitespace-nowrap border-b border-line bg-paper px-4 text-left text-small font-medium text-muted'
 const td = 'h-11 whitespace-nowrap border-b border-line px-4 group-last:border-b-0'
-const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`
 
 /** Why the row is highlighted, in words (the coloured edge alone would not be enough). Advisor-raised only. */
 function pattern(r: AdvisorRow): { text: string; tone: 'alarm' | 'review' } | null {
-  if (r.advisor_alarm > 0) return { text: plural(r.advisor_alarm, 'alert', 'alerts'), tone: 'alarm' }
-  if (r.advisor_review >= 2) return { text: `${r.advisor_review} reviews`, tone: 'review' }
+  if (r.advisor_alarm > 0) return { text: tn('common.alerts', r.advisor_alarm), tone: 'alarm' }
+  if (r.advisor_review >= 2) return { text: tn('common.reviews', r.advisor_review), tone: 'review' }
   return null
 }
 
 /** Alarms and reviews raised by what the customer said: shown, never counted against the advisor. */
 function customerRequests(r: AdvisorRow): string | null {
   const parts = [
-    r.customer_alarm ? plural(r.customer_alarm, 'alert', 'alerts') : '',
-    r.customer_review ? plural(r.customer_review, 'review', 'reviews') : '',
+    r.customer_alarm ? tn('common.alerts', r.customer_alarm) : '',
+    r.customer_review ? tn('common.reviews', r.customer_review) : '',
   ].filter(Boolean)
   return parts.length ? parts.join(', ') : null
 }
@@ -50,18 +50,14 @@ export default function Advisors() {
   }
 
   return (
-    <Page title="Advisors">
+    <Page title={t('nav.advisors')}>
       <section className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="text-display">Patterns per advisor</h2>
-          <p className="mt-1 max-w-[72ch] text-muted">
-            One call can be a mistake. An alert, or repeated reviews for the same advisor, are worth a conversation.
-            Only flags raised by the advisor&rsquo;s own words count here; what the customer asked for is listed under
-            Customer requests.
-          </p>
+          <h2 className="text-display">{t('advisors.heading')}</h2>
+          <p className="mt-1 max-w-[72ch] text-muted">{t('advisors.intro')}</p>
         </div>
         <Segmented
-          label="Period"
+          label={t('advisors.period')}
           value={period}
           onChange={setPeriod}
           options={PERIODS.map((p) => ({ value: p, label: DATE_LABEL[p] }))}
@@ -70,40 +66,39 @@ export default function Advisors() {
 
       {advisors.data && rows.length > 0 && (
         <p className="-mt-2 m-0 text-muted">
-          {plural(rows.length, 'advisor', 'advisors')} ·{' '}
-          {flagged ? `${plural(flagged, 'advisor', 'advisors')} worth a look` : 'none with an advisor-raised alert or 2+ reviews'} ·{' '}
-          {DATE_LABEL[period].toLowerCase()}
+          {tn('advisors.count', rows.length)} ·{' '}
+          {flagged ? tn('advisors.worthLook', flagged) : t('advisors.noneFlagged')} · {lc(DATE_LABEL[period])}
         </p>
       )}
 
-      <section aria-label="Advisors" className="overflow-hidden rounded-panel border border-line bg-paper">
-        {advisors.isPending && <p className="m-0 px-4 py-6 text-muted">Loading advisors…</p>}
+      <section aria-label={t('nav.advisors')} className="overflow-hidden rounded-panel border border-line bg-paper">
+        {advisors.isPending && <p className="m-0 px-4 py-6 text-muted">{t('advisors.loading')}</p>}
         {advisors.error && (
           <div role="alert" className="flex flex-wrap items-center gap-3 px-4 py-4">
-            <span>Could not load the advisors. {advisors.error.message}</span>
-            <Button onClick={() => advisors.refetch()}>Try again</Button>
+            <span>{t('advisors.loadError', { message: advisors.error.message })}</span>
+            <Button onClick={() => advisors.refetch()}>{t('common.tryAgain')}</Button>
           </div>
         )}
         {advisors.data && rows.length === 0 && (
           <p className="m-0 px-4 py-10 text-center text-muted">
             {period === 'all'
-              ? 'No advisor names yet. They appear once calls are transcribed and the advisor is recognised.'
-              : `No calls with a recognised advisor in the ${DATE_LABEL[period].toLowerCase()}.`}
+              ? t('advisors.noNames')
+              : t('advisors.noneInPeriod', { period: DATE_IN[period] })}
           </p>
         )}
         {rows.length > 0 && (
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse" aria-label="Advisors">
+            <table className="w-full border-collapse" aria-label={t('nav.advisors')}>
               <thead>
                 <tr>
-                  <th className={th}>Advisor</th>
-                  <th className={cn(th, 'text-right')}>Calls</th>
-                  <th className={cn(th, 'text-right')}>Alerts</th>
-                  <th className={cn(th, 'text-right')}>Reviews</th>
-                  <th className={th}>Customer requests</th>
-                  <th className={cn(th, 'text-right')}>No alert</th>
-                  <th className={th}>Families involved</th>
-                  <th className={th}>Last call</th>
+                  <th className={th}>{t('advisors.advisor')}</th>
+                  <th className={cn(th, 'text-right')}>{t('advisors.calls')}</th>
+                  <th className={cn(th, 'text-right')}>{t('advisors.alerts')}</th>
+                  <th className={cn(th, 'text-right')}>{t('advisors.reviews')}</th>
+                  <th className={th}>{t('advisors.requests')}</th>
+                  <th className={cn(th, 'text-right')}>{t('advisors.noAlert')}</th>
+                  <th className={th}>{t('advisors.families')}</th>
+                  <th className={th}>{t('advisors.lastCall')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -116,7 +111,7 @@ export default function Advisors() {
                       tabIndex={0}
                       onClick={() => open(r)}
                       onKeyDown={(e) => onKey(e, r)}
-                      aria-label={`${r.advisor_name}: open all calls of this advisor`}
+                      aria-label={t('advisors.rowLabel', { name: r.advisor_name })}
                       className={cn(
                         'group cursor-pointer hover:bg-canvas focus-visible:bg-canvas focus-visible:outline-2 focus-visible:-outline-offset-2',
                         p?.tone === 'alarm' && 'shadow-[inset_3px_0_0_rgb(var(--alarm))]',

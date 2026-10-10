@@ -2,15 +2,18 @@ import { forwardRef, type ReactNode } from 'react'
 import { Play } from 'lucide-react'
 import { Button } from '../ui/button'
 import type { Evidence } from '@/lib/types'
-import { FAMILY_LABEL, formatTimestamp } from '@/lib/format'
+import { formatTimestamp } from '@/lib/format'
+import { labels, t } from '@/i18n'
+import { en } from '@/i18n/en'
 import { cn } from '@/lib/utils'
 import { speaker } from './labels'
 
-const ROLE_LABEL = { context: 'Context', trigger: 'Trigger', exclusion: 'Exclusion' }
+const ROLE_LABEL = labels({ context: 'evidence.context', trigger: 'evidence.trigger', exclusion: 'evidence.exclusion' })
 
 /** Bold the family name inside the note, as in "Supports **Access code shared**: …". */
 function withFamily(note: string, family: Evidence['family']): ReactNode {
-  const name = FAMILY_LABEL[family]
+  // The note comes from the backend in English, so match the English family name whatever the interface language.
+  const name = en[`family.${family}`]
   const i = note.indexOf(name)
   if (i < 0) return note
   return (
@@ -33,7 +36,12 @@ export const EvidenceCard = forwardRef<
     <article
       ref={ref}
       tabIndex={-1}
-      aria-label={`${ROLE_LABEL[e.role]} ${formatTimestamp(e.start_s)} to ${formatTimestamp(e.end_s)}, ${speaker(e.speaker_role)}`}
+      aria-label={t('evidence.cardLabel', {
+        role: ROLE_LABEL[e.role],
+        from: formatTimestamp(e.start_s),
+        to: formatTimestamp(e.end_s),
+        speaker: speaker(e.speaker_role),
+      })}
       className={cn(
         'relative flex break-inside-avoid flex-col gap-2 overflow-hidden rounded-panel border border-line bg-paper py-4 pl-[19px] pr-4 scroll-mt-24',
         focused && 'outline outline-2 outline-graphite',
@@ -52,7 +60,7 @@ export const EvidenceCard = forwardRef<
         <span className="tabular">{time}</span>
         <span aria-hidden="true">·</span>
         <span>{speaker(e.speaker_role)}</span>
-        {focused && fromLink && <span className="ml-auto">Opened from Outcept link</span>}
+        {focused && fromLink && <span className="ml-auto">{t('evidence.fromLink')}</span>}
       </div>
       <p className={cn('m-0 font-quote text-quote italic', trigger && 'rounded bg-signal-soft px-2 py-1')}>
         «{e.quote}»
@@ -69,11 +77,11 @@ export const EvidenceCard = forwardRef<
           className="print:hidden"
           size="sm"
           variant={trigger ? 'primary' : 'secondary'}
-          aria-label={`Play passage ${formatTimestamp(e.start_s)} to ${formatTimestamp(e.end_s)}`}
+          aria-label={t('evidence.playLabel', { from: formatTimestamp(e.start_s), to: formatTimestamp(e.end_s) })}
           onClick={() => onPlay(e)}
         >
           <Play strokeWidth={1.75} aria-hidden="true" />
-          Play passage
+          {t('evidence.play')}
         </Button>
       </div>
     </article>

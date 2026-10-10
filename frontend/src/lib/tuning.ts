@@ -101,8 +101,9 @@ export function prCurve(calls: CallScores[], t: Thresholds, samples: number, ena
   return points
 }
 
-export const PRESETS: { key: string; label: string; value: Thresholds }[] = [
-  { key: 'catch', label: 'Catch everything', value: { review: 15, alarm: 70 } },
-  { key: 'balanced', label: 'Balanced', value: { review: 30, alarm: 70 } },
-  { key: 'fewer', label: 'Fewer reviews', value: { review: 50, alarm: 80 } },
+/** Preset buttons; the label is an i18n key (tuning.preset.<key>). */
+export const PRESETS: { key: 'catch' | 'balanced' | 'fewer'; value: Thresholds }[] = [
+  { key: 'catch', value: { review: 15, alarm: 70 } },
+  { key: 'balanced', value: { review: 30, alarm: 70 } },
+  { key: 'fewer', value: { review: 50, alarm: 80 } },
 ]

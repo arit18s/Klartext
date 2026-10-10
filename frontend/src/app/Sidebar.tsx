@@ -5,6 +5,8 @@ import { getCalls, getPipelineStatus } from '@/lib/api'
 import { useLiveConnection } from './LiveUpdates'
 import { LogoMark } from '@/components/Logo'
 import { cn } from '@/lib/utils'
+import { Segmented } from '@/components/Segmented'
+import { t, tn, useLang, type Lang } from '@/i18n'
 
 interface NavItem {
   to: string
@@ -55,18 +57,18 @@ function PipelineDot() {
   const working = data?.queue.filter((q) => q.stage !== 'failed' && q.stage !== 'waiting_for_asr').length ?? 0
   const waiting = data?.queue.filter((q) => q.stage === 'waiting_for_asr').length ?? 0
   const [tone, text] = error
-    ? ['bg-alarm', 'Pipeline not reachable']
+    ? ['bg-alarm', t('pipelineDot.unreachable')]
     : connection === 'lost'
-      ? ['bg-alarm', 'Live updates lost']
+      ? ['bg-alarm', t('pipelineDot.lost')]
       : !data
-        ? ['bg-line', 'Checking pipeline…']
+        ? ['bg-line', t('pipelineDot.checking')]
         : !data.watching
-          ? ['bg-muted', 'Watching paused']
+          ? ['bg-muted', t('pipelineDot.paused')]
           : working
-            ? ['bg-review', `Processing ${working} ${working === 1 ? 'call' : 'calls'}`]
+            ? ['bg-review', tn('pipelineDot.processing', working)]
             : waiting
-              ? ['bg-review', `${waiting} to transcribe`]
-              : ['bg-clear', 'Pipeline watching']
+              ? ['bg-review', t('pipelineDot.toTranscribe', { n: waiting })]
+              : ['bg-clear', t('pipelineDot.watching')]
   return (
     <div
       role="status"
@@ -75,6 +77,25 @@ function PipelineDot() {
     >
       <span className={cn('h-2 w-2 flex-none rounded-full', tone)} aria-hidden="true" />
       <span className="max-lg:sr-only">{text}</span>
+    </div>
+  )
+}
+
+/** English / Deutsch for the interface. Backend data (reasons, transcripts, rules) keeps its own language. */
+function LanguageSwitch() {
+  const { lang, setLang } = useLang()
+  return (
+    <div className="px-1 max-lg:px-0">
+      <Segmented<Lang>
+        label={t('nav.language')}
+        value={lang}
+        onChange={setLang}
+        className="max-lg:flex-col"
+        options={[
+          { value: 'en', label: 'English' },
+          { value: 'de', label: 'Deutsch' },
+        ]}
+      />
     </div>
   )
 }
@@ -93,26 +114,27 @@ export function Sidebar() {
         <span className="text-[18px] font-semibold tracking-[-0.01em] max-lg:sr-only">Klartext</span>
       </div>
 
-      <nav aria-label="Main" className="flex flex-col gap-0.5 max-lg:gap-1 max-lg:pt-4">
-        <Group label="Review" />
+      <nav aria-label={t('nav.main')} className="flex flex-col gap-0.5 max-lg:gap-1 max-lg:pt-4">
+        <Group label={t('nav.groupReview')} />
         <NavEntry
-          item={{ to: '/', label: 'Inbox', icon: Inbox, count: counts?.flagged, active: onCall || undefined }}
+          item={{ to: '/', label: t('nav.inbox'), icon: Inbox, count: counts?.flagged, active: onCall || undefined }}
         />
-        <NavEntry item={{ to: '/calls', label: 'All calls', icon: List, count: counts?.total }} />
-        <Group label="Configure" />
-        <NavEntry item={{ to: '/tuning', label: 'Tuning', icon: SlidersVertical }} />
-        <NavEntry item={{ to: '/rules', label: 'Rules', icon: Book }} />
-        <Group label="Insight" />
-        <NavEntry item={{ to: '/quality', label: 'Quality', icon: ChartLine }} />
-        <NavEntry item={{ to: '/advisors', label: 'Advisors', icon: Users }} />
-        <Group label="System" />
-        <NavEntry item={{ to: '/pipeline', label: 'Pipeline', icon: Folder }} />
+        <NavEntry item={{ to: '/calls', label: t('nav.allCalls'), icon: List, count: counts?.total }} />
+        <Group label={t('nav.groupConfigure')} />
+        <NavEntry item={{ to: '/tuning', label: t('nav.tuning'), icon: SlidersVertical }} />
+        <NavEntry item={{ to: '/rules', label: t('nav.rules'), icon: Book }} />
+        <Group label={t('nav.groupInsight')} />
+        <NavEntry item={{ to: '/quality', label: t('nav.quality'), icon: ChartLine }} />
+        <NavEntry item={{ to: '/advisors', label: t('nav.advisors'), icon: Users }} />
+        <Group label={t('nav.groupSystem')} />
+        <NavEntry item={{ to: '/pipeline', label: t('nav.pipeline'), icon: Folder }} />
       </nav>
 
       <div className="mt-auto flex flex-col gap-2 pt-6">
-        <NavEntry item={{ to: '/settings', label: 'Settings', icon: Settings }} />
+        <NavEntry item={{ to: '/settings', label: t('nav.settings'), icon: Settings }} />
+        <LanguageSwitch />
         <PipelineDot />
-        <div className="px-3 text-[12px] leading-[18px] text-muted max-lg:hidden">Built for Inventx and Outcept</div>
+        <div className="px-3 text-[12px] leading-[18px] text-muted max-lg:hidden">{t('nav.builtFor')}</div>
       </div>
     </aside>
   )
