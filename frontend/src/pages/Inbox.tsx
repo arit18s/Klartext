@@ -7,15 +7,12 @@ import { CallsTable } from '@/components/CallsTable'
 import { DateRangeButton } from '@/components/DateRangeButton'
 import { EmptyState } from '@/components/EmptyState'
 import { FilterModal } from '@/components/FilterModal'
-import { Kbd } from '@/components/Kbd'
 import { StatCard } from '@/components/StatCard'
 import { Tag } from '@/components/Tag'
 import { useToast } from '@/components/Toast'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { USE_FIXTURES, getCalls, getPipelineStatus, simulateIncomingCall } from '@/lib/api'
 import { INBOX_FILTERS, applyFilters, filterChips, removeChip, sortCalls, type FilterState } from '@/lib/filters'
-import { recordingName } from '@/lib/format'
-import { useFeedback } from '@/lib/hooks'
 import type { PipelineStatus } from '@/lib/types'
 import { t, tn } from '@/i18n'
 
@@ -33,7 +30,6 @@ export default function Inbox() {
     queryFn: () => getCalls({ flagged_only: true }),
   })
   const pipeline = useQuery({ queryKey: ['pipeline'], queryFn: getPipelineStatus, retry: false })
-  const feedback = useFeedback()
   const toast = useToast()
 
   const flagged = useMemo(() => sortCalls(calls.data?.items ?? []), [calls.data])
@@ -162,11 +158,6 @@ export default function Inbox() {
               </Tag>
             ))}
           </div>
-          <div className="flex items-center gap-1.5 text-small text-muted" aria-label={t('inbox.shortcuts')}>
-            <Kbd>↑</Kbd>
-            <Kbd>↓</Kbd> {t('inbox.kbdMove')} <Kbd>Enter</Kbd> {t('inbox.kbdOpen')} <Kbd>A</Kbd> {t('inbox.kbdCorrect')}{' '}
-            <Kbd>F</Kbd> {t('inbox.kbdFalse')}
-          </div>
         </div>
         <div className="border-t border-line">
           <CallsTable
@@ -174,9 +165,6 @@ export default function Inbox() {
             variant="inbox"
             noun={t('inbox.flaggedNoun')}
             label={t('inbox.flaggedCalls')}
-            onFeedback={(call, label) =>
-              feedback.mutate({ callId: call.call_id, label, name: recordingName(call).name })
-            }
             empty={
               <div className="flex flex-col items-center gap-3 px-4 py-10 text-center">
                 <p className="m-0 text-muted">{t('inbox.noMatch')}</p>

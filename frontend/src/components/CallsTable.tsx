@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Check, MessageSquareCheck, Send, X } from 'lucide-react'
-import type { CallSummary, FeedbackLabel } from '@/lib/types'
+import type { CallSummary } from '@/lib/types'
 import {
   FAMILY_LABEL,
   MATCH_LABEL,
@@ -47,8 +47,9 @@ function MatchCell({ call }: { call: CallSummary }) {
 }
 
 /**
- * Calls as table rows (never cards). Keyboard: ↑/↓ move, Enter opens; with onFeedback also A = correct,
- * F = false alert. Rows use a roving tabindex so Tab enters the table once.
+ * Calls as table rows (never cards). Keyboard: ↑/↓ move, Enter opens. No single-key feedback shortcuts: a stray
+ * key press must never record a verdict; feedback is given with the buttons in the call view.
+ * Rows use a roving tabindex so Tab enters the table once.
  */
 export function CallsTable({
   items,
@@ -56,7 +57,6 @@ export function CallsTable({
   evalMode = false,
   pageSize = 20,
   noun,
-  onFeedback,
   empty,
   label,
 }: {
@@ -65,7 +65,6 @@ export function CallsTable({
   evalMode?: boolean
   pageSize?: number
   noun: string
-  onFeedback?: (call: CallSummary, label: FeedbackLabel) => void
   empty?: ReactNode
   label: string
 }) {
@@ -90,12 +89,9 @@ export function CallsTable({
 
   const onKey = (e: KeyboardEvent<HTMLTableRowElement>, call: CallSummary, i: number) => {
     if (e.altKey || e.ctrlKey || e.metaKey) return
-    const key = e.key.toLowerCase()
     if (e.key === 'ArrowDown') focusRow(i + 1)
     else if (e.key === 'ArrowUp') focusRow(i - 1)
     else if (e.key === 'Enter') navigate(`/calls/${encodeURIComponent(call.call_id)}`)
-    else if (onFeedback && key === 'a') onFeedback(call, 'correct')
-    else if (onFeedback && key === 'f') onFeedback(call, 'false_alarm')
     else return
     e.preventDefault()
   }
