@@ -600,10 +600,10 @@ export const en = {
   'pipeline.progress': 'Progress',
   'pipeline.length': 'Length',
   'pipeline.result': 'Result',
-  'pipeline.nothing': 'Nothing processed yet. Drop a WAV file or process a folder.',
+  'pipeline.nothing': 'Nothing processed yet. Drop a recording or process a folder.',
   'pipeline.dropLabel': 'Drop a recording',
-  'pipeline.dropTitle': 'Drop a WAV file here',
-  'pipeline.dropBody': 'It is copied into the inbox folder. The watcher picks it up like any other recording.',
+  'pipeline.dropTitle': 'Drop a recording here',
+  'pipeline.dropBody': 'WAV, MP3, M4A, MP4, FLAC or OGG. It is copied into the inbox folder; the watcher picks it up like any other recording.',
   'pipeline.choose': 'Choose file',
   'pipeline.queued': '{n} queued',
   'pipeline.already': '{n} already processed',
@@ -698,7 +698,7 @@ export const en = {
   'api.callNotFound': 'Call {id} not found.',
   'api.notFailed': '{id} has not failed, so there is nothing to retry.',
   'api.simulationOnly': 'Simulation only exists in fixture mode.',
-  'api.notWav': '{name} is not a WAV file. Convert it to WAV and drop it again.',
+  'api.notWav': '{name} is not a recording Klartext can read. Use WAV, MP3, M4A, MP4, FLAC or OGG and drop it again.',
   'api.tooLarge': '{name} is larger than 200 MB. Split or compress it and drop it again.',
 } as const
 

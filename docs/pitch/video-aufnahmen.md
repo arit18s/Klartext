@@ -28,7 +28,7 @@ Die App ist englisch: Button- und Seitennamen unten stehen so, wie sie auf dem B
 
 ### 01-pipeline · Ein Anruf kommt rein (ca. 20 s)
 Seite: Seitenleiste → **Pipeline**.
-1. Datei `data/demo/demo_call.wav` aus dem Finder auf **Drop a WAV file here** ziehen.
+1. Datei `data/demo/demo_call.wav` aus dem Finder auf **Drop a recording here** ziehen.
 2. Laufen lassen: die Zeile `demo_call.wav` geht durch *Transcribing → Separating speakers → Checking → Deciding* bis *Done* mit rotem **Alert**.
 3. Warten, bis der Hinweis **New alert** unten rechts erscheint. Stopp.
 

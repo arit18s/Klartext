@@ -176,6 +176,9 @@ A Swiss German speaker on the team listened to five calls (C09-K3, C09-K4, C10-K
 **D48. The UI says "category", the data says `family`.**
 "Categories" is the plain word for a compliance officer; "families" was our internal term. The English interface now says **Categories** (Rules tab, table and filter columns, Quality breakdown, Advisors, Settings, "No category decided"); the German interface already said *Kategorie*. The pitch material follows (demo script, Q&A, video shot list, slides re-rendered, Rules backup screen recaptured). `family` stays in the API, the database, the decision rule, the prompts and the code, so nothing about the verdicts changes.
 
+**D49. Recordings may arrive as MP3, M4A, MP4, FLAC or OGG, not only WAV.**
+The hidden set and our own test recordings might come as MP3 or MP4. The watcher already converted MP3/M4A/FLAC/OGG with ffmpeg; now MP4 too (`-vn`: audio track only), and so does `prepare_hidden_set.py`, which used to skip MP4 silently. The Pipeline drop zone (`POST /pipeline/inbox`) accepts the same formats, checked by the file's first bytes, not only the name; the file keeps its extension in the inbox and is converted to 16 kHz mono WAV before speech recognition. Unchanged: WAV handling, the 200 MB limit, duplicate detection (for non-WAV after conversion) and everything after conversion.
+
 ## 7. Integrations
 
 **D31. Outcept trigger API: run their Docker image, don't fork it.** Every alarm and review is posted with a deep link to the passage, 10 s before the trigger.

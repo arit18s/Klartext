@@ -507,13 +507,13 @@ Request: `{ "enabled": false }` pauses the inbox watcher, `true` resumes it. Fil
 
 ### `POST /pipeline/inbox`
 
-Multipart form, one field `file`: a WAV recording (`audio/wav` or `.wav`), max 200 MB. The backend writes it into `INBOX_DIR` under a safe name (never a path from the client) and the watcher processes it like any other recording. Response `202`:
+Multipart form, one field `file`: a recording as `.wav`, `.mp3`, `.m4a`, `.mp4`, `.flac` or `.ogg`, max 200 MB, checked by its first bytes (not only the name). The backend writes it into `INBOX_DIR` under a safe name with the same extension (never a path from the client); the watcher converts anything but 16 kHz mono WAV with ffmpeg (audio track only for `.mp4`) and processes it like any other recording. Response `202`:
 
 ```json
 { "file_name": "Stufe2_C09-K4.wav", "queued": true, "duplicate": false }
 ```
 
-A file seen before (same hash) answers `{ "queued": false, "duplicate": true }`. 415 for non-WAV files, 413 when too large; `detail` says what to do ("… is not a WAV file. Convert it to WAV and drop it again.").
+A file seen before (same hash) answers `{ "queued": false, "duplicate": true }`. The duplicate check here compares the uploaded bytes; a non-WAV duplicate is caught by the watcher after conversion. 415 for other files, 413 when too large; `detail` says what to do ("… is not a recording Klartext can read. Use WAV, MP3, M4A, MP4, FLAC or OGG and drop it again.").
 
 ### `POST /pipeline/process-folder`
 

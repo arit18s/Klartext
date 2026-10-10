@@ -20,7 +20,7 @@ from pathlib import Path
 
 import soundfile as sf
 
-AUDIO_EXT = {".wav", ".mp3", ".m4a", ".flac", ".ogg"}
+AUDIO_EXT = {".wav", ".mp3", ".m4a", ".mp4", ".flac", ".ogg"}  # .mp4: only its audio track is used
 
 
 def main() -> int:
@@ -45,7 +45,7 @@ def main() -> int:
                 shutil.copy(p, target)
                 how = "copied"
             else:
-                subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(p), "-ar", "16000", "-ac", "1", str(target)],
+                subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(p), "-vn", "-ar", "16000", "-ac", "1", str(target)],
                                check=True, capture_output=True, timeout=300)
                 how = "converted"
             dur = sf.info(str(target)).duration

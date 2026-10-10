@@ -37,7 +37,7 @@ Put the organisers' files into a folder (e.g. `~/Downloads/hidden`), then:
 .venv/bin/python backend/scripts/prepare_hidden_set.py --in ~/Downloads/hidden --out data/hidden-test-set
 ```
 
-Every file becomes a 16 kHz mono WAV with an ASCII-safe name, so the call ID, the transcript name and the export match. Check the output line: count, minutes of audio, and any `SKIPPED` file (unreadable: tell the organisers). The mapping to the original names is in `data/hidden-test-set/_names.csv`.
+Accepted: WAV, MP3, M4A, MP4 (audio track only), FLAC, OGG. Every file becomes a 16 kHz mono WAV with an ASCII-safe name, so the call ID, the transcript name and the export match. Check the output line: count, minutes of audio, and any `SKIPPED` file (unreadable: tell the organisers). The mapping to the original names is in `data/hidden-test-set/_names.csv`.
 
 ## 3. Copy the recordings to the box (1–3 min)
 

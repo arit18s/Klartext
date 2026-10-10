@@ -148,8 +148,24 @@ def _pipeline_changed() -> None:
 
 MAX_UPLOAD = 200 * 1024 * 1024
 CHUNK = 1024 * 1024
-WAV_TYPES = {"audio/wav", "audio/x-wav", "audio/wave", "audio/vnd.wave"}
 UNSAFE = re.compile(r"[^\w.-]")
+# Accepted uploads, checked by the file's first bytes, not only its name. Non-WAV files keep their extension in the
+# inbox; the watcher converts them to 16 kHz mono WAV with ffmpeg (audio track only for .mp4).
+UPLOAD_EXT = (".wav", ".mp3", ".m4a", ".mp4", ".flac", ".ogg")
+
+
+def _looks_like(ext: str, head: bytes) -> bool:
+    if ext == ".wav":
+        return head[:4] == b"RIFF" and head[8:12] == b"WAVE"
+    if ext == ".mp3":
+        return head[:3] == b"ID3" or (len(head) > 1 and head[0] == 0xFF and head[1] & 0xE0 == 0xE0)
+    if ext in (".m4a", ".mp4"):
+        return head[4:8] == b"ftyp"
+    if ext == ".flac":
+        return head[:4] == b"fLaC"
+    if ext == ".ogg":
+        return head[:4] == b"OggS"
+    return False
 
 
 class InboxOut(BaseModel):
@@ -161,18 +177,18 @@ class InboxOut(BaseModel):
 def safe_stem(name: str) -> str:
     """The client's file name only as a label: no directories, only word characters, dots and dashes."""
     stem = Path(name.replace("\\", "/")).name
-    stem = stem[:-4] if stem.lower().endswith(".wav") else Path(stem).stem
+    stem = Path(stem).stem
     stem = UNSAFE.sub("_", stem).strip("._")[:80]
     return stem or "recording"
 
 
-def _free_name(session: Session, inbox: Path, stem: str) -> str:
-    """A name not in the inbox and not an existing call ID (the call ID is the file stem)."""
+def _free_name(session: Session, inbox: Path, stem: str, ext: str = ".wav") -> str:
+    """A name not in the inbox (any accepted extension) and not an existing call ID (the call ID is the file stem)."""
     candidate, n = stem, 1
-    while (inbox / f"{candidate}.wav").exists() or session.get(Call, candidate) is not None:
+    while any((inbox / f"{candidate}{e}").exists() for e in UPLOAD_EXT) or session.get(Call, candidate) is not None:
         n += 1
         candidate = f"{stem}_{n}"
-    return f"{candidate}.wav"
+    return f"{candidate}{ext}"
 
 
 def _too_large(name: str) -> HTTPException:
@@ -180,18 +196,18 @@ def _too_large(name: str) -> HTTPException:
 
 
 def _not_wav(name: str) -> HTTPException:
-    return HTTPException(status_code=415, detail=f"{name} is not a WAV file. Convert it to WAV and drop it again.")
+    return HTTPException(status_code=415, detail=f"{name} is not a recording Klartext can read. Use WAV, MP3, M4A, MP4, FLAC or OGG and drop it again.")
 
 
 @router.post("/inbox", status_code=202, response_model=InboxOut)
 async def post_inbox(request: Request, session: SessionDep, file: UploadFile = File(...)) -> InboxOut:
-    """Write one WAV into INBOX_DIR under a safe name; the watcher processes it like any other recording."""
+    """Write one recording into INBOX_DIR under a safe name; the watcher processes it like any other recording."""
     shown = Path((file.filename or "recording.wav").replace("\\", "/")).name
     length = request.headers.get("content-length")
     if length and length.isdigit() and int(length) > MAX_UPLOAD + CHUNK:
         raise _too_large(shown)
-    is_wav_name = shown.lower().endswith(".wav")
-    if not is_wav_name and (file.content_type or "").lower() not in WAV_TYPES:
+    ext = Path(shown).suffix.lower()
+    if ext not in UPLOAD_EXT:
         raise _not_wav(shown)
     inbox = get_settings().inbox_path
     inbox.mkdir(parents=True, exist_ok=True)
@@ -200,7 +216,7 @@ async def post_inbox(request: Request, session: SessionDep, file: UploadFile = F
     try:
         with tmp.open("wb") as out:
             while chunk := await file.read(CHUNK):
-                if size == 0 and not (chunk[:4] == b"RIFF" and chunk[8:12] == b"WAVE"):
+                if size == 0 and not _looks_like(ext, chunk[:12]):
                     raise _not_wav(shown)
                 size += len(chunk)
                 if size > MAX_UPLOAD:
@@ -211,7 +227,7 @@ async def post_inbox(request: Request, session: SessionDep, file: UploadFile = F
             raise _not_wav(shown)
         if session.exec(select(Call).where(Call.file_hash == digest.hexdigest())).first() is not None:
             return InboxOut(file_name=shown, queued=False, duplicate=True)
-        name = _free_name(session, inbox, safe_stem(shown))
+        name = _free_name(session, inbox, safe_stem(shown), ext)
         tmp.replace(inbox / name)
     finally:
         tmp.unlink(missing_ok=True)

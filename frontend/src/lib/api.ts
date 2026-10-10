@@ -600,7 +600,8 @@ export async function processFolder(path: string): Promise<ProcessFolderResponse
   return { path, enqueued: r === 'queued' ? 1 : 0, skipped_duplicates: r === 'duplicate' ? 1 : 0, rejected: [] }
 }
 
-const AUDIO = /\.wav$/i
+// Same formats as the backend (POST /pipeline/inbox); non-WAV is converted to 16 kHz mono WAV by the watcher.
+const AUDIO = /\.(wav|mp3|m4a|mp4|flac|ogg)$/i
 const MAX_UPLOAD = 200 * 1024 * 1024
 
 /** Drop zone: copy one recording into the inbox folder (contract: POST /api/pipeline/inbox). The watcher does the rest. */

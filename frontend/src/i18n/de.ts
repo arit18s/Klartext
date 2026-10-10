@@ -613,11 +613,11 @@ export const de: Record<Key, string> = {
   'pipeline.progress': 'Fortschritt',
   'pipeline.length': 'Dauer',
   'pipeline.result': 'Ergebnis',
-  'pipeline.nothing': 'Noch nichts verarbeitet. Legen Sie eine WAV-Datei ab oder verarbeiten Sie einen Ordner.',
+  'pipeline.nothing': 'Noch nichts verarbeitet. Legen Sie eine Aufnahme ab oder verarbeiten Sie einen Ordner.',
   'pipeline.dropLabel': 'Aufnahme ablegen',
-  'pipeline.dropTitle': 'WAV-Datei hier ablegen',
+  'pipeline.dropTitle': 'Aufnahme hier ablegen',
   'pipeline.dropBody':
-    'Sie wird in den Eingangsordner kopiert. Die Überwachung übernimmt sie wie jede andere Aufnahme.',
+    'WAV, MP3, M4A, MP4, FLAC oder OGG. Sie wird in den Eingangsordner kopiert; die Überwachung übernimmt sie wie jede andere Aufnahme.',
   'pipeline.choose': 'Datei auswählen',
   'pipeline.queued': '{n} eingereiht',
   'pipeline.already': '{n} bereits verarbeitet',
@@ -715,6 +715,6 @@ export const de: Record<Key, string> = {
   'api.callNotFound': 'Gespräch {id} nicht gefunden.',
   'api.notFailed': '{id} ist nicht fehlgeschlagen, es gibt also nichts zu wiederholen.',
   'api.simulationOnly': 'Die Simulation gibt es nur im Fixture-Modus.',
-  'api.notWav': '{name} ist keine WAV-Datei. Wandeln Sie sie in WAV um und legen Sie sie erneut ab.',
+  'api.notWav': '{name} ist keine Aufnahme, die Klartext lesen kann. Verwenden Sie WAV, MP3, M4A, MP4, FLAC oder OGG und legen Sie sie erneut ab.',
   'api.tooLarge': '{name} ist grösser als 200 MB. Teilen oder komprimieren Sie die Datei und legen Sie sie erneut ab.',
 }

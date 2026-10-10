@@ -46,7 +46,7 @@ curl -s localhost:8000/api/calls/Stufe2_C09-K3 | python3 -c "import json,sys; d=
 ## 0:20 – 1:20 · 1. A call arrives and becomes an alert
 
 **Do:**
-1. Sidebar → **Pipeline**. Drag `data/demo/demo_call.wav` onto **Drop a WAV file here** (or copy it into the inbox folder).
+1. Sidebar → **Pipeline**. Drag `data/demo/demo_call.wav` onto **Drop a recording here** (or copy it into the inbox folder).
 2. While the queue row moves through *Transcribing → Separating speakers → Checking → Deciding*:
 
    **Say:** "Nobody uploads anything. A call ends, the recording lands, Klartext checks it."
