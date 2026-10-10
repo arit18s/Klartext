@@ -48,10 +48,10 @@ Last update: Sat 10 Oct, 10:15 (B16 done; B18 run on 60 calls in progress; fine-
 | B16 Role labelling and normaliser | done | `f98443d` | Cue rule + LLM fallback (`prompts/roles_system.md`, temperature 0) + first-speaker fallback. Check on all 40 dev recordings: key (evidence) turns 94% right, 39/40 calls right (C14-K4 noisy: diarization), all segments 89%; advisor name in 33/40. Normaliser handles "10 '000" |
 | B17 Optional ASR service | todo | – | |
 | B18 Pipeline orchestrator | in progress | (this commit) | `pipeline/run.py` + `scripts/process_all.py`: stages asr → roles → normalise → keywords → checks → decide, disk + DB, `--from`, hash dedup, statuses. Tested: 1 done / 59 waiting_for_asr; broken transcript → failed with message; no speech → review. Evidence/notify stages are B20/B22. Check needs the 60 ASR transcripts |
-| B19 Keyword stage + rescan diff | done | (this commit) | Keyword stage in the pipeline (B18) + `pipeline.keywords.rescan()` returning the POST /keywords/rescan body (`dry_run` option). Check: active config reproduces 78 stored hits; adding "Franken" → 124 hits, 30 changed calls, keyword-only flags 20 → 39. Endpoint wiring is the teammate's (api/). Keyword hints still not in the check prompts (risk) |
-| B20 Evidence and snippets | todo | – | Snap quotes to exact substrings (contract) |
-| B21 Twin call | todo | – | |
-| B22 Trigger API integration | todo | – | |
+| B19 Keyword stage + rescan diff | done | `6714166` | Keyword stage in the pipeline (B18) + `pipeline.keywords.rescan()` returning the POST /keywords/rescan body (`dry_run` option). Check: active config reproduces 78 stored hits; adding "Franken" → 124 hits, 30 changed calls, keyword-only flags 20 → 39. Endpoint wiring is the teammate's (api/). Keyword hints still not in the check prompts (risk) |
+| B20 Evidence and snippets | in progress | (this commit) | Stage `evidence` (`pipeline/evidence.py`): rows for the decided family, quotes snapped to exact substrings, times from word timestamps, ffmpeg snippets ±10 s. Offline tests pass (exact/fuzzy snapping, 25.98 s snippet). End-to-end check after the B18 run |
+| B21 Twin call | in progress | (this commit) | Global stage `twin` (`pipeline/twin.py`): flagged vs not-flagged pairs by trigger similarity ≥ 60, one LLM sentence per pair. Check on dev pairs (C15/C16 is holdout) after the B18 run |
+| B22 Trigger API integration | in progress | (this commit) | Stage `notify` (`pipeline/notify.py`): once per decision, deep link `?t=floor(trigger−10)`, triggers_sent + audit row. Check after the B18 run |
 | B23 Evaluation on ASR | todo | – | |
 | B24 Read API | todo | – | Shapes from `API_CONTRACT.md` |
 | B25 Write API | todo | – | Feedback labels incl. `note`; `POST /pipeline/inbox` (multipart `file`, WAV ≤ 200 MB, safe name into INBOX_DIR, 202 / duplicate / 415 / 413; needs `python-multipart`) |

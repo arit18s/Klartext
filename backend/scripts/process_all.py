@@ -34,6 +34,7 @@ def main() -> int:
     ap.add_argument("--folder", type=Path, default=s.case_data_path / "Audio")
     ap.add_argument("--from", dest="from_stage", choices=STAGES, default="asr")
     ap.add_argument("--calls", nargs="*", help="Only these call IDs (file stems)")
+    ap.add_argument("--list", action="store_true", help="Print every call's verdict (includes holdout calls: evaluation reads them in B29 only)")
     args = ap.parse_args()
     logging.basicConfig(level=logging.WARNING, format="%(levelname)s %(name)s: %(message)s")
     logging.getLogger("httpx2").setLevel(logging.WARNING)
@@ -51,11 +52,12 @@ def main() -> int:
           f"| not built yet: {', '.join(PENDING_STAGES)} | k={s.llm_samples}, reasoning {s.llm_reasoning}, concurrency {s.llm_concurrency}")
     started = time.monotonic()
     summary = process(ids, args.from_stage)
-    print(f"done {len(summary.done)} | waiting_for_asr {len(summary.waiting_for_asr)} | failed {len(summary.failed)} | {time.monotonic() - started:.0f} s")
+    print(f"done {len(summary.done)} | waiting_for_asr {len(summary.waiting_for_asr)} | failed {len(summary.failed)} | "
+          f"Outcept triggers {summary.notified or '-'} | {time.monotonic() - started:.0f} s")
     for cid, err in summary.failed.items():
         print(f"  FAILED {cid}: {err}")
     with Session(get_engine()) as session:
-        for cid in summary.done:
+        for cid in summary.done if args.list else []:
             d = session.get(Decision, cid)
             print(f"  {cid:<16} {d.verdict:<8} {d.family or '-':<14} score {d.score:>5.1f}  {(d.reason or '')[:70]}")
         counts = {}

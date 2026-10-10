@@ -33,11 +33,16 @@ def family_guidance(family: str) -> str:
     return load(f"families/{family}.md") if path.exists() else ""
 
 
+CHECK_PROMPTS = ["system.md", "check_user.md", "numbers_system.md", "families/*.md"]
+
+
 @lru_cache
 def prompt_version() -> str:
-    """Hash of all prompt files: stored with every result so decisions are traceable."""
+    """Hash of the prompt files the family checks use: stored with every check result so decisions are
+    traceable. Other prompts (roles, twin) do not change check results, so they are not part of it."""
     h = hashlib.sha256()
-    for p in sorted(PROMPT_DIR.rglob("*.md")):
+    files = sorted({p for pattern in CHECK_PROMPTS for p in PROMPT_DIR.glob(pattern)})
+    for p in files:
         h.update(p.relative_to(PROMPT_DIR).as_posix().encode())
         h.update(p.read_bytes())
     return h.hexdigest()[:12]

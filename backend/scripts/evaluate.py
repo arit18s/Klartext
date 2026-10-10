@@ -5,7 +5,8 @@ Runs checks + decision on a split (stage outputs reused when model, reasoning, p
 saves data/eval/<run_id>.json (GET /eval/latest shape) and a row in eval_runs, prints a compact report.
 
   --source script  one script transcript per dialogue (development; unit = dialogue)
-  --source asr     data/transcripts/<call_id>.json per recording (unit = recording)
+  --source asr     the pipeline's own results per recording (data/roles, data/checks, data/decide from
+                   process_all.py; unit = recording). Nothing is re-run, so the numbers are what the pipeline decided
   --split holdout  needs --holdout: run once, in B29, with frozen prompts and thresholds (rule 4)
 
 Usage (from backend/): python scripts/evaluate.py --split dev --source script
@@ -32,7 +33,8 @@ from app.eval.ground_truth import load_ground_truth  # noqa: E402
 from app.eval.metrics import EvalRow, compute_metrics  # noqa: E402
 from app.models.tables import EvalRun  # noqa: E402
 from app.models.transcript import Transcript  # noqa: E402
-from app.pipeline.check_stage import all_records, family_scores, run_check_stage  # noqa: E402
+from app.pipeline.check_stage import CheckOutcome, all_records, family_scores, run_check_stage  # noqa: E402
+from app.pipeline.decide import DecisionOutput  # noqa: E402
 from app.pipeline.keywords import match_keywords  # noqa: E402
 from app.pipeline.sources import ScriptTranscriptSource  # noqa: E402
 from app.prompts import prompt_version  # noqa: E402
@@ -58,11 +60,22 @@ def load_transcripts(units, source: str) -> list[Transcript]:
     if source == "script":
         src = ScriptTranscriptSource()
         return [src.load(u) for u, _, _ in units]
-    folder = get_settings().data_path / "transcripts"
-    missing = [u for u, _, _ in units if not (folder / f"{u}.json").exists()]
+    data = get_settings().data_path
+    missing = [u for u, _, _ in units if not (data / "decide" / f"{u}.json").exists()]
     if missing:
-        raise SystemExit(f"No ASR transcript for {len(missing)} recordings (e.g. {missing[0]}). Run the ASR stage first (B14/B15).")
-    return [Transcript.model_validate_json((folder / f"{u}.json").read_text(encoding="utf-8")) for u, _, _ in units]
+        raise SystemExit(f"No pipeline decision for {len(missing)} recordings (e.g. {missing[0]}). Run scripts/process_all.py first.")
+    return [Transcript.model_validate(json.loads((data / "roles" / f"{u}.json").read_text(encoding="utf-8"))["transcript"]) for u, _, _ in units]
+
+
+def pipeline_outcomes(units) -> dict:
+    """Decisions and checks exactly as the pipeline stored them (no re-run)."""
+    data = get_settings().data_path
+    out = {}
+    for u, _, _ in units:
+        o = CheckOutcome.model_validate_json((data / "checks" / f"{u}.json").read_text(encoding="utf-8")) if (data / "checks" / f"{u}.json").exists() else None
+        d = DecisionOutput.model_validate(json.loads((data / "decide" / f"{u}.json").read_text(encoding="utf-8")))
+        out[u] = (o, d)
+    return out
 
 
 def print_report(run: dict, wall: float, records) -> None:
@@ -114,19 +127,25 @@ def main() -> int:
     out_dir = s.data_path / ("checks_script" if args.source == "script" else "checks") / f"reasoning-{args.reasoning}"
 
     started = time.monotonic()
-    outcomes = run_check_stage(transcripts, out_dir, families, thresholds.data, s.llm_model, s.llm_samples,
-                               args.reasoning == "on", s.llm_concurrency, recheck=args.recheck)
+    if args.source == "script":
+        outcomes = run_check_stage(transcripts, out_dir, families, thresholds.data, s.llm_model, s.llm_samples,
+                                   args.reasoning == "on", s.llm_concurrency, recheck=args.recheck)
+        pairs = {u: (o.checks, o.decision) for u, o in outcomes.items()}
+    else:
+        outcomes = {}
+        pairs = {u: (o.checks if o else None, d) for u, (o, d) in pipeline_outcomes(units).items()}
     wall = time.monotonic() - started
 
     gt = load_ground_truth()
     rows = []
     for (unit, dlg, variant), t in zip(units, transcripts):
-        o, g = outcomes[unit], gt[dlg]
+        checks, decision = pairs[unit]
+        g = gt[dlg]
         rows.append(EvalRow(
             unit_id=unit, dialogue_id=dlg, level=g.level, variant=variant,
             expected_verdict=g.verdict, expected_family=g.family,
-            predicted_verdict=o.decision.verdict, predicted_family=o.decision.family, score=o.decision.score,
-            reason=o.decision.reason, families=family_scores(o.checks),
+            predicted_verdict=decision.verdict, predicted_family=decision.family, score=decision.score,
+            reason=decision.reason, families=family_scores(checks) if checks else [],
             keyword_flagged=bool(match_keywords(t, keywords.data)),
         ))
 

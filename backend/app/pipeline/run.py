@@ -26,18 +26,21 @@ from sqlmodel import Session, delete, select
 from app.config import get_settings
 from app.db import get_engine
 from app.db.config_store import get_active_config
-from app.models.tables import AuditLog, Call, CheckResult, CheckRun, Decision, KeywordHit, Segment
+from app.models.tables import AuditLog, Call, CheckResult, CheckRun, Decision, Evidence, KeywordHit, Segment
 from app.models.transcript import Transcript
 from app.pipeline.check_stage import CheckOutcome, decision_for, run_check_stage
 from app.pipeline.decide import DecisionOutput
+from app.pipeline.evidence import build_rows, cut_snippet
 from app.pipeline.keywords import match_keywords
 from app.pipeline.normalise import digit_sequences
+from app.pipeline.notify import notify
 from app.pipeline.roles import label_roles
+from app.pipeline.twin import find_twins, load_view
 
 log = logging.getLogger(__name__)
 
-STAGES = ["asr", "roles", "normalise", "keywords", "checks", "decide"]
-PENDING_STAGES = ["evidence", "notify"]  # B20 snippets + twin call, B22 trigger API
+STAGES = ["asr", "roles", "normalise", "keywords", "checks", "decide", "evidence", "twin", "notify"]
+PENDING_STAGES: list[str] = []
 MIN_WORDS = 5  # fewer recognised words than this: "No speech recognised"
 NO_SPEECH_REASON = "No speech recognised. Needs a human."
 NO_SPEECH_REASON_DE = "Keine Sprache erkannt. Braucht einen Menschen."
@@ -53,6 +56,7 @@ class RunSummary(BaseModel):
     done: list[str] = []
     waiting_for_asr: list[str] = []
     failed: dict[str, str] = {}
+    notified: dict[str, int] = {}  # sent / skipped / failed
 
 
 # ---------- helpers ----------
@@ -254,6 +258,44 @@ def _save_decision(call_id: str, d: DecisionOutput, thresholds_version: int | No
         session.commit()
 
 
+def stage_evidence(call_id: str) -> None:
+    d = DecisionOutput.model_validate(_read("decide", call_id))
+    checks_path = _dir("checks") / f"{call_id}.json"
+    families = CheckOutcome.model_validate_json(checks_path.read_text(encoding="utf-8")).checks.families if checks_path.exists() else {}
+    rows = build_rows(d, families, _labelled(call_id))
+    with Session(get_engine()) as session:
+        call = session.get(Call, call_id)
+        audio, duration = (Path(call.file_path), call.duration_s) if call else (None, None)
+    for row in rows:
+        if audio and audio.exists():
+            try:
+                row.snippet_path = cut_snippet(audio, call_id, row, duration)
+            except Exception as exc:  # a missing snippet must not block the decision
+                log.warning("Snippet failed for %s %s: %s", call_id, row.seg_id, type(exc).__name__)
+    _write("evidence", call_id, [r.model_dump() for r in rows])
+    with Session(get_engine()) as session:
+        session.exec(delete(Evidence).where(Evidence.call_id == call_id))
+        for r in rows:
+            session.add(Evidence(call_id=call_id, **r.model_dump()))
+        session.commit()
+
+
+def stage_twin_all() -> int:
+    """Global: twins over every decided call (a new call can be the better twin of an old one)."""
+    data = get_settings().data_path
+    with Session(get_engine()) as session:
+        decisions = {d.call_id: d for d in session.exec(select(Decision)).all()}
+        views = [v for cid, d in decisions.items() if (v := load_view(cid, data, {"verdict": d.verdict, "family": d.family, "reason": d.reason}))]
+        twins = {t.call_id: t for t in find_twins(views)}
+        for cid, d in decisions.items():
+            t = twins.get(cid)
+            d.twin_call_id, d.twin_note = (t.twin_call_id, t.note) if t else (None, None)
+            session.add(d)
+        session.commit()
+    _write("twin", "twins", [t.model_dump() for t in twins.values()])
+    return len(twins)
+
+
 # ---------- orchestration ----------
 
 def _guard(call_id: str, summary: RunSummary, fn: Callable[[], object]) -> bool:
@@ -302,6 +344,19 @@ def process(call_ids: list[str], from_stage: str = "asr") -> RunSummary:
                 _set_status(cid, "failed", summary.failed[cid])
             active = []
     run_each("decide", stage_decide)
+    run_each("evidence", stage_evidence)
+    if active or start == STAGES.index("twin"):
+        try:
+            stage_twin_all()
+        except Exception:  # twins are an explanation aid; never block decisions
+            log.exception("Twin stage failed")
+    if STAGES.index("notify") >= start:
+        for cid in active:
+            try:
+                outcome = notify(cid)
+                summary.notified[outcome] = summary.notified.get(outcome, 0) + 1
+            except Exception:
+                log.exception("Notify failed for %s", cid)
     for cid in active:
         _set_status(cid, "done")
         summary.done.append(cid)
