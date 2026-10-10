@@ -29,7 +29,9 @@ from sqlmodel import Session  # noqa: E402
 from app.config import get_settings  # noqa: E402
 from app.db import get_engine  # noqa: E402
 from app.db.config_store import get_active_config  # noqa: E402
+from app.eval.align import align  # noqa: E402
 from app.eval.ground_truth import load_ground_truth  # noqa: E402
+from app.eval.script_parser import parse_script  # noqa: E402
 from app.eval.metrics import EvalRow, compute_metrics  # noqa: E402
 from app.models.tables import EvalRun  # noqa: E402
 from app.models.transcript import Transcript  # noqa: E402
@@ -78,6 +80,26 @@ def pipeline_outcomes(units) -> dict:
     return out
 
 
+MIN_ALIGN_SIM = 40  # mean alignment similarity below this: evidence overlap "not measurable"
+
+
+def evidence_hit(unit: str, dlg: str, t: Transcript, verdict: str, expected_turns: list[str]) -> bool | None:
+    """Alarm only: does a trigger evidence segment align to an expected evidence turn (Belege)?"""
+    if verdict != "alarm":
+        return None
+    path = get_settings().data_path / "evidence" / f"{unit}.json"
+    rows = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+    triggers = {r["seg_id"] for r in rows if r["role"] == "trigger"}
+    if not triggers:
+        return False
+    turns = parse_script(get_settings().case_data_path / "Transkript" / f"{dlg}.txt").turns
+    al = align(t.segments, turns)
+    if al.mean_similarity < MIN_ALIGN_SIM:
+        return None
+    seg_turn = {s.seg_id: turns[ti].turn_id for s, ti in zip(t.segments, al.turn_index)}
+    return any(seg_turn.get(seg) in set(expected_turns) for seg in triggers)
+
+
 def print_report(run: dict, wall: float, records) -> None:
     m = run["metrics"]
     b, kb = m["binary"], m["keyword_baseline"]
@@ -97,6 +119,8 @@ def print_report(run: dict, wall: float, records) -> None:
     print(f"Stufe3 sent to review: {s3['reviewed']}/{s3['total']}")
     cn = m["clean_noisy_agreement"]
     print("Clean vs noisy agreement: " + ("n/a (script source)" if cn is None else f"{cn['agree']}/{cn['total']}"))
+    eo = m["evidence_overlap"]
+    print("Evidence overlap (alarm trigger on an expected turn): " + ("n/a" if eo is None else f"{eo['hit']}/{eo['measurable']} measurable of {eo['alarms']} alarms"))
     best = max((p for p in m["pr_curve"] if p["recall"] == 1.0), key=lambda p: p["t_review"], default=None)
     if best:
         print(f"PR curve: recall stays 1.00 up to review threshold {best['t_review']} (precision {fmt(best['precision'])})")
@@ -147,6 +171,7 @@ def main() -> int:
             predicted_verdict=decision.verdict, predicted_family=decision.family, score=decision.score,
             reason=decision.reason, families=family_scores(checks) if checks else [],
             keyword_flagged=bool(match_keywords(t, keywords.data)),
+            evidence_hit=evidence_hit(unit, dlg, t, decision.verdict, g.evidence_turns) if args.source == "asr" else None,
         ))
 
     now = datetime.now(timezone.utc)

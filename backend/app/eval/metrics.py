@@ -30,6 +30,7 @@ class EvalRow(BaseModel):
     reason: str | None
     families: list[FamilyScore]  # for the PR curve
     keyword_flagged: bool  # keyword-only baseline
+    evidence_hit: bool | None = None  # alarm trigger on an expected evidence turn; None = not measurable / no alarm
 
 
 def _flag(v: str) -> bool:
@@ -105,6 +106,14 @@ def _pr_curve(rows: list[EvalRow], t_alarm: float, k: int) -> list[dict[str, Any
     return curve
 
 
+def _evidence_overlap(rows: list[EvalRow]) -> dict[str, int] | None:
+    alarms = [r for r in rows if r.predicted_verdict == "alarm"]
+    measurable = [r for r in alarms if r.evidence_hit is not None]
+    if not measurable:
+        return None
+    return {"hit": sum(1 for r in measurable if r.evidence_hit), "measurable": len(measurable), "alarms": len(alarms)}
+
+
 def compute_metrics(rows: list[EvalRow], t_alarm: float, k: int) -> dict[str, Any]:
     confusion = [[sum(1 for r in rows if r.expected_verdict == e and r.predicted_verdict == p) for p in LABELS] for e in LABELS]
     exact = sum(1 for r in rows if r.expected_verdict == r.predicted_verdict)
@@ -125,7 +134,7 @@ def compute_metrics(rows: list[EvalRow], t_alarm: float, k: int) -> dict[str, An
         "stufe2_pairs": _stufe2_pairs(rows),
         "stufe3_review": {"reviewed": sum(1 for r in stufe3 if r.predicted_verdict == "review"), "total": len(stufe3)},
         "clean_noisy_agreement": _clean_noisy(rows),
-        "evidence_overlap": None,  # B23
+        "evidence_overlap": _evidence_overlap(rows),
         "family_accuracy": {"correct": sum(1 for r in fam_rows if r.predicted_family == r.expected_family), "total": len(fam_rows)},
         "pr_curve": _pr_curve(rows, t_alarm, k),
         "keyword_baseline": kb,
