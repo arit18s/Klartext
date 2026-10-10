@@ -68,7 +68,7 @@ Last update: Sat 10 Oct, 09:35 (B28 thresholds v4, B29 holdout run done; demo fi
 | B30 Hidden test set dry run | todo | – | |
 | B31 Robustness pass | todo | – | |
 | B32 Freeze | todo | – | Sat 22:00 |
-| B33 Pitch material | draft done | (this commit) | `docs/pitch/`: architecture and operating concept slides (HTML, PNG, PDF), timed demo script, Q&A sheet. Numbers marked `[B29]` until the holdout run on ASR |
+| B33 Pitch material | done | (this commit) | `docs/pitch/`: three slides (architecture, operating concept, detection quality with holdout vs dev vs keyword-only precision/recall; HTML, PNG, PDF), timed demo script with readiness check and the `demo_call.wav` drop (D42), Q&A sheet with the B29 numbers |
 | B34 Demo rehearsal | todo | – | |
 | B35 Final run | todo | – | Sun 06:00 |
 | B36 Submit | todo | – | Before Sun 08:30 |
