@@ -26,7 +26,7 @@
 | 9 | `9-backup-e-c10.png` | 2. Stufe2_C10: No alert, Exclusion card, twin note |
 | 10 | `10-backup-f-c17.png` | 3. Stufe3_C17: Review, Missing to decide, Why the access check is unclear |
 | 11 | `11-backup-g-tuning.png` | 4. Tuning: thresholds and the summary sentence |
-| 12 | `12-backup-h-rules.png` | 4. Rules → Families |
+| 12 | `12-backup-h-rules.png` | 4. Rules → Categories |
 | 13 | `13-backup-i-quality.png` | 5. Quality on the holdout run |
 | 14 | `14-backup-j-outcept.png` | 5. Outcept trigger list (`localhost:8080`), 35 alerts and reviews |
 

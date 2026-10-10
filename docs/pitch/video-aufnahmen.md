@@ -70,7 +70,7 @@ Ton: Die macOS-Aufnahme nimmt keinen Systemton auf. Wenn der Ton ins Video soll,
 Hinweis: Die Buttons **Catch everything** / **Balanced** / **Fewer reviews** ändern bei unseren 60 Anrufen keine Zahl (die Scores liegen fast nur bei 0 oder 100). Deshalb im Video den Regler ziehen statt diese Buttons zu klicken.
 
 ### 08-rules · Regeln in Klartext (ca. 15 s)
-1. Seitenleiste → **Rules**, Tab **Families**: die fünf Familien mit ihrer Regel in normaler Sprache zeigen, langsam scrollen.
+1. Seitenleiste → **Rules**, Tab **Categories**: die fünf Kategorien mit ihrer Regel in normaler Sprache zeigen, langsam scrollen.
 2. Tab **Keywords** kurz öffnen (Liste mit Standarddeutsch und Schweizerdeutsch).
 3. Nichts umschalten, nichts speichern.
 
