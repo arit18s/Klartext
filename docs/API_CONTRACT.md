@@ -51,6 +51,7 @@ Still invented, review before implementing:
 | `POST /pipeline/inbox` | whole endpoint | The Pipeline drop zone (02_APP_FLOW screen 7) copies one file into the inbox folder; section 9 has no endpoint for it |
 | `GET /scores/suggestion` | whole endpoint | Tuning page **Suggest from feedback** (R11); `dev_recall` and the recall guard (D44) |
 | `GET /advisors` | `last_call_at`, `last_call_id`, query `since` | Advisors page (R12): last call column and the period picker |
+| `CallSummary` | `reason_de` | German reason of the same decision (`decisions.reason_de`), so the Inbox and All calls show it when the interface is German; `null` until decided |
 | `CallSummary` | `raised_by` | Who raised an alarm or review: `advisor`, `customer` or `unclear`, `null` otherwise. Derived in the API from the speaker roles of the decided family's trigger evidence; no model call, verdicts unchanged (D43) |
 | `GET /advisors` | `advisor_alarm`, `advisor_review`, `customer_alarm`, `customer_review` | Advisors page highlights only advisor-raised flags; customer-raised ones are a muted "Customer requests" column (D43) |
 
@@ -83,6 +84,7 @@ Query: `verdict`, `family`, `level`, `variant`, `advisor` (comma-separated lists
       "family": "access",
       "score": 91,
       "reason": "Customer reads a live six-digit login code to the advisor. She had started the login herself a minute earlier, so the code was valid and gives access to her account.",
+      "reason_de": "…",
       "open_question": null,
       "feedback_label": null,
       "trigger_sent": true,

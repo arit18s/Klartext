@@ -2,7 +2,7 @@
 
 Updated with every step's commit. Steps and checks: `06_IMPLEMENTATION_PLAN.md`. Submission Sunday 08:30, feature freeze Saturday 22:00.
 
-Last update: Sat 10 Oct (UI wording "alert" instead of "alarm", D45; slides re-rendered).
+Last update: Sat 10 Oct (German UI merged; German wording "Alert", German reasons in Inbox/All calls via `reason_de`, reason toggle follows the interface language).
 
 ## Next up
 

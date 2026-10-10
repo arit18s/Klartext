@@ -17,7 +17,10 @@ import { VerdictChip } from './VerdictChip'
 import { ScoreBar } from './ScoreBar'
 import { Tag } from './Tag'
 import { Button } from './ui/button'
-import { t } from '@/i18n'
+import { getLang, t } from '@/i18n'
+
+/** The reason in the interface language when the server has it (German reasons come with every decision). */
+const reasonOf = (c: CallSummary) => (getLang() === 'de' && c.reason_de ? c.reason_de : c.reason)
 
 type Variant = 'inbox' | 'all'
 
@@ -163,8 +166,8 @@ export function CallsTable({
                   <td className={td}>{c.family ? FAMILY_LABEL[c.family] : '–'}</td>
                   {/* Reason takes the width the other (nowrap) columns leave and truncates, so the table never
                       outgrows its panel, also with the evaluation columns on. */}
-                  <td className={cn(td, 'w-full min-w-[160px] max-w-0 text-muted')} title={c.reason ?? undefined}>
-                    <span className="block truncate">{c.reason ?? c.error ?? '–'}</span>
+                  <td className={cn(td, 'w-full min-w-[160px] max-w-0 text-muted')} title={reasonOf(c) ?? undefined}>
+                    <span className="block truncate">{reasonOf(c) ?? c.error ?? '–'}</span>
                   </td>
                   <td className={cn(td, 'text-right')}>
                     <ScoreBar score={c.score} verdict={c.verdict} />

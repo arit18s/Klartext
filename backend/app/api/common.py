@@ -172,6 +172,7 @@ class CallSummary(BaseModel):
     family: str | None
     score: float | None
     reason: str | None
+    reason_de: str | None  # German reason of the same decision, for the list in German
     open_question: str | None
     feedback_label: str | None
     trigger_sent: bool
@@ -187,6 +188,7 @@ def call_summary(call: Call, decision: Decision | None, feedback_label: str | No
         error=call.error, created_at=iso(call.created_at), processed_at=iso(call.processed_at),
         verdict=decision.verdict if decision else None, family=decision.family if decision else None,
         score=decision.score if decision else None, reason=decision.reason if decision else None,
+        reason_de=decision.reason_de if decision else None,
         open_question=decision.open_question if decision else None, feedback_label=feedback_label,
         trigger_sent=trigger_sent, expected_verdict=expected.get(call.dialogue_id or ""),
         raised_by=raised_by(decision.verdict if decision else None, speakers),

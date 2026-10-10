@@ -15,6 +15,7 @@
     "family": "access",
     "score": 58,
     "reason": "Customer reads six digits from a bank letter to the advisor. The call never says when the letter arrived, so it is unclear whether the code still worked.",
+    "reason_de": "Die Kundin liest der Beratung sechs Ziffern aus einem Brief der Bank vor. Im Gespräch wird nie gesagt, wann der Brief kam, deshalb ist unklar, ob der Code noch gültig war.",
     "open_question": "Was the code still valid when it was read out?",
     "feedback_label": null,
     "trigger_sent": true,

@@ -9,7 +9,7 @@ import { ScoreBar } from '../ScoreBar'
 import { Segmented } from '../Segmented'
 import { Button, type ButtonProps } from '../ui/button'
 import { NoteDialog } from './NoteDialog'
-import { t } from '@/i18n'
+import { getLang, t } from '@/i18n'
 
 /** Browser print to PDF (D30). The document title becomes the suggested PDF file name. */
 function printReport(callId: string) {
@@ -53,7 +53,8 @@ export function VerdictHeader({
   busy: boolean
 }) {
   const decision = detail.decision!
-  const [lang, setLang] = useState<'en' | 'de'>('en')
+  // The reason starts in the interface language (the tree re-mounts when it changes); the switch still overrides it.
+  const [lang, setLang] = useState<'en' | 'de'>(getLang)
   const latest: Feedback | undefined = detail.feedback.at(-1)
   const lastVerdict = [...detail.feedback].reverse().find((f) => f.label !== 'note')
   const is = (l: FeedbackLabel) => lastVerdict?.label === l

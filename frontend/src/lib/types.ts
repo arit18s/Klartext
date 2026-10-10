@@ -49,6 +49,7 @@ export interface CallSummary {
   family: Family | null
   score: number | null
   reason: string | null
+  reason_de: string | null // German reason from the same decision; null until decided
   open_question: string | null
   // Invented convenience fields for list rows.
   feedback_label: FeedbackLabel | null // latest feedback, if any

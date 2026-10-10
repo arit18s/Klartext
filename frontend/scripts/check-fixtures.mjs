@@ -39,7 +39,7 @@ const isoTime = (where, v, nullable = false) => {
 }
 
 const SUMMARY_KEYS = ['call_id', 'file_name', 'dialogue_id', 'variant', 'level', 'duration_s', 'advisor_name', 'status',
-  'error', 'created_at', 'processed_at', 'verdict', 'family', 'score', 'reason', 'open_question', 'feedback_label',
+  'error', 'created_at', 'processed_at', 'verdict', 'family', 'score', 'reason', 'reason_de', 'open_question', 'feedback_label',
   'trigger_sent', 'expected_verdict', 'raised_by']
 
 function checkSummary(where, c) {
@@ -124,7 +124,7 @@ for (const file of detailFiles) {
   const dec = d.decision
   keys(`${w}.decision`, dec, ['verdict', 'family', 'score', 'reason', 'reason_de', 'open_question', 'asr_uncertain',
     'thresholds_version_id', 'decided_at'])
-  for (const k of ['verdict', 'family', 'score', 'reason', 'open_question']) {
+  for (const k of ['verdict', 'family', 'score', 'reason', 'reason_de', 'open_question']) {
     if (dec[k] !== d.call[k]) fail(`${w}.decision.${k}`, 'differs from call summary')
   }
   isoTime(`${w}.decision.decided_at`, dec.decided_at)

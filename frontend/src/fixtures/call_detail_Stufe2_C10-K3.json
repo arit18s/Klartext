@@ -15,6 +15,7 @@
     "family": "access",
     "score": 12,
     "reason": "Customer reads an expired sample code from the manual. No login was started.",
+    "reason_de": "Die Kundin liest einen abgelaufenen Beispielcode aus der Anleitung vor. Es wurde keine Anmeldung gestartet.",
     "open_question": null,
     "feedback_label": null,
     "trigger_sent": false,

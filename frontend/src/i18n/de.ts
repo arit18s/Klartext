@@ -1,7 +1,7 @@
 import type { Key } from './en'
 
 // Interface text, Deutsch (Schweiz): ss statt ß, Begriffe wie in der Compliance einer Schweizer Bank.
-// Verdicts: Alarm, Prüfung, Kein Hinweis. Backend-Daten (Begründungen, Transkripte, Regeltexte, Stichwörter) bleiben unübersetzt.
+// Verdicts: Alert, Prüfung, Kein Alert (wie Inventx/Outcept: «Alert», D45). Backend-Daten (Begründungen, Transkripte, Regeltexte, Stichwörter) bleiben unübersetzt.
 export const de: Record<Key, string> = {
   // ---------- Common ----------
   'common.and': 'und',
@@ -23,17 +23,17 @@ export const de: Record<Key, string> = {
   'common.calls_other': '{n} Gespräche',
   'common.callWord_one': 'Gespräch',
   'common.callWord_other': 'Gespräche',
-  'common.alerts_one': '{n} Alarm',
-  'common.alerts_other': '{n} Alarme',
+  'common.alerts_one': '{n} Alert',
+  'common.alerts_other': '{n} Alerts',
   'common.reviews_one': '{n} Prüfung',
   'common.reviews_other': '{n} Prüfungen',
   'common.today': 'heute',
   'common.ofTotal': '{a} von {b}',
 
   // ---------- Labels ----------
-  'verdict.alarm': 'Alarm',
+  'verdict.alarm': 'Alert',
   'verdict.review': 'Prüfung',
-  'verdict.no_alert': 'Kein Hinweis',
+  'verdict.no_alert': 'Kein Alert',
   'family.trade': 'Handel mit nicht öffentlichen Informationen',
   'family.splitting': 'Aufteilung zur Umgehung der Bewilligung',
   'family.access': 'Zugangscode weitergegeben',
@@ -65,9 +65,9 @@ export const de: Record<Key, string> = {
   'speaker.unknown': 'Sprecher',
   'match.match': 'Übereinstimmung',
   'match.extra_review': 'Zusätzliche Prüfung',
-  'match.false_alarm': 'Fehlalarm',
+  'match.false_alarm': 'Falscher Alert',
   'match.caught_as_review': 'Erkannt als Prüfung',
-  'match.caught_as_alarm': 'Erkannt als Alarm',
+  'match.caught_as_alarm': 'Erkannt als Alert',
   'match.missed': 'Verpasst',
   'date.today': 'Heute',
   'date.7d': 'Letzte 7 Tage',
@@ -78,10 +78,10 @@ export const de: Record<Key, string> = {
   'date.inThe.30d': 'in den letzten 30 Tagen',
   'date.inThe.all': 'im gesamten Zeitraum',
   'feedback.correct': 'Als korrekt markiert',
-  'feedback.false_alarm': 'Als Fehlalarm markiert',
+  'feedback.false_alarm': 'Als falscher Alert markiert',
   'feedback.missed': 'Als verpasst markiert',
-  'feedback.escalated_to_alarm': 'Als Alarm eskaliert',
-  'feedback.closed_no_alert': 'Ohne Hinweis abgeschlossen',
+  'feedback.escalated_to_alarm': 'Als Alert eskaliert',
+  'feedback.closed_no_alert': 'Als kein Alert abgeschlossen',
   'feedback.note': 'Notiz hinzugefügt',
   'feedback.notSaved': 'Das Feedback wurde nicht gespeichert. {message}',
 
@@ -151,7 +151,7 @@ export const de: Record<Key, string> = {
   'chip.advisor': 'Berater: {name}',
   'slider.label': 'Schwellenwerte auf dem Score',
   'slider.reviewFrom': 'Prüfung ab',
-  'slider.alertFrom': 'Alarm ab',
+  'slider.alertFrom': 'Alert ab',
   'confusion.title': 'Erwartet vs. Klartext',
   'confusion.caption': 'Zeilen: erwartetes Ergebnis. Spalten: Ergebnis von Klartext.',
   'confusion.cell_one': 'Erwartet {exp}, Klartext {got}: {n} Gespräch',
@@ -166,7 +166,7 @@ export const de: Record<Key, string> = {
 
   // ---------- Inbox ----------
   'inbox.heading': 'Handlungsbedarf',
-  'inbox.intro': 'Zuerst Alarme, dann Prüfungen, höchster Score zuoberst.',
+  'inbox.intro': 'Zuerst Alerts, dann Prüfungen, höchster Score zuoberst.',
   'inbox.simulateTitle':
     'Fixture-Modus: spielt eine gespeicherte Aufnahme durch die Pipeline, als wäre sie soeben im Eingangsordner abgelegt worden',
   'inbox.simulate': 'Neue Aufnahme simulieren',
@@ -179,7 +179,7 @@ export const de: Record<Key, string> = {
   'inbox.emptyBody':
     '{done} von {total} Gesprächen geprüft. Neue Aufnahmen erscheinen hier, sobald die Pipeline entscheidet, dass sie angeschaut werden müssen.',
   'inbox.summary': 'Übersicht',
-  'inbox.alerts': 'Alarme',
+  'inbox.alerts': 'Alerts',
   'inbox.withoutFeedback': '{n} ohne Feedback',
   'inbox.reviews': 'Prüfungen',
   'inbox.openQuestion': 'Jede mit einer offenen Frage',
@@ -198,12 +198,12 @@ export const de: Record<Key, string> = {
   'inbox.kbdMove': 'bewegen',
   'inbox.kbdOpen': 'öffnen',
   'inbox.kbdCorrect': 'korrekt',
-  'inbox.kbdFalse': 'Fehlalarm',
+  'inbox.kbdFalse': 'falscher Alert',
   'inbox.noMatch': 'Keine markierten Gespräche entsprechen diesen Filtern.',
 
   // ---------- All calls ----------
   'all.heading': 'Alle verarbeiteten Gespräche',
-  'all.noAlert': '{n} ohne Hinweis',
+  'all.noAlert': '{n} ohne Alert',
   'all.evalMode': 'Evaluationsmodus',
   'all.onlyMismatches': 'Nur Abweichungen',
   'all.exportCsv': 'CSV exportieren',
@@ -241,14 +241,14 @@ export const de: Record<Key, string> = {
   'verdictHeader.raisedBy': 'Ausgelöst durch: {who}',
   'verdictHeader.reasonLanguage': 'Sprache der Begründung',
   'verdictHeader.missing': 'Für den Entscheid fehlt',
-  'verdictHeader.escalate': 'Als Alarm eskalieren',
-  'verdictHeader.close': 'Ohne Hinweis abschliessen',
+  'verdictHeader.escalate': 'Als Alert eskalieren',
+  'verdictHeader.close': 'Als kein Alert abschliessen',
   'verdictHeader.addNote': 'Notiz hinzufügen',
   'verdictHeader.addNoteDesc':
     'Eine Notiz für die Akte. Sie eskaliert das Gespräch nicht und schliesst es nicht ab. Notizen werden im Audit-Log festgehalten.',
   'verdictHeader.saveNote': 'Notiz speichern',
   'verdictHeader.correct': 'Korrekt',
-  'verdictHeader.falseAlert': 'Fehlalarm',
+  'verdictHeader.falseAlert': 'Falscher Alert',
   'verdictHeader.missed': 'Etwas übersehen',
   'verdictHeader.missedDesc':
     'Beschreiben Sie, was Klartext in diesem Gespräch übersehen hat. Die Notiz wird im Audit-Log festgehalten.',
@@ -277,9 +277,9 @@ export const de: Record<Key, string> = {
   'unclear.split': 'Nur {agree} Durchläufe stimmen im Ergebnis überein.',
   'unclear.harmless': ' Harmlose Lesart: {text}',
   'unclear.handOff': ' Da die entscheidende Tatsache fehlt, übergibt Klartext das Gespräch einer Person, statt zu raten.',
-  'twin.noneForReview': 'Kein ähnliches Gespräch ohne Alarm',
-  'twin.withoutAlert': 'Ähnliches Gespräch ohne Alarm: {name}',
-  'twin.withAlert': 'Ähnliches Gespräch mit Alarm: {name}',
+  'twin.noneForReview': 'Kein ähnliches Gespräch ohne Alert',
+  'twin.withoutAlert': 'Ähnliches Gespräch ohne Alert: {name}',
+  'twin.withAlert': 'Ähnliches Gespräch mit Alert: {name}',
   'twin.other': 'Ähnliches Gespräch ({verdict}): {name}',
   'twin.open': '{name} öffnen',
   'evidence.context': 'Kontext',
@@ -334,8 +334,8 @@ export const de: Record<Key, string> = {
     'Mit diesen Einstellungen löst Klartext {alerts} aus und schickt {n} Gespräche zur Prüfung.',
   'tuning.costExtra_one': 'schickt {n} harmloses Gespräch zur Prüfung',
   'tuning.costExtra_other': 'schickt {n} harmlose Gespräche zur Prüfung',
-  'tuning.costFalse_one': 'löst {n} Fehlalarm aus',
-  'tuning.costFalse_other': 'löst {n} Fehlalarme aus',
+  'tuning.costFalse_one': 'löst {n} falschen Alert aus',
+  'tuning.costFalse_other': 'löst {n} falsche Alerts aus',
   'tuning.cases_one': 'erkennt Klartext {caught} von {n} Fall',
   'tuning.cases_other': 'erkennt Klartext {caught} von {n} Fällen',
   'tuning.noHarmless': 'markiert kein harmloses Gespräch',
@@ -351,16 +351,16 @@ export const de: Record<Key, string> = {
   'tuning.loading': 'Scores werden geladen…',
   'tuning.loadError': 'Die Scores konnten nicht geladen werden. {message}',
   'tuning.noSuggestion': 'Kein Vorschlag. {message}',
-  'tuning.applied': 'Schwellenwerte übernommen: Prüfung ab {review}, Alarm ab {alarm}',
+  'tuning.applied': 'Schwellenwerte übernommen: Prüfung ab {review}, Alert ab {alarm}',
   'tuning.notApplied': 'Die Schwellenwerte wurden nicht übernommen. {message}',
   'tuning.thresholds': 'Schwellenwerte',
   'tuning.thresholdsTitle': 'Schwellenwerte auf dem Score (0–100)',
   'tuning.shouldCatch': 'Sollte erkannt werden',
   'tuning.harmless': 'Harmlos',
-  'tuning.scaleLow': '0 · kein Hinweis',
+  'tuning.scaleLow': '0 · kein Alert',
   'tuning.scaleHigh': '100 · sicher',
   'tuning.savedVersion':
-    'Aktuell gespeicherte Version {version}: Prüfung ab {review}, Alarm ab {alarm}. Jede Übernahme schreibt eine neue Version ins Audit-Log.',
+    'Aktuell gespeicherte Version {version}: Prüfung ab {review}, Alert ab {alarm}. Jede Übernahme schreibt eine neue Version ins Audit-Log.',
   'tuning.reset': 'Auf Gespeichertes zurücksetzen',
   'tuning.looking': 'Feedback wird ausgewertet…',
   'tuning.suggest': 'Aus Feedback vorschlagen',
@@ -374,9 +374,9 @@ export const de: Record<Key, string> = {
   'tuning.noExpected': 'Für diese Gespräche gibt es keine erwarteten Ergebnisse.',
   'tuning.caught': 'Erkannt',
   'tuning.missed': 'Verpasst',
-  'tuning.falseAlerts': 'Fehlalarme',
+  'tuning.falseAlerts': 'Falsche Alerts',
   'tuning.extraReviews': 'Zusätzliche Prüfungen bei harmlosen Gesprächen',
-  'tuning.suggested': 'Vorschlag aus Feedback zu {calls}: Prüfung ab {review}, Alarm ab {alarm}',
+  'tuning.suggested': 'Vorschlag aus Feedback zu {calls}: Prüfung ab {review}, Alert ab {alarm}',
   'tuning.feedbackOn': 'Feedback zu {calls}',
   'tuning.noFeedback': 'Noch kein Feedback',
   'tuning.effect':
@@ -406,7 +406,7 @@ export const de: Record<Key, string> = {
   'quality.exact': 'Exakt gleiches Ergebnis',
   'quality.exactDetail': '{a} von {b} Gesprächen',
   'quality.evidence': 'Überlappung der Belege',
-  'quality.evidenceDetail': '{hit} von {n} Alarmen treffen einen erwarteten Gesprächsbeitrag · Ziel {target}',
+  'quality.evidenceDetail': '{hit} von {n} Alerts treffen einen erwarteten Gesprächsbeitrag · Ziel {target}',
   'quality.evidenceNone': 'Erfordert Zuordnung der ASR-Beiträge · Ziel {target}',
   'quality.cleanNoisy': 'Übereinstimmung sauber vs. verrauscht',
   'quality.cleanNoisyDetail': '{a} von {b} Skripten · Ziel {target}',
@@ -470,7 +470,7 @@ export const de: Record<Key, string> = {
   'quality.headline': 'Kennzahlen',
   'quality.confusionCaption': 'Zeilen: erwartet. Spalten: Klartext. Rote Zellen sind verpasste Fälle.',
   'quality.reviewNote':
-    'Alarme, die zur Prüfung gingen ({n}), gelten als erkannt. Eine Prüfung ist eine Übergabe, kein Verpassen.',
+    'Alerts, die zur Prüfung gingen ({n}), gelten als erkannt. Eine Prüfung ist eine Übergabe, kein Verpassen.',
 
   // ---------- Rules ----------
   'rules.version': 'Konfigurationsversion {version} · gespeichert {when}',
@@ -524,7 +524,7 @@ export const de: Record<Key, string> = {
   'rules.introFamilies':
     'Jede Kategorie ist eine Prüfung. Formulieren Sie die Regel so, wie Sie sie einer neuen Kollegin oder einem neuen Kollegen erklären würden. Jedes Speichern erzeugt eine neue Konfigurationsversion.',
   'rules.introKeywords':
-    'Stichwörter lenken die Prüfungen auf die richtigen Stellen. Ein Stichwort allein löst nie einen Alarm aus: Die Prüfung der Kategorie entscheidet aus dem Kontext.',
+    'Stichwörter lenken die Prüfungen auf die richtigen Stellen. Ein Stichwort allein löst nie einen Alert aus: Die Prüfung der Kategorie entscheidet aus dem Kontext.',
   'rules.tabs': 'Regeln',
   'rules.families': 'Kategorien',
   'rules.loadingFamilies': 'Kategorien werden geladen…',
@@ -552,7 +552,7 @@ export const de: Record<Key, string> = {
     'Sagt den anderen Prüfungen, welche Art von Zahl vorgelesen wurde: Login-Code, Kontonummer, Betrag, Datum, Telefonnummer oder Referenz. Die Zugangs- und die Aufteilungsprüfung nutzen dies als Kontext.',
   'numbers.notEditable': 'Im MVP nicht bearbeitbar',
   'addKeyword.button': 'Stichwort hinzufügen',
-  'addKeyword.desc': 'Stichwörter lenken die Prüfungen auf eine Stelle. Sie lösen nie allein einen Alarm aus.',
+  'addKeyword.desc': 'Stichwörter lenken die Prüfungen auf eine Stelle. Sie lösen nie allein einen Alert aus.',
   'addKeyword.keyword': 'Stichwort',
   'addKeyword.placeholder': 'z. B. Kartenprüfziffer',
   'addKeyword.family': 'Kategorie',
@@ -566,13 +566,13 @@ export const de: Record<Key, string> = {
   // ---------- Advisors ----------
   'advisors.heading': 'Muster pro Berater',
   'advisors.intro':
-    'Ein einzelnes Gespräch kann ein Versehen sein. Ein Alarm oder wiederholte Prüfungen beim selben Berater sind ein Gespräch wert. Hier zählen nur Markierungen, die durch die eigenen Worte des Beraters ausgelöst wurden; was die Kundschaft verlangt hat, steht unter Kundenanliegen.',
+    'Ein einzelnes Gespräch kann ein Versehen sein. Ein Alert oder wiederholte Prüfungen beim selben Berater sind ein Gespräch wert. Hier zählen nur Markierungen, die durch die eigenen Worte des Beraters ausgelöst wurden; was die Kundschaft verlangt hat, steht unter Kundenanliegen.',
   'advisors.period': 'Zeitraum',
   'advisors.count_one': '{n} Berater',
   'advisors.count_other': '{n} Berater',
   'advisors.worthLook_one': '{n} Berater genauer anschauen',
   'advisors.worthLook_other': '{n} Berater genauer anschauen',
-  'advisors.noneFlagged': 'keiner mit einem vom Berater ausgelösten Alarm oder 2+ Prüfungen',
+  'advisors.noneFlagged': 'keiner mit einem vom Berater ausgelösten Alert oder 2+ Prüfungen',
   'advisors.loading': 'Berater werden geladen…',
   'advisors.loadError': 'Die Berater konnten nicht geladen werden. {message}',
   'advisors.noNames':
@@ -580,10 +580,10 @@ export const de: Record<Key, string> = {
   'advisors.noneInPeriod': 'Keine Gespräche mit erkanntem Berater {period}.',
   'advisors.advisor': 'Berater',
   'advisors.calls': 'Gespräche',
-  'advisors.alerts': 'Alarme',
+  'advisors.alerts': 'Alerts',
   'advisors.reviews': 'Prüfungen',
   'advisors.requests': 'Kundenanliegen',
-  'advisors.noAlert': 'Kein Hinweis',
+  'advisors.noAlert': 'Kein Alert',
   'advisors.families': 'Betroffene Kategorien',
   'advisors.lastCall': 'Letztes Gespräch',
   'advisors.rowLabel': '{name}: alle Gespräche dieses Beraters öffnen',
@@ -666,7 +666,7 @@ export const de: Record<Key, string> = {
   // ---------- Settings ----------
   'settings.notSet': 'Nicht gesetzt. Tragen Sie den Wert in die .env auf dem Server ein.',
   'settings.intro':
-    'Wo die Modelle von Klartext laufen und wohin die Alarme gehen. Diese Werte stammen aus der Serverkonfiguration und sind hier nur lesbar.',
+    'Wo die Modelle von Klartext laufen und wohin die Alerts gehen. Diese Werte stammen aus der Serverkonfiguration und sind hier nur lesbar.',
   'settings.loading': 'Einstellungen werden geladen…',
   'settings.loadError': 'Die Einstellungen konnten nicht geladen werden. {message}',
   'settings.llm': 'Sprachmodell',
@@ -684,9 +684,9 @@ export const de: Record<Key, string> = {
   'settings.speechModel': 'Sprachmodell (ASR)',
   'settings.trigger': 'Outcept Trigger-API',
   'settings.triggerIntro':
-    'Klartext übermittelt jeden Alarm und jede Prüfung hierhin, mit einem Link, der das Gespräch an der verdächtigen Stelle öffnet.',
+    'Klartext übermittelt jeden Alert und jede Prüfung hierhin, mit einem Link, der das Gespräch an der verdächtigen Stelle öffnet.',
   'settings.triggerUrl': 'Trigger-API-URL',
-  'settings.send': 'Alarme und Prüfungen senden',
+  'settings.send': 'Alerts und Prüfungen senden',
   'settings.sendHelp': 'Jede Meldung verlinkt auf /calls/{call_id}?t={seconds}.',
   'settings.versions': 'Aktive Konfigurationsversionen',
   'settings.versionsIntro':
