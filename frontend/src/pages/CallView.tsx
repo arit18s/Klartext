@@ -1,3 +1,4 @@
+import { PrintFooter, PrintHeader, PrintTranscript } from '@/components/call/PrintReport'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -188,6 +189,7 @@ function CallPage({ id }: { id: string }) {
 
   return (
     <Page title={title}>
+      <PrintHeader detail={data} />
       <VerdictHeader
         detail={data}
         busy={feedback.isPending}
@@ -200,27 +202,29 @@ function CallPage({ id }: { id: string }) {
         }}
       />
 
-      <div className="-mt-2 flex flex-wrap items-start gap-6">
-        <div className="flex min-w-0 flex-[4_1_480px] flex-col gap-4">
-          <AudioPlayer
-            ref={player}
-            url={audioSource(data)}
-            duration={data.call.duration_s ?? 0}
-            segments={data.segments}
-            evidence={data.evidence}
-            cue={cueSeconds}
-            onTime={onTime}
-            onRegionClick={(e) => {
-              setFromLink(false)
-              setActiveSeg(e.seg_id)
-            }}
-          />
+      <div className="-mt-2 flex flex-wrap items-start gap-6 print:mt-0 print:flex-col print:gap-5">
+        <div className="flex min-w-0 flex-[4_1_480px] flex-col gap-4 print:w-full print:flex-none">
+          <div className="print:hidden">
+            <AudioPlayer
+              ref={player}
+              url={audioSource(data)}
+              duration={data.call.duration_s ?? 0}
+              segments={data.segments}
+              evidence={data.evidence}
+              cue={cueSeconds}
+              onTime={onTime}
+              onRegionClick={(e) => {
+                setFromLink(false)
+                setActiveSeg(e.seg_id)
+              }}
+            />
+          </div>
 
           <div className="flex items-baseline justify-between gap-3 pt-2">
             <h3 className="text-subtitle font-medium">Evidence, in time order</h3>
             <span className="text-small text-muted">
-              {data.evidence.length} {data.evidence.length === 1 ? 'passage' : 'passages'} · play adds 10 s before and
-              after
+              {data.evidence.length} {data.evidence.length === 1 ? 'passage' : 'passages'}
+              <span className="print:hidden"> · play adds 10 s before and after</span>
             </span>
           </div>
           {data.evidence.length === 0 && (
@@ -242,7 +246,7 @@ function CallPage({ id }: { id: string }) {
           {data.twin && <TwinBox twin={data.twin} verdict={decision.verdict} />}
         </div>
 
-        <div className="flex min-w-0 flex-[1_1_460px] flex-col gap-4">
+        <div className="flex min-w-0 flex-[1_1_460px] flex-col gap-4 print:w-full print:flex-none">
           <ChecksTable checks={data.checks} decision={decision} />
           {decision.verdict === 'review' && isUnclear(decidedCheck) && <WhyUnclear check={decidedCheck!} />}
           {data.keyword_hits.length > 0 && <KeywordHits hits={data.keyword_hits} onSelect={selectSegment} />}
@@ -252,8 +256,10 @@ function CallPage({ id }: { id: string }) {
             activeSeg={activeSeg}
             onSelect={selectSegment}
           />
+          <PrintTranscript segments={data.segments} evidenceSegs={evidenceSegs} />
         </div>
       </div>
+      <PrintFooter />
     </Page>
   )
 }

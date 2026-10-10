@@ -41,7 +41,10 @@ export function ChecksTable({ checks, decision }: { checks: CheckResult[]; decis
   const runs = Math.max(0, ...checks.map((c) => c.samples))
 
   return (
-    <section aria-label="Checks" className="overflow-hidden rounded-panel border border-line bg-paper">
+    <section
+      aria-label="Checks"
+      className="break-inside-avoid overflow-hidden rounded-panel border border-line bg-paper"
+    >
       <div className="flex items-center justify-between px-4 pb-2 pt-4">
         <h3 className="text-subtitle font-medium">Checks</h3>
         <span className="text-small text-muted">{runs} runs per check</span>

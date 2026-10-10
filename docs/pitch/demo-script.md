@@ -14,6 +14,25 @@ Times are the target *end* of each part. If you are late at 2:50, shorten part 4
 - [ ] Browser at 100 % zoom, 1440 px or wider, sidebar visible. Sound on, tested.
 - [ ] Fallback if the backend fails: frontend in fixture mode (`VITE_USE_FIXTURES=true`), Inbox → **Simulate a new recording** plays the same flow. Backup video ready (B34).
 
+## Demo readiness check
+
+Run this on the real `data/klartext.db` after the 60-call batch, and again after the last rehearsal. Every row is **verify on real DB**: the stand-in DB in the cloud session only had fixture results for C09, C10 and C17. Quick API check for one call (backend running):
+
+```bash
+curl -s localhost:8000/api/calls/Stufe2_C09-K3 | python3 -c "import json,sys; d=json.load(sys.stdin); print(d['decision']['verdict'], d['decision']['family'], [(e['role'], e['seg_id']) for e in d['evidence']], d['twin'], len(d['triggers']))"
+```
+
+| Step | Call ID | Page | Must be true in the data | Status |
+|---|---|---|---|---|
+| Opening | – | Inbox | At least C09-K3 (alarm) and C17-K3 (review) listed; the date filter (*Last 7 days*) covers their `processed_at`. Sidebar not showing *Pipeline not reachable* or *Live updates lost* | verify on real DB |
+| 1. A call arrives | drop `Stufe2_C09-K4.wav`, then open `Stufe2_C09-K3` | Pipeline → Inbox → call view | **The drop file is not yet processed:** no `calls` row with ID `Stufe2_C09-K4` and no row with the same file hash. Otherwise the drop answers *processed before. Skipped.*; and if only the ID is taken, the upload is saved as `Stufe2_C09-K4_2.wav`, which has no cached transcript and waits for ASR. Delete the row and its rows in `segments, keyword_hits, check_runs, check_results, decisions, evidence, feedback, triggers_sent` (or leave the file out of the batch). Its ASR transcript is cached as `data/transcripts/Stufe2_C09-K4.json` (or the GPU service runs). The LLM is reachable. The watcher runs (`watching: true` in `/api/pipeline/status`). The Outcept trigger API is up (`TRIGGER_API_ENABLED=true`, Docker running) | verify on real DB |
+| 1. (cont.) | `Stufe2_C09-K3` | Call view | Verdict `alarm`, family `access`. Evidence of the access family with at least one `trigger` (the six digits) and a `context` card for "started the login herself". A snippet or the full audio plays (`/audio` answers 206). A `triggers_sent` row with a 2xx status (*Sent to Outcept at …*). No leftover feedback from rehearsals | verify on real DB |
+| 2. Same digits, no alarm | `Stufe2_C09-K3` → `Stufe2_C10-K3` | Call view → twin → Quality / Rules | C09-K3's `twin_call_id` is `Stufe2_C10-K3` with a one-sentence `twin_note` (button **Open Stufe2_C10**). C10-K3 verdict `no_alert`, ideally with `exclusion` evidence (the expired sample, no login started). The latest eval run (or Rules → Keywords) has the keyword baseline for *Compared with a keyword filter* | verify on real DB |
+| 3. When the call doesn't settle it | `Stufe3_C17-K3` | Call view | Verdict `review`, family `access`, `open_question` set (*Was the code still valid when it was read out?*). The access check is `undetermined`, so *Why the access check is unclear* shows; the Checks table shows the real agreement (k = 5, e.g. *3 of 5*). No feedback yet, so **Escalate as alarm** / **Close as no alert** are unpressed | verify on real DB |
+| 4. Compliance sets how strict it is | – (all calls) | Tuning → Rules | `/api/scores` lists all 60 decided calls with `expected_verdict` (needs `CASE_DATA_DIR` with `Skript_mit_Sollbewertung`). Active thresholds review 30, alarm 70. All five families enabled. After the demo edit, the family is switched back on and the removed keyword is back (each save is a new config version, that is fine) | verify on real DB |
+| 5. Quality, measured honestly | – | Quality, Outcept tab | The holdout run from B29 exists as the latest eval run (`/api/eval/latest` with `split: holdout`); the Quality page itself only runs Dev until then. Mismatches have reasons. The Outcept list at `localhost:8080` shows the C09-K3 alarm and the C17-K3 review, and their deep links open Klartext at the passage (*Opened from Outcept link*) | verify on real DB |
+| Fallback | – | Fixture mode tab | A second frontend with `VITE_USE_FIXTURES=true` is open; Inbox → **Simulate a new recording** works | verify before the demo |
+
 ---
 
 ## 0:00 – 0:20 · Opening
@@ -49,7 +68,7 @@ Times are the target *end* of each part. If you are late at 2:50, shorten part 4
 **Do:**
 1. Sidebar → **Inbox** → open **Stufe3_C17** (blue **Review**).
 2. Point at **Missing to decide**: *Was the code still valid when it was read out?*
-3. Point at **Why the access check is unclear** and the **Checks** table (*2 of 3* runs agree).
+3. Point at **Why the access check is unclear** and the **Checks** table (how many of the 5 runs agree, e.g. *3 of 5*).
 4. Show the buttons **Escalate as alarm** / **Close as no alert**. Don't click.
 
 **Say:** "When Klartext can't know, it says exactly what's missing and hands it to a human. A review counts as caught, so we never stay silent on a real case."

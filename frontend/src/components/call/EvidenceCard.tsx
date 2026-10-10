@@ -35,7 +35,7 @@ export const EvidenceCard = forwardRef<
       tabIndex={-1}
       aria-label={`${ROLE_LABEL[e.role]} ${formatTimestamp(e.start_s)} to ${formatTimestamp(e.end_s)}, ${speaker(e.speaker_role)}`}
       className={cn(
-        'relative flex flex-col gap-2 overflow-hidden rounded-panel border border-line bg-paper py-4 pl-[19px] pr-4 scroll-mt-24',
+        'relative flex break-inside-avoid flex-col gap-2 overflow-hidden rounded-panel border border-line bg-paper py-4 pl-[19px] pr-4 scroll-mt-24',
         focused && 'outline outline-2 outline-graphite',
       )}
     >
@@ -66,6 +66,7 @@ export const EvidenceCard = forwardRef<
           <span />
         )}
         <Button
+          className="print:hidden"
           size="sm"
           variant={trigger ? 'primary' : 'secondary'}
           aria-label={`Play passage ${formatTimestamp(e.start_s)} to ${formatTimestamp(e.end_s)}`}
