@@ -350,22 +350,31 @@ function downloadReport(run: EvalRun) {
   URL.revokeObjectURL(url)
 }
 
+type RunView = 'holdout' | 'dev'
+
 export default function Quality() {
   const qc = useQueryClient()
   const toast = useToast()
-  const latest = useQuery({ queryKey: ['eval'], queryFn: getLatestEval, retry: false })
-  const [split, setSplit] = useState<EvalSplit>('dev')
+  // The B29 holdout run is shown read-only; new runs from this page are Dev only (rule 4: holdout runs once).
+  const holdout = useQuery({ queryKey: ['eval', 'holdout'], queryFn: () => getLatestEval('holdout'), retry: false })
+  const dev = useQuery({ queryKey: ['eval', 'dev'], queryFn: () => getLatestEval('dev'), retry: false })
+  const is404 = (e: Error | null) => e instanceof ApiError && e.status === 404
+  const [picked, setPicked] = useState<RunView>('holdout')
+  const view: RunView = picked === 'holdout' && is404(holdout.error) ? 'dev' : picked
+  const latest = view === 'holdout' ? holdout : dev
   const run = useMutation({
-    mutationFn: () => runEval({ split }),
+    mutationFn: () => runEval({ split: 'dev' }),
     onSuccess: (r) => {
-      qc.setQueryData(['eval'], r)
-      toast(`Ran evaluation ${r.run_id} on ${SPLIT_LABEL[r.split].toLowerCase()}`)
+      qc.setQueryData(['eval', 'dev'], r)
+      qc.invalidateQueries({ queryKey: ['eval'] })
+      setPicked('dev')
+      toast(`Ran evaluation ${r.run_id} on dev`)
     },
     onError: (e: Error) => toast(`The evaluation did not run. ${e.message}`, 'error'),
   })
   const data = latest.data
   const m = data?.metrics
-  const missing = latest.error instanceof ApiError && latest.error.status === 404
+  const missing = is404(latest.error)
 
   return (
     <Page title="Quality">
@@ -375,7 +384,7 @@ export default function Quality() {
           {data && m && (
             <p className="mt-1 max-w-[72ch] text-muted">
               {SPLIT_LABEL[data.split]} split, {m.n_calls} {m.n_calls === 1 ? 'call' : 'calls'} from{' '}
-              {data.source === 'asr' ? 'speech recognition' : 'script text (development)'}. Last run {data.run_id}{' '}
+              {data.source === 'asr' ? 'speech recognition' : 'script text (development)'}. Run {data.run_id}{' '}
               {formatProcessed(data.created_at)} on thresholds version {data.config_versions.thresholds ?? '–'}.
             </p>
           )}
@@ -388,27 +397,30 @@ export default function Quality() {
             </Button>
           )}
           <Segmented
-            label="Split to evaluate"
-            value={split}
-            onChange={setSplit}
-            options={(Object.keys(SPLIT_LABEL) as EvalSplit[]).map((s) => ({
-              value: s,
-              label: SPLIT_LABEL[s],
-              disabled: s !== 'dev', // rule 4: holdout runs once, in B29, with frozen prompts and thresholds
-            }))}
+            label="Run shown"
+            value={view}
+            onChange={setPicked}
+            options={[
+              { value: 'holdout', label: 'Holdout · final', disabled: is404(holdout.error) },
+              { value: 'dev', label: 'Dev · latest' },
+            ]}
           />
           <Button variant="primary" onClick={() => run.mutate()} disabled={run.isPending}>
             <Play strokeWidth={1.75} aria-hidden="true" />
-            {run.isPending ? 'Running…' : 'Run evaluation'}
+            {run.isPending ? 'Running…' : 'Run evaluation on dev'}
           </Button>
         </div>
       </section>
-      <p className="-mt-4 m-0 text-small text-muted">Holdout opens for the final run.</p>
+      <p className="-mt-4 m-0 text-small text-muted">
+        {view === 'holdout'
+          ? 'Read-only. The holdout run happened once, with prompts and thresholds frozen; it is never re-run from here.'
+          : 'Dev is the split prompts and thresholds were tuned on. New runs from this page always use it.'}
+      </p>
 
-      {latest.isPending && <p className="text-muted">Loading the latest evaluation…</p>}
+      {latest.isPending && <p className="text-muted">Loading the evaluation…</p>}
       {missing && (
         <p className="m-0 rounded-panel border border-line p-6 text-muted">
-          No evaluation has run yet. Pick a split and run one.
+          No evaluation on dev has run yet. Run one with <b className="font-medium">Run evaluation on dev</b>.
         </p>
       )}
       {latest.error && !missing && (

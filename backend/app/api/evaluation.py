@@ -32,8 +32,8 @@ class EvalRunOut(BaseModel):
     metrics: dict[str, Any]
 
 
-def _latest_file() -> dict[str, Any] | None:
-    """data/eval/<run_id>.json holds the full run (run_id, source); newest by created_at."""
+def _latest_file(split: str | None = None) -> dict[str, Any] | None:
+    """data/eval/<run_id>.json holds the full run (run_id, source); newest by created_at, optionally of one split."""
     folder = get_settings().data_path / "eval"
     runs = []
     for path in folder.glob("*.json") if folder.is_dir() else []:
@@ -41,13 +41,14 @@ def _latest_file() -> dict[str, Any] | None:
             runs.append(json.loads(path.read_text(encoding="utf-8")))
         except ValueError:
             log.warning("Skipped an unreadable evaluation file")
-    runs = [r for r in runs if isinstance(r, dict) and r.get("created_at") and r.get("metrics")]
+    runs = [r for r in runs if isinstance(r, dict) and r.get("created_at") and r.get("metrics") and (split is None or r.get("split") == split)]
     return max(runs, key=lambda r: (r["created_at"], r.get("run_id", ""))) if runs else None
 
 
-def _latest_row(session: Session) -> dict[str, Any] | None:
+def _latest_row(session: Session, split: str | None = None) -> dict[str, Any] | None:
     """Fallback when the run files are gone: the newest eval_runs row."""
-    row = session.exec(select(EvalRun).order_by(EvalRun.created_at.desc(), EvalRun.id.desc())).first()  # type: ignore[union-attr]
+    stmt = select(EvalRun) if split is None else select(EvalRun).where(EvalRun.split == split)
+    row = session.exec(stmt.order_by(EvalRun.created_at.desc(), EvalRun.id.desc())).first()  # type: ignore[union-attr]
     if row is None:
         return None
     snap = parse_json(row.config_snapshot_json) or {}
@@ -61,10 +62,12 @@ def _latest_row(session: Session) -> dict[str, Any] | None:
 
 
 @router.get("/latest", response_model=EvalRunOut)
-def get_latest(session: SessionDep) -> EvalRunOut:
-    run = _latest_file() or _latest_row(session)
+def get_latest(session: SessionDep, split: Literal["dev", "holdout", "all"] | None = None) -> EvalRunOut:
+    """`split`: the newest run of that split (the Quality page shows the B29 holdout run read-only this way)."""
+    run = _latest_file(split) or _latest_row(session, split)
     if run is None:
-        raise HTTPException(status_code=404, detail="No evaluation run yet. Run one on the Quality page or with scripts/evaluate.py.")
+        detail = f"No evaluation run on the {split} split yet." if split else "No evaluation run yet. Run one on the Quality page or with scripts/evaluate.py."
+        raise HTTPException(status_code=404, detail=detail)
     cv = run.get("config_versions") or {}
     return EvalRunOut(run_id=run["run_id"], split=run["split"], source=run["source"], created_at=run["created_at"],
                       config_versions={k: cv.get(k) for k in ("keywords", "families", "thresholds", "model")},
@@ -109,4 +112,4 @@ def post_run(body: EvalRunRequest, session: SessionDep) -> EvalRunOut:
         raise HTTPException(status_code=409, detail=reason[:300])
     audit(session, "eval_run", "eval", {"run_id": run["run_id"], "split": body.split})
     session.commit()
-    return get_latest(session)
+    return get_latest(session, None)

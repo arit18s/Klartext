@@ -370,7 +370,7 @@ export default function Rules() {
   const families = useQuery({ queryKey: ['families'], queryFn: getFamilies })
   const keywords = useQuery({ queryKey: ['keywords'], queryFn: getKeywords })
   const calls = useQuery({ queryKey: ['calls', {}], queryFn: () => getCalls() })
-  const evalRun = useQuery({ queryKey: ['eval'], queryFn: getLatestEval, retry: false })
+  const evalRun = useQuery({ queryKey: ['eval'], queryFn: () => getLatestEval(), retry: false })
   const current = tab === 'families' ? families.data : keywords.data
   const error = tab === 'families' ? families.error : keywords.error
   const keywordCount = useMemo(() => keywords.data?.keywords.keywords.length, [keywords.data])

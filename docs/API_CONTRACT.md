@@ -49,6 +49,7 @@ Still invented, review before implementing:
 | Eval metrics | shape of `metrics` | Section 10 lists the metrics, not their JSON |
 | Pipeline status | whole object | Not specified. Stages from `02_APP_FLOW.md` screen 7 |
 | `POST /pipeline/inbox` | whole endpoint | The Pipeline drop zone (02_APP_FLOW screen 7) copies one file into the inbox folder; section 9 has no endpoint for it |
+| `GET /scores/suggestion` | whole endpoint | Tuning page **Suggest from feedback** (R11) |
 | `GET /advisors` | `last_call_at`, `last_call_id`, query `since` | Advisors page (R12): last call column and the period picker |
 
 Not covered yet: "View history" of config versions (Rules, Settings).
@@ -255,6 +256,29 @@ Feeds client-side re-decision on the Tuning page (`lib/decide.ts` mirrors sectio
 
 `families` lists every family that was checked. The client applies `enabled_families` itself.
 
+### `GET /scores/suggestion` (stretch goal R11)
+
+Thresholds suggested from officer feedback, for the Tuning page's **Suggest from feedback**. Never saves anything: the officer moves the sliders to the suggestion and saves with **Apply thresholds** (`PUT /config/thresholds`).
+
+The latest verdict-type feedback per call counts (`note` is ignored). Each label says what the call should have been: `false_alarm` and `closed_no_alert` = harmless; `missed` = should be flagged; `escalated_to_alarm` = should be alarm; `correct` = the current verdict is right. Every labelled call is re-decided with the decision rule over review and alarm thresholds in steps of 5 (review ≤ alarm), and the pair with the fewest misses is chosen, then the fewest false alarms, extra reviews, unmet escalations and changed confirmed verdicts, then the smallest move from the active thresholds. `suggestion` is `null` when no pair does better than the active one, or when there is no feedback.
+
+```json
+{
+  "current": { "review": 30, "alarm": 70 },
+  "thresholds_version_id": 4,
+  "labelled_calls": 3,
+  "labels": { "false_alarm": 2, "correct": 1 },
+  "suggestion": { "review": 30, "alarm": 85 },
+  "current_effect": { "missed": 0, "false_alarms": 2, "extra_reviews": 0, "unmet_escalations": 0, "changed_confirmed": 0, "flagged": 34 },
+  "suggested_effect": { "missed": 0, "false_alarms": 0, "extra_reviews": 2, "unmet_escalations": 0, "changed_confirmed": 0, "flagged": 34 },
+  "summary": "Would avoid 2 false alarms, misses nothing."
+}
+```
+
+- Effect counts are over the labelled calls, except `flagged`: alarms and reviews among all decided calls at those thresholds.
+- `missed`: marked as a real case (missed, escalated, or a correct alarm or review) but no alert. `false_alarms` / `extra_reviews`: marked harmless (false alarm, closed, or a correct no alert) but alarm / review. `unmet_escalations`: escalated but still review. `changed_confirmed`: marked correct and the verdict would change while still caught.
+- Uses the active families config (enabled families only) and the server's k, like the server's own decisions.
+
 ## Config
 
 Every `PUT` writes a new `config_versions` row, makes it active and writes an `audit_log` row. Request bodies may carry an optional `note`.
@@ -365,7 +389,7 @@ Request: `{ "split": "dev" }` (`dev | holdout | all`). Runs synchronously on cac
 
 ### `GET /eval/latest`
 
-404 if no run exists.
+Query `split` (optional: `dev | holdout | all`): the newest run of that split. Without it, the newest run of any split. 404 if no such run exists. The Quality page shows the B29 holdout run read-only with `?split=holdout`; new runs from the UI are Dev only.
 
 ```json
 {

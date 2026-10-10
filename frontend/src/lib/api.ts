@@ -35,6 +35,8 @@ import type {
   Variant,
   Verdict,
   WatchResponse,
+  EvalSplit,
+  ThresholdSuggestion,
 } from './types'
 
 import { emit } from './live'
@@ -263,6 +265,10 @@ export async function getScores(): Promise<ScoresResponse> {
 
 // ---------- Config ----------
 
+/** GET /api/scores/suggestion (R11). Needs the backend: it re-decides calls with the server's decision rule. */
+export const getThresholdSuggestion = () =>
+  USE_FIXTURES ? noFixture('Suggestions from feedback') : request<ThresholdSuggestion>('/scores/suggestion')
+
 export async function getThresholds(): Promise<ThresholdsConfig> {
   if (!USE_FIXTURES) return request<ThresholdsConfig>('/config/thresholds')
   return (await getScores()).thresholds
@@ -374,8 +380,9 @@ export async function rescanKeywords(): Promise<RescanResponse> {
 export const runEval = (body: EvalRunRequest) =>
   USE_FIXTURES ? noFixture('Running the evaluation') : send<EvalRun>('POST', '/eval/run', body)
 
-export async function getLatestEval(): Promise<EvalRun> {
-  if (!USE_FIXTURES) return request<EvalRun>('/eval/latest')
+/** GET /api/eval/latest, optionally the newest run of one split. Fixture mode has one run and ignores the split. */
+export async function getLatestEval(split?: EvalSplit): Promise<EvalRun> {
+  if (!USE_FIXTURES) return request<EvalRun>(`/eval/latest${split ? `?split=${split}` : ''}`)
   return evalFixture as unknown as EvalRun
 }
 // ---------- Pipeline ----------
