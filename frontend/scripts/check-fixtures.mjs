@@ -5,7 +5,10 @@ import { readFileSync, readdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 
-const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'src', 'fixtures')
+// Default src/fixtures; pass a folder to check another set, e.g. src/fixtures-real.
+const dir = process.argv[2]
+  ? path.resolve(process.argv[2])
+  : path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'src', 'fixtures')
 const load = (name) => JSON.parse(readFileSync(path.join(dir, name), 'utf-8'))
 const problems = []
 const fail = (where, msg) => problems.push(`${where}: ${msg}`)
@@ -104,7 +107,8 @@ for (const file of detailFiles) {
   d.segments.forEach((s, i) => {
     keys(`${w}.segments[${i}]`, s, ['seg_id', 'start_s', 'end_s', 'role', 'text', 'low_confidence'])
     oneOf(`${w}.segments[${i}].role`, s.role, ROLES, true)
-    if (s.start_s <= prevStart || s.end_s <= s.start_s) fail(`${w}.segments[${i}]`, 'times not increasing')
+    // Real ASR has zero-length segments and equal starts: start must not go back, end not before start.
+    if (s.start_s < prevStart || s.end_s < s.start_s) fail(`${w}.segments[${i}]`, 'times going back')
     if (s.end_s > d.call.duration_s) fail(`${w}.segments[${i}]`, 'ends after the call')
     prevStart = s.start_s
     segIds.set(s.seg_id, s)
@@ -137,7 +141,13 @@ for (const file of detailFiles) {
     if (c.event_majority === 'undetermined' && !c.open_question) fail(cw, 'undetermined without open_question')
   })
   const best = d.checks.filter((c) => c.score !== null).reduce((a, b) => (b.score > a.score ? b : a))
-  if (dec.score !== best.score || dec.family !== best.family) fail(`${w}.decision`, `score/family must be the max family (${best.family} ${best.score})`)
+  if (dec.score !== best.score) fail(`${w}.decision`, `score must be the max family score (${best.score})`)
+  // A review from the needs_human or failed branch takes that family, not the top-scoring one (decide.py).
+  const branchFamily = d.checks.some((c) => c.family === dec.family &&
+    (c.needs_human_votes > c.samples / 2 || c.event_majority === 'failed'))
+  if (dec.family !== best.family && !(dec.verdict === 'review' && branchFamily)) {
+    fail(`${w}.decision`, `family must be the max family (${best.family}) or a needs_human/failed family`)
+  }
 
   // evidence
   let prev = -1
@@ -159,10 +169,9 @@ for (const file of detailFiles) {
   // keyword hits
   d.keyword_hits.forEach((k, i) => {
     keys(`${w}.keyword_hits[${i}]`, k, ['keyword_id', 'family', 'phrase', 'seg_id', 'start_s', 'end_s', 'label'])
-    oneOf(`${w}.keyword_hits[${i}].family`, k.family, FAMILIES)
+    oneOf(`${w}.keyword_hits[${i}].family`, k.family, [...FAMILIES, 'numbers']) // K09 belongs to the numbers helper
     if (KEYWORD_FAMILY[k.keyword_id] !== k.family) fail(`${w}.keyword_hits[${i}]`, `${k.keyword_id} belongs to ${KEYWORD_FAMILY[k.keyword_id]}`)
-    const seg = segIds.get(k.seg_id)
-    if (seg && !seg.text.toLowerCase().includes(k.phrase.toLowerCase())) fail(`${w}.keyword_hits[${i}]`, `phrase "${k.phrase}" not in ${k.seg_id}`)
+    // No phrase-in-text check: real hits match Swiss German variants and partial words, `phrase` is the list entry.
     oneOf(`${w}.keyword_hits[${i}].label`, k.label, ['relevant', 'benign'], true)
     inSeg(`${w}.keyword_hits[${i}]`, k.seg_id, k.start_s, k.end_s)
   })
@@ -248,9 +257,15 @@ const m = ev.metrics
 keys('eval.json.metrics', m, ['n_calls', 'binary', 'exact', 'confusion', 'breakdown', 'stufe2_pairs', 'stufe3_review', 'clean_noisy_agreement',
   'evidence_overlap', 'family_accuracy', 'pr_curve', 'keyword_baseline', 'mismatches'])
 if (JSON.stringify(m.confusion.labels) !== JSON.stringify(VERDICTS)) fail('eval.json.confusion', 'labels order')
-const cm = VERDICTS.map((e) => VERDICTS.map((g) => list.items.filter((c) => c.expected_verdict === e && c.verdict === g).length))
-if (JSON.stringify(cm) !== JSON.stringify(m.confusion.matrix)) fail('eval.json.confusion', `matrix ${JSON.stringify(m.confusion.matrix)} != fixtures ${JSON.stringify(cm)}`)
-if (m.n_calls !== list.items.length) fail('eval.json', 'n_calls')
+// The run may cover one split only (real data: the holdout run, 20 of 60 calls). Compare the matrix with the
+// calls only when the run covers all of them; otherwise it must at least add up to n_calls.
+const cells = m.confusion.matrix.flat().reduce((a, x) => a + x, 0)
+if (cells !== m.n_calls) fail('eval.json.confusion', `matrix adds up to ${cells}, n_calls is ${m.n_calls}`)
+if (m.n_calls > list.items.length) fail('eval.json', 'n_calls larger than the call list')
+if (m.n_calls === list.items.length) {
+  const cm = VERDICTS.map((e) => VERDICTS.map((g) => list.items.filter((c) => c.expected_verdict === e && c.verdict === g).length))
+  if (JSON.stringify(cm) !== JSON.stringify(m.confusion.matrix)) fail('eval.json.confusion', `matrix ${JSON.stringify(m.confusion.matrix)} != fixtures ${JSON.stringify(cm)}`)
+}
 const b = m.binary
 if (b.tp + b.fp + b.fn + b.tn !== m.n_calls) fail('eval.json.binary', 'tp+fp+fn+tn != n_calls')
 if (m.pr_curve.length !== 101 || m.pr_curve.some((p, i) => p.t_review !== i)) fail('eval.json.pr_curve', 'one point per t_review 0..100')

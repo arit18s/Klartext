@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "check:fixtures": "node scripts/check-fixtures.mjs",
+    "check:fixtures-real": "node scripts/check-fixtures.mjs src/fixtures-real",
     "test": "node --test src/lib/decide.test.ts src/lib/advisors.test.ts"
   },
   "dependencies": {

@@ -1,5 +1,6 @@
 // Typed client for the backend API (docs/API_CONTRACT.md). With VITE_USE_FIXTURES=true the read endpoints
-// that have fixtures answer from src/fixtures; every other call needs the backend.
+// that have fixtures answer from src/fixtures-real (the real API export) if it exists, otherwise from the
+// hand-made src/fixtures; every other call needs the backend.
 import { advisorRows } from './advisors'
 import type {
   AdvisorRow,
@@ -42,25 +43,35 @@ import type {
 import { emit } from './live'
 import { startOfTodayIso } from './format'
 import { placeholderWav } from './placeholderAudio'
-import callsFixture from '@/fixtures/calls.json'
-import scoresFixture from '@/fixtures/scores.json'
-import familiesFixture from '@/fixtures/families.json'
-import keywordsFixture from '@/fixtures/keywords.json'
-import evalFixture from '@/fixtures/eval.json'
-import settingsFixture from '@/fixtures/settings.json'
-
 export const USE_FIXTURES = import.meta.env.VITE_USE_FIXTURES === 'true'
 
-const detailFixtures = import.meta.glob<CallDetail>('../fixtures/call_detail_*.json', {
-  eager: true,
-  import: 'default',
-})
+// Fixture sets. src/fixtures-real/ is written by backend/scripts/export_fixtures.py from the real DB and is
+// git-ignored, so it may be missing: a glob then finds nothing (a static import would break the build). It is
+// used only when all base files are there. The hand-made src/fixtures/ stay the expected values of the API
+// contract tests and of npm test.
+const HAND_MADE = import.meta.glob<unknown>('../fixtures/*.json', { eager: true, import: 'default' })
+const REAL = import.meta.glob<unknown>('../fixtures-real/*.json', { eager: true, import: 'default' })
+const BASE_FILES = ['calls', 'scores', 'families', 'keywords', 'eval', 'settings']
+const USE_REAL = BASE_FILES.every((f) => `../fixtures-real/${f}.json` in REAL)
+const FIXTURE_DIR = USE_REAL ? '../fixtures-real' : '../fixtures'
+const FIXTURES = USE_REAL ? REAL : HAND_MADE
+/** Which fixture set fixture mode reads: 'real' (API export) or 'hand-made'. */
+export const FIXTURE_SET: 'real' | 'hand-made' = USE_REAL ? 'real' : 'hand-made'
+if (USE_FIXTURES) console.info(`Klartext fixture mode: ${FIXTURE_SET} fixtures (${FIXTURE_DIR.slice(3)})`)
+
+const callsFixture = FIXTURES[`${FIXTURE_DIR}/calls.json`]
+const scoresFixture = FIXTURES[`${FIXTURE_DIR}/scores.json`]
+const familiesFixture = FIXTURES[`${FIXTURE_DIR}/families.json`]
+const keywordsFixture = FIXTURES[`${FIXTURE_DIR}/keywords.json`]
+const evalFixture = FIXTURES[`${FIXTURE_DIR}/eval.json`]
+const settingsFixture = FIXTURES[`${FIXTURE_DIR}/settings.json`]
+const detailFile = (id: string) => FIXTURES[`${FIXTURE_DIR}/call_detail_${id}.json`] as CallDetail | undefined
 
 // Calls added at runtime by the fixture pipeline simulator (see the Pipeline section below).
 const simDetails = new Map<string, CallDetail>()
 const simScores: CallScores[] = []
 const fixtureDetail = (id: string): CallDetail | undefined =>
-  simDetails.get(id) ?? detailFixtures[`../fixtures/call_detail_${id}.json`]
+  simDetails.get(id) ?? detailFile(id)
 const fixtureItems = (): CallSummary[] => [
   ...(callsFixture as unknown as CallListResponse).items,
   ...[...simDetails.values()].map((d) => d.call),
@@ -478,7 +489,10 @@ function advance(item: PipelineItem) {
 
 /** Store the decided call (the C09 result, recorded with noise) and announce it. */
 function finish(item: PipelineItem) {
-  const base = structuredClone(detailFixtures['../fixtures/call_detail_Stufe2_C09-K3.json'])
+  // The simulated drop is a copy of C09-K3; the hand-made one if the real export lacks it.
+  const base = structuredClone(
+    detailFile('Stufe2_C09-K3') ?? (HAND_MADE['../fixtures/call_detail_Stufe2_C09-K3.json'] as CallDetail),
+  )
   const id = item.call_id
   const m = RECORDING.exec(id)
   const t = now()

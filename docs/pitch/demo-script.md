@@ -13,7 +13,7 @@ Times are the target *end* of each part. If you are late at 2:50, shorten part 4
 - [ ] Drop file ready: `data/demo/demo_call.wav` (D42: byte-different copy of Stufe2_C09-K3, same audio, so the duplicate check does not skip it). Its transcript is cached as `data/transcripts/demo_call.json`; the GPU box stays off. No `demo_call` row in the DB yet (see the reset below).
 - [ ] **Reset between rehearsals** (from `backend/`): `python scripts/purge_call.py demo_call --keep-transcript`. It removes the call's DB rows, stage outputs and snippets and keeps the cached transcript. An Outcept trigger already posted stays in their list; clear it with `DELETE /triggers` on the trigger API if the list should be clean.
 - [ ] Browser at 100 % zoom, 1440 px or wider, sidebar visible. Sound on, tested.
-- [ ] Fallback if the backend fails: frontend in fixture mode (`VITE_USE_FIXTURES=true`), Inbox → **Simulate a new recording** plays the same flow. Backup video ready (B34).
+- [ ] Fallback if the backend fails: frontend in fixture mode (`VITE_USE_FIXTURES=true`), Inbox → **Simulate a new recording** plays the same flow. It shows the real 60 calls from `frontend/src/fixtures-real/`: re-export after the last run (from `backend/`: `python scripts/export_fixtures.py`), then `npm run check:fixtures-real`. The browser console says *Klartext fixture mode: real fixtures*; without the folder it falls back to the 3 hand-made calls. Backup video ready (B34).
 
 ## Demo readiness check
 
