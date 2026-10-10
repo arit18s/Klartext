@@ -25,3 +25,6 @@ frontend/dist/
 
 # Real pipeline results exported as frontend fixtures (B27): results stay out of git (07_SECURITY section 1)
 frontend/src/fixtures-real/
+
+# Demo screen recordings for the pitch (large MP4/MOV files): shared outside git
+docs/pitch/videos/
