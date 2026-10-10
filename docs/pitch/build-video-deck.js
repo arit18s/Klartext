@@ -9,7 +9,9 @@ const sharp = require("sharp");
 
 const DIR = __dirname;
 const VID = path.join(DIR, "videos");
-const OUT = path.join(VID, "klartext-slides-videos.pptx");
+// NO_AUTOPLAY=1 builds a fallback without the added timing (videos then start on a click).
+const NO_AUTOPLAY = !!process.env.NO_AUTOPLAY;
+const OUT = path.join(VID, NO_AUTOPLAY ? "klartext-slides-videos-click.pptx" : "klartext-slides-videos.pptx");
 
 // Klartext tokens (docs/04_FRONTEND_GUIDELINES.md); 1920 px = 13.333 in, so px / 144 = in.
 const T = { graphite: "1E2126", soft: "3A3E45", muted: "666A72", line: "E6E6E2", canvas: "F5F5F3", paper: "FFFFFF" };
@@ -116,13 +118,21 @@ async function main() {
 // PowerPoint writes for "Start: Automatically", so each video starts when its slide opens.
 async function addAutoplay(file, list) {
   const JSZip = require("jszip");
-  const zip = await JSZip.loadAsync(fs.readFileSync(file));
+  // Copy into a fresh ZIP without folder entries: those make PowerPoint refuse or "repair" the file.
+  const src = await JSZip.loadAsync(fs.readFileSync(file));
+  const zip = new JSZip();
+  const names = Object.keys(src.files).filter((n) => !src.files[n].dir);
+  names.sort((a, b) => (a === "[Content_Types].xml" ? -1 : b === "[Content_Types].xml" ? 1 : 0));
+  for (const n of names) zip.file(n, await src.file(n).async("nodebuffer"), { createFolders: false });
   for (const { slide, ms } of list) {
     const name = `ppt/slides/slide${slide}.xml`;
     let xml = await zip.file(name).async("string");
-    const m = xml.match(/<p:pic>[\s\S]*?<p:cNvPr id="(\d+)"[\s\S]*?<a:videoFile/);
-    if (!m) throw new Error("no video on " + name);
-    const id = m[1];
+    // pptxgenjs gives the video the same shape id as a text box; give it a free one.
+    const ids = [...xml.matchAll(/<p:cNvPr id="(\d+)"/g)].map((m) => +m[1]);
+    const id = String(Math.max(...ids) + 1);
+    const before = xml;
+    xml = xml.replace(/<p:cNvPr id="\d+" name="Media 0">/, `<p:cNvPr id="${id}" name="Media 0">`);
+    if (xml === before) throw new Error("no video on " + name);
     const timing =
       `<p:timing><p:tnLst><p:par><p:cTn id="1" dur="indefinite" restart="never" nodeType="tmRoot"><p:childTnLst>` +
       `<p:seq concurrent="1" nextAc="seek"><p:cTn id="2" dur="indefinite" nodeType="mainSeq"><p:childTnLst>` +
@@ -137,8 +147,8 @@ async function addAutoplay(file, list) {
       `<p:tgtEl><p:spTgt spid="${id}"/></p:tgtEl></p:cMediaNode></p:video>` +
       `</p:childTnLst></p:cTn></p:par></p:tnLst></p:timing>`;
     xml = xml.replace(/<p:timing>[\s\S]*?<\/p:timing>/, "");
-    xml = xml.replace(/(<\/p:clrMapOvr>|<\/p:cSld>(?![\s\S]*<p:clrMapOvr>))/, `$1${timing}`);
-    zip.file(name, xml);
+    if (!NO_AUTOPLAY) xml = xml.replace(/(<\/p:clrMapOvr>|<\/p:cSld>(?![\s\S]*<p:clrMapOvr>))/, `$1${timing}`);
+    zip.file(name, xml, { createFolders: false });
   }
   fs.writeFileSync(file, await zip.generateAsync({ type: "nodebuffer", compression: "DEFLATE" }));
 }
