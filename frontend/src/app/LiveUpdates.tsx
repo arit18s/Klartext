@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useToast } from '@/components/Toast'
 import { USE_FIXTURES, eventsUrl } from '@/lib/api'
@@ -18,6 +18,7 @@ export function LiveUpdates({ children }: { children: ReactNode }) {
   const qc = useQueryClient()
   const toast = useToast()
   const [connection, setConnection] = useState<Connection>('connecting')
+  const wasLost = useRef(false)
 
   useEffect(
     () =>
@@ -28,9 +29,11 @@ export function LiveUpdates({ children }: { children: ReactNode }) {
             return
           }
           const { call_id, status, verdict } = e.data
+          // New = not finished before this event. The sidebar keeps a call list loaded and refetches it on every event,
+          // so a dropped call is already listed (queued, checking) by the time its "done" arrives.
           const lists = qc.getQueriesData<CallListResponse>({ queryKey: ['calls'] })
-          const known = lists.some(([, d]) => d?.items.some((c) => c.call_id === call_id))
-          if (!known && status === 'done') {
+          const doneBefore = lists.some(([, d]) => d?.items.some((c) => c.call_id === call_id && c.status === 'done'))
+          if (!doneBefore && status === 'done') {
             markArrived(call_id)
             if (verdict && verdict !== 'no_alert') toast(t('live.newCall', { verdict: lc(VERDICT_LABEL[verdict]), id: call_id }))
           }
@@ -38,7 +41,13 @@ export function LiveUpdates({ children }: { children: ReactNode }) {
           qc.invalidateQueries({ queryKey: ['call', call_id] })
           qc.invalidateQueries({ queryKey: ['scores'] })
         },
-        setConnection,
+        (c) => {
+          // Back after a lost connection: events in between were missed, so refetch everything once.
+          if (c === 'open' && wasLost.current) qc.invalidateQueries()
+          if (c === 'lost') wasLost.current = true
+          if (c === 'open') wasLost.current = false
+          setConnection(c)
+        },
         USE_FIXTURES,
         eventsUrl,
       ),

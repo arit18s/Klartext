@@ -15,6 +15,8 @@ export function emit(e: LiveEvent) {
 }
 
 export type Connection = 'connecting' | 'open' | 'lost'
+const RETRY_MIN_MS = 3000
+const RETRY_MAX_MS = 15000
 
 /** Subscribe to live events. Returns an unsubscribe function. */
 export function subscribe(
@@ -28,9 +30,12 @@ export function subscribe(
     onConnection('open')
     return () => handlers.delete(onEvent)
   }
-  // EventSource reconnects on its own; we only report the state.
-  const source = new EventSource(url)
-  onConnection('connecting')
+  // EventSource retries a dropped network connection on its own, but gives up for good (CLOSED) when the server
+  // answers with an error, e.g. the dev proxy while the backend restarts. Then we open a new one after a delay.
+  let source: EventSource | null = null
+  let retry: number | null = null
+  let delay = RETRY_MIN_MS
+  let stopped = false
   const parse = (type: LiveEvent['type']) => (m: MessageEvent<string>) => {
     try {
       onEvent({ type, data: JSON.parse(m.data) } as LiveEvent)
@@ -38,13 +43,30 @@ export function subscribe(
       // A malformed event is skipped; the next one or a refetch brings the state back.
     }
   }
-  source.addEventListener('call_updated', parse('call_updated'))
-  source.addEventListener('pipeline_status', parse('pipeline_status'))
-  source.onopen = () => onConnection('open')
-  source.onerror = () => onConnection(source.readyState === EventSource.CLOSED ? 'lost' : 'connecting')
+  const connect = () => {
+    retry = null
+    source = new EventSource(url)
+    onConnection('connecting')
+    source.addEventListener('call_updated', parse('call_updated'))
+    source.addEventListener('pipeline_status', parse('pipeline_status'))
+    source.onopen = () => {
+      delay = RETRY_MIN_MS
+      onConnection('open')
+    }
+    source.onerror = () => {
+      if (source?.readyState !== EventSource.CLOSED) return onConnection('connecting')
+      onConnection('lost')
+      source.close()
+      if (!stopped) retry = window.setTimeout(connect, delay)
+      delay = Math.min(delay * 2, RETRY_MAX_MS)
+    }
+  }
+  connect()
   return () => {
+    stopped = true
     handlers.delete(onEvent)
-    source.close()
+    if (retry !== null) window.clearTimeout(retry)
+    source?.close()
   }
 }
 

@@ -8,7 +8,7 @@ import hashlib
 import io
 import os
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
@@ -74,6 +74,8 @@ def _item(call: Call, d: Decision | None, triggered: bool, prog: pipeline_state.
     else:
         end = prog.updated_at if prog else None
     start = prog.started_at if prog else utc(call.created_at)
+    if call.status == "done" and end is not None and not (prog and prog.started_at <= end <= prog.updated_at + timedelta(seconds=60)):
+        start = None  # no timing of the run that finished (e.g. processed by another process): show none, not hours
     elapsed = round((end - start).total_seconds(), 1) if end and start else None
     updated = (prog.updated_at if use else None) or utc(call.processed_at) or (utc(d.decided_at) if d else None) or utc(call.created_at)
     return PipelineItem(
