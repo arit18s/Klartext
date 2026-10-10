@@ -37,7 +37,7 @@ const isoTime = (where, v, nullable = false) => {
 
 const SUMMARY_KEYS = ['call_id', 'file_name', 'dialogue_id', 'variant', 'level', 'duration_s', 'advisor_name', 'status',
   'error', 'created_at', 'processed_at', 'verdict', 'family', 'score', 'reason', 'open_question', 'feedback_label',
-  'trigger_sent', 'expected_verdict']
+  'trigger_sent', 'expected_verdict', 'raised_by']
 
 function checkSummary(where, c) {
   keys(where, c, SUMMARY_KEYS)
@@ -58,6 +58,17 @@ function checkSummary(where, c) {
   isoTime(`${where}.created_at`, c.created_at)
   isoTime(`${where}.processed_at`, c.processed_at, true)
   if (c.verdict === 'review' && !c.open_question) fail(where, 'review without open_question')
+  const flagged = c.verdict === 'alarm' || c.verdict === 'review'
+  if (flagged) oneOf(`${where}.raised_by`, c.raised_by, ['advisor', 'customer', 'unclear'])
+  else if (c.raised_by !== null) fail(where, 'raised_by must be null unless alarm or review')
+}
+
+// Same rule as raised_by() in backend/app/api/common.py
+function raisedBy(verdict, evidence) {
+  if (verdict !== 'alarm' && verdict !== 'review') return null
+  const roles = evidence.filter((e) => e.role === 'trigger').map((e) => e.speaker_role)
+  if (roles.includes('advisor')) return 'advisor'
+  return roles.length && roles.every((r) => r === 'customer') ? 'customer' : 'unclear'
 }
 
 // ---- calls.json ----
@@ -143,6 +154,7 @@ for (const file of detailFiles) {
     if (e.snippet_url !== `/api/calls/${d.call.call_id}/snippets/${e.seg_id}`) fail(ew, `snippet_url ${e.snippet_url}`)
   })
   if (dec.verdict !== 'no_alert' && !d.evidence.some((e) => e.role === 'trigger')) fail(w, 'flagged call without trigger evidence')
+  if (d.call.raised_by !== raisedBy(dec.verdict, d.evidence)) fail(`${w}.call.raised_by`, `should be ${raisedBy(dec.verdict, d.evidence)}`)
 
   // keyword hits
   d.keyword_hits.forEach((k, i) => {

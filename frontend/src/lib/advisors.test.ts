@@ -15,7 +15,8 @@ const call = (
   verdict: CallSummary['verdict'],
   family: CallSummary['family'],
   processed_at: string | null,
-): CallSummary => ({ ...base, call_id, advisor_name, verdict, family, processed_at })
+  raised_by: CallSummary['raised_by'] = verdict === 'alarm' || verdict === 'review' ? 'unclear' : null,
+): CallSummary => ({ ...base, call_id, advisor_name, verdict, family, processed_at, raised_by })
 
 test('fixture calls: one row each, alarm first', () => {
   const rows = advisorRows(fixture.items)
@@ -29,6 +30,10 @@ test('fixture calls: one row each, alarm first', () => {
     alarm: 1,
     review: 0,
     no_alert: 0,
+    advisor_alarm: 0, // C09's trigger is spoken by the customer
+    advisor_review: 0,
+    customer_alarm: 1,
+    customer_review: 0,
     families: ['access'],
     last_call_at: '2026-10-10T08:42:00Z',
     last_call_id: 'Stufe2_C09-K3',
@@ -57,7 +62,29 @@ test('since keeps calls processed at or after it', () => {
   )
 })
 
-test('attention: any alarm or 2+ reviews', () => {
-  const row = (alarm: number, review: number) => ({ alarm, review }) as AdvisorRow
-  assert.deepEqual([row(1, 0), row(0, 2), row(0, 1), row(0, 0)].map(needsAttention), [true, true, false, false])
+test('split by who raised it, advisor-raised first', () => {
+  const rows = advisorRows([
+    call('A1', 'Advisor 01', 'alarm', 'trade', '2026-10-10T10:00:00Z', 'customer'),
+    call('A2', 'Advisor 01', 'alarm', 'trade', '2026-10-10T10:00:00Z', 'customer'),
+    call('A3', 'Advisor 01', 'review', 'trade', '2026-10-10T10:00:00Z', 'customer'),
+    call('B1', 'Advisor 02', 'review', 'access', '2026-10-10T10:00:00Z', 'advisor'),
+    call('B2', 'Advisor 02', 'review', 'access', '2026-10-10T10:00:00Z', 'unclear'),
+  ])
+  assert.deepEqual(
+    rows.map((r) => [r.advisor_name, r.advisor_alarm, r.advisor_review, r.customer_alarm, r.customer_review]),
+    [
+      ['Advisor 02', 0, 2, 0, 0],
+      ['Advisor 01', 0, 0, 2, 1],
+    ],
+  )
+  assert.deepEqual(rows.map(needsAttention), [true, false])
+})
+
+test('attention: an advisor-raised alarm or 2+ advisor-raised reviews', () => {
+  const row = (advisor_alarm: number, advisor_review: number, customer_alarm = 0) =>
+    ({ advisor_alarm, advisor_review, customer_alarm, alarm: advisor_alarm + customer_alarm }) as AdvisorRow
+  assert.deepEqual(
+    [row(1, 0), row(0, 2), row(0, 1), row(0, 0), row(0, 0, 3)].map(needsAttention),
+    [true, true, false, false, false],
+  )
 })

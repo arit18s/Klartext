@@ -1,7 +1,7 @@
 import { forwardRef, useState } from 'react'
 import { Check, CircleHelp, MessageSquare, Play, Printer, Send, Siren, X, ZoomIn, type LucideIcon } from 'lucide-react'
 import type { CallDetail, Feedback, FeedbackLabel } from '@/lib/types'
-import { FAMILY_LABEL, formatClock } from '@/lib/format'
+import { FAMILY_LABEL, RAISED_BY_LABEL, formatClock } from '@/lib/format'
 import { FEEDBACK_DONE } from '@/lib/hooks'
 import { cn } from '@/lib/utils'
 import { VerdictChip } from '../VerdictChip'
@@ -73,6 +73,9 @@ export function VerdictHeader({
           <VerdictChip verdict={decision.verdict} size="lg" />
           <h2 className="text-title">{decision.family ? FAMILY_LABEL[decision.family] : 'No family decided'}</h2>
           <ScoreBar score={decision.score} verdict={decision.verdict} wide label="Score" />
+          {flagged && detail.call.raised_by && (
+            <span className="text-small text-muted">Raised by: {RAISED_BY_LABEL[detail.call.raised_by]}</span>
+          )}
         </div>
         {decision.reason_de && (
           <Segmented

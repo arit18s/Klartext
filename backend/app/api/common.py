@@ -19,7 +19,7 @@ from sqlmodel import Session, select
 from app.config import get_settings
 from app.db import get_engine
 from app.db.config_store import ActiveConfig, get_active_config
-from app.models.tables import AuditLog, Call, ConfigVersion, Decision, Feedback, TriggerSent
+from app.models.tables import AuditLog, Call, ConfigVersion, Decision, Evidence, Feedback, TriggerSent
 from app.pipeline.decide import FAMILY_ORDER
 
 log = logging.getLogger(__name__)
@@ -130,6 +130,32 @@ def latest_feedback_labels(session: Session) -> dict[str, str]:
     return out
 
 
+def raised_by(verdict: str | None, trigger_speakers: Iterable[str | None]) -> str | None:
+    """Who raised a flagged call, from the speaker roles of the decided family's trigger evidence. Read-only:
+    no model call, the verdict is unchanged. Any advisor line -> advisor; only customer lines -> customer;
+    no trigger evidence or an unknown speaker -> unclear. None for no-alert and undecided calls."""
+    if verdict not in ("alarm", "review"):
+        return None
+    roles = list(trigger_speakers)
+    if "advisor" in roles:
+        return "advisor"
+    if roles and all(r == "customer" for r in roles):
+        return "customer"
+    return "unclear"
+
+
+def trigger_speakers(session: Session, decisions: dict[str, Decision]) -> dict[str, list[str | None]]:
+    """Speaker roles of each call's trigger evidence in its decided family (evidence table)."""
+    out: dict[str, list[str | None]] = {}
+    for call_id, family, speaker in session.exec(
+        select(Evidence.call_id, Evidence.family, Evidence.speaker_role).where(Evidence.role == "trigger")
+    ):
+        d = decisions.get(call_id)
+        if d is not None and d.family == family:
+            out.setdefault(call_id, []).append(speaker)
+    return out
+
+
 class CallSummary(BaseModel):
     call_id: str
     file_name: str
@@ -150,10 +176,11 @@ class CallSummary(BaseModel):
     feedback_label: str | None
     trigger_sent: bool
     expected_verdict: str | None
+    raised_by: str | None  # advisor / customer / unclear for alarms and reviews, see raised_by()
 
 
 def call_summary(call: Call, decision: Decision | None, feedback_label: str | None, trigger_sent: bool,
-                 expected: dict[str, str]) -> CallSummary:
+                 expected: dict[str, str], speakers: Iterable[str | None] = ()) -> CallSummary:
     return CallSummary(
         call_id=call.id, file_name=file_name(call), dialogue_id=call.dialogue_id, variant=call.variant,
         level=call.level, duration_s=call.duration_s, advisor_name=call.advisor_name, status=call.status,
@@ -162,6 +189,7 @@ def call_summary(call: Call, decision: Decision | None, feedback_label: str | No
         score=decision.score if decision else None, reason=decision.reason if decision else None,
         open_question=decision.open_question if decision else None, feedback_label=feedback_label,
         trigger_sent=trigger_sent, expected_verdict=expected.get(call.dialogue_id or ""),
+        raised_by=raised_by(decision.verdict if decision else None, speakers),
     )
 
 

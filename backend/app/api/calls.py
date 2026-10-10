@@ -16,7 +16,7 @@ from sqlmodel import Session, select
 from app.api import jobs
 from app.api.common import (
     VERDICT_RANK, PlainErrorRoute, parse_since, utc, CallSummary, audit, call_summary, confined, expected_verdicts, family_rank, get_call_or_404, iso,
-    latest_feedback_labels, parse_json, triggered_call_ids,
+    latest_feedback_labels, parse_json, trigger_speakers, triggered_call_ids,
 )
 from app.config import get_settings
 from app.db import get_session
@@ -198,6 +198,7 @@ def list_calls(
     feedback = latest_feedback_labels(session)
     triggered = triggered_call_ids(session)
     expected = expected_verdicts()
+    speakers = trigger_speakers(session, decisions)
     text_hits = _text_matches(session, q.strip()) if q and q.strip() else set()
     needle = q.strip().lower() if q else ""
 
@@ -228,7 +229,7 @@ def list_calls(
         return (rank, -score, c.id)
 
     items = [
-        call_summary(c, decisions.get(c.id), feedback.get(c.id), c.id in triggered, expected)
+        call_summary(c, decisions.get(c.id), feedback.get(c.id), c.id in triggered, expected, speakers.get(c.id, []))
         for c in sorted(filter(keep, calls), key=order)
     ]
     return CallList(items=items, counts=_counts(calls, decisions))
@@ -339,13 +340,14 @@ def get_call(call_id: str, session: SessionDep) -> CallDetail:
     segments = list(session.exec(select(Segment).where(Segment.call_id == call_id).order_by(Segment.start_s, Segment.id)))
     feedback = list(session.exec(select(Feedback).where(Feedback.call_id == call_id).order_by(Feedback.created_at, Feedback.id)))
     triggers = list(session.exec(select(TriggerSent).where(TriggerSent.call_id == call_id).order_by(TriggerSent.created_at, TriggerSent.id)))
+    evidence = _evidence(session, call_id, d.family if d else None, segments)
     summary = call_summary(call, d, feedback[-1].label if feedback else None, call_id in triggered_call_ids(session, [call_id]),
-                           expected_verdicts())
+                           expected_verdicts(), [e.speaker_role for e in evidence if e.role == "trigger"])
     return CallDetail(
         call=summary,
         decision=_decision(d),
         checks=_checks(session, call_id),
-        evidence=_evidence(session, call_id, d.family if d else None, segments),
+        evidence=evidence,
         keyword_hits=_keyword_hits(session, call_id),
         segments=[SegmentOut(seg_id=s.seg_id, start_s=s.start_s, end_s=s.end_s, role=s.role, text=s.text,
                              low_confidence=s.low_confidence) for s in segments],

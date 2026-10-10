@@ -2,14 +2,14 @@
 
 Updated with every step's commit. Steps and checks: `06_IMPLEMENTATION_PLAN.md`. Submission Sunday 08:30, feature freeze Saturday 22:00.
 
-Last update: Sat 10 Oct (demo step 2 now shows Stufe1_D06 for "harmless call with a keyword", then C10 as the twin).
+Last update: Sat 10 Oct (advisor fairness: `raised_by` on calls, Advisors view highlights only advisor-raised flags, D43).
 
 ## Next up
 
 | Track | Next 3 steps |
 |---|---|
 | Backend | **B32** freeze (Sat 22:00) → **B34** demo rehearsal ×3 + backup recording → **B35** final run Sunday 06:00 (repeat the clean re-run below) |
-| Frontend | Taken over from the teammate: (1) demo script D06 ✓ → (2) advisor fairness `raised_by` → (3) safe suggestion → (4) fixtures-real fallback |
+| Frontend | Taken over from the teammate: (1) demo script D06 ✓ → (2) advisor fairness `raised_by` ✓ → (3) safe suggestion → (4) fixtures-real fallback |
 
 ## Demo prep (todo)
 
@@ -97,6 +97,7 @@ Also on main: `d64bcac` contract changes (evidence `note`, decision `reason_de`)
 | F9 Live updates and polish | done | `9c368a0` | Inbox slide-in on `call_updated` (reduced motion respected), error copy for an unreachable server, read-only Settings page, axe WCAG 2 A/AA: 0 violations on 12 routes; `muted` token darkened to #666A72 for 4.5:1 on canvas |
 | F10 Switch to real API | done | `b664ca3` | `VITE_USE_FIXTURES=false`. Tested in Chromium against a local DB built from the case repo (real configs, 60 real recordings; no ASR transcripts or LLM key in the cloud session, so the 3 demo calls carry fixture results and 57 wait for ASR). No shape mismatches found; fixed lane overflow and waiting-for-ASR copy. Still to do on the real `data/klartext.db`: one rehearsal run (B34), incl. eval run and rescan on real transcripts |
 | R12 Advisors view (stretch) | done | `ae08384` | `GET /api/advisors?since=` (contract updated, 4 tests) + Advisors page: highlight for any alarm or 2+ reviews, row opens All calls filtered by advisor. Tested in Chromium on the stand-in DB and in fixture mode. Calls without a recognised advisor name are left out. Route rides on the scores router; register `advisors.router` in `main.py` directly if you prefer |
+| R12b Advisor fairness | done | (this commit) | `raised_by` (advisor / customer / unclear) from the trigger evidence's speaker role on call list and detail; `/advisors` splits alarms and reviews into advisor- vs customer-raised; Advisors view highlights only advisor-raised alarms or 2+ reviews, customer-raised ones in a muted *Customer requests* column; call view shows *Raised by: …*. No prompt, threshold or verdict change (D43). Real DB: 27 of 35 flagged calls customer-raised, highlighted advisors 14 → 4 |
 | Quality: holdout read-only | done | `b888fe6` | B29 holdout run shown read-only (`GET /eval/latest?split=holdout`) next to the latest Dev run; new runs from the UI are Dev only (replaces `a227339`'s note) |
 | R11 Suggest from feedback (stretch) | done | `b888fe6` | `GET /api/scores/suggestion` (contract updated, 7 tests): re-decides labelled calls with `decide.py` over a 5-step grid, fewest misses first. Tuning card with the effect; **Use suggestion** only moves the handles, **Apply thresholds** saves. Judges labelled calls only, so check the live counts before applying. Needs the backend (not in fixture mode) |
 | All calls Match column fix | done | `74297fd` | Reason column absorbs the free width and truncates; table fits at 1440 px with evaluation columns (narrower windows scroll inside the panel) |

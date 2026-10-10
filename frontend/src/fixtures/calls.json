@@ -19,7 +19,8 @@
       "open_question": null,
       "feedback_label": null,
       "trigger_sent": true,
-      "expected_verdict": "alarm"
+      "expected_verdict": "alarm",
+      "raised_by": "customer"
     },
     {
       "call_id": "Stufe3_C17-K3",
@@ -40,7 +41,8 @@
       "open_question": "Was the code still valid when it was read out?",
       "feedback_label": null,
       "trigger_sent": true,
-      "expected_verdict": "review"
+      "expected_verdict": "review",
+      "raised_by": "customer"
     },
     {
       "call_id": "Stufe2_C10-K3",
@@ -61,7 +63,8 @@
       "open_question": null,
       "feedback_label": null,
       "trigger_sent": false,
-      "expected_verdict": "no_alert"
+      "expected_verdict": "no_alert",
+      "raised_by": null
     }
   ],
   "counts": {

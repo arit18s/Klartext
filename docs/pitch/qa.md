@@ -40,6 +40,9 @@ Short answers for the jury, built from the pitch lines in `docs/DECISIONS.md` (d
 **What if the model hallucinates?**
 Quotes must match a real transcript segment or the evidence is dropped; a "happened" without valid evidence becomes "unclear". (D9) **"Every error fails towards a human, never towards silence."** (D12)
 
+**Doesn't the Advisors view blame advisors for what customers ask?**
+**"Klartext doesn't blame the advisor for what the customer asked. It shows who raised the risk, so the Advisors view only highlights advisors whose own behaviour was flagged."** (D43) Who raised it comes from the speaker of the trigger passage; customer-raised flags still appear, in a muted "Customer requests" column, and the call view says "Raised by: Customer".
+
 **What if a caller tries to trick the model ("ignore your instructions")?**
 Transcripts are treated as untrusted data in every prompt, outputs are checked against a strict schema, and the verdict is computed by code, not taken from model text. (D34)
 

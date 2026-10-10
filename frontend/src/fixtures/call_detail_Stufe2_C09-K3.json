@@ -18,7 +18,8 @@
     "open_question": null,
     "feedback_label": null,
     "trigger_sent": true,
-    "expected_verdict": "alarm"
+    "expected_verdict": "alarm",
+    "raised_by": "customer"
   },
   "decision": {
     "verdict": "alarm",

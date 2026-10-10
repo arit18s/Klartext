@@ -51,6 +51,8 @@ Still invented, review before implementing:
 | `POST /pipeline/inbox` | whole endpoint | The Pipeline drop zone (02_APP_FLOW screen 7) copies one file into the inbox folder; section 9 has no endpoint for it |
 | `GET /scores/suggestion` | whole endpoint | Tuning page **Suggest from feedback** (R11) |
 | `GET /advisors` | `last_call_at`, `last_call_id`, query `since` | Advisors page (R12): last call column and the period picker |
+| `CallSummary` | `raised_by` | Who raised an alarm or review: `advisor`, `customer` or `unclear`, `null` otherwise. Derived in the API from the speaker roles of the decided family's trigger evidence; no model call, verdicts unchanged (D43) |
+| `GET /advisors` | `advisor_alarm`, `advisor_review`, `customer_alarm`, `customer_review` | Advisors page highlights only advisor-raised flags; customer-raised ones are a muted "Customer requests" column (D43) |
 
 Not covered yet: "View history" of config versions (Rules, Settings).
 
@@ -84,7 +86,8 @@ Query: `verdict`, `family`, `level`, `variant`, `advisor` (comma-separated lists
       "open_question": null,
       "feedback_label": null,
       "trigger_sent": true,
-      "expected_verdict": "alarm"
+      "expected_verdict": "alarm",
+      "raised_by": "customer"
     }
   ],
   "counts": { "total": 3, "done": 3, "flagged": 2, "alarm": 1, "review": 1, "no_alert": 1, "checked_today": 3 }
@@ -92,6 +95,8 @@ Query: `verdict`, `family`, `level`, `variant`, `advisor` (comma-separated lists
 ```
 
 `counts` ignores the filters. `verdict, family, score, reason, open_question` are `null` until the call is decided.
+
+`raised_by` (list and detail): who raised an alarm or review, from the `speaker_role` of the trigger evidence in the decided family. Any trigger spoken by the advisor → `advisor`; all triggers spoken by the customer → `customer`; no trigger evidence or an unknown speaker → `unclear`. `null` for no-alert and undecided calls. It is read from stored evidence and never changes the verdict. In the call detail it uses the same evidence as `evidence`.
 
 ### `GET /calls/{id}`
 
@@ -570,7 +575,7 @@ The model values are examples. `config_versions` holds the active version ID per
 
 ### `GET /advisors` (stretch goal R12)
 
-Patterns across calls, one row per advisor name from the role labelling (`calls.advisor_name`). Calls without a recognised name are left out. Query: `since` (ISO time; only calls with `processed_at` at or after it, as in `GET /calls`). Sorted by alarms, then reviews, then calls, most first.
+Patterns across calls, one row per advisor name from the role labelling (`calls.advisor_name`). Calls without a recognised name are left out. Query: `since` (ISO time; only calls with `processed_at` at or after it, as in `GET /calls`). Sorted by advisor-raised alarms, advisor-raised reviews, alarms, reviews, then calls, most first.
 
 ```json
 [
@@ -580,6 +585,10 @@ Patterns across calls, one row per advisor name from the role labelling (`calls.
     "alarm": 7,
     "review": 3,
     "no_alert": 2,
+    "advisor_alarm": 2,
+    "advisor_review": 1,
+    "customer_alarm": 5,
+    "customer_review": 2,
     "families": ["trade", "access"],
     "last_call_at": "2026-10-10T08:42:00Z",
     "last_call_id": "Stufe2_C09-K3"
@@ -588,6 +597,7 @@ Patterns across calls, one row per advisor name from the role labelling (`calls.
 ```
 
 - `calls` counts every call of the advisor, decided or not; `alarm + review + no_alert` counts the decided ones.
+- `advisor_alarm + customer_alarm = alarm` and `advisor_review + customer_review = review`, split by the call's `raised_by`. `unclear` counts as advisor-raised, so nothing is hidden.
 - `families`: the families of the advisor's alarms and reviews, in the fixed family order. Empty when there are none.
 - `last_call_at`: `processed_at` of the newest call (`created_at` while it is not processed yet); `last_call_id` is that call.
-- The UI highlights advisors with any alarm or 2+ reviews in the period and links each row to All calls filtered by that advisor (`/calls?advisor=…`).
+- The UI highlights advisors with an advisor-raised alarm or 2+ advisor-raised reviews in the period, shows customer-raised ones in a muted "Customer requests" column, and links each row to All calls filtered by that advisor (`/calls?advisor=…`).

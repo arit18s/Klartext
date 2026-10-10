@@ -54,7 +54,12 @@ export interface CallSummary {
   feedback_label: FeedbackLabel | null // latest feedback, if any
   trigger_sent: boolean // at least one triggers_sent row with a 2xx status
   expected_verdict: Verdict | null // ground truth by dialogue_id; null when unknown
+  raised_by: RaisedBy | null // alarms and reviews only; null for no alert and undecided calls
 }
+
+/** Who raised a flagged call, from the speaker roles of its trigger evidence (no model call, verdict unchanged).
+ * Any advisor line → advisor; only customer lines → customer; no trigger or unknown speaker → unclear. */
+export type RaisedBy = 'advisor' | 'customer' | 'unclear'
 
 /** Invented: unfiltered counts for the sidebar and Inbox header. */
 export interface CallCounts {
@@ -515,6 +520,11 @@ export interface AdvisorRow {
   alarm: number
   review: number
   no_alert: number
+  // alarm and review split by raised_by; unclear counts as advisor-raised, so nothing is hidden
+  advisor_alarm: number
+  advisor_review: number
+  customer_alarm: number
+  customer_review: number
   families: Family[] // families of the alarms and reviews, fixed family order
   last_call_at: string | null
   last_call_id: string | null

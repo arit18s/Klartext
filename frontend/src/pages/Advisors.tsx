@@ -18,11 +18,20 @@ const th =
 const td = 'h-11 whitespace-nowrap border-b border-line px-4 group-last:border-b-0'
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`
 
-/** Why the row is highlighted, in words (the coloured edge alone would not be enough). */
+/** Why the row is highlighted, in words (the coloured edge alone would not be enough). Advisor-raised only. */
 function pattern(r: AdvisorRow): { text: string; tone: 'alarm' | 'review' } | null {
-  if (r.alarm > 0) return { text: plural(r.alarm, 'alarm', 'alarms'), tone: 'alarm' }
-  if (r.review >= 2) return { text: `${r.review} reviews`, tone: 'review' }
+  if (r.advisor_alarm > 0) return { text: plural(r.advisor_alarm, 'alarm', 'alarms'), tone: 'alarm' }
+  if (r.advisor_review >= 2) return { text: `${r.advisor_review} reviews`, tone: 'review' }
   return null
+}
+
+/** Alarms and reviews raised by what the customer said: shown, never counted against the advisor. */
+function customerRequests(r: AdvisorRow): string | null {
+  const parts = [
+    r.customer_alarm ? plural(r.customer_alarm, 'alarm', 'alarms') : '',
+    r.customer_review ? plural(r.customer_review, 'review', 'reviews') : '',
+  ].filter(Boolean)
+  return parts.length ? parts.join(', ') : null
 }
 
 /** Patterns across calls per advisor (stretch goal R12, 02_APP_FLOW screen 8). */
@@ -47,6 +56,8 @@ export default function Advisors() {
           <h2 className="text-display">Patterns per advisor</h2>
           <p className="mt-1 max-w-[72ch] text-muted">
             One call can be a mistake. An alarm, or repeated reviews for the same advisor, are worth a conversation.
+            Only flags raised by the advisor&rsquo;s own words count here; what the customer asked for is listed under
+            Customer requests.
           </p>
         </div>
         <Segmented
@@ -60,7 +71,7 @@ export default function Advisors() {
       {advisors.data && rows.length > 0 && (
         <p className="-mt-2 m-0 text-muted">
           {plural(rows.length, 'advisor', 'advisors')} ·{' '}
-          {flagged ? `${plural(flagged, 'advisor', 'advisors')} worth a look` : 'none with an alarm or 2+ reviews'} ·{' '}
+          {flagged ? `${plural(flagged, 'advisor', 'advisors')} worth a look` : 'none with an advisor-raised alarm or 2+ reviews'} ·{' '}
           {DATE_LABEL[period].toLowerCase()}
         </p>
       )}
@@ -89,6 +100,7 @@ export default function Advisors() {
                   <th className={cn(th, 'text-right')}>Calls</th>
                   <th className={cn(th, 'text-right')}>Alarms</th>
                   <th className={cn(th, 'text-right')}>Reviews</th>
+                  <th className={th}>Customer requests</th>
                   <th className={cn(th, 'text-right')}>No alert</th>
                   <th className={th}>Families involved</th>
                   <th className={th}>Last call</th>
@@ -97,6 +109,7 @@ export default function Advisors() {
               <tbody>
                 {rows.map((r) => {
                   const p = pattern(r)
+                  const requests = customerRequests(r)
                   return (
                     <tr
                       key={r.advisor_name}
@@ -126,8 +139,13 @@ export default function Advisors() {
                         </div>
                       </td>
                       <td className={cn(td, 'tabular text-right')}>{r.calls}</td>
-                      <td className={cn(td, 'tabular text-right', r.alarm === 0 && 'text-muted')}>{r.alarm}</td>
-                      <td className={cn(td, 'tabular text-right', r.review === 0 && 'text-muted')}>{r.review}</td>
+                      <td className={cn(td, 'tabular text-right', r.advisor_alarm === 0 && 'text-muted')}>
+                        {r.advisor_alarm}
+                      </td>
+                      <td className={cn(td, 'tabular text-right', r.advisor_review === 0 && 'text-muted')}>
+                        {r.advisor_review}
+                      </td>
+                      <td className={cn(td, 'tabular text-muted')}>{requests ?? '–'}</td>
                       <td className={cn(td, 'tabular text-right text-muted')}>{r.no_alert}</td>
                       <td className={cn(td, 'whitespace-normal')}>
                         {r.families.length ? (

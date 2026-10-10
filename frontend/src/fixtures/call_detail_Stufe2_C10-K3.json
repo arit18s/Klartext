@@ -18,7 +18,8 @@
     "open_question": null,
     "feedback_label": null,
     "trigger_sent": false,
-    "expected_verdict": "no_alert"
+    "expected_verdict": "no_alert",
+    "raised_by": null
   },
   "decision": {
     "verdict": "no_alert",

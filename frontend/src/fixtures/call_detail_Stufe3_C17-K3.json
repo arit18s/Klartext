@@ -18,7 +18,8 @@
     "open_question": "Was the code still valid when it was read out?",
     "feedback_label": null,
     "trigger_sent": true,
-    "expected_verdict": "review"
+    "expected_verdict": "review",
+    "raised_by": "customer"
   },
   "decision": {
     "verdict": "review",

@@ -1,6 +1,9 @@
-import type { CallSummary, CheckEvent, Family, HelperFamily, Variant, Verdict } from './types'
+import type { CallSummary, CheckEvent, Family, HelperFamily, RaisedBy, Variant, Verdict } from './types'
 
 // Display names from 04_FRONTEND_GUIDELINES.md section 8.
+/** Who raised a flagged call (CallSummary.raised_by), for "Raised by: …". */
+export const RAISED_BY_LABEL: Record<RaisedBy, string> = { advisor: 'Advisor', customer: 'Customer', unclear: 'Unclear' }
+
 export const FAMILY_LABEL: Record<Family | HelperFamily, string> = {
   trade: 'Trading on non-public information',
   splitting: 'Splitting to avoid approval',
