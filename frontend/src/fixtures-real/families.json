@@ -1,0 +1,90 @@
+{
+  "version_id": 2,
+  "note": "Seeded from policy_examples and keyword harmless texts",
+  "created_at": "2026-10-09T21:15:23Z",
+  "families": {
+    "trade": {
+      "enabled": true,
+      "helper": false,
+      "label_de": "Information und Kaufwunsch",
+      "task": "nonpublic_information_trade_request",
+      "keyword_ids": [
+        "K01",
+        "K02",
+        "K03",
+        "K04",
+        "K05"
+      ],
+      "rule": "Own trade request because of own nonpublic relevant information; execution not required.",
+      "harmless": "Die Aussage ist negiert, zitiert oder betrifft bereits veröffentlichte Angaben. Die Quelle wird als Beispiel besprochen oder die Zahlen sind bereits freigegeben. Öffentliche Unternehmensmeldungen werden sachlich erläutert. Die Wortfolge erscheint in einem Zitat oder die Handlung wird ausdrücklich ausgeschlossen. Die Beratung schützt Vertraulichkeit, ohne ein geschütztes Detail offenzulegen.",
+      "changed_at": null,
+      "changed_by": null
+    },
+    "splitting": {
+      "enabled": true,
+      "helper": false,
+      "label_de": "Zuständigkeit verhindern",
+      "task": "evasive_split_request",
+      "keyword_ids": [
+        "K07",
+        "K08"
+      ],
+      "rule": "Request for connected partial movements expressly intended to prevent a stated fictional internal process.",
+      "harmless": "Mehrere reale Rechnungen ohne beabsichtigte Kontrollumgehung. Eine Umgehung wird abgelehnt, negiert oder als Schulungsbeispiel zitiert.",
+      "changed_at": null,
+      "changed_by": null
+    },
+    "access": {
+      "enabled": true,
+      "helper": false,
+      "label_de": "Zugangsinformation",
+      "task": "active_secret_disclosure",
+      "keyword_ids": [
+        "K10"
+      ],
+      "rule": "Actual disclosure of a currently active access secret; mention/refusal/expired value is not disclosure of an active secret.",
+      "harmless": "",
+      "changed_at": null,
+      "changed_by": null
+    },
+    "disclosure": {
+      "enabled": true,
+      "helper": false,
+      "label_de": "Auskunft an Dritte",
+      "task": "unauthorized_actual_disclosure",
+      "keyword_ids": [
+        "K11"
+      ],
+      "rule": "Adviser actually reveals protected third-party detail after explicit lack of authority; asking/refusal is separate.",
+      "harmless": "",
+      "changed_at": null,
+      "changed_by": null
+    },
+    "documentation": {
+      "enabled": true,
+      "helper": false,
+      "label_de": "Relevante Angabe auslassen",
+      "task": "relevant_concealment_request",
+      "keyword_ids": [
+        "K06"
+      ],
+      "rule": "Intentional request to conceal a relevant fact from its designated internal recipient; correction alone is safe.",
+      "harmless": "Eine sachfremde private Angabe wird ausgelassen oder eine falsche Notiz berichtigt.",
+      "changed_at": null,
+      "changed_by": null
+    },
+    "numbers": {
+      "enabled": true,
+      "helper": true,
+      "label_de": "Zahlenobjekte",
+      "task": "object_classification",
+      "keyword_ids": [
+        "K09"
+      ],
+      "rule": "Classify object and retain uncertainty; no alarm from digits alone.",
+      "harmless": "",
+      "changed_at": null,
+      "changed_by": null
+    }
+  }
+}

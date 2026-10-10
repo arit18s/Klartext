@@ -1,0 +1,381 @@
+{
+  "call": {
+    "call_id": "Stufe3_C20-K4",
+    "file_name": "Stufe3_C20-K4.wav",
+    "dialogue_id": "Stufe3_C20",
+    "variant": "noisy",
+    "level": 3,
+    "duration_s": 156.63,
+    "advisor_name": "Liegerin Walto",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:29Z",
+    "processed_at": "2026-10-10T09:54:59Z",
+    "verdict": "alarm",
+    "family": "splitting",
+    "score": 80.0,
+    "reason": "The customer explicitly requests that the advisor process two connected partial payments (4000 and 5000) on different dates to keep them separate, while simultaneously admitting that they do not know if the payments belong together or why they are split. This constitutes a request for connected partial movements expressly intended to prevent the stated internal approval process (triggered by amounts over 8000) from applying, as the customer acknowledges the lack of a genuine reason for the split.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": true,
+    "expected_verdict": "review"
+  },
+  "decision": {
+    "verdict": "alarm",
+    "family": "splitting",
+    "score": 80.0,
+    "reason": "The customer explicitly requests that the advisor process two connected partial payments (4000 and 5000) on different dates to keep them separate, while simultaneously admitting that they do not know if the payments belong together or why they are split. This constitutes a request for connected partial movements expressly intended to prevent the stated internal approval process (triggered by amounts over 8000) from applying, as the customer acknowledges the lack of a genuine reason for the split.",
+    "reason_de": "Die Kundin bittet explizit darum, zwei zusammenhängende Teilzahlungen (4000 und 5000) an verschiedenen Tagen zu verbuchen, um sie getrennt zu halten, während sie gleichzeitig zugibt, nicht zu wissen, ob die Zahlungen zusammengehören oder warum sie getrennt sind. Dies stellt eine Anfrage für verbundene Teilbewegungen dar, die ausdrücklich darauf abzielt, den genannten internen Genehmigungsprozess (ausgelöst durch Beträge über 8000) zu umgehen, da die Kundin das Fehlen eines echten Grundes für die Aufteilung anerkennt.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:47Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The conversation is about processing supplier payments and invoice documentation, not about trading securities or acting on non-public market information. Therefore, the family 'Trading on non-public information' is not applicable.",
+      "reason_de": "Das Gespräch handelt von der Erfassung von Lieferantenrechnungen und Zahlungsplänen, nicht vom Handel mit Wertpapieren oder der Nutzung von nicht-öffentlichen Unternehmensinformationen. Daher ist die Kategorie 'Handel mit nicht-öffentlichen Informationen' nicht anwendbar.",
+      "benign_explanation": "The call concerns administrative questions about recording payment plans for supplier invoices (amounts of 4000 and 5000) and compliance with internal reporting thresholds. It does not involve any request to trade securities or financial instruments based on non-public company information."
+    },
+    {
+      "family": "splitting",
+      "score": 80.0,
+      "event_majority": "present",
+      "agreement": 0.6,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": "Is the customer's request to process the two payments separately intended to circumvent the internal approval threshold for amounts over 8,000, or is it based on genuine separate invoices/due dates that are currently unknown?",
+      "reason": "The customer explicitly requests that the advisor process two connected partial payments (4000 and 5000) on different dates to keep them separate, while simultaneously admitting that they do not know if the payments belong together or why they are split. This constitutes a request for connected partial movements expressly intended to prevent the stated internal approval process (triggered by amounts over 8000) from applying, as the customer acknowledges the lack of a genuine reason for the split.",
+      "reason_de": "Die Kundin bittet explizit darum, zwei zusammenhängende Teilzahlungen (4000 und 5000) an verschiedenen Tagen zu verbuchen, um sie getrennt zu halten, während sie gleichzeitig zugibt, nicht zu wissen, ob die Zahlungen zusammengehören oder warum sie getrennt sind. Dies stellt eine Anfrage für verbundene Teilbewegungen dar, die ausdrücklich darauf abzielt, den genannten internen Genehmigungsprozess (ausgelöst durch Beträge über 8000) zu umgehen, da die Kundin das Fehlen eines echten Grundes für die Aufteilung anerkennt.",
+      "benign_explanation": "The customer has two separate, unrelated invoices (one for 'Wett' and one for 'Wohnen') with different due dates, and is simply asking if the bank system allows entering them on different days. The split is due to operational convenience or lack of knowledge about the documents, not an intent to bypass controls."
+    },
+    {
+      "family": "access",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 0.6,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The conversation is strictly about payment processing rules and documentation for corporate transactions. There is no mention of any login codes, one-time passwords, or other access secrets, so the 'Access code shared' family does not apply.",
+      "reason_de": "Das Gespräch handelt ausschließlich von Zahlungsabwicklungsregeln und Dokumentation für Firmentransaktionen. Es werden keine Zugangsdaten, Einmalpasswörter oder andere Geheimnisse erwähnt, daher ist die Kategorie 'Zugangscode geteilt' nicht anwendbar.",
+      "benign_explanation": "The call concerns a corporate customer inquiring about the procedural requirements for recording two separate payment amounts (4,000 and 5,000) to the same supplier. The discussion focuses on whether these need to be combined for reporting purposes due to an 8,000 threshold. No access secrets, passwords, PINs, or TANs are mentioned or disclosed."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor did not disclose any protected third-party information; rather, the advisor refused to process a payment plan because the customer could not provide the necessary supporting documents or confirm the validity of the data. No unauthorized disclosure occurred.",
+      "reason_de": "Der Berater hat keine geschützten Drittpartei-Informationen offengelegt; stattdessen hat er die Verarbeitung eines Zahlungsplans verweigert, da die Kundin die notwendigen Belege nicht vorlegen oder die Gültigkeit der Daten nicht bestätigen konnte. Es fand keine unbefugte Offenlegung statt.",
+      "benign_explanation": "The call is a business-to-business interaction regarding the processing of payment instructions. The advisor does not reveal any protected third-party details (such as account balances, transaction histories, or personal data) to an unauthorized person. Instead, the advisor explicitly refuses to process the customer's request due to missing documentation and unclear authority/validity of the data provided. The customer is the one providing information (albeit incomplete), and the advisor withholds action rather than disclosing secrets."
+    },
+    {
+      "family": "documentation",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 0.6,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer requested processing of payments without full documentation, which could be seen as risky, but did not request hiding this fact. The advisor refused to execute the payment without documents but agreed to note the pending status and missing documents in the record. Thus, no relevant information was intentionally concealed from the internal recipient.",
+      "reason_de": "Die Kundin bat um die Verarbeitung von Zahlungen ohne vollständige Dokumentation, hat aber nicht verlangt, diese Tatsache zu verschweigen. Die Beraterin lehnte die Ausführung ohne Dokumente ab, vereinbarte jedoch, den offenen Status und die fehlenden Unterlagen im Protokoll festzuhalten. Somit wurde keine relevante Information vorsätzlich vor dem internen Empfänger verborgen.",
+      "benign_explanation": "The customer asks the advisor to process or pre-book two payment amounts (4000 and 5000) despite missing documentation. The advisor refuses to confirm the plan as an order without proper documents but explicitly states that they will record the open question and wait for the supporting documents. There is no request to conceal information from internal records; rather, the advisor ensures the lack of information is documented."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 330,
+      "family": "splitting",
+      "seg_id": "S005",
+      "role": "context",
+      "start_s": 24.31,
+      "end_s": 30.19,
+      "speaker_role": "advisor",
+      "quote": "Bei uns muss ein zusammengehender Vorgang über 8 '000 an die Internet -Reihe abgestimmt werden.",
+      "note": "The advisor states the internal control rule: combined transactions over 8000 require approval.",
+      "snippet_url": "/api/calls/Stufe3_C20-K4/snippets/S005"
+    },
+    {
+      "id": 331,
+      "family": "splitting",
+      "seg_id": "S022",
+      "role": "trigger",
+      "start_s": 108.94,
+      "end_s": 116.68,
+      "speaker_role": "customer",
+      "quote": "Können Sie die 4 '000 für heute und die 5 '000 für morgen trotzdem schon vorbeweiten?",
+      "note": "The customer requests the execution of the split payments despite the control rule.",
+      "snippet_url": "/api/calls/Stufe3_C20-K4/snippets/S022"
+    },
+    {
+      "id": 332,
+      "family": "splitting",
+      "seg_id": "S023",
+      "role": "trigger",
+      "start_s": 116.94,
+      "end_s": 122.38,
+      "speaker_role": "customer",
+      "quote": "Ich kann Ihnen noch nicht sagen, warum das getrennt geplant ist oder welche Belege zusammengehören.",
+      "note": "The customer admits there is no established genuine reason for the split, implying the split is artificial or intended to avoid the 'combined' classification.",
+      "snippet_url": "/api/calls/Stufe3_C20-K4/snippets/S023"
+    }
+  ],
+  "keyword_hits": [],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.11,
+      "end_s": 4.35,
+      "role": "advisor",
+      "text": "Grüezi, Frau Gislo. Das ist die Liegerin Walto vom Firmenservice.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 4.73,
+      "end_s": 8.61,
+      "role": "advisor",
+      "text": "Sie haben eine Frage zu Beträgen, die an den gleichen Lieferanten gehen sollten.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 10.93,
+      "end_s": 16.87,
+      "role": "customer",
+      "text": "Wird? Ja. In meiner Liste sind 4 '000 für Wett - und 5 '000 für Wohnen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 16.91,
+      "end_s": 22.79,
+      "role": "customer",
+      "text": "Ich habe die Liste meiner Kollegin übernommen, aber die Belege haben wir noch nicht zusammen verglichen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 24.31,
+      "end_s": 30.19,
+      "role": "advisor",
+      "text": "Bei uns muss ein zusammengehender Vorgang über 8 '000 an die Internet -Reihe abgestimmt werden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 30.23,
+      "end_s": 33.45,
+      "role": "advisor",
+      "text": "Zwei Erfassungen ändern den Gesamtbezug nicht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 33.79,
+      "end_s": 38.19,
+      "role": "advisor",
+      "text": "Müssen sie, ob es einzige lieferige oder unabhängige Rechnungen sind?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 40.01,
+      "end_s": 45.09,
+      "role": "customer",
+      "text": "Nein, auf der Liste steht bei einem Teil eins und beim anderen ein Material.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 45.65,
+      "end_s": 50.69,
+      "role": "customer",
+      "text": "Das kann zur gleichen Baustelle gehören, muss aber nicht die gleiche Lieferung sein.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 50.69,
+      "end_s": 53.89,
+      "role": "customer",
+      "text": "Ich habe alle die Nachrechnungen gerade nicht vor mir.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 55.83,
+      "end_s": 58.63,
+      "role": "advisor",
+      "text": "Und warum sind heute und morgen als Tote genannt?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 58.83,
+      "end_s": 61.17,
+      "role": "advisor",
+      "text": "Sind das bestätigte Fälligkeiten?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 63.4,
+      "end_s": 65.08,
+      "role": "customer",
+      "text": "Das weiss ich auch nicht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 65.44,
+      "end_s": 68.12,
+      "role": "customer",
+      "text": "Meine Kollegin hat die Daten so notiert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 68.56,
+      "end_s": 74.0,
+      "role": "customer",
+      "text": "Ich kann nicht sagen, ob sie nach der Rechnung gegangen ist oder nur einen eigenen Plan gemacht hat.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 75.8,
+      "end_s": 80.3,
+      "role": "advisor",
+      "text": "Dann kann ich die Liste nicht als bestätigte Zahlungsgrundlage brauchen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 80.3,
+      "end_s": 85.66,
+      "role": "advisor",
+      "text": "Wir müssen den Zusammenhang, die Fälligkeit und den Grund für den Plan klären.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 87.3,
+      "end_s": 92.26,
+      "role": "customer",
+      "text": "Ich wollte zuerst nur wissen, ob man zwei verschiedene Daten erfassen kann.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 92.54,
+      "end_s": 97.52,
+      "role": "customer",
+      "text": "Ich habe keinen Betrag im System bestätigt und kenne den Zweck des Plans noch nicht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 100.36,
+      "end_s": 103.34,
+      "role": "advisor",
+      "text": "Allgemein ist in der Erfassung noch keine Ausführung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 103.5,
+      "end_s": 108.94,
+      "role": "advisor",
+      "text": "Für jeden konkreten Vorgang braucht es aber die Unterlagen und eine klare Zuordnung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 108.94,
+      "end_s": 116.68,
+      "role": "customer",
+      "text": "Können Sie die 4 '000 für heute und die 5 '000 für morgen trotzdem schon vorbeweiten?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 116.94,
+      "end_s": 122.38,
+      "role": "customer",
+      "text": "Ich kann Ihnen noch nicht sagen, warum das getrennt geplant ist oder welche Belege zusammengehören.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 122.76,
+      "end_s": 127.12,
+      "role": "advisor",
+      "text": "Ich bestätige den Plan nicht als Auftrag.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 127.22,
+      "end_s": 132.24,
+      "role": "advisor",
+      "text": "Ich nehme die offene Frage auf und warte auf die zugehörigen Unterlagen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 132.52,
+      "end_s": 135.58,
+      "role": "advisor",
+      "text": "Der Zeitpunkt allein beweist keine Absicht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 135.58,
+      "end_s": 142.79,
+      "role": "customer",
+      "text": "Gut, ich grüsse meine Kollegin an, bevor ich am Formular weitermache.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 145.17,
+      "end_s": 150.09,
+      "role": "advisor",
+      "text": "Verweise nachher bitte auf den Rückruf und schicke die Belege im Firmenpostbuch.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 151.78,
+      "end_s": 155.72,
+      "role": "advisor",
+      "text": "Ja, danke, dann bleibt sie im Moment bei der Rückfrage.",
+      "low_confidence": false
+    }
+  ],
+  "twin": null,
+  "feedback": [],
+  "triggers": [
+    {
+      "id": 35,
+      "call_id": "Stufe3_C20-K4",
+      "remote_id": "72",
+      "url": "http://localhost:5173/calls/Stufe3_C20-K4?t=98",
+      "status_code": 201,
+      "created_at": "2026-10-10T07:42:04Z"
+    }
+  ]
+}

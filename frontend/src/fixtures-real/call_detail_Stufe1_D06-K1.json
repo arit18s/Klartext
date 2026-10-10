@@ -1,0 +1,636 @@
+{
+  "call": {
+    "call_id": "Stufe1_D06-K1",
+    "file_name": "Stufe1_D06-K1.wav",
+    "dialogue_id": "Stufe1_D06",
+    "variant": "clean",
+    "level": 1,
+    "duration_s": 302.34,
+    "advisor_name": "Sonja",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:28Z",
+    "processed_at": "2026-10-10T09:54:58Z",
+    "verdict": "no_alert",
+    "family": "trade",
+    "score": 0.0,
+    "reason": "The call concerns technical support for device registration and security hygiene. No trade requests or recommendations based on non-public information were made or discussed.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": false,
+    "expected_verdict": "no_alert"
+  },
+  "decision": {
+    "verdict": "no_alert",
+    "family": "trade",
+    "score": 0.0,
+    "reason": "The call concerns technical support for device registration and security hygiene. No trade requests or recommendations based on non-public information were made or discussed.",
+    "reason_de": "Der Anruf betrifft technischen Support für die Geräteregistrierung und Sicherheitshygiene. Es wurden keine Handelsanfragen oder -empfehlungen auf Basis von nicht-öffentlichen Informationen getätigt oder besprochen.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:46Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call concerns technical support for device registration and security hygiene. No trade requests or recommendations based on non-public information were made or discussed.",
+      "reason_de": "Der Anruf betrifft technischen Support für die Geräteregistrierung und Sicherheitshygiene. Es wurden keine Handelsanfragen oder -empfehlungen auf Basis von nicht-öffentlichen Informationen getätigt oder besprochen.",
+      "benign_explanation": "The call is a standard customer service interaction regarding the registration of a new device for online banking. The customer and advisor discuss security procedures, verify that the customer does not share passwords or active codes, and clarify that a number mentioned (482601) is an expired example from a help document. There is no discussion of trading, stock markets, or non-public company information."
+    },
+    {
+      "family": "splitting",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call concerns technical support for device registration and security awareness regarding phishing emails. It contains no requests for partial movements or transfers, making the 'Splitting to avoid approval' family not applicable.",
+      "reason_de": "Der Anruf betrifft technischen Support für die Geräteregistrierung und Sicherheitsbewusstsein bezüglich Phishing-E-Mails. Es gibt keine Anfragen nach Teilzahlungen oder Überweisungen, sodass die Kategorie 'Aufteilung zur Umgehung der Freigabe' nicht zutrifft.",
+      "benign_explanation": "The customer is calling to register a new device for online banking and is confused by help documentation. The conversation revolves around verifying that the customer does not need to share active passwords or codes, and clarifying that a number seen in a help document (482601) is an expired example, not a real code. There is no discussion of financial transfers, payments, or deposits, nor any request to split transactions."
+    },
+    {
+      "family": "access",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer recites a number found in a sample image of a help document, explicitly labeling it as an expired example and stating they have no active codes. Since the value is confirmed as a sample and not an active secret, no disclosure of an access code occurred.",
+      "reason_de": "Der Kunde nennt eine Zahl aus einem Beispielbild eines Hilfedokuments und kennzeichnet sie explizit als abgelaufene Beispielzahl. Da es sich um ein Muster handelt und keine aktiven Codes vorliegen, liegt keine Offenlegung eines Zugriffsgeheimnisses vor.",
+      "benign_explanation": "The customer mentions a specific number (482601) but explicitly identifies it as an 'expired example number' from a help document image. The customer states they have not started any login process and therefore do not have active codes to share. The advisor confirms that no real numbers are needed for the discussion."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor did not reveal any protected third-party details or account-specific information. The customer is the account holder seeking help with a device change, and the advisor only provided general procedural instructions without disclosing any sensitive data.",
+      "reason_de": "Der Berater hat keine geschützten Details von Dritten oder kontospezifische Informationen offengelegt. Der Kunde ist der Kontoinhaber und sucht Hilfe bei einem Gerätewechsel; der Berater hat nur allgemeine prozedurale Anweisungen gegeben, ohne sensible Daten preiszugeben.",
+      "benign_explanation": "The customer is calling to get help with registering a new device for online banking. The advisor guides the customer through the official help pages. The customer explicitly refuses to share their password or PIN. The only number mentioned (482601) is identified by the customer as an 'expired example number' from a help document image, not a real code. The advisor does not reveal any account balances, transactions, or personal data of the customer or any third party. The advisor only provides general procedural guidance."
+    },
+    {
+      "family": "documentation",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 0.6,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "Neither the advisor nor the customer requests to hide, remove, or leave out any relevant fact from the internal record. The customer clarifies that a specific number mentioned is merely an expired example from a help sheet, ensuring no confusion about active credentials, which aligns with safe handling of information rather than concealment.",
+      "reason_de": "Weder der Berater noch der Kunde fordert auf, relevante Tatsachen aus den internen Aufzeichnungen zu verbergen, zu entfernen oder wegzulassen. Der Kunde klärt, dass eine genannte Nummer lediglich ein abgelaufenes Beispiel aus einem Hilfblatt ist, was sicherem Umgang mit Informationen entspricht und keine Verschleierung darstellt.",
+      "benign_explanation": "The call is a standard customer service interaction regarding device registration and phishing awareness. The customer explicitly states that they are not sharing any active codes or passwords, referring only to an 'expired example number' from a help document image. There is no request by either party to conceal relevant facts from internal records; rather, the advisor actively ensures that no sensitive data is entered into the conversation record."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 201,
+      "family": "trade",
+      "seg_id": "S043",
+      "role": "exclusion",
+      "start_s": 208.61,
+      "end_s": 215.17,
+      "speaker_role": "customer",
+      "quote": "Das ist die abgelaufene Beispielzahl, wie meine. Ich habe keine aktuellen Codes zum Teilen.",
+      "note": "Clarifies that the number discussed is a harmless example, not a secret code or trading signal.",
+      "snippet_url": "/api/calls/Stufe1_D06-K1/snippets/S043"
+    }
+  ],
+  "keyword_hits": [
+    {
+      "keyword_id": "K10",
+      "family": "access",
+      "phrase": "Passwort",
+      "seg_id": "S009",
+      "start_s": 27.18,
+      "end_s": 27.88,
+      "label": null
+    },
+    {
+      "keyword_id": "K10",
+      "family": "access",
+      "phrase": "Passwort",
+      "seg_id": "S010",
+      "start_s": 36.54,
+      "end_s": 37.2,
+      "label": null
+    },
+    {
+      "keyword_id": "K09",
+      "family": "numbers",
+      "phrase": "Kreditkarte",
+      "seg_id": "S013",
+      "start_s": 54.86,
+      "end_s": 55.94,
+      "label": null
+    },
+    {
+      "keyword_id": "K09",
+      "family": "numbers",
+      "phrase": "Kreditkarte",
+      "seg_id": "S014",
+      "start_s": 64.72,
+      "end_s": 65.56,
+      "label": null
+    },
+    {
+      "keyword_id": "K08",
+      "family": "splitting",
+      "phrase": "Prüfung umgehen",
+      "seg_id": "S023",
+      "start_s": 110.98,
+      "end_s": 111.94,
+      "label": null
+    },
+    {
+      "keyword_id": "K10",
+      "family": "access",
+      "phrase": "TAN",
+      "seg_id": "S034",
+      "start_s": 159.12,
+      "end_s": 159.74,
+      "label": null
+    },
+    {
+      "keyword_id": "K10",
+      "family": "access",
+      "phrase": "Bestätigungscode",
+      "seg_id": "S042",
+      "start_s": 202.89,
+      "end_s": 204.15,
+      "label": null
+    }
+  ],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.08,
+      "end_s": 3.1,
+      "role": "advisor",
+      "text": "Grüezi, Online -Service, Sonja Is.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 3.4,
+      "end_s": 4.96,
+      "role": "advisor",
+      "text": "Was kann ich für Sie machen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 6.7,
+      "end_s": 8.5,
+      "role": "customer",
+      "text": "Das ist Mavi Amicolo.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 8.76,
+      "end_s": 12.36,
+      "role": "customer",
+      "text": "Ich habe ein neues Telefon und habe das alte schon zugesetzt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 12.66,
+      "end_s": 15.4,
+      "role": "customer",
+      "text": "Jetzt finde ich die richtige Anleitung müde.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 15.62,
+      "end_s": 18.2,
+      "role": "customer",
+      "text": "Es geht ums Anmelden und Bestätigen,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 18.28,
+      "end_s": 22.0,
+      "role": "customer",
+      "text": "aber ich will nicht gerade alles neu machen, wenn es gar nicht müde ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 24.0,
+      "end_s": 26.34,
+      "role": "advisor",
+      "text": "Gut, wir können die zwei Sachen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 26.34,
+      "end_s": 33.36,
+      "role": "advisor",
+      "text": "Für das Passwort sagen Sie mir bitte nur, dass Sie sich hier erinnern. Der Wert selbst bleibt bei Ihnen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 35.24,
+      "end_s": 42.1,
+      "role": "customer",
+      "text": "Ja, an mein Passwort erinnere ich mich. Ich sage es Ihnen nicht. Auch meine PL bleibt bei mir.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 42.32,
+      "end_s": 47.12,
+      "role": "customer",
+      "text": "Ich weiss nur nicht, ob das neue Telefon schon mit meinem Zugang verknüpft ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 48.78,
+      "end_s": 53.2,
+      "role": "customer",
+      "text": "Auf dem zweiten Brief, den ich vor mir habe, steht auch etwas zur Karte.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 53.2,
+      "end_s": 59.96,
+      "role": "customer",
+      "text": "Muss ich ihnen dafür meine Kreditkarte nochmals sagen oder habe ich zwei verschiedene Sachen rausgenommen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 62.02,
+      "end_s": 65.86,
+      "role": "advisor",
+      "text": "Dafür brauchen wir auch keine vollständige Kreditkarte mehr.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 66.36,
+      "end_s": 69.74,
+      "role": "advisor",
+      "text": "Zugang und Zahlungsmittel sind zwei gekonnte Sachen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 70.16,
+      "end_s": 73.2,
+      "role": "advisor",
+      "text": "Haben sie ein zweites Gerät, das sie noch selber drauf können?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 74.86,
+      "end_s": 78.92,
+      "role": "customer",
+      "text": "Es gibt noch mein Tablet, aber ich habe dort noch nichts probiert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 78.92,
+      "end_s": 85.32,
+      "role": "customer",
+      "text": "Ich will nicht gerade auf drei Geräte testen, wenn ich den Ablauf für das neue Telefon noch nicht kenne.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 86.9,
+      "end_s": 90.26,
+      "role": "advisor",
+      "text": "Das müssen wir über den vorgesehenen Ablauf prüfen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 90.42,
+      "end_s": 94.26,
+      "role": "advisor",
+      "text": "Wenn Sie die Hilfsseite offen haben, welche Überschrift sehen Sie gerade?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 96.52,
+      "end_s": 102.04,
+      "role": "customer",
+      "text": "Gerätewechsel. Aber auf dem Blatt, auf dem ich rausgerückt habe, steht der erste Zugang.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 102.16,
+      "end_s": 105.1,
+      "role": "customer",
+      "text": "Ich habe also vermutlich das falsche Blatt rausgenommen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 106.72,
+      "end_s": 111.94,
+      "role": "customer",
+      "text": "Und im Mail hat jemand geschrieben, ich solle zum Gerätewechsel eine Prüfung umgehen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 112.16,
+      "end_s": 118.36,
+      "role": "customer",
+      "text": "Das habe ich nicht gemacht. Die Absenderadresse sieht anders aus als bei Ihrer normalen Nachricht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 118.46,
+      "end_s": 122.2,
+      "role": "customer",
+      "text": "Darum rufe ich direkt auf die bekannte Servicenummer an.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 123.9,
+      "end_s": 127.66,
+      "role": "advisor",
+      "text": "Gut, dass Sie nicht auf die fremde Anweisung eingegangen sind.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 128.0,
+      "end_s": 132.12,
+      "role": "advisor",
+      "text": "Wir bleiben bei den Hilfsseiten und dem sicheren Kanal Ihrer Bahn.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 132.12,
+      "end_s": 135.54,
+      "role": "advisor",
+      "text": "Wir brauchen keinen Wert oder Link aus dieser Mail.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 135.76,
+      "end_s": 140.14,
+      "role": "advisor",
+      "text": "Sie können die Nachricht im vorgesehenen Meldeweg als verdächtig melden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S030",
+      "start_s": 141.72,
+      "end_s": 143.58,
+      "role": "advisor",
+      "text": "Das ist ein geschläherter Unterschied.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S031",
+      "start_s": 144.04,
+      "end_s": 146.72,
+      "role": "advisor",
+      "text": "Wir schauen die Seite zum Gerätewechsel an.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S032",
+      "start_s": 147.16,
+      "end_s": 149.7,
+      "role": "advisor",
+      "text": "Weiter startet jetzt noch keine Anmeldung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S033",
+      "start_s": 149.86,
+      "end_s": 154.6,
+      "role": "advisor",
+      "text": "Ich will zuerst sicher sein, dass Sie nicht zwei Abläufe gleichzeitig durchziehen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S034",
+      "start_s": 156.42,
+      "end_s": 161.26,
+      "role": "customer",
+      "text": "Gut, es hat dort ein Bild mit dieser TAN und darunter ein Beispiel.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S035",
+      "start_s": 161.26,
+      "end_s": 164.88,
+      "role": "customer",
+      "text": "Ich habe gemeint, ich müsse die Zahl irgendwo übernehmen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S036",
+      "start_s": 166.64,
+      "end_s": 172.64,
+      "role": "advisor",
+      "text": "Stehe ich dann im Bild, dass es ein Muster ist, oder zeige ich das Gerät den Wert selbst an?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S037",
+      "start_s": 174.18,
+      "end_s": 182.04,
+      "role": "customer",
+      "text": "Es ist das Creams Fortin -Hilfedokument. Darunter steht das Beispiel «abgelaufen nicht verwendbar».",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S038",
+      "start_s": 182.04,
+      "end_s": 187.26,
+      "role": "customer",
+      "text": "Es ist kein Wert aus meinem Zugang. Ich habe heute gar keine Anfrage gestartet.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S039",
+      "start_s": 188.94,
+      "end_s": 195.88,
+      "role": "advisor",
+      "text": "Dann verwenden Sie diese Zahl nicht. Das Bild zeigt nur, wie der Bildschirm ungefähr aussieht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S040",
+      "start_s": 196.12,
+      "end_s": 198.24,
+      "role": "advisor",
+      "text": "Ich heisse den nächsten Abschnitt und",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S041",
+      "start_s": 199.55,
+      "end_s": 202.05,
+      "role": "customer",
+      "text": "will ein neues Gerät registrieren.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S042",
+      "start_s": 202.35,
+      "end_s": 208.05,
+      "role": "customer",
+      "text": "Und der Bestätigungscode auf dem Musterbild ist 482601.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S043",
+      "start_s": 208.61,
+      "end_s": 215.17,
+      "role": "customer",
+      "text": "Das ist die abgelaufene Beispielzahl, wie meine. Ich habe keine aktuellen Codes zum Teilen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S044",
+      "start_s": 217.03,
+      "end_s": 224.29,
+      "role": "advisor",
+      "text": "Verstanden. Wir bleiben bei der Anleitung. Sie nehmen für die Besprechung keine echten Zahlen vorzulesen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S045",
+      "start_s": 224.35,
+      "end_s": 228.87,
+      "role": "advisor",
+      "text": "Für die Registrierung wird Ihnen der sichere Weg separat angezeigt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S046",
+      "start_s": 230.87,
+      "end_s": 234.97,
+      "role": "customer",
+      "text": "Ich habe einen Brief vom letzten Jahr gefunden. Muss ich den noch haben?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S047",
+      "start_s": 235.07,
+      "end_s": 238.73,
+      "role": "customer",
+      "text": "Ich will nicht den falschen Brief brauchen und nachher alles spielen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S048",
+      "start_s": 240.47,
+      "end_s": 244.75,
+      "role": "advisor",
+      "text": "Bitte versuchen mit alten Unterlagen keine neue Freischaltung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S049",
+      "start_s": 244.75,
+      "end_s": 251.43,
+      "role": "advisor",
+      "text": "Schaut aufs Datum und den Betreff. Was steht im Betreff ohne Nummer oder Zugangswert?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S050",
+      "start_s": 253.32,
+      "end_s": 258.52,
+      "role": "customer",
+      "text": "Willkommen im E -Banking. Also sicher mit Schreiben zum neuen Telefon.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S051",
+      "start_s": 260.26,
+      "end_s": 267.44,
+      "role": "advisor",
+      "text": "Genau. Ich kann Ihnen den passenden Ablauf zuordnen und den nächsten Schritt im sicheren Kanal hinterlegen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S052",
+      "start_s": 267.66,
+      "end_s": 273.48,
+      "role": "advisor",
+      "text": "Der alte Brief ist keine Bestätigung, dass das neue Telefon jetzt registriert ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S053",
+      "start_s": 275.08,
+      "end_s": 282.34,
+      "role": "customer",
+      "text": "Gut, dann lege ich den alten Brief auf die Seite. Ich habe lieber einen richtigen Weg als drei Versuche auf einmal.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S054",
+      "start_s": 284.34,
+      "end_s": 289.76,
+      "role": "advisor",
+      "text": "So machen wir es. Sobald Sie den neuen Ablauf haben, können Sie ihn selber abschliessen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S055",
+      "start_s": 289.84,
+      "end_s": 294.7,
+      "role": "advisor",
+      "text": "Wenn etwas stockt, melden Sie sich mit der Fehlermeldung ohne Zugangswert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S056",
+      "start_s": 296.64,
+      "end_s": 301.54,
+      "role": "customer",
+      "text": "Danke. Ich werde zuerst die Anleitung fertig lesen und dann anfangen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S057",
+      "start_s": 301.54,
+      "end_s": 301.78,
+      "role": "customer",
+      "text": "Vielen Dank.",
+      "low_confidence": true
+    }
+  ],
+  "twin": null,
+  "feedback": [],
+  "triggers": []
+}

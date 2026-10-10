@@ -1,0 +1,13 @@
+{
+  "llm_model": "qwen/qwen3.6-27b",
+  "llm_base_url": "https://openrouter.ai/api/v1",
+  "asr_model": "",
+  "trigger_api_url": "http://localhost:8080",
+  "trigger_api_enabled": true,
+  "config_versions": {
+    "keywords": 1,
+    "families": 2,
+    "thresholds": 4,
+    "model": null
+  }
+}

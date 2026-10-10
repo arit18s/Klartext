@@ -1,0 +1,1166 @@
+{
+  "call": {
+    "call_id": "Stufe2_C05-K4",
+    "file_name": "Stufe2_C05-K4.wav",
+    "dialogue_id": "Stufe2_C05",
+    "variant": "noisy",
+    "level": 2,
+    "duration_s": 576.4,
+    "advisor_name": "Martina Wild",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:28Z",
+    "processed_at": "2026-10-10T09:54:59Z",
+    "verdict": "no_alert",
+    "family": "trade",
+    "score": 0.0,
+    "reason": "The customer requests to buy shares based on a report about a large order, but explicitly states that this information was published on the company website and is available to the public. Therefore, the information is not non-public, and the request is harmless under the rule.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": false,
+    "expected_verdict": "no_alert"
+  },
+  "decision": {
+    "verdict": "no_alert",
+    "family": "trade",
+    "score": 0.0,
+    "reason": "The customer requests to buy shares based on a report about a large order, but explicitly states that this information was published on the company website and is available to the public. Therefore, the information is not non-public, and the request is harmless under the rule.",
+    "reason_de": "Die Kundin beauftragt den Kauf von Aktien aufgrund eines Berichts über einen Großauftrag, erklärt jedoch ausdrücklich, dass diese Information auf der Website des Unternehmens veröffentlicht wurde und für die Öffentlichkeit zugänglich ist. Daher handelt es sich nicht um nicht-öffentliche Informationen, und der Antrag ist gemäß der Regel harmlos.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:46Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer requests to buy shares based on a report about a large order, but explicitly states that this information was published on the company website and is available to the public. Therefore, the information is not non-public, and the request is harmless under the rule.",
+      "reason_de": "Die Kundin beauftragt den Kauf von Aktien aufgrund eines Berichts über einen Großauftrag, erklärt jedoch ausdrücklich, dass diese Information auf der Website des Unternehmens veröffentlicht wurde und für die Öffentlichkeit zugänglich ist. Daher handelt es sich nicht um nicht-öffentliche Informationen, und der Antrag ist gemäß der Regel harmlos.",
+      "benign_explanation": "The customer explicitly states that the information triggering the trade request (a large order for CRM systems) was published on the company's website and is accessible to everyone ('Jeder kann ihn dort lesen'). The advisor also confirms having no additional insider information. Since the information is public, the trade request does not constitute trading on non-public information."
+    },
+    {
+      "family": "splitting",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer explicitly separates investment capital from moving expenses to preserve liquidity for the move, which is a standard financial planning measure. The multiple payments discussed (rent, deposit, moving services) correspond to distinct, genuine invoices and contractual obligations, not a single transaction split to evade controls.",
+      "reason_de": "Die Kundin trennt Anlagekapital von Umzugskosten, um Liquidität für den Umzug zu bewahren, was eine übliche Finanzplanung ist. Die besprochenen Zahlungen (Miete, Kaution, Umzugsdienst) entsprechen verschiedenen, echten Rechnungen und Vertragsverpflichtungen, nicht einer aufgeteilten Transaktion zur Umgehung von Kontrollen.",
+      "benign_explanation": "The customer discusses separating investment funds from moving costs to ensure liquidity for the move. The discussion about splitting rent payments (old vs. new apartment) and moving costs (deposit vs. moving company) concerns legitimate, distinct contractual obligations and genuine invoices. There is no request to split a single payment or transaction specifically to bypass an internal approval limit or control process."
+    },
+    {
+      "family": "access",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer discusses financial amounts and administrative reference numbers (for rent and bank case tracking) but does not disclose any active access secrets such as passwords, PINs, or TANs to the advisor or anyone else.",
+      "reason_de": "Die Kundin bespricht finanzielle Beträge und administrative Referenznummern (für Miete und Bankfallverfolgung), gibt aber keine aktiven Zugangsgeheimnisse wie Passwörter, PINs oder TANs an die Beraterin oder Dritte weiter.",
+      "benign_explanation": "The call involves a discussion about investment amounts, rent, and moving costs. The customer mentions a 'reference number' for rent payments and a 'reference-AT' for the bank's internal case tracking. No login codes, PINs, TANs, passwords, or other active access secrets are disclosed by either party."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor interacts solely with the account holder, Frau Keller, regarding her own financial planning and a requested stock purchase. No information about a third party is disclosed, and the advisor does not reveal any protected data to an unauthorized person.",
+      "reason_de": "Der Berater spricht ausschließlich mit der Kontoinhaberin Frau Keller über ihre eigenen Finanzplanungen und einen gewünschten Aktienkauf. Es werden keine Informationen über Dritte offengelegt, und der Berater gibt keine geschützten Daten an eine unbefugte Person weiter.",
+      "benign_explanation": "The call is between a bank advisor and the account holder, Frau Keller. The advisor provides general guidance on setting up payment orders and discusses a potential stock purchase requested by the customer. No protected details of a third party are revealed, as the customer is speaking about her own accounts and plans."
+    },
+    {
+      "family": "documentation",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer explicitly requests that the advisor note in the secure postbox that the moving amount is reserved separately, to ensure this relevant financial constraint is documented. The advisor confirms they will record this. Since the request is to include, not exclude, information, and no relevant facts are concealed, the event is absent.",
+      "reason_de": "Die Kundin bittet den Berater explizit, im sicheren Postfach zu vermerken, dass das Umzugsgeld separat reserviert ist, um sicherzustellen, dass diese relevante finanzielle Einschränkung dokumentiert wird. Der Berater bestätigt, dass er dies notiert. Da es sich um eine Bitte handelt, Informationen hinzuzufügen und nicht zu unterdrücken, und keine relevanten Fakten verschwiegen werden, liegt kein Vorfall vor.",
+      "benign_explanation": "The customer asks the advisor to include a note in the secure postbox confirming that the moving funds are kept separate. This is a request to add relevant information to the record, not to conceal it. The advisor agrees to note this fact. No relevant information is withheld or hidden."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 228,
+      "family": "trade",
+      "seg_id": "S019",
+      "role": "exclusion",
+      "start_s": 78.4,
+      "end_s": 80.2,
+      "speaker_role": "customer",
+      "quote": "Jeder kann ihn dort lesen.",
+      "note": "Customer explicitly confirms the information is public and accessible to everyone, ruling out insider status.",
+      "snippet_url": "/api/calls/Stufe2_C05-K4/snippets/S019"
+    },
+    {
+      "id": 229,
+      "family": "trade",
+      "seg_id": "S021",
+      "role": "exclusion",
+      "start_s": 82.64,
+      "end_s": 87.6,
+      "speaker_role": "advisor",
+      "quote": "Ich weiss nichts zusätzlich und habe gleiche Inhalte wie alle anderen Anleger.",
+      "note": "Advisor confirms no insider knowledge is involved.",
+      "snippet_url": "/api/calls/Stufe2_C05-K4/snippets/S021"
+    }
+  ],
+  "keyword_hits": [],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.08,
+      "end_s": 6.92,
+      "role": "advisor",
+      "text": "Guten Tag, Frau Keller. Da ist Martina Wild. Sie haben einen längeren Rückruf zum Depot gewünscht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 7.1,
+      "end_s": 12.4,
+      "role": "advisor",
+      "text": "Sie haben in ihrer Nachricht auch geschrieben, dass sie bald zögert. Gehört das für Sie zusammen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 14.74,
+      "end_s": 22.8,
+      "role": "customer",
+      "text": "Ja, aber ich möchte zwei Sachen miteinander bringen. Ich habe das Depot und ein separates Konto für den Umzug.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 22.8,
+      "end_s": 26.46,
+      "role": "customer",
+      "text": "Ich habe mich informiert, ohne jetzt im Kauf zu verlangen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 26.56,
+      "end_s": 28.78,
+      "role": "customer",
+      "text": "Ob ich überhaupt eine einzelne Firma",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 28.78,
+      "end_s": 30.58,
+      "role": "advisor",
+      "text": "kaufe, weiss ich noch nicht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 32.34,
+      "end_s": 34.76,
+      "role": "advisor",
+      "text": "Dann haben wir die zwei Sachen separat.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 35.06,
+      "end_s": 39.78,
+      "role": "advisor",
+      "text": "Zuerst schauen wir, um welche Firma es geht und warum sie gerade die im Kopf haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 40.18,
+      "end_s": 42.82,
+      "role": "advisor",
+      "text": "Danach können wir die anderen Fragen besprechen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 44.64,
+      "end_s": 45.72,
+      "role": "advisor",
+      "text": "Es geht um",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 45.72,
+      "end_s": 47.14,
+      "role": "customer",
+      "text": "CRM -Systeme.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 47.14,
+      "end_s": 52.48,
+      "role": "customer",
+      "text": "Ich kenne die Produkte aus meiner Arbeit, aber die Aktien habe ich bis jetzt nie gehabt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 52.82,
+      "end_s": 57.04,
+      "role": "customer",
+      "text": "Ich habe letzte Woche einen Bericht über den neuen Go -Sauftag gesehen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 58.76,
+      "end_s": 60.52,
+      "role": "advisor",
+      "text": "Wo haben Sie den Bericht gesehen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 60.96,
+      "end_s": 63.72,
+      "role": "advisor",
+      "text": "Im Telefon nun steht nur noch ein Bericht von Claudia.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 64.14,
+      "end_s": 67.06,
+      "role": "advisor",
+      "text": "Ich weiss zum Beispiel noch nicht, was Sie als Quelle meinen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 69.34,
+      "end_s": 73.76,
+      "role": "customer",
+      "text": "Claudia hat mir den Link zum Bericht auf der Firmennetze geschickt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 73.76,
+      "end_s": 77.76,
+      "role": "customer",
+      "text": "Der grosse Auftrag wurde am letzten Freitag veröffentlicht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 78.4,
+      "end_s": 80.2,
+      "role": "customer",
+      "text": "Jeder kann ihn dort lesen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 80.28,
+      "end_s": 82.3,
+      "role": "customer",
+      "text": "Sie arbeiten nicht bei dieser Firma.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 82.64,
+      "end_s": 87.6,
+      "role": "advisor",
+      "text": "Ich weiss nichts zusätzlich und habe gleiche Inhalte wie alle anderen Anleger.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 89.56,
+      "end_s": 92.1,
+      "role": "advisor",
+      "text": "Nur danke, ich habe die Quellen notiert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 92.48,
+      "end_s": 98.02,
+      "role": "advisor",
+      "text": "Über welchen Betrag reden wir ungefähr, wenn Sie noch Aktien von dieser Firma dazu nehmen möchten?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 99.5,
+      "end_s": 101.02,
+      "role": "advisor",
+      "text": "Dann kann ich mich später",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 101.02,
+      "end_s": 104.28,
+      "role": "customer",
+      "text": "für den Kauf entscheiden, höchstens 1 '000 Franken.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 104.96,
+      "end_s": 110.26,
+      "role": "customer",
+      "text": "Ich habe zwischendurch 10 '000 überlegt, aber für den Umzug brauche ich sicher mal Geld.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 110.64,
+      "end_s": 114.28,
+      "role": "customer",
+      "text": "Ich weiss den definitiven Betrag für die neue Wohnung noch nicht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 115.92,
+      "end_s": 120.56,
+      "role": "advisor",
+      "text": "Ich denke, Sie planen das Geld für den Umzug nicht auch noch für das Depot ein.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 121.1,
+      "end_s": 124.7,
+      "role": "advisor",
+      "text": "Für welche Ausgaben haben Sie schon etwas auf die Seite gelegt?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S030",
+      "start_s": 124.7,
+      "end_s": 129.11,
+      "role": "customer",
+      "text": "die Kaution und das Zügelunternehmen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S031",
+      "start_s": 129.39,
+      "end_s": 132.99,
+      "role": "customer",
+      "text": "Die Kaution ist klar, bei der Firma habe ich eine Offenheit,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S032",
+      "start_s": 133.27,
+      "end_s": 135.71,
+      "role": "customer",
+      "text": "aber noch keine bestätigten Aufnahmen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S033",
+      "start_s": 136.09,
+      "end_s": 139.61,
+      "role": "customer",
+      "text": "Ich habe das Geld auf einem separaten Konto und lasse es dort.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S034",
+      "start_s": 141.57,
+      "end_s": 145.43,
+      "role": "advisor",
+      "text": "Wie sieht es mit der Überschneidung der beiden Mieten aus?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S035",
+      "start_s": 145.83,
+      "end_s": 149.69,
+      "role": "advisor",
+      "text": "Ist diese schon in ihrem Umzugsbetrag drin oder sind bis jetzt",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S036",
+      "start_s": 149.69,
+      "end_s": 152.95,
+      "role": "advisor",
+      "text": "nur Kaution und Zügelkosten reserviert?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S037",
+      "start_s": 152.95,
+      "end_s": 157.58,
+      "role": "customer",
+      "text": "An diese habe ich tatsächlich nicht gedacht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S038",
+      "start_s": 158.0,
+      "end_s": 160.92,
+      "role": "customer",
+      "text": "Die alte Wohnung zahle ich noch bis Ende November.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S039",
+      "start_s": 161.34,
+      "end_s": 162.66,
+      "role": "customer",
+      "text": "Die neue schon ab dem 1.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S040",
+      "start_s": 162.92,
+      "end_s": 164.84,
+      "role": "customer",
+      "text": "Das ist ein Monat doppelt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S041",
+      "start_s": 165.14,
+      "end_s": 170.2,
+      "role": "customer",
+      "text": "Ich habe 4 '000 für die Kaution und 2 '000 für das Zeugchen reserviert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S042",
+      "start_s": 170.24,
+      "end_s": 173.4,
+      "role": "customer",
+      "text": "Aber nur die normale Miete in meinem Monatsbudget.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S043",
+      "start_s": 175.3,
+      "end_s": 178.3,
+      "role": "advisor",
+      "text": "Dann kommt im November die neue Miete noch dazu.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S044",
+      "start_s": 178.86,
+      "end_s": 181.24,
+      "role": "advisor",
+      "text": "Wie hoch ist die und wann muss sie das erste Mal raus?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S045",
+      "start_s": 181.24,
+      "end_s": 185.7,
+      "role": "advisor",
+      "text": "Den Dauerauftrag können wir gleich als separate Frage anschauen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S046",
+      "start_s": 188.47,
+      "end_s": 190.57,
+      "role": "customer",
+      "text": "1560 am 1. November.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S047",
+      "start_s": 190.95,
+      "end_s": 193.73,
+      "role": "customer",
+      "text": "Die alte Miete ist 1320.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S048",
+      "start_s": 194.33,
+      "end_s": 200.35,
+      "role": "customer",
+      "text": "Ich möchte nicht den alten Auftrag einfach überschreiben, bevor der letzte November betagt worden ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S049",
+      "start_s": 200.61,
+      "end_s": 202.17,
+      "role": "customer",
+      "text": "Das ist meine andere Frage.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S050",
+      "start_s": 204.12,
+      "end_s": 210.44,
+      "role": "advisor",
+      "text": "Genau, wir müssen separat schauen, wenn der alte Auftrag aufhört und das neue Jahr kommt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S051",
+      "start_s": 210.44,
+      "end_s": 216.44,
+      "role": "advisor",
+      "text": "Haben Sie im Entwurf den alten Empfängernamen bereits ersetzt oder nur noch auf Papier geplant?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S052",
+      "start_s": 218.27,
+      "end_s": 219.97,
+      "role": "customer",
+      "text": "Nur noch auf Papier.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S053",
+      "start_s": 220.15,
+      "end_s": 221.95,
+      "role": "customer",
+      "text": "Und zum Anlagebetrag?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S054",
+      "start_s": 222.05,
+      "end_s": 226.89,
+      "role": "customer",
+      "text": "6 '000 $ wären aus dem Bestand, den ich seit 2 Jahren nicht gebraucht habe.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S055",
+      "start_s": 227.15,
+      "end_s": 229.99,
+      "role": "customer",
+      "text": "Nicht aus der Kaution oder den Mietreserven.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S056",
+      "start_s": 230.25,
+      "end_s": 234.11,
+      "role": "customer",
+      "text": "Ich habe einen Fund im Kopf, aber noch keinen Verkauf beauftragt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S057",
+      "start_s": 235.9,
+      "end_s": 239.36,
+      "role": "advisor",
+      "text": "Gut, dann ist das bis jetzt der mögliche Betrag.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S058",
+      "start_s": 239.36,
+      "end_s": 245.36,
+      "role": "advisor",
+      "text": "Für die Miete brauchen Sie einen eigenen neuen Auftrag mit den Daten des neuen Vertrags.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S059",
+      "start_s": 245.38,
+      "end_s": 248.44,
+      "role": "advisor",
+      "text": "Was steht bei der neuen Verwaltung als Referenz?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S060",
+      "start_s": 248.54,
+      "end_s": 252.56,
+      "role": "advisor",
+      "text": "Bitte nur die Art des Felds mit den ganzen Koden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S061",
+      "start_s": 254.1,
+      "end_s": 256.3,
+      "role": "customer",
+      "text": "Eine Referenz zur Rechnung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S062",
+      "start_s": 256.46,
+      "end_s": 261.3,
+      "role": "customer",
+      "text": "Ich habe die Mietunterlagen im gleichen Ordner wie die Kautionsbestätigung",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S063",
+      "start_s": 261.3,
+      "end_s": 263.8,
+      "role": "customer",
+      "text": "und auf beiden steht eine andere Nummer.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S064",
+      "start_s": 263.8,
+      "end_s": 268.52,
+      "role": "customer",
+      "text": "Darum habe ich nicht irgendeine Referenz aus dem ersten Blattfällen kopiert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S065",
+      "start_s": 270.62,
+      "end_s": 274.84,
+      "role": "advisor",
+      "text": "Nehmt für die Miete diese Zahlungssammlung aus den Mietunterlagen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S066",
+      "start_s": 275.0,
+      "end_s": 277.7,
+      "role": "advisor",
+      "text": "Die Kalkulation ist ein anderer Vorgang.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S067",
+      "start_s": 277.84,
+      "end_s": 280.66,
+      "role": "advisor",
+      "text": "Ich kann Ihnen zeigen, wo Sie etwas einprägen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S068",
+      "start_s": 281.16,
+      "end_s": 286.24,
+      "role": "advisor",
+      "text": "Verweichern die Daten aber mit dem richtigen Beleg, bevor Sie den Auftrag bestätigen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S069",
+      "start_s": 288.14,
+      "end_s": 288.74,
+      "role": "customer",
+      "text": "Danke.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S070",
+      "start_s": 288.84,
+      "end_s": 290.9,
+      "role": "customer",
+      "text": "Dann noch zum Depotsformular.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S071",
+      "start_s": 290.9,
+      "end_s": 293.9,
+      "role": "customer",
+      "text": "Dort gibt es einen Betrag und eine Anzahl.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S072",
+      "start_s": 294.18,
+      "end_s": 299.38,
+      "role": "customer",
+      "text": "Wenn ich einen Betrag im Kopf habe, muss ich trotzdem die Anzahl selbst ausrechnen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S073",
+      "start_s": 299.48,
+      "end_s": 303.74,
+      "role": "customer",
+      "text": "Ich habe mal 40 ausgerechnet, aber der Preis ändert sich ja.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S074",
+      "start_s": 305.3,
+      "end_s": 308.34,
+      "role": "advisor",
+      "text": "Der Betrag und die Anzahl sind nicht dasselbe.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S075",
+      "start_s": 308.64,
+      "end_s": 313.56,
+      "role": "advisor",
+      "text": "Eine alte Preisrechnung auf Papier ist keine Zusage für die heutige Welt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S076",
+      "start_s": 313.84,
+      "end_s": 319.32,
+      "role": "advisor",
+      "text": "Bevor Sie etwas eintragen, müssen wir klären, welche Art von Auftrag Sie überhaupt haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S077",
+      "start_s": 319.32,
+      "end_s": 321.66,
+      "role": "advisor",
+      "text": "Sie müssen jetzt nichts abschicken.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S078",
+      "start_s": 323.54,
+      "end_s": 325.34,
+      "role": "customer",
+      "text": "Schluss! Gut, ich",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S079",
+      "start_s": 325.34,
+      "end_s": 325.7,
+      "role": "advisor",
+      "text": "habe noch die",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S080",
+      "start_s": 325.7,
+      "end_s": 327.82,
+      "role": "customer",
+      "text": "Schlussrechnung für das Zügeln im Kopf.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S081",
+      "start_s": 328.18,
+      "end_s": 331.5,
+      "role": "customer",
+      "text": "Der Vorschluss wäre jetzt fällig, der Rest nach dem Umzug.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S082",
+      "start_s": 331.8,
+      "end_s": 334.82,
+      "role": "customer",
+      "text": "Ich habe das Geld für beides zusammen auf die Seite gelegt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S083",
+      "start_s": 335.16,
+      "end_s": 340.3,
+      "role": "customer",
+      "text": "Muss ich darunter im zweiten Termin auch schon jetzt ein Zahlungsformular einfügen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S084",
+      "start_s": 342.0,
+      "end_s": 346.0,
+      "role": "advisor",
+      "text": "Wenn Betrag und Fälligkeit vom Rest nicht feststehen,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S085",
+      "start_s": 346.0,
+      "end_s": 349.66,
+      "role": "advisor",
+      "text": "sollten Sie sie nicht als bestätigte Rechnung erfassen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S086",
+      "start_s": 349.96,
+      "end_s": 352.8,
+      "role": "advisor",
+      "text": "Das Geld können Sie gleich dafür auf die Seite lassen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S087",
+      "start_s": 353.0,
+      "end_s": 356.44,
+      "role": "advisor",
+      "text": "Was ist beim Vorschuss bereits schriftlich bestätigt?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S088",
+      "start_s": 358.46,
+      "end_s": 361.16,
+      "role": "customer",
+      "text": "800 Franken bis Ende September.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S089",
+      "start_s": 361.58,
+      "end_s": 365.74,
+      "role": "customer",
+      "text": "Ich habe aber erst zwei Offerten und habe mich noch nicht für eine Firma entschieden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S090",
+      "start_s": 366.2,
+      "end_s": 368.62,
+      "role": "customer",
+      "text": "Wie der zweite ist der Vorschuss anders.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S091",
+      "start_s": 369.08,
+      "end_s": 373.02,
+      "role": "customer",
+      "text": "Dann warte ich mit dem Eintragen, bis ich weiss, welche die liegt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S092",
+      "start_s": 374.46,
+      "end_s": 381.14,
+      "role": "advisor",
+      "text": "Genau, wenn Sie sich für eine Firma entschieden haben, nehmen Sie deren Offerte und Rechnungen dazu.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S093",
+      "start_s": 381.64,
+      "end_s": 386.0,
+      "role": "advisor",
+      "text": "Für zwei Offerte können Sie nicht beide als fällige Rechner erfassen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S094",
+      "start_s": 386.34,
+      "end_s": 389.12,
+      "role": "advisor",
+      "text": "Diese 2 '000 sind bis jetzt Ihrer Schätze.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S095",
+      "start_s": 391.06,
+      "end_s": 394.64,
+      "role": "customer",
+      "text": "Danke, das hilft mehr als meine unverordneten Listen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S096",
+      "start_s": 394.96,
+      "end_s": 399.24,
+      "role": "customer",
+      "text": "Ich sehe jetzt, welche Umzugsbeträge schon feststehen und welche noch nicht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S097",
+      "start_s": 399.6,
+      "end_s": 403.72,
+      "role": "customer",
+      "text": "Zu den Aktien habe ich noch immer nur den Entwurf, keine Bestellungen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S098",
+      "start_s": 405.7,
+      "end_s": 410.78,
+      "role": "advisor",
+      "text": "Gut, ich notiere Ihre Frage zu den zwei Nicht -Aufbären im November.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S099",
+      "start_s": 411.18,
+      "end_s": 414.78,
+      "role": "advisor",
+      "text": "Welche Zeugnfeier Sie nehmen, entscheiden Sie selbst.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S100",
+      "start_s": 415.08,
+      "end_s": 420.02,
+      "role": "advisor",
+      "text": "Und beim Depotentwurf, wann wollen Sie die offene Frage fertig klären?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S101",
+      "start_s": 422.26,
+      "end_s": 423.14,
+      "role": "customer",
+      "text": "Möglichst heute.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S102",
+      "start_s": 423.48,
+      "end_s": 429.18,
+      "role": "customer",
+      "text": "Ich habe die Unterlagen jetzt von mir und den Bericht, den wir vorher darüber gesprochen haben, im Kopf.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S103",
+      "start_s": 429.58,
+      "end_s": 432.3,
+      "role": "customer",
+      "text": "Der Umzug selbst ist erst im November.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S104",
+      "start_s": 434.1,
+      "end_s": 443.48,
+      "role": "advisor",
+      "text": "Ich verstehe, dass Sie die Quarie angedeutet haben. Der Umzug ist im November. Bei den Anlagen müssen wir separat schauen, was Sie jetzt wollen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S105",
+      "start_s": 443.82,
+      "end_s": 448.08,
+      "role": "advisor",
+      "text": "Dazu gehört auch die Quelle des Berichts, den Sie am Anfang gelehnt haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S106",
+      "start_s": 449.72,
+      "end_s": 457.82,
+      "role": "customer",
+      "text": "Ich habe den Bericht gelesen. Bis jetzt wollte ich aber nur die Ablauffrage klären. Den Kaufentscheid habe ich noch nicht getroffen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S107",
+      "start_s": 457.82,
+      "end_s": 461.54,
+      "role": "customer",
+      "text": "Ich habe die ganze Zeit auch an offenen Umzugsschosten gedämmt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S108",
+      "start_s": 461.84,
+      "end_s": 464.52,
+      "role": "customer",
+      "text": "Diese müssen zuerst für mich übersichtlich sein.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S109",
+      "start_s": 466.2,
+      "end_s": 469.44,
+      "role": "advisor",
+      "text": "Dann sagen Sie mir jetzt bitte genau, was Sie wollen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S110",
+      "start_s": 469.66,
+      "end_s": 473.44,
+      "role": "advisor",
+      "text": "Ich nehme den Wunsch auf, aber das ist noch keine Bestätigung,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S111",
+      "start_s": 473.7,
+      "end_s": 476.54,
+      "role": "advisor",
+      "text": "dass ein Verkauf oder ein Verkauf erteilt ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S112",
+      "start_s": 478.6,
+      "end_s": 480.88,
+      "role": "customer",
+      "text": "Ja, ich habe mich jetzt entschieden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S113",
+      "start_s": 480.88,
+      "end_s": 487.34,
+      "role": "customer",
+      "text": "Genau wegen diesem Bericht möchte ich heute für 6 '000 Franken Aktien von den Seelen -Systemen kaufen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S114",
+      "start_s": 487.8,
+      "end_s": 493.34,
+      "role": "customer",
+      "text": "Nehmen Sie den Kaufwunsch bitte entgegen. Der Sparplan soll bleiben, wie er ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S115",
+      "start_s": 494.94,
+      "end_s": 499.92,
+      "role": "advisor",
+      "text": "Ich habe den Betrag, den Namen der Aktien und die Quelle zum Wunsch notiert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S116",
+      "start_s": 500.22,
+      "end_s": 504.08,
+      "role": "advisor",
+      "text": "Ich kann Ihnen in diesem Rückruf keine Ausführung bestätigen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S117",
+      "start_s": 504.2,
+      "end_s": 507.74,
+      "role": "advisor",
+      "text": "Ich kläre den nächsten Schritt über den vorgesehenen Ablauf.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S118",
+      "start_s": 509.67,
+      "end_s": 515.09,
+      "role": "customer",
+      "text": "Okay, ich mache ein Formular, jetzt keine eigene zusätzliche Fassung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S119",
+      "start_s": 515.37,
+      "end_s": 521.53,
+      "role": "customer",
+      "text": "Ich will nicht nachher zwei Anfragen im System haben, die jemand für zwei verschiedene Aufträge hält.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S120",
+      "start_s": 523.24,
+      "end_s": 528.6,
+      "role": "advisor",
+      "text": "Das ist festgehalten. Bei Ihren Nachfragen können Sie drücken auf Referenz -AT.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S121",
+      "start_s": 529.0,
+      "end_s": 535.14,
+      "role": "advisor",
+      "text": "Dann sieht die nächste Person, was wir besprochen haben, und Sie müssen mir nicht alles von vorne erzählen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S122",
+      "start_s": 536.94,
+      "end_s": 543.68,
+      "role": "customer",
+      "text": "Danke. Können Sie im Postfach auch erwähnen, dass der Umzugsbetrag separat reserviert ist?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S123",
+      "start_s": 543.96,
+      "end_s": 549.84,
+      "role": "customer",
+      "text": "Nicht als neuen Vorgang, nur damit ich meine eigenen Liste mit Ihrer Nachricht vergleichen kann.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S124",
+      "start_s": 551.68,
+      "end_s": 556.18,
+      "role": "advisor",
+      "text": "Ich notiere, dass Sie das Umzugsgeld separat auf die Seite gelegt haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S125",
+      "start_s": 556.5,
+      "end_s": 563.12,
+      "role": "advisor",
+      "text": "Das ist kein zusätzlicher Auftrag und ich sage Ihnen damit auch keinen gebürtigen Betrag zu.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S126",
+      "start_s": 563.12,
+      "end_s": 565.92,
+      "role": "advisor",
+      "text": "Die Nachricht kommt ins sichere Postfach.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S127",
+      "start_s": 567.7,
+      "end_s": 571.58,
+      "role": "customer",
+      "text": "Gut, ich lese sie, bevor ich etwas bestätige.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S128",
+      "start_s": 571.8,
+      "end_s": 574.2,
+      "role": "advisor",
+      "text": "Jetzt kann ich die Papiere wenigstens",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S129",
+      "start_s": 574.2,
+      "end_s": 575.76,
+      "role": "customer",
+      "text": "bei der Gepämpfe ablegen.",
+      "low_confidence": false
+    }
+  ],
+  "twin": {
+    "call_id": "Stufe2_C06-K3",
+    "dialogue_id": "Stufe2_C06",
+    "variant": "clean",
+    "verdict": "alarm",
+    "note": "The customer does not mention any private source or non-public information for the trade request."
+  },
+  "feedback": [],
+  "triggers": []
+}

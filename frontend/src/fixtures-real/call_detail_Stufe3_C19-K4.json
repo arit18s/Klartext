@@ -1,0 +1,569 @@
+{
+  "call": {
+    "call_id": "Stufe3_C19-K4",
+    "file_name": "Stufe3_C19-K4.wav",
+    "dialogue_id": "Stufe3_C19",
+    "variant": "noisy",
+    "level": 3,
+    "duration_s": 281.16,
+    "advisor_name": "Kathrin Vogel",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:29Z",
+    "processed_at": "2026-10-10T09:54:59Z",
+    "verdict": "alarm",
+    "family": "documentation",
+    "score": 100.0,
+    "reason": "The customer explicitly requests to remove a line from the financing draft to hide its content from the financing department. Although the customer is unsure which of two lines (one regarding a relevant repayment obligation, one private) is the target, the stated intent is to conceal information from the designated internal recipient. The advisor refuses to act until the target is identified, but the request to conceal relevant information was made.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": true,
+    "expected_verdict": "review"
+  },
+  "decision": {
+    "verdict": "alarm",
+    "family": "documentation",
+    "score": 100.0,
+    "reason": "The customer explicitly requests to remove a line from the financing draft to hide its content from the financing department. Although the customer is unsure which of two lines (one regarding a relevant repayment obligation, one private) is the target, the stated intent is to conceal information from the designated internal recipient. The advisor refuses to act until the target is identified, but the request to conceal relevant information was made.",
+    "reason_de": "Die Kundin fordert explizit, eine Zeile aus dem Finanzierungsentwurf zu entfernen, um deren Inhalt vor der Finanzierungsstelle zu verbergen. Obwohl unklar ist, ob die betroffene Zeile die relevante Rückzahlungsverpflichtung oder den privaten Termin betrifft, ist das erklärte Ziel, Informationen vor dem internen Empfänger zu verheimlichen. Der Berater verweigert die Ausführung, solange die Zielzeile nicht identifiziert ist, aber die Aufforderung zur Verschleierung wurde gestellt.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:47Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The conversation is strictly about administrative details of a mortgage application (identifying lines in a document, uploading moving invoices). It does not involve any request to trade financial instruments based on non-public information.",
+      "reason_de": "Das Gespräch betrifft ausschließlich administrative Details einer Hypothekenantragstellung (Identifizierung von Zeilen in einem Dokument, Hochladen von Umzugsrechnungen). Es beinhaltet keine Anfrage zum Handel mit Finanzinstrumenten auf Basis nicht-öffentlicher Informationen.",
+      "benign_explanation": "The call concerns a technical clarification regarding a housing financing application draft. The customer and advisor are discussing which specific line in a scanned document contains a comment that needs to be removed or clarified for the bank's financing department. There is no mention of securities trading, stock markets, or non-public corporate information."
+    },
+    {
+      "family": "splitting",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The conversation deals with document clarification and uploading a single invoice separately for administrative reasons, not with splitting financial transactions to avoid controls. Therefore, the family 'Splitting to avoid approval' is not applicable.",
+      "reason_de": "Das Gespräch handelt von der Klärung von Dokumenten und dem separaten Hochladen einer einzigen Rechnung aus administrativen Gründen, nicht vom Aufteilen finanzieller Transaktionen zur Umgehung von Kontrollen. Daher ist die Familie 'Aufteilung zur Vermeidung der Genehmigung' nicht anwendbar.",
+      "benign_explanation": "The call concerns a customer trying to clarify which line in a housing finance draft needs editing and deciding to upload a separate moving invoice separately due to a deadline. There is no request for connected partial payments or transfers intended to circumvent an internal approval process."
+    },
+    {
+      "family": "access",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 0.8,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The conversation is strictly about document clarification and upload procedures for a financing application. There is no mention of any access secret, so the family 'Access code shared' is not applicable.",
+      "reason_de": "Das Gespräch handelt ausschließlich von der Klärung von Dokumenteninhalten und Upload-Prozeduren für eine Finanzierungsantrag. Es werden keine Zugangsgeheimnisse erwähnt, daher ist die Familie 'Zugangscode geteilt' nicht anwendbar.",
+      "benign_explanation": "The call concerns a discussion about a housing financing draft, specifically clarifying which line in a document corresponds to a customer's comment. The participants discuss uploading documents (a moving invoice) and locating an original printout. No access codes, passwords, PINs, TANs, or other login secrets are mentioned, requested, or disclosed."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor discusses document handling with the account holder herself. Although the customer mentions a debt owed to her father, this is part of the customer's explanation of her own documents, and the advisor does not reveal any protected third-party information to an unauthorized recipient.",
+      "reason_de": "Die Beraterin bespricht die Dokumentenhandhabung mit der Kontoinhaberin selbst. Obwohl die Kundin eine Schuld gegenüber ihrem Vater erwähnt, dient dies nur als Erklärung für ihre eigenen Dokumente, und die Beraterin gibt keine geschützten Drittpartei-Informationen an einen unbefugten Empfänger weiter.",
+      "benign_explanation": "The call is a discussion between the advisor and the account holder (Frau Joost) regarding how to correctly annotate and upload documents for her own housing financing application. The customer mentions information about her father's money only as context for what is written on a document she possesses, but the advisor does not disclose any protected third-party details to an unauthorized person. No third party is present or involved in the conversation."
+    },
+    {
+      "family": "documentation",
+      "score": 100.0,
+      "event_majority": "present",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer explicitly requests to remove a line from the financing draft to hide its content from the financing department. Although the customer is unsure which of two lines (one regarding a relevant repayment obligation, one private) is the target, the stated intent is to conceal information from the designated internal recipient. The advisor refuses to act until the target is identified, but the request to conceal relevant information was made.",
+      "reason_de": "Die Kundin fordert explizit, eine Zeile aus dem Finanzierungsentwurf zu entfernen, um deren Inhalt vor der Finanzierungsstelle zu verbergen. Obwohl unklar ist, ob die betroffene Zeile die relevante Rückzahlungsverpflichtung oder den privaten Termin betrifft, ist das erklärte Ziel, Informationen vor dem internen Empfänger zu verheimlichen. Der Berater verweigert die Ausführung, solange die Zielzeile nicht identifiziert ist, aber die Aufforderung zur Verschleierung wurde gestellt.",
+      "benign_explanation": "The customer is confused about which document contains the comment due to a scanning error and initially discusses separating a private moving invoice. However, the customer explicitly states that the goal of removing the specific line from the financing draft is to prevent the financing department from seeing its content."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 322,
+      "family": "documentation",
+      "seg_id": "S010",
+      "role": "context",
+      "start_s": 35.33,
+      "end_s": 42.05,
+      "speaker_role": "customer",
+      "quote": "Auf dem einen Blatt steht das Geld von meinem Vater, das ich zurückzahlen muss und das zur Finanzierung gehört.",
+      "note": "One of the potential targets of the removal is a relevant financial fact (repayment obligation) required for the financing decision.",
+      "snippet_url": "/api/calls/Stufe3_C19-K4/snippets/S010"
+    },
+    {
+      "id": 323,
+      "family": "documentation",
+      "seg_id": "S046",
+      "role": "trigger",
+      "start_s": 231.73,
+      "end_s": 239.97,
+      "speaker_role": "customer",
+      "quote": "Mein Wunsch bleibt, die Zeile, die mein File meint, zu lösen, damit die Finanzierungsstelle den Inhalt nicht zu sehen bekommt.",
+      "note": "The customer explicitly states the intent to remove a line so the financing department does not see the content.",
+      "snippet_url": "/api/calls/Stufe3_C19-K4/snippets/S046"
+    },
+    {
+      "id": 324,
+      "family": "documentation",
+      "seg_id": "S047",
+      "role": "context",
+      "start_s": 239.97,
+      "end_s": 245.29,
+      "speaker_role": "customer",
+      "quote": "Aber ich kann jetzt nicht zuverlässig sagen, welche von diesen zwei Zeilen es ist.",
+      "note": "The customer admits uncertainty about which line (relevant or private) is being targeted, but the request to hide content remains.",
+      "snippet_url": "/api/calls/Stufe3_C19-K4/snippets/S047"
+    },
+    {
+      "id": 325,
+      "family": "documentation",
+      "seg_id": "S048",
+      "role": "exclusion",
+      "start_s": 246.85,
+      "end_s": 258.21,
+      "speaker_role": "advisor",
+      "quote": "Ich nehme ihren Wunsch auf. Solange wir nicht wissen, welche Zeilen sie meinen, löse ich keinen Satz und sage auch nicht, den wichtigen Angreif können wir weglassen.",
+      "note": "The advisor records the request but refuses to execute it until the specific line is identified, preventing immediate harm but not negating the request.",
+      "snippet_url": "/api/calls/Stufe3_C19-K4/snippets/S048"
+    }
+  ],
+  "keyword_hits": [],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.11,
+      "end_s": 3.21,
+      "role": "advisor",
+      "text": "Grüezi Frau Joost, da ist Kathrin Vogel.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 3.31,
+      "end_s": 7.75,
+      "role": "advisor",
+      "text": "Sie haben im Entwurf für die Wohnungsfinanzierung eine Randnotiz gemacht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 8.13,
+      "end_s": 10.81,
+      "role": "advisor",
+      "text": "Für die Kommentare lautet nur diese Zeile heraus.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 11.09,
+      "end_s": 12.53,
+      "role": "advisor",
+      "text": "Welche Stelle meint sie?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 14.49,
+      "end_s": 16.93,
+      "role": "customer",
+      "text": "Ich habe zwei Blätter auf dem Tisch.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 17.17,
+      "end_s": 19.71,
+      "role": "customer",
+      "text": "Ich habe gemeint, der Pfeil wäre sichtbar.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 19.91,
+      "end_s": 22.97,
+      "role": "customer",
+      "text": "Aber beim Scannen ist er am Ende abgeschnitten.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 23.25,
+      "end_s": 27.35,
+      "role": "customer",
+      "text": "Ich kann Ihnen jetzt nicht am Bildschirm zeigen, was ich Ihnen gemeint habe.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 28.91,
+      "end_s": 33.83,
+      "role": "advisor",
+      "text": "Dann lassen wir den Bezug zuerst klären. Was steht auf den zwei Blättern?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 35.33,
+      "end_s": 42.05,
+      "role": "customer",
+      "text": "Auf dem einen Blatt steht das Geld von meinem Vater, das ich zurückzahlen muss und das zur Finanzierung gehört.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 42.45,
+      "end_s": 54.99,
+      "role": "customer",
+      "text": "Auf dem anderen steht ein privater Termin fürs Abholen meiner Sachen. Ich habe beide Blätter mit dem gleichen Stift bearbeitet und weiss gerade nicht, welche Zeilen mein Kommentar bezeichnet.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 54.99,
+      "end_s": 61.6,
+      "role": "advisor",
+      "text": "Die Rückzahlungsverpflichtung muss vollständig an unsere Finanzierungsstelle.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 61.78,
+      "end_s": 65.02,
+      "role": "advisor",
+      "text": "Einen privaten Abholtermin braucht diese Stelle nicht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 65.34,
+      "end_s": 69.6,
+      "role": "advisor",
+      "text": "Wir müssen also wissen, welchen Platz Ihr Änderungswunsch betrifft.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 71.67,
+      "end_s": 74.85,
+      "role": "customer",
+      "text": "Ich habe den ursprünglichen Ausflug im Büro.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 75.09,
+      "end_s": 76.77,
+      "role": "customer",
+      "text": "Zuhause habe ich nur den Scan.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 77.17,
+      "end_s": 79.83,
+      "role": "customer",
+      "text": "Der Dateinamen ist bei beiden fast gleich.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 80.11,
+      "end_s": 83.63,
+      "role": "customer",
+      "text": "Und ich habe zwei Bilder nachher in der Datei zusammengenommen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 83.63,
+      "end_s": 93.44,
+      "role": "advisor",
+      "text": "Steht beim Kommentar eine Seitenzahl oder etwas anderes, das man auch ohne den abgeschnittenen Pfeil erkennt, welche Zeilen Sie meinen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 95.4,
+      "end_s": 98.88,
+      "role": "customer",
+      "text": "Nein, es steht nur Rangband und keine Seitenzahl.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 99.24,
+      "end_s": 101.48,
+      "role": "customer",
+      "text": "Ich habe das vor dem Zusammenkriegen geschrieben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 101.92,
+      "end_s": 106.32,
+      "role": "customer",
+      "text": "Darum weiss ich auch nicht sicher, ob der Kommentar zur ersten Seite gehört.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 108.11,
+      "end_s": 112.91,
+      "role": "advisor",
+      "text": "Wenn der Pfeil fehlt, kann mir am Telefon nicht sicher sein, was gemeint ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 112.91,
+      "end_s": 113.81,
+      "role": "customer",
+      "text": "Wer hat den",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 113.81,
+      "end_s": 120.03,
+      "role": "advisor",
+      "text": "Originalausdruck im Büro? Können Sie ihn selbst holen oder brauchen Sie eine Kopie von jemand anderem?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 121.87,
+      "end_s": 127.93,
+      "role": "customer",
+      "text": "Schau, ich kann ihn morgen selbst holen. Der Stapler ist in meiner Schublade, nicht bei der Kollegin.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 128.35,
+      "end_s": 135.39,
+      "role": "customer",
+      "text": "Ich schicke diese Unterlagen mit den persönlichen Angaben nicht in den Team -Card, nur um jemanden nach dem Fall zu fragen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 136.99,
+      "end_s": 143.73,
+      "role": "advisor",
+      "text": "Das ist gut. Nehmt den Originalausdruck und schreibt klar dazu, welchen Satz Sie meinen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 144.17,
+      "end_s": 150.51,
+      "role": "advisor",
+      "text": "Bitte schreibt nicht aus dem Gedächtnis einen neuen Text, wenn Sie noch nicht sicher wissen können, was unter dem Fall stand.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S030",
+      "start_s": 152.73,
+      "end_s": 159.79,
+      "role": "customer",
+      "text": "Gut. Ich habe noch die neue Rechnung des Umzugsunternehmens. Aber diese gehört zu keinem der zwei Sätze.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S031",
+      "start_s": 159.79,
+      "end_s": 164.73,
+      "role": "customer",
+      "text": "Die kann ich separat hochladen, damit sie nicht im gleichen Anhang landet.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S032",
+      "start_s": 166.4,
+      "end_s": 173.1,
+      "role": "advisor",
+      "text": "Und ja, gebt bei der Unterlage Ihr eigenes Datum an und schreibt, dass es um den Umzug geht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S033",
+      "start_s": 173.52,
+      "end_s": 177.04,
+      "role": "advisor",
+      "text": "Die Frage zu Ihrem Kommentar ist damit aber noch nicht geklärt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S034",
+      "start_s": 179.36,
+      "end_s": 185.32,
+      "role": "customer",
+      "text": "Verstanden. Der Umzugsbeleg hat eine Frist, darum möchte ich heute wenigstens den richtigen hochladen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S035",
+      "start_s": 185.32,
+      "end_s": 192.52,
+      "role": "customer",
+      "text": "Soll ich Ihnen nachher eine Nachricht schicken, dass die neue Datei nur den Umzug betrifft und nicht meinen Änderungswunsch?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S036",
+      "start_s": 194.26,
+      "end_s": 199.66,
+      "role": "advisor",
+      "text": "Ja, schreibe bei dieser Datei dazu, für welchen Zeitpunkt die Rechnung ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S037",
+      "start_s": 199.78,
+      "end_s": 204.42,
+      "role": "advisor",
+      "text": "Und schreibe kurz, dass Sie Dokumentar zum Andergang an den Mond kleben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S038",
+      "start_s": 204.72,
+      "end_s": 205.38,
+      "role": "customer",
+      "text": "Mit diesem",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S039",
+      "start_s": 205.38,
+      "end_s": 209.2,
+      "role": "advisor",
+      "text": "Upload ändere ich noch keine Zeile im Finanzierungsentwurf.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S040",
+      "start_s": 210.95,
+      "end_s": 213.19,
+      "role": "customer",
+      "text": "Das kann ich morgen im Büro machen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S041",
+      "start_s": 213.19,
+      "end_s": 216.63,
+      "role": "customer",
+      "text": "Ich schreibe nicht eine neue Version aus dem Gedächtnis.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S042",
+      "start_s": 216.93,
+      "end_s": 219.17,
+      "role": "customer",
+      "text": "Das wäre wahrscheinlich noch verwirrender.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S043",
+      "start_s": 220.91,
+      "end_s": 221.77,
+      "role": "customer",
+      "text": "Schickt gut.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S044",
+      "start_s": 222.15,
+      "end_s": 226.67,
+      "role": "advisor",
+      "text": "Schickt dann bitte die richtig angeschriebene Seite über den vorgesehenen Weg.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S045",
+      "start_s": 226.87,
+      "end_s": 230.01,
+      "role": "advisor",
+      "text": "Es muss gekommen sein, welche Textzeilen Sie meinen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S046",
+      "start_s": 231.73,
+      "end_s": 239.97,
+      "role": "customer",
+      "text": "Mein Wunsch bleibt, die Zeile, die mein File meint, zu lösen, damit die Finanzierungsstelle den Inhalt nicht zu sehen bekommt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S047",
+      "start_s": 239.97,
+      "end_s": 245.29,
+      "role": "customer",
+      "text": "Aber ich kann jetzt nicht zuverlässig sagen, welche von diesen zwei Zeilen es ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S048",
+      "start_s": 246.85,
+      "end_s": 258.21,
+      "role": "advisor",
+      "text": "Ich nehme ihren Wunsch auf. Solange wir nicht wissen, welche Zeilen sie meinen, löse ich keinen Satz und sage auch nicht, den wichtigen Angreif können wir weglassen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S049",
+      "start_s": 259.79,
+      "end_s": 267.95,
+      "role": "customer",
+      "text": "Gut, ich schaue morgen zuerst auf den Originalausdruck. Für heute lade ich nur den separaten Umzugspalett auf.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S050",
+      "start_s": 269.97,
+      "end_s": 276.83,
+      "role": "advisor",
+      "text": "Ich bedanke mich. Die Bearbeitung dieses Kommentars bleibt offen, bis der Bezug geklärt ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S051",
+      "start_s": 278.57,
+      "end_s": 280.19,
+      "role": "advisor",
+      "text": "Verstanden, auf Wiedersehen.",
+      "low_confidence": false
+    }
+  ],
+  "twin": null,
+  "feedback": [],
+  "triggers": [
+    {
+      "id": 33,
+      "call_id": "Stufe3_C19-K4",
+      "remote_id": "70",
+      "url": "http://localhost:5173/calls/Stufe3_C19-K4?t=221",
+      "status_code": 201,
+      "created_at": "2026-10-10T07:42:04Z"
+    }
+  ]
+}

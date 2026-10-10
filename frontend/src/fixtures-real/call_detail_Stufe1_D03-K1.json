@@ -1,0 +1,678 @@
+{
+  "call": {
+    "call_id": "Stufe1_D03-K1",
+    "file_name": "Stufe1_D03-K1.wav",
+    "dialogue_id": "Stufe1_D03",
+    "variant": "clean",
+    "level": 1,
+    "duration_s": 290.49,
+    "advisor_name": "Andréa Moser",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:27Z",
+    "processed_at": "2026-10-10T09:54:58Z",
+    "verdict": "no_alert",
+    "family": "trade",
+    "score": 0.0,
+    "reason": "The customer explicitly denies possessing non-public information and states they are only reviewing a publicly available report. The customer explicitly states they do not want to trade based on unpublished information and confirms they have no such information, ruling out the misconduct.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": false,
+    "expected_verdict": "no_alert"
+  },
+  "decision": {
+    "verdict": "no_alert",
+    "family": "trade",
+    "score": 0.0,
+    "reason": "The customer explicitly denies possessing non-public information and states they are only reviewing a publicly available report. The customer explicitly states they do not want to trade based on unpublished information and confirms they have no such information, ruling out the misconduct.",
+    "reason_de": "Die Kundin erklärt ausdrücklich, dass sie keine nicht-öffentlichen Informationen besitzt und sich nur auf einen öffentlich zugänglichen Bericht bezieht. Sie schliesst aus, dass sie auf Basis von Insiderinformationen handeln möchte, und bestätigt, dass sie keine solchen Informationen hat. Damit liegt kein Verstoß vor.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:46Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer explicitly denies possessing non-public information and states they are only reviewing a publicly available report. The customer explicitly states they do not want to trade based on unpublished information and confirms they have no such information, ruling out the misconduct.",
+      "reason_de": "Die Kundin erklärt ausdrücklich, dass sie keine nicht-öffentlichen Informationen besitzt und sich nur auf einen öffentlich zugänglichen Bericht bezieht. Sie schliesst aus, dass sie auf Basis von Insiderinformationen handeln möchte, und bestätigt, dass sie keine solchen Informationen hat. Damit liegt kein Verstoß vor.",
+      "benign_explanation": "The customer explicitly states that they do not possess any non-public information and are only discussing a publicly available report and a newspaper article. The customer explicitly rules out trading on insider information, stating they do not want to trade before the announcement and have no unpublished information. The advisor confirms the information is public. No trade request based on non-public information is made."
+    },
+    {
+      "family": "splitting",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call concerns the interpretation of public financial data and does not involve any request for partial payments or transfers intended to circumvent approval processes. Therefore, the family 'Splitting to avoid approval' is not applicable.",
+      "reason_de": "Der Anruf betrifft die Auslegung öffentlicher Finanzdaten und enthält keine Anfrage nach Teilzahlungen oder Überweisungen, die darauf abzielen, Genehmigungsprozesse zu umgehen. Daher ist die Kategorie 'Aufteilung zur Vermeidung von Genehmigungen' nicht anwendbar.",
+      "benign_explanation": "The call is a consultation regarding discrepancies in financial figures (revenue growth percentages) between a newspaper article, a podcast, and the bank's investment report. The customer clarifies that the differences are due to different reporting periods (half-year vs. full-year) and adjusted comparison values. The customer explicitly states they do not wish to place an order yet and are only seeking clarification on public information. There is no discussion of splitting payments, transfers, or deposits to avoid internal controls."
+    },
+    {
+      "family": "access",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The transcript contains no mention of any access secrets such as login codes, PINs, or TANs. The numerical values discussed (12% and 5%) refer to revenue growth figures from public financial reports, which are not access secrets. Therefore, the event of sharing an access code did not occur.",
+      "reason_de": "Im Transkript wird kein Zugriffsschlüssel wie Login-Code, PIN oder TAN erwähnt. Die besprochenen numerischen Werte (12 % und 5 %) beziehen sich auf Umsatzsteigerungszahlen aus öffentlichen Finanzberichten und sind keine Zugriffsgeheimnisse. Daher hat es keine Weitergabe eines Zugriffsgeheimnisses gegeben.",
+      "benign_explanation": "The call is a standard advisory conversation regarding discrepancies in financial reports (revenue percentages). The customer explicitly states they have no insider information and do not wish to trade before public announcements. No access codes, PINs, passwords, or TANs are mentioned, requested, or disclosed by either party."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor discusses publicly available company reports and the customer's own portfolio with the account holder herself. No protected third-party information is disclosed to an unauthorized person.",
+      "reason_de": "Der Berater bespricht öffentlich zugängliche Unternehmensberichte und das eigene Depot der Kundin mit der Kontoinhaberin selbst. Es werden keine geschützten Daten einer dritten Partei an eine unbefugte Person offengelegt.",
+      "benign_explanation": "The customer is the account holder speaking to their own advisor. The discussion concerns publicly available financial reports of a third-party company (Lehmanns Energie) and the customer's own portfolio overview. The advisor does not reveal any protected details of a third party to an unauthorized person; rather, the advisor assists the customer in interpreting public data and agrees to keep the customer's own portfolio overview confidential within the secure bank postbox as requested."
+    },
+    {
+      "family": "documentation",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 0.8,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer asks for the portfolio overview to be kept in the secure postbox to prevent family members from seeing it on a shared tablet. This is a legitimate privacy measure regarding the delivery channel, not a request to hide relevant investment facts or risks from the bank's internal documentation.",
+      "reason_de": "Die Kundin bittet darum, die Depotübersicht im sicheren Postfach zu belassen, um zu verhindern, dass Familienmitglieder sie auf einem gemeinsamen Tablet sehen. Dies ist eine legitime Datenschutzmassnahme bezüglich des Übermittlungswegs und kein Versuch, relevante Anlagefakten oder Risiken vor der internen Dokumentation der Bank zu verbergen.",
+      "benign_explanation": "The customer requests that their portfolio overview be stored confidentially in the secure bank postbox rather than sent via email, because the email account is shared on a family tablet. This is a standard privacy request to protect personal data from unauthorized access by family members, not an attempt to conceal relevant financial facts from the bank's internal records or compliance departments."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 179,
+      "family": "trade",
+      "seg_id": "S037",
+      "role": "exclusion",
+      "start_s": 183.95,
+      "end_s": 189.41,
+      "speaker_role": "customer",
+      "quote": "Ich will nicht vor der Meldung handeln und habe auch keine Information, die noch nicht publiziert wäre.",
+      "note": "Customer explicitly negates the intent to trade on non-public information and confirms lack of such information.",
+      "snippet_url": "/api/calls/Stufe1_D03-K1/snippets/S037"
+    },
+    {
+      "id": 180,
+      "family": "trade",
+      "seg_id": "S038",
+      "role": "exclusion",
+      "start_s": 189.41,
+      "end_s": 193.41,
+      "speaker_role": "customer",
+      "quote": "Mir geht es um den öffentlichen Belicht, nicht um einen Auftrag.",
+      "note": "Customer clarifies the call is about public information, not a trade order based on secrets.",
+      "snippet_url": "/api/calls/Stufe1_D03-K1/snippets/S038"
+    }
+  ],
+  "keyword_hits": [
+    {
+      "keyword_id": "K02",
+      "family": "trade",
+      "phrase": "interne Zahlen",
+      "seg_id": "S015",
+      "start_s": 67.42,
+      "end_s": 71.92,
+      "label": null
+    },
+    {
+      "keyword_id": "K03",
+      "family": "trade",
+      "phrase": "Quartalszahlen",
+      "seg_id": "S028",
+      "start_s": 131.78,
+      "end_s": 132.96,
+      "label": null
+    },
+    {
+      "keyword_id": "K04",
+      "family": "trade",
+      "phrase": "vor der Meldung",
+      "seg_id": "S037",
+      "start_s": 184.69,
+      "end_s": 185.51,
+      "label": null
+    },
+    {
+      "keyword_id": "K01",
+      "family": "trade",
+      "phrase": "noch nicht publiziert",
+      "seg_id": "S037",
+      "start_s": 188.03,
+      "end_s": 189.01,
+      "label": null
+    },
+    {
+      "keyword_id": "K05",
+      "family": "trade",
+      "phrase": "vertraulich",
+      "seg_id": "S055",
+      "start_s": 260.18,
+      "end_s": 261.08,
+      "label": null
+    }
+  ],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.08,
+      "end_s": 3.82,
+      "role": "advisor",
+      "text": "Guten Morgen, Frau Weiss. Hier ist Andréa Moser.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 3.96,
+      "end_s": 8.04,
+      "role": "advisor",
+      "text": "Sie haben im Postfach eine Frage zum Anlagebericht hinterlegt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 8.4,
+      "end_s": 12.38,
+      "role": "advisor",
+      "text": "Geht es um die Übersicht des Depot oder um einen bestimmten Titel?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 14.18,
+      "end_s": 15.38,
+      "role": "customer",
+      "text": "Und Lehmanns Energie.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 15.86,
+      "end_s": 19.66,
+      "role": "customer",
+      "text": "Ich habe den Artikel in der Zeitung vergesst und den nie vergesst.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 20.14,
+      "end_s": 25.04,
+      "role": "customer",
+      "text": "Jetzt frage ich mich, ob ich einen alten Bericht mit dem neuen verglichen habe.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 25.5,
+      "end_s": 27.42,
+      "role": "customer",
+      "text": "Die Prozentzahlen sind nicht gleich.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 29.42,
+      "end_s": 32.08,
+      "role": "advisor",
+      "text": "Können Sie mir das Datum des Facts -Feeds sagen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 32.42,
+      "end_s": 36.74,
+      "role": "advisor",
+      "text": "Wir müssen zuerst sicher sein, dass wir über die gleiche Periode reden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 38.48,
+      "end_s": 40.84,
+      "role": "customer",
+      "text": "Hier steht Stand Ende Juni.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 40.94,
+      "end_s": 48.7,
+      "role": "customer",
+      "text": "Der Artikel ist von gestern. Im Artikel geht es um das erste Halbjahr, auf Ihrem Blatt um das letzte ganze Jahr.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 49.02,
+      "end_s": 51.32,
+      "role": "customer",
+      "text": "Ah, dann ist schon das der Unterschied.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 53.28,
+      "end_s": 58.78,
+      "role": "advisor",
+      "text": "Genau. Und es kann auch eine andere Bezugsgrösse sein. Was verbreitet sie konkret?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 59.4,
+      "end_s": 67.04,
+      "role": "customer",
+      "text": "Die Steigerung des Umsatzes. Im Artikel sind es 12 % auf dem Blatt 5.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 67.42,
+      "end_s": 71.92,
+      "role": "customer",
+      "text": "Im Podcast haben sie von Internetzahlen aus der Finanzabteilung gesprochen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 72.4,
+      "end_s": 78.3,
+      "role": "customer",
+      "text": "Und einer hat als Beispiel gesagt, bevor die Bekanntgaben handeln, wären sie daran drin.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 78.3,
+      "end_s": 83.26,
+      "role": "customer",
+      "text": "Ich wusste deshalb nicht, ob der Podcast etwas anderes als der Artikel meint.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 85.28,
+      "end_s": 88.68,
+      "role": "advisor",
+      "text": "Es wurde allein gesagt, dass es nicht etwas Exklusives ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 88.82,
+      "end_s": 94.02,
+      "role": "advisor",
+      "text": "Haben Sie den Link zum Artikel oder zum Bericht, auf den sich der Podcast bezieht?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 95.79,
+      "end_s": 100.33,
+      "role": "customer",
+      "text": "Ja, beides verweist auf den Bericht auf der Webseite der Firma.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 100.63,
+      "end_s": 103.47,
+      "role": "customer",
+      "text": "Der ist seit gestern Morgen für alle anrufbar.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 103.77,
+      "end_s": 109.33,
+      "role": "customer",
+      "text": "Ich kenne niemanden dort und habe keine andere Information als den Bericht und die Zeitung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 110.91,
+      "end_s": 114.87,
+      "role": "advisor",
+      "text": "Dann schauen wir für die Besprechung den veröffentlichten Bericht an.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 115.07,
+      "end_s": 120.49,
+      "role": "advisor",
+      "text": "Ich kann Ihnen die Bezugsperioden zeigen, aber aus einzelnen Prozentzahlen",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 120.49,
+      "end_s": 122.85,
+      "role": "advisor",
+      "text": "fehlt noch keine Empfehlung für den Kauf.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 124.68,
+      "end_s": 127.12,
+      "role": "customer",
+      "text": "Ich will heute auch mitbestellen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 127.2,
+      "end_s": 131.04,
+      "role": "customer",
+      "text": "Ich werde den Bericht verstapeln, bevor ich im Depot etwas ändere.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 131.34,
+      "end_s": 134.4,
+      "role": "customer",
+      "text": "Bei den Quartalszahlen steht noch ein Sternchen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 134.58,
+      "end_s": 137.4,
+      "role": "customer",
+      "text": "Das ist der Teil, der das Resultat verzählt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S030",
+      "start_s": 137.4,
+      "end_s": 148.63,
+      "role": "advisor",
+      "text": "Das Sternchen verweist auf eine Fussnote. Lesen Sie diese bitte kurz, dann schauen wir, ob es um einen Einmaleffekt oder um eine andere Berechnung geht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S031",
+      "start_s": 150.23,
+      "end_s": 157.47,
+      "role": "customer",
+      "text": "Da steht, dass der Vergleichswert vom Vorjahr angepasst worden ist. Ich habe die Fussnote vorher übersehen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S032",
+      "start_s": 157.79,
+      "end_s": 162.79,
+      "role": "customer",
+      "text": "Dann kann ich diese 12 % einfach mit den alten 5 % vergrichen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S033",
+      "start_s": 164.61,
+      "end_s": 165.97,
+      "role": "customer",
+      "text": "Genau. Für",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S034",
+      "start_s": 165.97,
+      "end_s": 171.53,
+      "role": "advisor",
+      "text": "einen sauberen Vergleich brauchen Sie dieselbe Periode und dieselbe Definition.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S035",
+      "start_s": 171.87,
+      "end_s": 176.87,
+      "role": "advisor",
+      "text": "Ich kann Ihnen die zwei Stellen im Dokument mal fielen und ins Postfach legen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S036",
+      "start_s": 178.51,
+      "end_s": 183.77,
+      "role": "customer",
+      "text": "a Dann geht es beispielsweise im Podcast nicht um eine Zusatzinfo, die ich habe.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S037",
+      "start_s": 183.95,
+      "end_s": 189.41,
+      "role": "customer",
+      "text": "Ich will nicht vor der Meldung handeln und habe auch keine Information, die noch nicht publiziert wäre.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S038",
+      "start_s": 189.41,
+      "end_s": 193.41,
+      "role": "customer",
+      "text": "Mir geht es um den öffentlichen Belicht, nicht um einen Auftrag.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S039",
+      "start_s": 195.45,
+      "end_s": 196.09,
+      "role": "advisor",
+      "text": "Verstanden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S040",
+      "start_s": 196.27,
+      "end_s": 200.67,
+      "role": "advisor",
+      "text": "Mir bietet Ihre Frage zu den öffentlich verfügbaren Unterlagen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S041",
+      "start_s": 200.89,
+      "end_s": 203.79,
+      "role": "advisor",
+      "text": "Welche Zweitzahl hat Sie noch irritiert?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S042",
+      "start_s": 205.7,
+      "end_s": 207.18,
+      "role": "customer",
+      "text": "Der Pfingstproaxie.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S043",
+      "start_s": 207.36,
+      "end_s": 210.38,
+      "role": "customer",
+      "text": "Der ist die von, wovon der Umsatz höher ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S044",
+      "start_s": 210.68,
+      "end_s": 213.08,
+      "role": "customer",
+      "text": "Ich habe zuerst gemeint, das passt nicht zusammen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S045",
+      "start_s": 215.02,
+      "end_s": 216.58,
+      "role": "advisor",
+      "text": "Das sind verschiedene Sachen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S046",
+      "start_s": 216.58,
+      "end_s": 222.84,
+      "role": "advisor",
+      "text": "Der Umsatz zeigt, wie viel verkauft worden ist. Beim Gewinn spielen auch die Ausgaben mit.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S047",
+      "start_s": 223.18,
+      "end_s": 226.72,
+      "role": "advisor",
+      "text": "Die Erläuterung zu den Ausgaben steht im folgenden Abschnitt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S048",
+      "start_s": 227.04,
+      "end_s": 230.4,
+      "role": "advisor",
+      "text": "Wir müssen nicht jede Position am Telefon durchgehen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S049",
+      "start_s": 232.3,
+      "end_s": 236.26,
+      "role": "customer",
+      "text": "Nein, das reicht. Ich werde den Abschnitt selbst lesen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S050",
+      "start_s": 236.36,
+      "end_s": 239.58,
+      "role": "customer",
+      "text": "Ich habe lieber einen Link als nur eine Zahl aus dem Spruch.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S051",
+      "start_s": 239.86,
+      "end_s": 242.32,
+      "role": "customer",
+      "text": "Sonst weiss ich morgen nicht mehr, wo er kommt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S052",
+      "start_s": 242.32,
+      "end_s": 249.98,
+      "role": "advisor",
+      "text": "kommt. Ich hinterlege Ihnen den Link und die MAV -14 -Stelle im Postfach. Wollen Sie Ihre",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S053",
+      "start_s": 249.98,
+      "end_s": 255.86,
+      "role": "advisor",
+      "text": "eigene Übersicht vom Depot auch dort dazu haben, damit Sie nicht wieder den alten Ausdruck",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S054",
+      "start_s": 255.86,
+      "end_s": 258.72,
+      "role": "advisor",
+      "text": "brauchen? Ja,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S055",
+      "start_s": 258.84,
+      "end_s": 264.74,
+      "role": "customer",
+      "text": "gerne, aber bitte vertraulich im Postfach. Mein Mail läuft auf dem Familientablett.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S056",
+      "start_s": 265.04,
+      "end_s": 271.02,
+      "role": "customer",
+      "text": "Dort soll meine Depotübersicht nicht landen. Ich werde heute keine Aufträge teilen. Ich",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S057",
+      "start_s": 271.02,
+      "end_s": 272.92,
+      "role": "customer",
+      "text": "Ich lese zuerst den Bericht fertig.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S058",
+      "start_s": 274.74,
+      "end_s": 278.32,
+      "role": "advisor",
+      "text": "Ja, diese Übersicht bleibt im sicheren Postfach.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S059",
+      "start_s": 278.56,
+      "end_s": 281.02,
+      "role": "advisor",
+      "text": "Wenn Sie später über einen Auftrag reden,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S060",
+      "start_s": 281.3,
+      "end_s": 283.4,
+      "role": "advisor",
+      "text": "schauen wir diese Frage dann neu an.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S061",
+      "start_s": 285.06,
+      "end_s": 286.08,
+      "role": "advisor",
+      "text": "Gut, so",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S062",
+      "start_s": 286.08,
+      "end_s": 286.72,
+      "role": "customer",
+      "text": "machen wir es.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S063",
+      "start_s": 286.92,
+      "end_s": 289.7,
+      "role": "advisor",
+      "text": "Danke für das Sortieren der Dokumente.",
+      "low_confidence": false
+    }
+  ],
+  "twin": null,
+  "feedback": [],
+  "triggers": []
+}

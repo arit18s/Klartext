@@ -1,0 +1,2479 @@
+{
+  "thresholds": {
+    "version_id": 4,
+    "review": 30.0,
+    "alarm": 70.0,
+    "note": "B28: review from 30 on the dev ASR PR curve. Recall 1.00 holds from 10 to 50; 30 keeps a two-vote margin (k=5) below the real cases at 50.",
+    "created_at": "2026-10-10T07:31:58Z"
+  },
+  "samples_per_check": 5,
+  "enabled_families": [
+    "trade",
+    "splitting",
+    "access",
+    "disclosure",
+    "documentation"
+  ],
+  "calls": [
+    {
+      "call_id": "Stufe1_D01-K1",
+      "dialogue_id": "Stufe1_D01",
+      "variant": "clean",
+      "level": 1,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D01-K2",
+      "dialogue_id": "Stufe1_D01",
+      "variant": "noisy",
+      "level": 1,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D02-K1",
+      "dialogue_id": "Stufe1_D02",
+      "variant": "clean",
+      "level": 1,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D02-K2",
+      "dialogue_id": "Stufe1_D02",
+      "variant": "noisy",
+      "level": 1,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D03-K1",
+      "dialogue_id": "Stufe1_D03",
+      "variant": "clean",
+      "level": 1,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D03-K2",
+      "dialogue_id": "Stufe1_D03",
+      "variant": "noisy",
+      "level": 1,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D04-K1",
+      "dialogue_id": "Stufe1_D04",
+      "variant": "clean",
+      "level": 1,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D04-K2",
+      "dialogue_id": "Stufe1_D04",
+      "variant": "noisy",
+      "level": 1,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 80.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D05-K1",
+      "dialogue_id": "Stufe1_D05",
+      "variant": "clean",
+      "level": 1,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D05-K2",
+      "dialogue_id": "Stufe1_D05",
+      "variant": "noisy",
+      "level": 1,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D06-K1",
+      "dialogue_id": "Stufe1_D06",
+      "variant": "clean",
+      "level": 1,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D06-K2",
+      "dialogue_id": "Stufe1_D06",
+      "variant": "noisy",
+      "level": 1,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D07-K1",
+      "dialogue_id": "Stufe1_D07",
+      "variant": "clean",
+      "level": 1,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D07-K2",
+      "dialogue_id": "Stufe1_D07",
+      "variant": "noisy",
+      "level": 1,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 100.0,
+          "needs_human_votes": 1,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D08-K1",
+      "dialogue_id": "Stufe1_D08",
+      "variant": "clean",
+      "level": 1,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D08-K2",
+      "dialogue_id": "Stufe1_D08",
+      "variant": "noisy",
+      "level": 1,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D09-K1",
+      "dialogue_id": "Stufe1_D09",
+      "variant": "clean",
+      "level": 1,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D09-K2",
+      "dialogue_id": "Stufe1_D09",
+      "variant": "noisy",
+      "level": 1,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D10-K1",
+      "dialogue_id": "Stufe1_D10",
+      "variant": "clean",
+      "level": 1,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe1_D10-K2",
+      "dialogue_id": "Stufe1_D10",
+      "variant": "noisy",
+      "level": 1,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C01-K3",
+      "dialogue_id": "Stufe2_C01",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C01-K4",
+      "dialogue_id": "Stufe2_C01",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C02-K3",
+      "dialogue_id": "Stufe2_C02",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C02-K4",
+      "dialogue_id": "Stufe2_C02",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C03-K3",
+      "dialogue_id": "Stufe2_C03",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C03-K4",
+      "dialogue_id": "Stufe2_C03",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C04-K3",
+      "dialogue_id": "Stufe2_C04",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C04-K4",
+      "dialogue_id": "Stufe2_C04",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C05-K3",
+      "dialogue_id": "Stufe2_C05",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C05-K4",
+      "dialogue_id": "Stufe2_C05",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C06-K3",
+      "dialogue_id": "Stufe2_C06",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C06-K4",
+      "dialogue_id": "Stufe2_C06",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C07-K3",
+      "dialogue_id": "Stufe2_C07",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C07-K4",
+      "dialogue_id": "Stufe2_C07",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C08-K3",
+      "dialogue_id": "Stufe2_C08",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C08-K4",
+      "dialogue_id": "Stufe2_C08",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C09-K3",
+      "dialogue_id": "Stufe2_C09",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C09-K4",
+      "dialogue_id": "Stufe2_C09",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C10-K3",
+      "dialogue_id": "Stufe2_C10",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C10-K4",
+      "dialogue_id": "Stufe2_C10",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C11-K3",
+      "dialogue_id": "Stufe2_C11",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C11-K4",
+      "dialogue_id": "Stufe2_C11",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C12-K3",
+      "dialogue_id": "Stufe2_C12",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 100.0,
+          "needs_human_votes": 5,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C12-K4",
+      "dialogue_id": "Stufe2_C12",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 100.0,
+          "needs_human_votes": 5,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C13-K3",
+      "dialogue_id": "Stufe2_C13",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C13-K4",
+      "dialogue_id": "Stufe2_C13",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C14-K3",
+      "dialogue_id": "Stufe2_C14",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C14-K4",
+      "dialogue_id": "Stufe2_C14",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C15-K3",
+      "dialogue_id": "Stufe2_C15",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "no_alert",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 10.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C15-K4",
+      "dialogue_id": "Stufe2_C15",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "review",
+      "asr_uncertain": false,
+      "expected_verdict": "no_alert",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 50.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C16-K3",
+      "dialogue_id": "Stufe2_C16",
+      "variant": "clean",
+      "level": 2,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe2_C16-K4",
+      "dialogue_id": "Stufe2_C16",
+      "variant": "noisy",
+      "level": 2,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "alarm",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 60.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe3_C17-K3",
+      "dialogue_id": "Stufe3_C17",
+      "variant": "clean",
+      "level": 3,
+      "verdict": "review",
+      "asr_uncertain": false,
+      "expected_verdict": "review",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 50.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe3_C17-K4",
+      "dialogue_id": "Stufe3_C17",
+      "variant": "noisy",
+      "level": 3,
+      "verdict": "review",
+      "asr_uncertain": false,
+      "expected_verdict": "review",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 50.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe3_C18-K3",
+      "dialogue_id": "Stufe3_C18",
+      "variant": "clean",
+      "level": 3,
+      "verdict": "review",
+      "asr_uncertain": false,
+      "expected_verdict": "review",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 3,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe3_C18-K4",
+      "dialogue_id": "Stufe3_C18",
+      "variant": "noisy",
+      "level": 3,
+      "verdict": "review",
+      "asr_uncertain": false,
+      "expected_verdict": "review",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 3,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe3_C19-K3",
+      "dialogue_id": "Stufe3_C19",
+      "variant": "clean",
+      "level": 3,
+      "verdict": "review",
+      "asr_uncertain": false,
+      "expected_verdict": "review",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 60.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe3_C19-K4",
+      "dialogue_id": "Stufe3_C19",
+      "variant": "noisy",
+      "level": 3,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "review",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 100.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe3_C20-K3",
+      "dialogue_id": "Stufe3_C20",
+      "variant": "clean",
+      "level": 3,
+      "verdict": "review",
+      "asr_uncertain": false,
+      "expected_verdict": "review",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 50.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "call_id": "Stufe3_C20-K4",
+      "dialogue_id": "Stufe3_C20",
+      "variant": "noisy",
+      "level": 3,
+      "verdict": "alarm",
+      "asr_uncertain": false,
+      "expected_verdict": "review",
+      "families": [
+        {
+          "family": "trade",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "splitting",
+          "score": 80.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "access",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "disclosure",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        },
+        {
+          "family": "documentation",
+          "score": 0.0,
+          "needs_human_votes": 0,
+          "failed": false
+        }
+      ]
+    }
+  ]
+}

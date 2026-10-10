@@ -1,0 +1,399 @@
+{
+  "call": {
+    "call_id": "Stufe2_C16-K3",
+    "file_name": "Stufe2_C16-K3.wav",
+    "dialogue_id": "Stufe2_C16",
+    "variant": "clean",
+    "level": 2,
+    "duration_s": 143.86,
+    "advisor_name": "Sylvia Badl",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:28Z",
+    "processed_at": "2026-10-10T09:54:59Z",
+    "verdict": "alarm",
+    "family": "splitting",
+    "score": 100.0,
+    "reason": "The customer explicitly requests to split a single invoice of 9,000 CHF into two payments of 4,500 CHF expressly to prevent the transaction from triggering an internal approval process ('Ich will verhindern, dass der ganze Vorgang bei dieser Freigabestelle landet'). This constitutes a request for connected partial movements intended to circumvent a stated internal control.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": true,
+    "expected_verdict": "alarm"
+  },
+  "decision": {
+    "verdict": "alarm",
+    "family": "splitting",
+    "score": 100.0,
+    "reason": "The customer explicitly requests to split a single invoice of 9,000 CHF into two payments of 4,500 CHF expressly to prevent the transaction from triggering an internal approval process ('Ich will verhindern, dass der ganze Vorgang bei dieser Freigabestelle landet'). This constitutes a request for connected partial movements intended to circumvent a stated internal control.",
+    "reason_de": "Der Kunde fordert explizit auf, eine einzelne Rechnung über 9'000 CHF in zwei Zahlungen à 4'500 CHF aufzuteilen, um ausdrücklich zu verhindern, dass der Vorgang einen internen Freigabeprozess auslöst ('Ich will verhindern, dass der ganze Vorgang bei dieser Freigabestelle landet'). Dies stellt eine Anfrage nach verbundenen Teilzahlungen dar, die darauf abzielt, einen genannten internen Kontrollprozess zu umgehen.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:47Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The conversation is limited to operational banking procedures regarding a supplier payment invoice. There is no mention of securities, stock trades, or non-public corporate information that would trigger the insider trading rule.",
+      "reason_de": "Das Gespräch beschränkt sich auf operative Bankverfahren bezüglich einer Lieferantenrechnung. Es wird keine Wertpapierhandlung oder nicht-öffentliche Unternehmensinformation erwähnt, die die Regel zum Insiderhandel auslösen würde.",
+      "benign_explanation": "The call concerns the administrative processing of a supplier invoice (payment to 'Werkstatt Talblick') and how to structure the entry in the banking system to avoid an internal approval threshold. It does not involve any request for securities trading or investment advice based on non-public information about a company's financial results, takeovers, or other material events."
+    },
+    {
+      "family": "splitting",
+      "score": 100.0,
+      "event_majority": "present",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer explicitly requests to split a single invoice of 9,000 CHF into two payments of 4,500 CHF expressly to prevent the transaction from triggering an internal approval process ('Ich will verhindern, dass der ganze Vorgang bei dieser Freigabestelle landet'). This constitutes a request for connected partial movements intended to circumvent a stated internal control.",
+      "reason_de": "Der Kunde fordert explizit auf, eine einzelne Rechnung über 9'000 CHF in zwei Zahlungen à 4'500 CHF aufzuteilen, um ausdrücklich zu verhindern, dass der Vorgang einen internen Freigabeprozess auslöst ('Ich will verhindern, dass der ganze Vorgang bei dieser Freigabestelle landet'). Dies stellt eine Anfrage nach verbundenen Teilzahlungen dar, die darauf abzielt, einen genannten internen Kontrollprozess zu umgehen.",
+      "benign_explanation": "The customer is discussing a payment plan for a single invoice. While splitting payments can be legitimate (e.g., cash flow management), the customer explicitly states that the purpose of splitting this specific transaction is to avoid an internal approval process."
+    },
+    {
+      "family": "access",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The transcript contains no disclosure of any active access secret such as a PIN, TAN, password, or login code. The numbers discussed are monetary amounts related to invoice processing, which are not access secrets.",
+      "reason_de": "Im Transkript findet keine Offenlegung von aktiven Zugangsgeheimnissen wie PIN, TAN, Passwort oder Login-Code statt. Die besprochenen Zahlen sind Geldbeträge im Zusammenhang mit der Rechnungsbearbeitung und stellen keine Zugangsgeheimnisse dar.",
+      "benign_explanation": "The call is a standard business inquiry regarding the processing of supplier invoices. The customer discusses splitting a payment to avoid internal approval thresholds, and the advisor provides procedural guidance. No access secrets (PINs, TANs, passwords, or login codes) are mentioned, requested, or disclosed by either party."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 0.8,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor did not reveal any protected third-party details; instead, she discussed general bank procedures regarding payment thresholds and requested invoice references from the customer to process their own transaction. Since no unauthorized disclosure occurred, the event is absent.",
+      "reason_de": "Die Beraterin hat keine geschützten Drittpartei-Details offengelegt, sondern allgemeine Bankverfahren bezüglich Zahlungs-Schwellenwerte besprochen und Rechnungsreferenzen vom Kunden angefordert, um deren eigene Transaktion zu bearbeiten. Da keine unbefugte Offenlegung stattgefunden hat, ist das Ereignis nicht vorhanden.",
+      "benign_explanation": "The call is a standard business banking interaction where the customer (Frau Frey) discusses how to process supplier payments for her own company. The advisor provides general procedural information about internal approval thresholds and asks for necessary documentation (invoice references) to process the transaction. No protected third-party details (such as account balances or personal data of other customers) are disclosed. The customer is acting in her capacity as an authorized employee/representative of the firm."
+    },
+    {
+      "family": "documentation",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer discloses the intent to split payments to bypass an internal threshold and asks if the advisor can prepare two entries. The advisor refuses to confirm execution immediately and states that the documents and initial statements will be reviewed first. There is no request to hide or omit relevant facts from the internal record; the relevant fact (the nature of the transaction) is fully present in the call.",
+      "reason_de": "Die Kundin gibt den Grund für die Aufteilung der Zahlung an (Vermeidung von Freigabeprozessen) und fragt, ob die Beraterin zwei Erfassungen vorbereiten kann. Die Beraterin lehnt eine sofortige Ausführung ab und erklärt, dass die Unterlagen und Angaben zuerst geprüft werden. Es liegt kein Antrag vor, relevante Fakten aus dem internen Protokoll zu verschweigen oder zu entfernen; der Sachverhalt wird vollständig offengelegt.",
+      "benign_explanation": "The customer explains their motivation for wanting to split a payment (to avoid internal approval delays) and proposes a plan. The advisor listens but explicitly states they will not execute the split yet and will first review the documents and verify the details provided. No request is made to conceal information from the bank's records; rather, the customer provides the full context of the transaction."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 293,
+      "family": "splitting",
+      "seg_id": "S003",
+      "role": "context",
+      "start_s": 20.13,
+      "end_s": 26.29,
+      "speaker_role": "advisor",
+      "quote": "Bei uns geht ein zusammengehöriger Vorgang über 8 '000 Franken an die interne Freigabestelle.",
+      "note": "Advisor establishes the threshold and the internal process that triggers approval.",
+      "snippet_url": "/api/calls/Stufe2_C16-K3/snippets/S003"
+    },
+    {
+      "id": 294,
+      "family": "splitting",
+      "seg_id": "S006",
+      "role": "context",
+      "start_s": 34.79,
+      "end_s": 39.61,
+      "speaker_role": "customer",
+      "quote": "Es ist eine einzige Rechnung über 9 '000 Franken für eine einzige Lieferung.",
+      "note": "Customer confirms the underlying transaction is a single entity exceeding the threshold.",
+      "snippet_url": "/api/calls/Stufe2_C16-K3/snippets/S006"
+    },
+    {
+      "id": 295,
+      "family": "splitting",
+      "seg_id": "S007",
+      "role": "trigger",
+      "start_s": 39.83,
+      "end_s": 44.69,
+      "speaker_role": "customer",
+      "quote": "Ich will verhindern, dass der ganze Vorgang bei dieser Freigabestelle landet,",
+      "note": "Customer explicitly states the intent to circumvent the approval process.",
+      "snippet_url": "/api/calls/Stufe2_C16-K3/snippets/S007"
+    },
+    {
+      "id": 296,
+      "family": "splitting",
+      "seg_id": "S022",
+      "role": "trigger",
+      "start_s": 103.34,
+      "end_s": 109.9,
+      "speaker_role": "customer",
+      "quote": "Dann mache ich heute 4500 und morgen 4500 an die gleiche Werkstatt.",
+      "note": "Customer proposes the specific splitting method to achieve the circumvention.",
+      "snippet_url": "/api/calls/Stufe2_C16-K3/snippets/S022"
+    }
+  ],
+  "keyword_hits": [],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.11,
+      "end_s": 8.27,
+      "role": "advisor",
+      "text": "Frau Frey, hier ist Sylvia Badl vom Firmenservice. Sie haben einen Terminwunsch zu den Lieferantenvorgängen gemeldet.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 10.13,
+      "end_s": 18.51,
+      "role": "customer",
+      "text": "Ja, ich bereite die Lieferantenzahlungen vor. Ich möchte zuerst wissen, wie ich sie erfasse, bevor ich einen konkreten Auftrag verlange.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 20.13,
+      "end_s": 26.29,
+      "role": "advisor",
+      "text": "Bei uns geht ein zusammengehöriger Vorgang über 8 '000 Franken an die interne Freigabestelle.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 26.51,
+      "end_s": 30.89,
+      "role": "advisor",
+      "text": "Wir betrachten den ganzen Vorgang wie nur eine einzelne Erfassung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 31.35,
+      "end_s": 33.05,
+      "role": "advisor",
+      "text": "Welche Unterlagen haben Sie?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 34.79,
+      "end_s": 39.61,
+      "role": "customer",
+      "text": "Es ist eine einzige Rechnung über 9 '000 Franken für eine einzige Lieferung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 39.83,
+      "end_s": 44.69,
+      "role": "customer",
+      "text": "Ich will verhindern, dass der ganze Vorgang bei dieser Freigabestelle landet,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 44.81,
+      "end_s": 46.31,
+      "role": "customer",
+      "text": "sonst geht es mir zu lange.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 46.31,
+      "end_s": 51.43,
+      "role": "customer",
+      "text": "Das ist der Grund, warum ich überhaupt über eine andere Erfassung nachdenke.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 52.95,
+      "end_s": 55.91,
+      "role": "advisor",
+      "text": "Ich nehme ihre Beschreibung der Beleg auf.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 56.15,
+      "end_s": 57.41,
+      "role": "advisor",
+      "text": "Wer ist der Empfänger?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 59.29,
+      "end_s": 60.87,
+      "role": "customer",
+      "text": "Die Werkstatt Talblick.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 61.15,
+      "end_s": 63.57,
+      "role": "customer",
+      "text": "Sie liefert ein regelmässiges Material.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 64.07,
+      "end_s": 66.91,
+      "role": "customer",
+      "text": "Der Name ist bei beiden Erfassungen der Tief.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 67.05,
+      "end_s": 68.71,
+      "role": "customer",
+      "text": "Darum habe ich überhaupt gefragt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 70.61,
+      "end_s": 74.07,
+      "role": "advisor",
+      "text": "Für den Vorgang brauchen wir die Belegreferenzen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 74.07,
+      "end_s": 81.17,
+      "role": "advisor",
+      "text": "Bitte schicken Sie über das Firmenpostfach. Am Telefon brauchen Sie keine langen Referenzen vorzulesen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 82.75,
+      "end_s": 86.01,
+      "role": "customer",
+      "text": "Gut, ich habe die Datei schon vorbereitet.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 86.27,
+      "end_s": 91.39,
+      "role": "customer",
+      "text": "Wie der Betrag habe ich einen Plan gemacht, aber noch nichts im System bestätigt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 93.1,
+      "end_s": 99.9,
+      "role": "advisor",
+      "text": "Genau das sollte Zeit geben. Ein Plan am Telefon ist noch keine bestätigte Ausführung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 99.96,
+      "end_s": 101.74,
+      "role": "advisor",
+      "text": "Wie wollen Sie den Plan erfassen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 103.34,
+      "end_s": 109.9,
+      "role": "customer",
+      "text": "Dann mache ich heute 4500 und morgen 4500 an die gleiche Werkstatt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 110.14,
+      "end_s": 113.72,
+      "role": "customer",
+      "text": "Können Sie mir die zwei Erfassungen so vorbereiten?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 115.5,
+      "end_s": 117.74,
+      "role": "advisor",
+      "text": "Ich bestätige da noch keine Ausführung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 118.46,
+      "end_s": 124.96,
+      "role": "advisor",
+      "text": "Wir nehmen zuerst die Unterlagen zum Vorgaben und prüfen die Angaben, die Sie am Anfang gemacht haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 126.64,
+      "end_s": 127.94,
+      "role": "customer",
+      "text": "Gut, ich",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 127.94,
+      "end_s": 131.56,
+      "role": "advisor",
+      "text": "schicke die Datei gleich, bevor ich zurück in den Betrieb gehe.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 133.7,
+      "end_s": 138.86,
+      "role": "advisor",
+      "text": "Verwieset bitte auf den Rückruf, damit die Belege nicht in einer neuen Anfrage landen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 140.66,
+      "end_s": 143.1,
+      "role": "customer",
+      "text": "Ja, danke und Frieden schaue.",
+      "low_confidence": false
+    }
+  ],
+  "twin": {
+    "call_id": "Stufe2_C15-K3",
+    "dialogue_id": "Stufe2_C15",
+    "variant": "clean",
+    "verdict": "no_alert",
+    "note": "The customer explains two payments correspond to independent invoices with different due dates, not a split single invoice to circumvent approval."
+  },
+  "feedback": [],
+  "triggers": [
+    {
+      "id": 26,
+      "call_id": "Stufe2_C16-K3",
+      "remote_id": "63",
+      "url": "http://localhost:5173/calls/Stufe2_C16-K3?t=29",
+      "status_code": 201,
+      "created_at": "2026-10-10T07:42:03Z"
+    }
+  ]
+}

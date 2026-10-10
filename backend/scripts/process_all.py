@@ -34,6 +34,7 @@ def main() -> int:
     ap.add_argument("--folder", type=Path, default=s.case_data_path / "Audio")
     ap.add_argument("--from", dest="from_stage", choices=STAGES, default="asr")
     ap.add_argument("--calls", nargs="*", help="Only these call IDs (file stems)")
+    ap.add_argument("--recheck", action="store_true", help="Re-run the checks instead of reusing stored results (LLM cache still applies)")
     ap.add_argument("--list", action="store_true", help="Print every call's verdict (includes holdout calls: evaluation reads them in B29 only)")
     args = ap.parse_args()
     logging.basicConfig(level=logging.WARNING, format="%(levelname)s %(name)s: %(message)s")
@@ -51,7 +52,7 @@ def main() -> int:
     print(f"{len(ids)} calls ({new} new) | stages from '{args.from_stage}': {', '.join(STAGES[STAGES.index(args.from_stage):])} "
           f"| not built yet: {', '.join(PENDING_STAGES)} | k={s.llm_samples}, reasoning {s.llm_reasoning}, concurrency {s.llm_concurrency}")
     started = time.monotonic()
-    summary = process(ids, args.from_stage)
+    summary = process(ids, args.from_stage, recheck=args.recheck)
     print(f"done {len(summary.done)} | waiting_for_asr {len(summary.waiting_for_asr)} | failed {len(summary.failed)} | "
           f"Outcept triggers {summary.notified or '-'} | {time.monotonic() - started:.0f} s")
     for cid, err in summary.failed.items():

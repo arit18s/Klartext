@@ -1,0 +1,632 @@
+{
+  "call": {
+    "call_id": "Stufe2_C03-K4",
+    "file_name": "Stufe2_C03-K4.wav",
+    "dialogue_id": "Stufe2_C03",
+    "variant": "noisy",
+    "level": 2,
+    "duration_s": 299.0,
+    "advisor_name": "Barbara Steiger",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:28Z",
+    "processed_at": "2026-10-10T09:54:59Z",
+    "verdict": "no_alert",
+    "family": "trade",
+    "score": 0.0,
+    "reason": "The conversation is strictly about resolving a payment mismatch for a hotel booking. No trade requests or discussions of non-public financial information occur.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": false,
+    "expected_verdict": "no_alert"
+  },
+  "decision": {
+    "verdict": "no_alert",
+    "family": "trade",
+    "score": 0.0,
+    "reason": "The conversation is strictly about resolving a payment mismatch for a hotel booking. No trade requests or discussions of non-public financial information occur.",
+    "reason_de": "Das Gespräch betrifft ausschließlich die Klärung einer Zahlungsunstimmigkeit bei einer Hotelbuchung. Es werden keine Handelsanfragen oder nicht-öffentliche Finanzinformationen besprochen.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:46Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The conversation is strictly about resolving a payment mismatch for a hotel booking. No trade requests or discussions of non-public financial information occur.",
+      "reason_de": "Das Gespräch betrifft ausschließlich die Klärung einer Zahlungsunstimmigkeit bei einer Hotelbuchung. Es werden keine Handelsanfragen oder nicht-öffentliche Finanzinformationen besprochen.",
+      "benign_explanation": "The call concerns a customer service issue regarding a hotel reservation payment discrepancy. The advisor and customer discuss payment references, currency conversion (EUR vs CHF), and which documents to send to the hotel. There is no mention of securities trading, stock markets, or non-public company information."
+    },
+    {
+      "family": "splitting",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 0.6,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer mentions paying only part of the total cost because a colleague is covering the other half, which constitutes a genuine partial payment arrangement rather than a request to split transactions to circumvent internal processes. There is no indication of intent to evade approval limits.",
+      "reason_de": "Die Kundin erwähnt, dass sie nur einen Teil der Gesamtkosten bezahlt hat, da eine Kollegin den anderen Anteil übernimmt. Dies handelt sich um eine echte Teilzahlung aufgrund separater Verpflichtungen und nicht um einen Versuch, Transaktionen aufzuteilen, um interne Prozesse zu umgehen. Es gibt keine Anzeichen für die Absicht, Genehmigungslimits zu umgehen.",
+      "benign_explanation": "The call concerns a customer trying to resolve a discrepancy with a hotel regarding a prepaid deposit. The customer explains that she paid only for her share of the booking (for two people) and that her colleague will pay their share later. This is a standard partial payment arrangement based on separate liabilities, not an attempt to split a single transaction to avoid bank approval limits or internal controls."
+    },
+    {
+      "family": "access",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer discloses the last four digits of a payment reference number ('4242') which serves as an invoice reference, not an active access secret such as a PIN, TAN, or password. Bank staff do not need secrets, but they may need reference numbers to locate transactions; this disclosure is harmless.",
+      "reason_de": "Die Kundin gibt die letzten vier Stellen einer Zahlungsreferenznummer ('4242') an, die als Rechnungsreferenz dient und kein aktives Zugangsgeheimnis wie PIN, TAN oder Passwort ist. Bankmitarbeiter benötigen keine Geheimnisse, aber Referenznummern zur Transaktionsidentifikation sind harmlos.",
+      "benign_explanation": "The customer provides the last four digits of a payment reference number (4242) to help the advisor identify the correct transaction for a hotel booking dispute. This is a public or semi-public identifier used for matching payments, not a secret access code like a PIN, TAN, or password. The advisor explicitly advises using secure channels for sensitive data and does not request any login credentials."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor interacts solely with the account holder regarding her own transaction. The advisor does not reveal any protected details to a third party, nor does the customer claim authority for another person's account. The information discussed pertains to the customer's own payment and reservation.",
+      "reason_de": "Die Beraterin spricht ausschließlich mit der Kontoinhaberin über deren eigene Transaktion. Es werden keine geschützten Daten an Dritte offengelegt, und die Kundin beansprucht keine Vollmacht für ein fremdes Konto. Die besprochenen Informationen betreffen die eigene Zahlung und Reservierung der Kundin.",
+      "benign_explanation": "The call is between the bank advisor and the account holder, Frau Tanner. The customer is discussing her own hotel reservation and payment issues. The advisor provides guidance on how to resolve the discrepancy with the hotel and offers to send the booking proof to the customer's own secure inbox. No protected information about a third party is disclosed to an unauthorized person."
+    },
+    {
+      "family": "documentation",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 0.8,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer explicitly states they sent 'too much' information (including their address) and agrees with the advisor to send only the necessary proof of payment to the hotel. This is a correction of an over-disclosure and a privacy measure, not an intentional concealment of relevant facts from the bank's internal documentation.",
+      "reason_de": "Die Kundin gibt an, zu viele Informationen (inklusive Adresse) gesendet zu haben, und einigt sich mit der Beraterin darauf, nur den notwendigen Zahlungsbeleg an das Hotel zu senden. Dies ist eine Korrektur einer Überoffenlegung und eine Datenschutzmaßnahme, kein Versuch, relevante Fakten vor der internen Dokumentation der Bank zu verbergen.",
+      "benign_explanation": "The customer and advisor discuss how to correctly document a payment dispute with a hotel. The customer realizes they previously sent too much personal data (address) and incorrect documents (old confirmation). They agree to send only the necessary, correct proof of payment (the new confirmation and the specific transaction record) to the hotel via a secure channel. This is a correction of an error and a measure to protect privacy, not an attempt to hide relevant facts from the bank's internal records."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 1,
+      "family": "trade",
+      "seg_id": "S002",
+      "role": "context",
+      "start_s": 3.57,
+      "end_s": 6.51,
+      "speaker_role": "advisor",
+      "quote": "Wir haben Ihre Rückfrage zur Hotelleservation.",
+      "note": "Establishes the topic as a hotel reservation issue, not trading.",
+      "snippet_url": "/api/calls/Stufe2_C03-K4/snippets/S002"
+    },
+    {
+      "id": 2,
+      "family": "trade",
+      "seg_id": "S034",
+      "role": "context",
+      "start_s": 146.51,
+      "end_s": 149.97,
+      "speaker_role": "customer",
+      "quote": "Das Hotel rechnet in Euvo mein Konto in Franken.",
+      "note": "Discusses currency conversion for a personal expense, unrelated to securities.",
+      "snippet_url": "/api/calls/Stufe2_C03-K4/snippets/S034"
+    }
+  ],
+  "keyword_hits": [],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.11,
+      "end_s": 3.37,
+      "role": "advisor",
+      "text": "Grüezi Frau Tanner, da ist Barbara Steiger.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 3.57,
+      "end_s": 6.51,
+      "role": "advisor",
+      "text": "Wir haben Ihre Rückfrage zur Hotelleservation.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 7.07,
+      "end_s": 9.15,
+      "role": "advisor",
+      "text": "Was passt auf die Bestätigung nicht?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 12.25,
+      "end_s": 16.93,
+      "role": "customer",
+      "text": "Die Hotelmitarbeiterin sagt, sie könne meine Vorauszahlung nicht zuordnen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 17.21,
+      "end_s": 20.41,
+      "role": "customer",
+      "text": "Ich habe zwei Dokumente geschickt und jetzt hat sie gefragt,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 20.75,
+      "end_s": 24.03,
+      "role": "customer",
+      "text": "welche vier Stellen am Schluss zum wichtigen Feld gehören.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 25.73,
+      "end_s": 29.29,
+      "role": "advisor",
+      "text": "Haben Sie die ursprüngliche Bezeichnung des Feldes genommen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 29.29,
+      "end_s": 32.67,
+      "role": "advisor",
+      "text": "Vier Stellen alleine reicht nicht, um den Zweck zu wissen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 34.47,
+      "end_s": 42.93,
+      "role": "customer",
+      "text": "Ja, auf der ursprünglichen Bestätigung sind das die letzten vier Stellen von meiner Verschaltung, die ich online bezahlt habe.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 43.23,
+      "end_s": 47.59,
+      "role": "customer",
+      "text": "Der Rest der langen Nummern ist verdeckt. Die vier am Schluss sieht man.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 47.85,
+      "end_s": 50.75,
+      "role": "customer",
+      "text": "Die Reservierungsnummer steht separat drüber.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 52.69,
+      "end_s": 53.33,
+      "role": "advisor",
+      "text": "Verstanden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 53.53,
+      "end_s": 57.21,
+      "role": "advisor",
+      "text": "Wir klären den Verwendungszweck, bevor Sie noch mehr schicken.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 57.21,
+      "end_s": 61.95,
+      "role": "advisor",
+      "text": "Ist die Vorauszahlung auf Ihrer eigenen Übersicht definitiv gebucht?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 63.83,
+      "end_s": 66.83,
+      "role": "customer",
+      "text": "Ja, sie ist am 3. abgerufen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 67.05,
+      "end_s": 70.09,
+      "role": "customer",
+      "text": "Der Hotelaufenthalt ist aber erst nächsten Monat.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 70.47,
+      "end_s": 74.33,
+      "role": "customer",
+      "text": "Ich habe zuerst gemeint, der Unterschied im Datum sei der Fehler.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 75.77,
+      "end_s": 79.31,
+      "role": "advisor",
+      "text": "Das kann bei Ihrer Vorauszahlung normal sein.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 79.65,
+      "end_s": 84.49,
+      "role": "advisor",
+      "text": "Im Dokument sollte klar sein, welche Leistung mit dem Betrag verknüpft ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 84.49,
+      "end_s": 88.77,
+      "role": "advisor",
+      "text": "Haben Sie den Gesamtbetrag oder nur einen Teil im Voraus gezahlt?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 90.4,
+      "end_s": 91.36,
+      "role": "customer",
+      "text": "Einen Teil.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 91.6,
+      "end_s": 94.12,
+      "role": "customer",
+      "text": "Ich helfe jetzt bewusst vor Ort.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 94.48,
+      "end_s": 100.2,
+      "role": "customer",
+      "text": "Ich habe für zwei Personen gebucht, aber meine Kollegin zahlt mir ihren Anteil erst später.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 100.66,
+      "end_s": 103.68,
+      "role": "customer",
+      "text": "Das hat mit der Hotelreferenz nichts zu tun.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 105.2,
+      "end_s": 110.02,
+      "role": "advisor",
+      "text": "Gut, dann vermischen wir die private Anmachung nicht mit der Hotelzahlung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 110.1,
+      "end_s": 113.08,
+      "role": "advisor",
+      "text": "Was genau hat das Hotel als Beleg verlangt?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 114.55,
+      "end_s": 118.87,
+      "role": "customer",
+      "text": "Sie hat zuerst nur einen Nachweis von Datum und Betrag.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 119.07,
+      "end_s": 121.97,
+      "role": "customer",
+      "text": "Nach diesen vier Stellen hat sie erst nachgefragt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 122.39,
+      "end_s": 124.87,
+      "role": "customer",
+      "text": "Ich habe zu viel geschickt, glaube ich.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S030",
+      "start_s": 124.99,
+      "end_s": 127.73,
+      "role": "customer",
+      "text": "Es hat auch noch meine Adresse auf dem Ausschnitt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S031",
+      "start_s": 129.53,
+      "end_s": 136.23,
+      "role": "advisor",
+      "text": "Für einen Rückfall sollten Sie nur die nötigen Informationen im vorgesehenen sicheren Kanal teilen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S032",
+      "start_s": 136.47,
+      "end_s": 140.87,
+      "role": "advisor",
+      "text": "Ich kann Ihnen den Buchungsnachweis für Ihre eigene Zahlung bereitstellen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S033",
+      "start_s": 142.71,
+      "end_s": 146.31,
+      "role": "customer",
+      "text": "Ja, Cern. Ich habe noch einen Unterschied im Betrag.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S034",
+      "start_s": 146.51,
+      "end_s": 149.97,
+      "role": "customer",
+      "text": "Das Hotel rechnet in Euvo mein Konto in Franken.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S035",
+      "start_s": 150.47,
+      "end_s": 155.07,
+      "role": "customer",
+      "text": "Auf der Bestätigung steht der Eurobetrag auf meinem Konto eine andere Zahl.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S036",
+      "start_s": 155.45,
+      "end_s": 159.01,
+      "role": "customer",
+      "text": "Ich kann das der Grund sehen, warum der Nachweis bei Ihnen nicht passt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S037",
+      "start_s": 160.88,
+      "end_s": 168.34,
+      "role": "advisor",
+      "text": "Der Nachweis soll die Originalbeträge, Währung und Buchungsdatum zeigen, damit das Hotel es zuordnen kann.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S038",
+      "start_s": 168.34,
+      "end_s": 174.68,
+      "role": "advisor",
+      "text": "Vergleichen Sie den Eurobetrag von der geleisteten Vor - und Auszahlung mit dem Eurobetrag im Beleg,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S039",
+      "start_s": 174.72,
+      "end_s": 177.92,
+      "role": "advisor",
+      "text": "wie mit dem Gesamtpreis oder dem Frankenabgang.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S040",
+      "start_s": 179.78,
+      "end_s": 180.76,
+      "role": "advisor",
+      "text": "Schauen Sie an,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S041",
+      "start_s": 180.94,
+      "end_s": 185.5,
+      "role": "customer",
+      "text": "ich habe den vollen Hotelpreis mit der halben Vorauszahlung verglichen",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S042",
+      "start_s": 185.5,
+      "end_s": 187.8,
+      "role": "customer",
+      "text": "und noch die Frankenzahl statt Euro.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S043",
+      "start_s": 188.16,
+      "end_s": 192.98,
+      "role": "customer",
+      "text": "Es gibt auch eine neue Bestätigung, weil wir die Anreise um einen Tag verschoben haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S044",
+      "start_s": 193.3,
+      "end_s": 195.06,
+      "role": "customer",
+      "text": "Der Gesamtpreis ist aber gleich.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S045",
+      "start_s": 196.72,
+      "end_s": 204.16,
+      "role": "advisor",
+      "text": "Dann nehmen Sie für die Rückfrage die aktuelle Bestätigung und den Nachweis von genau dieser Vorwahlszahlung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S046",
+      "start_s": 204.24,
+      "end_s": 212.48,
+      "role": "advisor",
+      "text": "So sind Termine und Beträge zuordnet, auch wenn der Beleg der Bank weiterhin das ursprüngliche Zahlungsdatum hat.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S047",
+      "start_s": 214.34,
+      "end_s": 218.7,
+      "role": "customer",
+      "text": "Gut, ich schicke nicht beide Bestätigungen ohne Erklärung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S048",
+      "start_s": 218.76,
+      "end_s": 222.92,
+      "role": "customer",
+      "text": "Ich nehme die neue und schreibe kurz, dass wir den Anreiz verschoben haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S049",
+      "start_s": 222.92,
+      "end_s": 227.38,
+      "role": "customer",
+      "text": "Die Übelbeträge der Vorwahlszahlung passen dem Beleg tatsächlich.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S050",
+      "start_s": 229.6,
+      "end_s": 232.22,
+      "role": "advisor",
+      "text": "Das wird die Rückfrage konkreter machen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S051",
+      "start_s": 232.64,
+      "end_s": 235.98,
+      "role": "advisor",
+      "text": "Falls der Händler trotzdem eine andere Referenz verlangt,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S052",
+      "start_s": 235.98,
+      "end_s": 237.96,
+      "role": "advisor",
+      "text": "lohnt es sich dann noch auf dem Feld zu sagen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S053",
+      "start_s": 238.34,
+      "end_s": 242.7,
+      "role": "advisor",
+      "text": "Wir sollten nicht nur aus der Länge einer Zahl raten, wie die Stellerei meint.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S054",
+      "start_s": 244.72,
+      "end_s": 245.44,
+      "role": "advisor",
+      "text": "Richtig gut,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S055",
+      "start_s": 245.74,
+      "end_s": 247.78,
+      "role": "customer",
+      "text": "ich habe jetzt den richtigen Ausschnitt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S056",
+      "start_s": 248.16,
+      "end_s": 252.38,
+      "role": "customer",
+      "text": "Die vier Stellen, die wir am Anfang besprochen haben, kann ich Ihnen noch sagen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S057",
+      "start_s": 252.38,
+      "end_s": 259.42,
+      "role": "customer",
+      "text": "Das Übrige ist verdeckt. Die letzten vier sind 4242.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S058",
+      "start_s": 261.36,
+      "end_s": 266.16,
+      "role": "advisor",
+      "text": "Danke. Ich hole die vier Stellen den Pell zu, die Sie am Anfang genannt haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S059",
+      "start_s": 266.54,
+      "end_s": 271.92,
+      "role": "advisor",
+      "text": "Für den Nachweis nehmen wir Datum und Betrag von Ihrer tatsächlichen Buchbezahlung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S060",
+      "start_s": 273.48,
+      "end_s": 280.06,
+      "role": "customer",
+      "text": "Das ist mir recht. Ich will keine Ehevermutung ans Hotel schicken, nur den richtigen Nachweis.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S061",
+      "start_s": 280.06,
+      "end_s": 290.34,
+      "role": "advisor",
+      "text": "Nach dem Nachweis kommt in die sichere Postbox. Verwendet für die Nachricht an das Hotel bitte nur der erforderliche Ausschnitt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S062",
+      "start_s": 292.12,
+      "end_s": 293.12,
+      "role": "advisor",
+      "text": "Danke, das",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S063",
+      "start_s": 293.12,
+      "end_s": 298.18,
+      "role": "customer",
+      "text": "mache ich. Dann ist wenigstens klar, welche Bestätigung aktuell ist.",
+      "low_confidence": false
+    }
+  ],
+  "twin": null,
+  "feedback": [],
+  "triggers": []
+}

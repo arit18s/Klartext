@@ -117,13 +117,13 @@ Rules for data use:
 
 ## 12. Submission checklist (Sunday 08:30)
 
-- [ ] Pipeline runs from audio, no manual steps per call
-- [ ] All 60 calls processed, results cached
-- [ ] Metrics page shows precision, recall, confusion matrix, clean vs noisy
-- [ ] Threshold change visibly changes hit counts
-- [ ] Keyword list change visibly changes hits
-- [ ] Borderline harmless call with keyword ready to show
-- [ ] Hidden test set procedure tested (drop a folder of WAVs, get a results file)
-- [ ] Outcept trigger API receives alarms with deep links
-- [ ] Repo README with run instructions
+- [x] Pipeline runs from audio, no manual steps per call (watcher + `process_all.py`; ASR as a GPU batch, B18/B26)
+- [x] All 60 calls processed, results cached (clean final run Sat 09:45)
+- [x] Metrics page shows precision, recall, confusion matrix, clean vs noisy (F7, dev + holdout runs)
+- [x] Threshold change visibly changes hit counts (Tuning, `decide.ts`)
+- [x] Keyword list change visibly changes hits (Rules → `POST /keywords/rescan`, B19/B25)
+- [x] Borderline harmless call with keyword ready to show (Stufe1_D06: PIN/password keywords, no alert; twin pair C09/C10)
+- [x] Hidden test set procedure tested (drop a folder of WAVs, get a results file) (B30 + `docs/RUNBOOK_HIDDEN_SET.md`)
+- [x] Outcept trigger API receives alarms with deep links (35 triggers, B22)
+- [x] Repo README with run instructions (tested from a fresh clone)
 - [ ] Backup screen recording of the demo

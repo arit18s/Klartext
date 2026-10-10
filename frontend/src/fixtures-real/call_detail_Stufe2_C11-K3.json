@@ -1,0 +1,546 @@
+{
+  "call": {
+    "call_id": "Stufe2_C11-K3",
+    "file_name": "Stufe2_C11-K3.wav",
+    "dialogue_id": "Stufe2_C11",
+    "variant": "clean",
+    "level": 2,
+    "duration_s": 259.78,
+    "advisor_name": "Marion Huyon",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:28Z",
+    "processed_at": "2026-10-10T09:54:59Z",
+    "verdict": "no_alert",
+    "family": "trade",
+    "score": 0.0,
+    "reason": "The conversation is limited to checking an account balance for paying a nursing home bill. No trade requests or recommendations based on non-public information were made.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": false,
+    "expected_verdict": "no_alert"
+  },
+  "decision": {
+    "verdict": "no_alert",
+    "family": "trade",
+    "score": 0.0,
+    "reason": "The conversation is limited to checking an account balance for paying a nursing home bill. No trade requests or recommendations based on non-public information were made.",
+    "reason_de": "Das Gespräch beschränkt sich auf die Prüfung des Kontostands zur Bezahlung einer Heimrechnung. Es wurden keine Handelsanfragen oder Empfehlungen aufgrund nicht-öffentlicher Informationen getätigt.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:46Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The conversation is limited to checking an account balance for paying a nursing home bill. No trade requests or recommendations based on non-public information were made.",
+      "reason_de": "Das Gespräch beschränkt sich auf die Prüfung des Kontostands zur Bezahlung einer Heimrechnung. Es wurden keine Handelsanfragen oder Empfehlungen aufgrund nicht-öffentlicher Informationen getätigt.",
+      "benign_explanation": "The call concerns the administration of a nursing home bill for the customer's mother. The advisor provides the current account balance to help the customer determine if there are sufficient funds to pay the invoice. There is no discussion of securities trading, stock markets, or non-public corporate information."
+    },
+    {
+      "family": "splitting",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 0.6,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer requests the account balance to verify funds for a nursing home bill and mentions a separate taxi reimbursement, but never requests splitting a payment to circumvent internal controls. The conversation focuses on identifying correct invoices and verifying available funds for legitimate expenses.",
+      "reason_de": "Die Kundin fragt nach dem Kontostand, um die Mittel für eine Heimrechnung zu prüfen, und erwähnt eine separate Taxirechnung. Es liegt kein Antrag vor, eine Zahlung aufzuteilen, um interne Kontrollen zu umgehen. Das Gespräch dreht sich um die Identifizierung korrekter Rechnungen und die Prüfung der Verfügbarkeit von Geldern für legitime Ausgaben.",
+      "benign_explanation": "The customer is discussing the payment of a nursing home bill and a separate taxi reimbursement. She asks for the current account balance to ensure sufficient funds are available for these specific, genuine expenses. There is no request to split a single payment into smaller parts to avoid an internal approval process or limit; rather, she is distinguishing between two different types of expenses (home bill vs. taxi) and checking the balance to pay the home bill correctly."
+    },
+    {
+      "family": "access",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor discloses the account balance (6,400 CHF) to an authorized representative, but no access codes, passwords, or other secrets are shared or requested during the call. Therefore, the specific misconduct of sharing an access code did not occur.",
+      "reason_de": "Der Berater teilt den Kontostand (6'400 CHF) mit einer berechtigten Vertreterin, aber es werden keine Zugangsdaten, Passwörter oder andere Geheimnisse geteilt oder angefordert. Das spezifische Fehlverhalten der Weitergabe eines Zugangsgeheimnisses liegt daher nicht vor.",
+      "benign_explanation": "The call involves a bank advisor providing account balance information to a customer who has verified authorization to act on behalf of her mother. No access secrets (such as PINs, passwords, TANs, or login codes) are disclosed, requested, or mentioned by either party. The number '6400' discussed is an account balance, not a secret."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor discloses the account balance to the customer, but explicitly confirms in the same call that the customer's authority to receive this information has been verified and is valid. Since the authority is established within the call, the disclosure is not to an unauthorized third party.",
+      "reason_de": "Die Beraterin gibt den Kontostand an die Kundin weiter, bestätigt aber explizit im Gespräch, dass das Auskunftsrecht der Kundin geprüft und hinterlegt ist. Da die Berechtigung im Gespräch als bestätigt gilt, handelt es sich nicht um eine unbefugte Weitergabe an Dritte.",
+      "benign_explanation": "The advisor explicitly states in the call that the customer's authority to access the mother's account information has been verified and is on file ('Auskunftsrecht hinterlegt und geprüft', 'gültige Berechtigung'). Therefore, the disclosure of the balance to the customer is authorized and does not constitute a violation."
+    },
+    {
+      "family": "documentation",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 0.6,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "Neither the advisor nor the customer requests to leave out, remove, or hide any relevant fact from the internal record. The advisor confirms that the discussion will be noted, and the customer simply receives requested information.",
+      "reason_de": "Weder der Berater noch der Kunde fordert auf, relevante Tatsachen aus den internen Aufzeichnungen zu unterlassen, zu entfernen oder zu verbergen. Der Berater bestätigt, dass das Gespräch festgehalten wird, und der Kunde erhält lediglich die angeforderten Informationen.",
+      "benign_explanation": "The call is a standard inquiry where a customer asks for the current balance of her mother's account to pay a nursing home bill. The advisor verifies authorization and provides the information. There is no request by either party to conceal, remove, or hide relevant facts from internal records; on the contrary, the advisor explicitly states that the conversation will be documented."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 263,
+      "family": "trade",
+      "seg_id": "S043",
+      "role": "exclusion",
+      "start_s": 213.13,
+      "end_s": 216.83,
+      "speaker_role": "advisor",
+      "quote": "sind aktuell 6 '400 Franken verfügbar.",
+      "note": "Advisor provides balance; no trading activity is discussed.",
+      "snippet_url": "/api/calls/Stufe2_C11-K3/snippets/S043"
+    }
+  ],
+  "keyword_hits": [],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.11,
+      "end_s": 8.35,
+      "role": "advisor",
+      "text": "Guten Morgen, Frau Faye. Hier ist Marion Huyon. Sie hat wegen der laufenden Wohnkosten von ihrer Mutter um ihren Rücken aufgebettet.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 10.11,
+      "end_s": 21.03,
+      "role": "customer",
+      "text": "Ja, sie ist zurzeit im Spital und ich ordne mit ihr die Unterlagen. Ich werde ihr die ganzen Sachen übernehmen, aber die Heimrechnung muss rechtzeitig bezahlt werden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 22.67,
+      "end_s": 28.57,
+      "role": "advisor",
+      "text": "Wir müssen vor einer konkreten Auskunft festhalten, welche Rolle Sie dann vorgegeben haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 28.97,
+      "end_s": 32.63,
+      "role": "advisor",
+      "text": "Es geht um das persönliche Konto Ihrer Mutter, richtig?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 34.43,
+      "end_s": 39.95,
+      "role": "customer",
+      "text": "Richtig. Wir haben den Beleg des Heimes und eine Liste der monatlichen Ausgaben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 40.19,
+      "end_s": 43.79,
+      "role": "customer",
+      "text": "Ich frage wegen Ihrem Konto, nicht wegen meinem eigenen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 45.31,
+      "end_s": 48.89,
+      "role": "advisor",
+      "text": "Ihre eigene Identität ist bestätigt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 48.89,
+      "end_s": 54.13,
+      "role": "advisor",
+      "text": "Für das Konto Ihrer Mutter ist das Auskunftsrecht hinterlegt und geprüft.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 54.37,
+      "end_s": 60.21,
+      "role": "advisor",
+      "text": "In diesem Vorgang haben Sie die gültige Berechtigung zum Kontostand von genau diesem Konto.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 60.49,
+      "end_s": 64.81,
+      "role": "advisor",
+      "text": "Die konkrete Auskunft ist vom bestätigten Umfang gedeckt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 66.44,
+      "end_s": 69.16,
+      "role": "customer",
+      "text": "Gut, ich habe Ihre Erklärung gehört.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 69.52,
+      "end_s": 72.32,
+      "role": "customer",
+      "text": "Ich habe noch eine allgemeine Frage zur Heimrechnung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 72.56,
+      "end_s": 77.98,
+      "role": "customer",
+      "text": "Sie kommt immer am Abend im Postfach, aber das Zahlungsdatum ist schon zwei Tage später.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 80.2,
+      "end_s": 84.64,
+      "role": "advisor",
+      "text": "Für euch meine Fragen zum Erfassen können wir den Ablauf besprechen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 84.92,
+      "end_s": 88.38,
+      "role": "advisor",
+      "text": "Ich brauche dafür nicht den genauen Inhalt der Rechnung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 88.6,
+      "end_s": 92.56,
+      "role": "advisor",
+      "text": "Steht eine Fälligkeit oder ist bereits sofort die Belastung drauf?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 94.14,
+      "end_s": 95.4,
+      "role": "customer",
+      "text": "Eine Fälligkeit.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 95.88,
+      "end_s": 101.74,
+      "role": "customer",
+      "text": "Ich habe zuerst gemeint, es sei eine Lastschrift, aber die Rechnung muss ich zum Zahlen erfassen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 102.04,
+      "end_s": 104.36,
+      "role": "customer",
+      "text": "Ich habe noch keine Zahlung bestätigt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 106.09,
+      "end_s": 107.03,
+      "role": "customer",
+      "text": "Dann ist die",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 107.03,
+      "end_s": 110.63,
+      "role": "advisor",
+      "text": "Rechnung selber noch kein Beleg, dass das Geld abgegangen ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 110.63,
+      "end_s": 115.99,
+      "role": "advisor",
+      "text": "Bitte kennen Sie im Ordner die offene Rechnung des eigentlichen Buchungsnachweises.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 117.89,
+      "end_s": 118.89,
+      "role": "customer",
+      "text": "Das mache ich.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 119.27,
+      "end_s": 124.29,
+      "role": "customer",
+      "text": "Mein Problem ist, dass meine Mutter alles in einem Ordner steckt, auch Werbung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 124.57,
+      "end_s": 128.67,
+      "role": "customer",
+      "text": "Ich will nicht eine alte Erinnerung mit einer neuen Rechnung verwechseln.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 130.25,
+      "end_s": 133.69,
+      "role": "advisor",
+      "text": "Oben die Belege nach dem Rechnungsdatum und der Referenz.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 134.35,
+      "end_s": 138.47,
+      "role": "advisor",
+      "text": "Am Telefon brauchen Sie die lange Referenz nicht vorzulesen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 138.47,
+      "end_s": 141.71,
+      "role": "advisor",
+      "text": "Haben Sie eine aktuelle und eine alte Version von sich?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 143.45,
+      "end_s": 147.87,
+      "role": "customer",
+      "text": "Ja, auf der alten steht der Monat August, auf der neuen September.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S030",
+      "start_s": 148.41,
+      "end_s": 153.39,
+      "role": "customer",
+      "text": "Der Betrag hat sich geändert, weil es im September ein paar Tage länger dort ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S031",
+      "start_s": 155.01,
+      "end_s": 160.27,
+      "role": "advisor",
+      "text": "Gut, für den jeweiligen Vorgang gehört die richtige Version zum Datum.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S032",
+      "start_s": 160.59,
+      "end_s": 166.71,
+      "role": "advisor",
+      "text": "Die allgemeine Sortierung beantwortet aber noch keine Frage zu einem persönlichen Kontostand.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S033",
+      "start_s": 168.45,
+      "end_s": 175.87,
+      "role": "customer",
+      "text": "Genau. Ich will nur die Heimrechnung richtig behandeln und nicht gerade jede Ausgabe aus dem alten Ordner übernehmen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S034",
+      "start_s": 176.09,
+      "end_s": 181.51,
+      "role": "customer",
+      "text": "Für meine eigene Erstattung des Taxifahrtbelegs muss ich separat mit ihr reden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S035",
+      "start_s": 183.17,
+      "end_s": 187.63,
+      "role": "advisor",
+      "text": "Ich habe ihre Belegliste und die Kontoübersicht gerade nebeneinander offen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S036",
+      "start_s": 188.01,
+      "end_s": 190.79,
+      "role": "advisor",
+      "text": "Die Taxierstattung gehört nicht zum Heimbeleg.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S037",
+      "start_s": 191.29,
+      "end_s": 193.17,
+      "role": "advisor",
+      "text": "Ich sollte sie separat klären.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S038",
+      "start_s": 193.57,
+      "end_s": 196.13,
+      "role": "advisor",
+      "text": "Welche Zahl fehlt Ihnen noch für die Liste?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S039",
+      "start_s": 197.59,
+      "end_s": 203.23,
+      "role": "customer",
+      "text": "Ich muss für meine Liste wissen, ob ich überhaupt mit dem vorhandenen Geld rechnen kann.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S040",
+      "start_s": 203.51,
+      "end_s": 205.79,
+      "role": "customer",
+      "text": "Das Datum der Übersicht ist alt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S041",
+      "start_s": 206.11,
+      "end_s": 210.03,
+      "role": "customer",
+      "text": "Welches ist jetzt der aktuelle Stand für genau Ihr Konto?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S042",
+      "start_s": 211.53,
+      "end_s": 213.13,
+      "role": "customer",
+      "text": "Auf diesem Konto",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S043",
+      "start_s": 213.13,
+      "end_s": 216.83,
+      "role": "advisor",
+      "text": "sind aktuell 6 '400 Franken verfügbar.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S044",
+      "start_s": 217.05,
+      "end_s": 220.61,
+      "role": "advisor",
+      "text": "Das ist der persönliche Stand Ihrer Mutter heute Morgen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S045",
+      "start_s": 220.61,
+      "end_s": 228.35,
+      "role": "customer",
+      "text": "Morgen. Danke, ich schreibe es mit dem Datum auf. Ich kann nicht voll die Zahl im ganzen",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S046",
+      "start_s": 228.35,
+      "end_s": 230.09,
+      "role": "customer",
+      "text": "Familienschatz verschicken.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S047",
+      "start_s": 231.61,
+      "end_s": 235.91,
+      "role": "advisor",
+      "text": "Für den Vorgang halte ich fest, was am Telefon besprochen",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S048",
+      "start_s": 235.91,
+      "end_s": 241.09,
+      "role": "advisor",
+      "text": "worden ist. Ich bestätige damit keine Zahlung und ändere keine Berechtigung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S049",
+      "start_s": 242.89,
+      "end_s": 244.71,
+      "role": "customer",
+      "text": "Gut, ich trenne",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S050",
+      "start_s": 244.71,
+      "end_s": 244.71,
+      "role": "customer",
+      "text": "Ich nehme",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S051",
+      "start_s": 244.71,
+      "end_s": 247.99,
+      "role": "advisor",
+      "text": "jetzt zwei Rechnungen und lege den richtigen Beleg bereit.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S052",
+      "start_s": 249.79,
+      "end_s": 255.43,
+      "role": "advisor",
+      "text": "Danke. Verwendet für eine weitere Rückfrage die Referenz vom Rückruf.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S053",
+      "start_s": 256.95,
+      "end_s": 258.83,
+      "role": "advisor",
+      "text": "Mache ich auf Wiedersehen.",
+      "low_confidence": false
+    }
+  ],
+  "twin": {
+    "call_id": "Stufe2_C12-K4",
+    "dialogue_id": "Stufe2_C12",
+    "variant": "noisy",
+    "verdict": "alarm",
+    "note": "The advisor confirms the customer's authority to access the account information before disclosing the balance."
+  },
+  "feedback": [],
+  "triggers": []
+}

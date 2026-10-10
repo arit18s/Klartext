@@ -1,0 +1,364 @@
+{
+  "call": {
+    "call_id": "Stufe1_D05-K2",
+    "file_name": "Stufe1_D05-K2.wav",
+    "dialogue_id": "Stufe1_D05",
+    "variant": "noisy",
+    "level": 1,
+    "duration_s": 144.56,
+    "advisor_name": "Isabelle Brunner",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:28Z",
+    "processed_at": "2026-10-10T09:54:58Z",
+    "verdict": "alarm",
+    "family": "access",
+    "score": 100.0,
+    "reason": "The customer reads out a 6-digit one-time password ('7, 3, 1, 9, 4, 2') which they state is currently valid for the login attempt. Although the advisor refuses to accept it, the actual disclosure of an active access secret by the customer has occurred.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": true,
+    "expected_verdict": "alarm"
+  },
+  "decision": {
+    "verdict": "alarm",
+    "family": "access",
+    "score": 100.0,
+    "reason": "The customer reads out a 6-digit one-time password ('7, 3, 1, 9, 4, 2') which they state is currently valid for the login attempt. Although the advisor refuses to accept it, the actual disclosure of an active access secret by the customer has occurred.",
+    "reason_de": "Der Kunde liest eine 6-stellige Einmalpasswort ('7, 3, 1, 9, 4, 2') vor, das er als aktuell gültig für die Anmeldung angibt. Obwohl der Berater dies ablehnt, hat die tatsächliche Offenlegung eines aktiven Zugangsgeheimnisses durch den Kunden stattgefunden.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:46Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call concerns technical assistance with online banking login credentials and contains no trade requests or references to non-public financial information. Therefore, the family 'Trading on non-public information' is not applicable to this conversation.",
+      "reason_de": "Der Anruf betrifft technische Unterstützung bei der Online-Banking-Anmeldung und enthält keine Handelsanfragen oder Hinweise auf nicht-öffentliche Finanzinformationen. Daher ist die Kategorie 'Handel mit Insiderinformationen' auf dieses Gespräch nicht anwendbar.",
+      "benign_explanation": "The call is a standard technical support interaction regarding online banking login issues (OTP verification). The customer is struggling with the login interface and mistakenly reads out a one-time password, which the advisor correctly refuses to accept. There is no discussion of securities, trading, or non-public company information."
+    },
+    {
+      "family": "splitting",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The family 'Splitting to avoid approval' concerns requests for partial payments intended to circumvent internal controls. This call involves only login troubleshooting and OTP handling; no payment or transfer requests are made. Therefore, the misconduct family is not applicable to this conversation.",
+      "reason_de": "Die Fehlverhaltenfamilie 'Aufteilung zur Umgehung der Genehmigung' betrifft Anfragen nach Teilzahlungen, die darauf abzielen, interne Kontrollen zu umgehen. Dieser Anruf befasst sich ausschließlich mit der Fehlerbehebung bei der Anmeldung und dem Umgang mit Einmalpasswörtern; es werden keine Zahlungs- oder Überweisungsanfragen gestellt. Daher ist diese Fehlverhaltenfamilie für dieses Gespräch nicht anwendbar.",
+      "benign_explanation": "The call is a technical support interaction regarding online banking login issues. The customer is confused about the two-factor authentication process and attempts to read out a one-time password (OTP) to the advisor. The advisor correctly refuses to accept the secret code and guides the customer to cancel the current session and restart via a secure channel. There is no discussion of financial transactions, payments, or transfers, let alone splitting them to avoid approval."
+    },
+    {
+      "family": "access",
+      "score": 100.0,
+      "event_majority": "present",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer reads out a 6-digit one-time password ('7, 3, 1, 9, 4, 2') which they state is currently valid for the login attempt. Although the advisor refuses to accept it, the actual disclosure of an active access secret by the customer has occurred.",
+      "reason_de": "Der Kunde liest eine 6-stellige Einmalpasswort ('7, 3, 1, 9, 4, 2') vor, das er als aktuell gültig für die Anmeldung angibt. Obwohl der Berater dies ablehnt, hat die tatsächliche Offenlegung eines aktiven Zugangsgeheimnisses durch den Kunden stattgefunden.",
+      "benign_explanation": "The customer is struggling with a two-factor authentication process and mistakenly believes the advisor needs to hear the code to verify it. The advisor explicitly warns against sharing secrets and attempts to stop the disclosure."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor actively prevents the disclosure of secrets by refusing to listen to the code and does not reveal any protected account information to the caller. Since no protected details were shared, the misconduct of revealing information to an unauthorized third party did not occur.",
+      "reason_de": "Der Berater verhindert aktiv die Offenlegung von Geheimnissen, indem er sich weigert, den Code anzuhören, und gibt keine geschützten Kontoinformationen an den Anrufer weiter. Da keine geschützten Details offengelegt wurden, liegt kein Vorfall der unbefugten Weitergabe von Informationen vor.",
+      "benign_explanation": "The call is a standard technical support interaction where the customer attempts to log in. The advisor explicitly refuses to receive or verify any secret codes (PINs, passwords, OTPs) and instructs the customer not to read them out. No protected account details (balances, transactions, personal data) are disclosed by the advisor to the customer or any third party."
+    },
+    {
+      "family": "documentation",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The family 'Relevant information left out' concerns intentional requests to hide relevant facts from internal recipients (e.g., in call notes or dossiers). This call contains no such request; the only sensitive data handling involves the customer offering an OTP and the advisor refusing it, which is compliant behavior. Therefore, the misconduct family is not applicable to this transcript.",
+      "reason_de": "Die Familie 'Weglassen relevanter Informationen' betrifft absichtliche Aufforderungen, relevante Fakten vor internen Empfängern (z. B. in Call-Notizen oder Akten) zu verbergen. Dieser Anruf enthält keine solche Aufforderung; der einzige Umgang mit sensiblen Daten besteht darin, dass der Kunde ein OTP anbietet und der Berater es aus Sicherheitsgründen ablehnt, was konform ist. Daher ist diese Fehlverhaltensfamilie auf diesen Transkript nicht anwendbar.",
+      "benign_explanation": "The call is a standard technical support interaction regarding online banking login issues. The customer attempts to read out a one-time password (OTP) to the advisor, and the advisor correctly refuses to accept it for security reasons. There are no requests to conceal, remove, or hide relevant facts from internal records, dossiers, or compliance documentation."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 199,
+      "family": "access",
+      "seg_id": "S012",
+      "role": "context",
+      "start_s": 56.53,
+      "end_s": 63.29,
+      "speaker_role": "customer",
+      "quote": "Bestätigung lauft und hier steht, der neue Bestätigungskode ist für genau die jetzige Anmeldung gültig.",
+      "note": "Establishes that the code being discussed is active and valid for the current login.",
+      "snippet_url": "/api/calls/Stufe1_D05-K2/snippets/S012"
+    },
+    {
+      "id": 200,
+      "family": "access",
+      "seg_id": "S016",
+      "role": "trigger",
+      "start_s": 77.96,
+      "end_s": 85.38,
+      "speaker_role": "customer",
+      "quote": "Warte, ich sage Ihnen die Tarnkarte. 7, 3, 1, 9, 4, 2. Es steht immer noch bültig.",
+      "note": "The customer discloses the digits of the active OTP. 'Tarnkarte' is likely an ASR error for 'Bestätigungskode' or similar, but the context confirms it is the secret code.",
+      "snippet_url": "/api/calls/Stufe1_D05-K2/snippets/S016"
+    }
+  ],
+  "keyword_hits": [
+    {
+      "keyword_id": "K10",
+      "family": "access",
+      "phrase": "PIN",
+      "seg_id": "S005",
+      "start_s": 23.01,
+      "end_s": 23.47,
+      "label": null
+    },
+    {
+      "keyword_id": "K10",
+      "family": "access",
+      "phrase": "Bestätigungscode",
+      "seg_id": "S012",
+      "start_s": 59.09,
+      "end_s": 60.41,
+      "label": null
+    }
+  ],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.05,
+      "end_s": 6.01,
+      "role": "advisor",
+      "text": "Hier ist Isabelle Bruno vom Online -Service. Sie hat uns empfehlen beim Anmelden zu melden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 6.27,
+      "end_s": 8.35,
+      "role": "advisor",
+      "text": "Was passiert auf Ihrem Bildschirm?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 10.15,
+      "end_s": 12.51,
+      "role": "customer",
+      "text": "Ich komme bis zum zweiten Schritt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 12.91,
+      "end_s": 19.99,
+      "role": "customer",
+      "text": "Dann zeigt das Gerät etwas an, aber ich weiss nicht, ob ich auf dem Telefon bestätigen soll oder im Browser.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 21.57,
+      "end_s": 25.03,
+      "role": "advisor",
+      "text": "Sie müssen mir kein PIN und kein Passwort sagen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 25.03,
+      "end_s": 31.79,
+      "role": "advisor",
+      "text": "Beschreiben Sie mir bitte nur, welche Anweisungen Sie sehen, ohne die geheimen Angaben vorzulesen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 33.27,
+      "end_s": 36.93,
+      "role": "customer",
+      "text": "Es hat eine blaue Fläche und darunter einen kleinen Fest.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 37.45,
+      "end_s": 40.57,
+      "role": "customer",
+      "text": "Ich bin auf dem Laptop und habe das Telefon neben mir.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 40.93,
+      "end_s": 44.63,
+      "role": "customer",
+      "text": "Im Telefon steht die alte Anfrage von vor 5 Minuten.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 46.47,
+      "end_s": 50.67,
+      "role": "advisor",
+      "text": "Dann schauen wir zuerst, dass nicht zwei Anfragen aufeinander karten.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 50.67,
+      "end_s": 54.31,
+      "role": "advisor",
+      "text": "ist im Browser noch der laufende Anmeldeschritt offen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 56.53,
+      "end_s": 63.29,
+      "role": "customer",
+      "text": "Bestätigung lauft und hier steht, der neue Bestätigungskode ist für genau die jetzige Anmeldung gültig.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 63.37,
+      "end_s": 67.55,
+      "role": "customer",
+      "text": "Der Countdown läuft noch, es sind noch 27 Sekunden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 69.33,
+      "end_s": 72.89,
+      "role": "advisor",
+      "text": "Weiter gehen Sie den Wert selbst im vorgesehenen Feld ein.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 73.09,
+      "end_s": 75.89,
+      "role": "advisor",
+      "text": "Ich brauche nur die Rückmeldung, ob es klappt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 77.96,
+      "end_s": 89.42,
+      "role": "customer",
+      "text": "Warte, ich sage Ihnen die Tarnkarte. 7, 3, 1, 9, 4, 2. Es steht immer noch bültig. Können Sie mir sagen, ob das die richtige Reihenfolge ist?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 91.28,
+      "end_s": 96.16,
+      "role": "advisor",
+      "text": "Ich brauche es bitte nicht mehr vorzulesen. Ich kann den Wert nicht für Sie prüfen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 96.44,
+      "end_s": 102.0,
+      "role": "advisor",
+      "text": "Wir brechen die laufende Aufwärme ab und gehen über den vorgesehenen Supportwert weiter.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 103.68,
+      "end_s": 107.8,
+      "role": "customer",
+      "text": "Oh, ich dachte, sie müssten das hören, um mir zu helfen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 108.14,
+      "end_s": 112.0,
+      "role": "customer",
+      "text": "Ich habe jetzt auf Abbrechen Druck und das Feld ist verschwunden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 113.9,
+      "end_s": 118.18,
+      "role": "advisor",
+      "text": "Danke. Für den nächsten Schritt teilen wir keine neuen Werte am Telefon.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 118.48,
+      "end_s": 122.78,
+      "role": "advisor",
+      "text": "Ich schicke Ihnen im sicheren Kanal die Anweisung für den Neustart.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 124.49,
+      "end_s": 127.31,
+      "role": "customer",
+      "text": "Ich warte auf die Nachricht und probiere es dann.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 127.51,
+      "end_s": 130.79,
+      "role": "customer",
+      "text": "Ich bin etwas nervös geworden, weil sie immer runter zählt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 132.96,
+      "end_s": 138.7,
+      "role": "advisor",
+      "text": "Das ist verständlich. Nehmen Sie sich Zeit und starten erst, wenn Sie alles vor sich haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 140.9,
+      "end_s": 143.62,
+      "role": "advisor",
+      "text": "Gut. Danke für die Hilfe. Auf Wiedersehen.",
+      "low_confidence": false
+    }
+  ],
+  "twin": null,
+  "feedback": [],
+  "triggers": [
+    {
+      "id": 6,
+      "call_id": "Stufe1_D05-K2",
+      "remote_id": "43",
+      "url": "http://localhost:5173/calls/Stufe1_D05-K2?t=67",
+      "status_code": 201,
+      "created_at": "2026-10-10T07:42:03Z"
+    }
+  ]
+}

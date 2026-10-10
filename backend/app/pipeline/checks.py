@@ -118,7 +118,10 @@ def aggregate(family: str, records: list[SampleRecord]) -> FamilyResult:
         agreement=round(agree / len(valid), 3),
         agreement_text=f"{agree} of {len(valid)}",
         needs_human_votes=sum(1 for s in valid if s.needs_human),
-        open_question=chosen.open_question,
+        # the majority sample may carry no question (e.g. "absent" while other runs ask for a human):
+        # then take the first question from a run that asked for a human or found the event unclear
+        open_question=chosen.open_question or next(
+            (x.open_question for x in valid if x.open_question and (x.needs_human or x.event == "undetermined")), None),
         reason=chosen.reason,
         reason_de=chosen.reason_de,
         benign_explanation=chosen.benign_explanation,

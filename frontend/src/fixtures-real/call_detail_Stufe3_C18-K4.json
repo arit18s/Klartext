@@ -1,0 +1,595 @@
+{
+  "call": {
+    "call_id": "Stufe3_C18-K4",
+    "file_name": "Stufe3_C18-K4.wav",
+    "dialogue_id": "Stufe3_C18",
+    "variant": "noisy",
+    "level": 3,
+    "duration_s": 268.98,
+    "advisor_name": "Daniela Gott",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:28Z",
+    "processed_at": "2026-10-10T09:54:59Z",
+    "verdict": "review",
+    "family": "disclosure",
+    "score": 0.0,
+    "reason": "The advisor consistently refused to disclose any protected account details (balances, payment status) to the customer, citing a lack of verified authority. Although the customer claimed authority was arranged, the advisor did not verify it and withheld information, thus no misconduct occurred. However, because the customer claims an authority that was not verified in the call, a human must verify if such authority exists on file.",
+    "open_question": "Verify whether a valid power of attorney or authority for the customer (Frau Ott) to access her sister's account details exists on file, as claimed by the customer but not verified by the advisor.",
+    "feedback_label": null,
+    "trigger_sent": true,
+    "expected_verdict": "review"
+  },
+  "decision": {
+    "verdict": "review",
+    "family": "disclosure",
+    "score": 0.0,
+    "reason": "The advisor consistently refused to disclose any protected account details (balances, payment status) to the customer, citing a lack of verified authority. Although the customer claimed authority was arranged, the advisor did not verify it and withheld information, thus no misconduct occurred. However, because the customer claims an authority that was not verified in the call, a human must verify if such authority exists on file.",
+    "reason_de": "Der Berater verweigerte konsequent die Offenlegung geschützter Kontodetails (Kontostand, Zahlungsstatus) an die Kundin, da deren Berechtigung nicht verifiziert war. Obwohl die Kundin behauptete, eine Vollmacht zu haben, wurde diese im Gespräch nicht überprüft und die Informationen wurden zurückgehalten, sodass kein Fehlverhalten vorliegt. Da die Kundin jedoch eine Berechtigung beansprucht, die im Gespräch nicht verifiziert wurde, muss ein Mensch prüfen, ob eine solche Vollmacht im System hinterlegt ist.",
+    "open_question": "Verify whether a valid power of attorney or authority for the customer (Frau Ott) to access her sister's account details exists on file, as claimed by the customer but not verified by the advisor.",
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:47Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The conversation is strictly about verifying authorization for accessing a third party's account balance and does not involve any trade requests or non-public company information relevant to insider trading rules.",
+      "reason_de": "Das Gespräch betrifft ausschließlich die Überprüfung der Berechtigung zum Zugriff auf das Kontoguthaben einer dritten Person und beinhaltet keine Handelsanfragen oder nicht-öffentliche Unternehmensinformationen, die für Insiderhandelsregeln relevant wären.",
+      "benign_explanation": "The call concerns a customer attempting to access information about her sister's bank account to pay household bills while the sister is abroad. The advisor correctly refuses to provide any account details or confirm balances due to lack of proper authorization. There is no discussion of trading stocks, bonds, or other financial instruments, nor is there any mention of non-public corporate information such as earnings, mergers, or profit warnings."
+    },
+    {
+      "family": "splitting",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call does not contain any request for connected partial movements intended to prevent an internal process from applying. The discussion is limited to authorization for account access and general inquiries about bill periods, which falls outside the scope of the 'Splitting to avoid approval' family.",
+      "reason_de": "Der Anruf enthält keine Anfrage nach verbundenen Teilzahlungen, die darauf abzielen, interne Prozesse zu umgehen. Das Gespräch beschränkt sich auf die Berechtigung zum Kontozugriff und allgemeine Fragen zu Rechnungsperioden, was nicht in den Anwendungsbereich der Familie 'Aufteilung zur Vermeidung von Freigaben' fällt.",
+      "benign_explanation": "The call concerns a customer attempting to gain access to information about her sister's bank account to pay household bills while the sister is abroad. The advisor repeatedly refuses to provide account details due to lack of proper authorization. There is no discussion of splitting payments, transfers, or deposits to avoid internal approval processes or limits. The conversation is entirely about data privacy and authorization verification."
+    },
+    {
+      "family": "access",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "No access secret (login code, PIN, TAN, etc.) was disclosed by either the advisor or the customer. The advisor explicitly refused to provide account details due to lack of authorization, and the conversation focused on procedural requirements for future verification rather than sharing credentials.",
+      "reason_de": "Es wurde kein Zugangsgeheimnis (Login-Code, PIN, TAN usw.) von der Beraterin oder der Kundin offengelegt. Die Beraterin hat die Auskunft über Kontodetails aufgrund fehlender Berechtigung explizit verweigert, und das Gespräch konzentrierte sich auf die Verfahrensanforderungen für eine zukünftige Verifizierung, nicht auf den Austausch von Zugangsdaten.",
+      "benign_explanation": "The customer calls to inquire about her sister's account balance to ensure bills are paid while the sister is abroad. The advisor correctly identifies that the customer lacks verified authorization and refuses to disclose any account information or secrets. No access codes, PINs, passwords, or TANs are mentioned, requested, or disclosed by either party during the call."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 3,
+      "open_question": "Verify whether a valid power of attorney or authority for the customer (Frau Ott) to access her sister's account details exists on file, as claimed by the customer but not verified by the advisor.",
+      "reason": "The advisor consistently refused to disclose any protected account details (balances, payment status) to the customer, citing a lack of verified authority. Although the customer claimed authority was arranged, the advisor did not verify it and withheld information, thus no misconduct occurred. However, because the customer claims an authority that was not verified in the call, a human must verify if such authority exists on file.",
+      "reason_de": "Der Berater verweigerte konsequent die Offenlegung geschützter Kontodetails (Kontostand, Zahlungsstatus) an die Kundin, da deren Berechtigung nicht verifiziert war. Obwohl die Kundin behauptete, eine Vollmacht zu haben, wurde diese im Gespräch nicht überprüft und die Informationen wurden zurückgehalten, sodass kein Fehlverhalten vorliegt. Da die Kundin jedoch eine Berechtigung beansprucht, die im Gespräch nicht verifiziert wurde, muss ein Mensch prüfen, ob eine solche Vollmacht im System hinterlegt ist.",
+      "benign_explanation": "The customer calls to inquire about her sister's account to manage household bills while the sister is abroad. The advisor explicitly refuses to disclose any account-specific information (balances, transaction status) because the customer's authority is not established. The advisor states that no information will be given until proof of authority is provided. The customer accepts this refusal and agrees to send the necessary documentation later. No protected details were revealed."
+    },
+    {
+      "family": "documentation",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "Neither the advisor nor the customer requests to hide, remove, or leave out relevant information from the internal record. The advisor adheres to compliance rules by refusing unauthorized disclosure and documenting the inquiry, which constitutes proper procedure rather than misconduct.",
+      "reason_de": "Weder die Beraterin noch die Kundin fordert auf, relevante Informationen aus den internen Aufzeichnungen zu verbergen oder wegzulassen. Die Beraterin hält sich an die Compliance-Vorschriften, indem sie unbefugte Auskünfte verweigert und das Anliegen dokumentiert, was ein korrektes Verfahren darstellt und kein Fehlverhalten.",
+      "benign_explanation": "The call involves a customer attempting to access information about her sister's account without proper authorization. The advisor correctly refuses to disclose any account details or balances due to missing proof of authority. No request is made by either party to conceal relevant facts from internal records; rather, the advisor explicitly states that she will record the contact request for verification purposes."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 312,
+      "family": "disclosure",
+      "seg_id": "S009",
+      "role": "context",
+      "start_s": 45.16,
+      "end_s": 49.84,
+      "speaker_role": "customer",
+      "quote": "Ich habe keine Bestätigung der Berechtigung für genau Ihr Konto vorweisen.",
+      "note": "The customer admits they do not have proof of authority to present.",
+      "snippet_url": "/api/calls/Stufe3_C18-K4/snippets/S009"
+    },
+    {
+      "id": 313,
+      "family": "disclosure",
+      "seg_id": "S011",
+      "role": "trigger",
+      "start_s": 57.76,
+      "end_s": 63.64,
+      "speaker_role": "advisor",
+      "quote": "Das heisst, ich kann Ihnen jetzt nicht bestätigen, dass Sie den Kontostand erfahren dürfen.",
+      "note": "The advisor explicitly states they cannot confirm the customer is allowed to know the balance, indicating a refusal to disclose.",
+      "snippet_url": "/api/calls/Stufe3_C18-K4/snippets/S011"
+    },
+    {
+      "id": 314,
+      "family": "disclosure",
+      "seg_id": "S043",
+      "role": "context",
+      "start_s": 212.24,
+      "end_s": 216.74,
+      "speaker_role": "advisor",
+      "quote": "Solange dies noch nicht klar ist, geben wir zu Ihrem Konto keine Auskunft.",
+      "note": "The advisor establishes the policy that no information is given until authority is clear.",
+      "snippet_url": "/api/calls/Stufe3_C18-K4/snippets/S043"
+    },
+    {
+      "id": 315,
+      "family": "disclosure",
+      "seg_id": "S045",
+      "role": "trigger",
+      "start_s": 227.2,
+      "end_s": 233.2,
+      "speaker_role": "advisor",
+      "quote": "Nein, das kann ich Ihnen erst sagen, wenn die Berechtigung für diese Auskunft gebührt ist.",
+      "note": "The advisor refuses to answer a specific question about sufficient funds, citing lack of verified authority.",
+      "snippet_url": "/api/calls/Stufe3_C18-K4/snippets/S045"
+    },
+    {
+      "id": 316,
+      "family": "disclosure",
+      "seg_id": "S046",
+      "role": "trigger",
+      "start_s": 233.36,
+      "end_s": 237.58,
+      "speaker_role": "advisor",
+      "quote": "Einen Betrag oder eine Bestätigung zur Decke gebe ich Ihnen jetzt nicht.",
+      "note": "The advisor explicitly withholds specific financial details.",
+      "snippet_url": "/api/calls/Stufe3_C18-K4/snippets/S046"
+    }
+  ],
+  "keyword_hits": [],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.08,
+      "end_s": 8.2,
+      "role": "advisor",
+      "text": "Guten Tag, Frau Ott, das ist Daniela Gott. Sie haben wegen dem Haushaltskonto von Ihrer Schwester um einen Neukauf gewünscht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 10.04,
+      "end_s": 17.22,
+      "role": "customer",
+      "text": "Ja, sie ist für zwei Monate im Ausland. Ich habe ihr angeboten, auf die offenen Rechnungen zu schauen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 17.46,
+      "end_s": 21.52,
+      "role": "customer",
+      "text": "Ich habe aber noch nie mit ihrer Bank über ihr Konto telefoniert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 23.26,
+      "end_s": 29.9,
+      "role": "advisor",
+      "text": "Dann müssen wir vorher die konkrete Auskunft schauen, wer Sie sind und welche Auskunft Sie bekommen dürfen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 29.9,
+      "end_s": 33.1,
+      "role": "advisor",
+      "text": "Was hat Ihre Schwester für den Kontakt hinterlegt?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 35.22,
+      "end_s": 36.12,
+      "role": "advisor",
+      "text": "Sie hat gesagt,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 36.42,
+      "end_s": 37.92,
+      "role": "customer",
+      "text": "das sei alles erledigt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 38.22,
+      "end_s": 44.94,
+      "role": "customer",
+      "text": "Ich habe nur eine Nachricht von ihr auf meinem Telefon und weiss nicht, was bei Ihnen tatsächlich erfasst ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 45.16,
+      "end_s": 49.84,
+      "role": "customer",
+      "text": "Ich habe keine Bestätigung der Berechtigung für genau Ihr Konto vorweisen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 51.9,
+      "end_s": 57.76,
+      "role": "advisor",
+      "text": "Ich sehe aktuell, dass Sie abschliessend den geübten Freigang für die gewünschte Auskunft haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 57.76,
+      "end_s": 63.64,
+      "role": "advisor",
+      "text": "Das heisst, ich kann Ihnen jetzt nicht bestätigen, dass Sie den Kontostand erfahren dürfen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 63.76,
+      "end_s": 66.62,
+      "role": "advisor",
+      "text": "Ich kann allgemeine Prozessfragen aufnehmen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 68.32,
+      "end_s": 69.64,
+      "role": "customer",
+      "text": "Gut, ich",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 69.64,
+      "end_s": 70.04,
+      "role": "advisor",
+      "text": "will Sie",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 70.04,
+      "end_s": 72.6,
+      "role": "customer",
+      "text": "nicht überreden, mir einfach etwas zu sagen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 73.02,
+      "end_s": 78.56,
+      "role": "customer",
+      "text": "Mir geht es darum, dass die Wohnungsrechnung nicht liegen bleibt, während wir noch auf das Formular warten.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 78.56,
+      "end_s": 83.12,
+      "role": "advisor",
+      "text": "Wir können den Kontaktwunsch weitergeben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 83.4,
+      "end_s": 88.82,
+      "role": "advisor",
+      "text": "Für einen konkreten Auftrag oder eine Auskunft brauchen wir aber zuerst den Nachweis.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 88.98,
+      "end_s": 92.44,
+      "role": "advisor",
+      "text": "Welche Frage haben Sie noch, ob Ihre eigene Niste offen ist?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 94.3,
+      "end_s": 95.1,
+      "role": "advisor",
+      "text": "Zwei Daten.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 95.42,
+      "end_s": 100.12,
+      "role": "customer",
+      "text": "Der letzte Beleg ist vom August, aber die neue Rechnung vom September.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 100.46,
+      "end_s": 105.48,
+      "role": "customer",
+      "text": "Ich weiss nicht, ob meine Schwester den Septemberbetrag schon zum Zahlen erfasst hat.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 105.48,
+      "end_s": 112.36,
+      "role": "advisor",
+      "text": "Die eigenen Belege kann Ihre Schwester selber mit der Rechnung vergleichen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 112.48,
+      "end_s": 118.08,
+      "role": "advisor",
+      "text": "Sie können für Ihre Vorbereitung festhalten, dass Sie zwei verschiedene Monate vor sich haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 118.38,
+      "end_s": 124.9,
+      "role": "advisor",
+      "text": "Steht der September als Rechnungsperiode auf der neuen Unterlage oder nur als Datum vom Versand?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 127.16,
+      "end_s": 132.48,
+      "role": "customer",
+      "text": "Als Rechnungsperiode. Ich kann Sie heute Abend erreichen und Ihnen die richtige Rechnung benennen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 132.48,
+      "end_s": 136.6,
+      "role": "customer",
+      "text": "Ich möchte nicht im Familienstand ein Bild von Ihrem Konto verteilen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 136.82,
+      "end_s": 140.88,
+      "role": "customer",
+      "text": "Sie kann selbst im Zugang schauen und mir dann sagen, ob sie noch etwas",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 140.88,
+      "end_s": 141.56,
+      "role": "advisor",
+      "text": "machen muss.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S030",
+      "start_s": 143.64,
+      "end_s": 148.04,
+      "role": "advisor",
+      "text": "Schicken Sie uns bitte nur den Nachweis auf die Berechnung, die nötig ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S031",
+      "start_s": 148.16,
+      "end_s": 151.32,
+      "role": "advisor",
+      "text": "Dann werden wir über den vorgesehenen Weg bekommen und prüfen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S032",
+      "start_s": 151.7,
+      "end_s": 154.34,
+      "role": "advisor",
+      "text": "Die Nachricht von Ihrer Schwester allein lernt nichts.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S033",
+      "start_s": 156.44,
+      "end_s": 160.1,
+      "role": "customer",
+      "text": "Ich habe einen Ordner vorbereitet, aber noch nichts verschickt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S034",
+      "start_s": 160.32,
+      "end_s": 163.12,
+      "role": "customer",
+      "text": "Soll ich meine eigenen Kontobelegungen schicken?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S035",
+      "start_s": 163.12,
+      "end_s": 167.76,
+      "role": "customer",
+      "text": "Es könnte ja sein, dass ich im Notfall eine Rechnung für Sie vorstecke.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S036",
+      "start_s": 169.34,
+      "end_s": 171.38,
+      "role": "advisor",
+      "text": "Das sind Zweige, könnte man sagen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S037",
+      "start_s": 171.8,
+      "end_s": 176.7,
+      "role": "advisor",
+      "text": "Wenn Sie von Ihrem eigenen Konto etwas zahlen, ist das Ihre eigene Zahlungsfrage.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S038",
+      "start_s": 177.04,
+      "end_s": 182.24,
+      "role": "advisor",
+      "text": "Aber Sie dürfen deshalb nicht automatisch Auskunft zum Konto Ihrer Schwester bekommen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S039",
+      "start_s": 184.1,
+      "end_s": 190.7,
+      "role": "customer",
+      "text": "Gut, wenn ich aus meinem Konto zahle, möchte ich wenigstens nicht die gleiche Rechnung zweimal zahlen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S040",
+      "start_s": 190.7,
+      "end_s": 198.04,
+      "role": "customer",
+      "text": "Wir haben vereinbart, dass ich zuerst mit ihr rede und nicht selber entscheide, welche Rechnung zu Strang kommt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S041",
+      "start_s": 200.15,
+      "end_s": 206.94,
+      "role": "advisor",
+      "text": "Für Ihre eigene mögliche Zahlung brauchen Sie den aktuellen Rechnungsbeleg und Ihre Abstimmung mit mir.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S042",
+      "start_s": 207.22,
+      "end_s": 212.06,
+      "role": "advisor",
+      "text": "Ich notiere Ihren Kontaktwunsch, damit man die Berechtigung prüfen kann.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S043",
+      "start_s": 212.24,
+      "end_s": 216.74,
+      "role": "advisor",
+      "text": "Solange dies noch nicht klar ist, geben wir zu Ihrem Konto keine Auskunft.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S044",
+      "start_s": 219.07,
+      "end_s": 225.33,
+      "role": "customer",
+      "text": "Können Sie mir bis dahin wenigstens sagen, ob auf Ihrem Konto genug für die Wohnungstechnik liegt?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S045",
+      "start_s": 227.2,
+      "end_s": 233.2,
+      "role": "advisor",
+      "text": "Nein, das kann ich Ihnen erst sagen, wenn die Berechtigung für diese Auskunft gebührt ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S046",
+      "start_s": 233.36,
+      "end_s": 237.58,
+      "role": "advisor",
+      "text": "Einen Betrag oder eine Bestätigung zur Decke gebe ich Ihnen jetzt nicht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S047",
+      "start_s": 239.68,
+      "end_s": 240.98,
+      "role": "advisor",
+      "text": "Verstanden. Ich",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S048",
+      "start_s": 240.98,
+      "end_s": 242.48,
+      "role": "customer",
+      "text": "habe Ihre Antwort gehört.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S049",
+      "start_s": 242.82,
+      "end_s": 248.34,
+      "role": "customer",
+      "text": "Ich rufe Sie heute Abend an und schicke dann nur das, was den sicheren Ablauf erlaubt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S050",
+      "start_s": 251.02,
+      "end_s": 255.96,
+      "role": "advisor",
+      "text": "Drücke auf Referenz und der passende Kontaktwerk kommt ins Postfach.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S051",
+      "start_s": 256.14,
+      "end_s": 261.76,
+      "role": "advisor",
+      "text": "Bei Ihrer Nachfrage geben Sie die Referenz an, dann müssen wir nicht nochmal von vorne anfangen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S052",
+      "start_s": 263.74,
+      "end_s": 268.2,
+      "role": "customer",
+      "text": "Danke, das hilft mir zum Ordnen, auch wenn ich die Zahl jetzt noch nicht habe.",
+      "low_confidence": false
+    }
+  ],
+  "twin": {
+    "call_id": "Stufe2_C11-K3",
+    "dialogue_id": "Stufe2_C11",
+    "variant": "clean",
+    "verdict": "no_alert",
+    "note": "The advisor confirms that the customer's authority to access the account has been verified and is on file."
+  },
+  "feedback": [],
+  "triggers": [
+    {
+      "id": 31,
+      "call_id": "Stufe3_C18-K4",
+      "remote_id": "68",
+      "url": "http://localhost:5173/calls/Stufe3_C18-K4?t=47",
+      "status_code": 201,
+      "created_at": "2026-10-10T07:42:04Z"
+    }
+  ]
+}

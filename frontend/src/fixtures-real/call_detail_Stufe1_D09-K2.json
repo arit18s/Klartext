@@ -1,0 +1,611 @@
+{
+  "call": {
+    "call_id": "Stufe1_D09-K2",
+    "file_name": "Stufe1_D09-K2.wav",
+    "dialogue_id": "Stufe1_D09",
+    "variant": "noisy",
+    "level": 1,
+    "duration_s": 253.01,
+    "advisor_name": "Nicole Meier",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:28Z",
+    "processed_at": "2026-10-10T09:54:58Z",
+    "verdict": "alarm",
+    "family": "documentation",
+    "score": 100.0,
+    "reason": "The customer explicitly requests that the advisor not record the repayment obligation of 20,000 Francs and that the aunt's loan agreement be excluded from the dossier, intending to hide this relevant financial liability from the credit department. The advisor refuses this request, but the request itself constitutes the event.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": true,
+    "expected_verdict": "alarm"
+  },
+  "decision": {
+    "verdict": "alarm",
+    "family": "documentation",
+    "score": 100.0,
+    "reason": "The customer explicitly requests that the advisor not record the repayment obligation of 20,000 Francs and that the aunt's loan agreement be excluded from the dossier, intending to hide this relevant financial liability from the credit department. The advisor refuses this request, but the request itself constitutes the event.",
+    "reason_de": "Die Kundin fordert explizit, dass die Rückzahlungsverpflichtung von 20'000 Franken nicht protokolliert und die Darlehensvereinbarung der Tante aus dem Dossier ausgeschlossen wird, um diese relevante finanzielle Verbindlichkeit vor der Kreditstelle zu verbergen. Die Beraterin lehnt dies ab, aber die Anfrage selbst stellt das Ereignis dar.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:46Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call involves a request to misrepresent the source of funds in a loan application, not a request to trade on non-public information. Therefore, the family 'Trading on non-public information' is not applicable to this interaction.",
+      "reason_de": "Der Anruf betrifft eine Anfrage, die Herkunft der Mittel in einer Kreditantragstellung falsch darzustellen, nicht eine Anfrage, auf Basis nicht-öffentlicher Informationen zu handeln. Daher ist die Familie 'Handel mit Insiderinformationen' auf diese Interaktion nicht anwendbar.",
+      "benign_explanation": "The call concerns the correction of a loan application dossier regarding the source of equity (a loan from a relative). The customer asks to hide this information to avoid losing a property reservation, and the advisor refuses, insisting on correct documentation. There is no discussion of trading stocks, bonds, or other financial instruments based on non-public company information."
+    },
+    {
+      "family": "splitting",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 0.6,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer asks the advisor to exclude a loan agreement from the file to speed up processing, which constitutes a request for incomplete documentation rather than splitting payments to avoid approval thresholds. As the rule defines the event as a request for connected partial movements expressly intended to prevent a stated fictional internal process, and no such splitting request occurs, the event is absent.",
+      "reason_de": "Die Kundin bittet die Beraterin, eine Darlehensvereinbarung aus dem Dossier auszuschließen, um den Prozess zu beschleunigen. Dies ist eine Bitte um unvollständige Dokumentation, nicht um das Aufteilen von Zahlungen zur Umgehung von Genehmigungsschwellen. Da keine Anfrage zum Aufteilen von Transaktionen vorliegt, ist das Ereignis für diese Familie nicht vorhanden.",
+      "benign_explanation": "The customer requests that the bank advisor omit a loan from their aunt from the credit application documentation to avoid delays and secure an apartment reservation. This is a request for incomplete or misleading documentation (omission of a liability/source), not a request to split payments into smaller parts to bypass approval limits. The family 'Splitting to avoid approval' specifically concerns connected partial movements intended to prevent internal processes like limit checks from applying. Since no splitting of transactions is discussed, this family is not applicable to the misconduct described."
+    },
+    {
+      "family": "access",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "No access secret was disclosed during the call; the conversation focused on financial documentation and compliance requirements for a loan application.",
+      "reason_de": "Es wurde kein Zugangsgeheimnis offengelegt; das Gespräch drehte sich um die Korrektur von Finanzdokumenten und Compliance-Anforderungen für einen Kreditantrag.",
+      "benign_explanation": "The call concerns a correction of financing documents regarding the source of funds (a loan from an aunt). The customer discusses amounts and repayment obligations but does not disclose any login codes, PINs, TANs, passwords, or other access secrets. The advisor explicitly instructs the customer to use the secure postbox for document upload and warns against sending sensitive data via private channels."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor refuses the customer's request to omit the aunt's loan from the documentation, ensuring that the bank receives the correct information. Since the advisor does not disclose any third-party details to an unauthorized person but instead insists on proper documentation for the account holder's own file, no misconduct occurred.",
+      "reason_de": "Die Beraterin lehnt die Bitte der Kundin ab, das Darlehen der Tante aus der Dokumentation zu entfernen, und besteht auf der korrekten Erfassung der Mittelherkunft. Da die Beraterin keine geschützten Daten an eine unbefugte Person offenbart, sondern sicherstellt, dass die Bank die richtigen Informationen für das Dossier der Kundin erhält, liegt kein Fehlverhalten vor.",
+      "benign_explanation": "The call is between a bank advisor and the account holder (Frau Baumann) regarding her own financing dossier. The customer explicitly asks the advisor to withhold information about a loan from her aunt to protect her aunt's privacy, but the advisor refuses this request and insists on documenting the true source of funds for compliance reasons. No protected third-party details are revealed to an unauthorized party; rather, the advisor prevents the customer from hiding relevant information from the bank."
+    },
+    {
+      "family": "documentation",
+      "score": 100.0,
+      "event_majority": "present",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer explicitly requests that the advisor not record the repayment obligation of 20,000 Francs and that the aunt's loan agreement be excluded from the dossier, intending to hide this relevant financial liability from the credit department. The advisor refuses this request, but the request itself constitutes the event.",
+      "reason_de": "Die Kundin fordert explizit, dass die Rückzahlungsverpflichtung von 20'000 Franken nicht protokolliert und die Darlehensvereinbarung der Tante aus dem Dossier ausgeschlossen wird, um diese relevante finanzielle Verbindlichkeit vor der Kreditstelle zu verbergen. Die Beraterin lehnt dies ab, aber die Anfrage selbst stellt das Ereignis dar.",
+      "benign_explanation": "The customer initially corrects an error in the draft (changing 'savings' to include a loan from an aunt), which is a harmless correction. However, later in the call, the customer explicitly requests that the repayment obligation of the loan be omitted from the official record to hide the liability from the credit department."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 214,
+      "family": "documentation",
+      "seg_id": "S036",
+      "role": "trigger",
+      "start_s": 158.39,
+      "end_s": 163.85,
+      "speaker_role": "customer",
+      "quote": "Dann bitte nicht protokollieren, dass ich die 20 '000 zurückzahlen muss.",
+      "note": "The customer explicitly requests that the repayment obligation not be recorded.",
+      "snippet_url": "/api/calls/Stufe1_D09-K2/snippets/S036"
+    },
+    {
+      "id": 215,
+      "family": "documentation",
+      "seg_id": "S037",
+      "role": "trigger",
+      "start_s": 163.85,
+      "end_s": 167.75,
+      "speaker_role": "customer",
+      "quote": "Ich nehme Sarlene mit in die Notiz für die Kreditstelle.",
+      "note": "Context for the request: referring to the note for the credit department.",
+      "snippet_url": "/api/calls/Stufe1_D09-K2/snippets/S037"
+    },
+    {
+      "id": 216,
+      "family": "documentation",
+      "seg_id": "S038",
+      "role": "trigger",
+      "start_s": 167.83,
+      "end_s": 173.81,
+      "speaker_role": "customer",
+      "quote": "Ich will, dass sie nur meine Eigenmittel zählt und die Vereinbarung meiner Tante gar nicht erfährt.",
+      "note": "The customer states the intent to hide the aunt's agreement (a relevant fact for risk assessment) from the recipient.",
+      "snippet_url": "/api/calls/Stufe1_D09-K2/snippets/S038"
+    },
+    {
+      "id": 217,
+      "family": "documentation",
+      "seg_id": "S039",
+      "role": "context",
+      "start_s": 175.63,
+      "end_s": 177.75,
+      "speaker_role": "advisor",
+      "quote": "Dem Wunsch kann ich nicht folgen.",
+      "note": "The advisor refuses the request, confirming it was made but not acted upon.",
+      "snippet_url": "/api/calls/Stufe1_D09-K2/snippets/S039"
+    }
+  ],
+  "keyword_hits": [
+    {
+      "keyword_id": "K06",
+      "family": "documentation",
+      "phrase": "nicht protokollieren",
+      "seg_id": "S036",
+      "start_s": 159.45,
+      "end_s": 160.93,
+      "label": null
+    }
+  ],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.11,
+      "end_s": 6.61,
+      "role": "advisor",
+      "text": "Grüezi Frau Baumann, hier ist Nicole Meyer. Ich habe Ihre Nachricht zum Finanzierungsdossier.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 6.85,
+      "end_s": 11.31,
+      "role": "advisor",
+      "text": "Sie haben geschrieben, dass die Angabe zur Eigenmittelherkunft noch nicht stimmt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 13.49,
+      "end_s": 19.87,
+      "role": "customer",
+      "text": "Ja, im Entwurf steht Ersparnis, aber ein Teil ist ein Darlehen von meiner Tante.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 20.07,
+      "end_s": 26.03,
+      "role": "customer",
+      "text": "Ich habe das beim ersten Gespräch nicht richtig erklärt, weil ich selber noch nicht gewusst habe, wie",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 26.03,
+      "end_s": 27.41,
+      "role": "advisor",
+      "text": "man diese Vereinbarung macht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 27.41,
+      "end_s": 31.09,
+      "role": "advisor",
+      "text": "Gut, dass Sie das melden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 31.33,
+      "end_s": 37.07,
+      "role": "advisor",
+      "text": "Unsere Kreditstelle muss tatsächlich einen Herkunft - und Rückzahlungsverpflichtung kennen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 37.41,
+      "end_s": 41.27,
+      "role": "advisor",
+      "text": "Wir müssen den Zufuhrfall also korrigieren, bevor er weitergeht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 42.95,
+      "end_s": 43.87,
+      "role": "advisor",
+      "text": "Es sind",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 43.87,
+      "end_s": 46.79,
+      "role": "customer",
+      "text": "20 '000 Franken von meiner Tante.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 47.03,
+      "end_s": 51.67,
+      "role": "customer",
+      "text": "Ich muss jetzt zurückzahlen und wir haben jetzt eine Unterschreibung vereinbart.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 52.05,
+      "end_s": 54.75,
+      "role": "customer",
+      "text": "Bewäscht sind meine eigenen Ersparnisse.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 54.75,
+      "end_s": 58.05,
+      "role": "customer",
+      "text": "Ich kenne den Unterschied, aber ich habe Angst, dass",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 58.05,
+      "end_s": 59.15,
+      "role": "advisor",
+      "text": "es darum länger geht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 61.44,
+      "end_s": 64.48,
+      "role": "advisor",
+      "text": "Ich nehme die zwei Bestandteile in die Bände.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 64.78,
+      "end_s": 68.08,
+      "role": "advisor",
+      "text": "Die Vereinbarung gehört als Beleg zum Dossier.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 68.38,
+      "end_s": 70.64,
+      "role": "advisor",
+      "text": "Wann ist der Termin, der Ihnen Sorgen macht?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 72.45,
+      "end_s": 76.03,
+      "role": "customer",
+      "text": "Am zwänglichsten soll ich die Reservierung bestätigen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 76.29,
+      "end_s": 79.23,
+      "role": "customer",
+      "text": "Dafür kann es auch jemand anderes haben, der Interesse hat.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 79.53,
+      "end_s": 83.77,
+      "role": "customer",
+      "text": "Ich will nicht alles verlieren, nur weil wir noch einen neuen Abschnitt aufnehmen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 85.47,
+      "end_s": 94.01,
+      "role": "advisor",
+      "text": "Ich kann den Termin als Zeitdruck festhalten. Er ändert aber nicht, weil die relevante Information die Kreditstelle braucht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 94.47,
+      "end_s": 98.99,
+      "role": "advisor",
+      "text": "Haben Sie die Vereinbarung schon digital im sicheren Postfach hinterlegt?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 100.83,
+      "end_s": 110.01,
+      "role": "customer",
+      "text": "Nein, ich habe ein Foto auf meinem Telefon. Ich kann es verschicken, aber ich weiss nicht, ob es scharf genug ist. Auf dem Foto steht auch die Adresse",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 110.01,
+      "end_s": 111.15,
+      "role": "advisor",
+      "text": "meiner Tante.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 112.91,
+      "end_s": 116.63,
+      "role": "advisor",
+      "text": "Für den Beleg gibt es im vorgesehenen sicherer Weg.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 116.93,
+      "end_s": 119.49,
+      "role": "advisor",
+      "text": "Schicken Sie nicht an meine Privatadresse.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 119.85,
+      "end_s": 123.79,
+      "role": "advisor",
+      "text": "Ich kann Ihnen sagen, wie Sie die Datei im Postfach hochladen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 125.71,
+      "end_s": 126.31,
+      "role": "customer",
+      "text": "Danke.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 126.49,
+      "end_s": 129.99,
+      "role": "customer",
+      "text": "Die Darlehensanlage muss also jetzt richtig drin sein.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S030",
+      "start_s": 130.13,
+      "end_s": 131.43,
+      "role": "customer",
+      "text": "Das habe ich verstanden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S031",
+      "start_s": 131.73,
+      "end_s": 135.33,
+      "role": "customer",
+      "text": "Ich kann Ihnen das schärfere Foto der Vereinbarung noch nachreichen,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S032",
+      "start_s": 135.63,
+      "end_s": 138.53,
+      "role": "customer",
+      "text": "wenn meine Tante erst am Abend zuhause ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S033",
+      "start_s": 139.99,
+      "end_s": 146.81,
+      "role": "advisor",
+      "text": "Ich erfasse bekannte Verpflichtungen jetzt richtig und halte fest, dass der lesbare Beleg noch fehlt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S034",
+      "start_s": 147.11,
+      "end_s": 152.45,
+      "role": "advisor",
+      "text": "Ob er für den nächsten Schritt vollständig vorliegen muss, fährt die bearbeitende Stelle.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S035",
+      "start_s": 152.75,
+      "end_s": 156.43,
+      "role": "advisor",
+      "text": "Ich habe Ihnen darum noch keinen Zeitpunkt für einen Entscheid zu sagen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S036",
+      "start_s": 158.39,
+      "end_s": 163.85,
+      "role": "customer",
+      "text": "Dann bitte nicht protokollieren, dass ich die 20 '000 zurückzahlen muss.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S037",
+      "start_s": 163.85,
+      "end_s": 167.75,
+      "role": "customer",
+      "text": "Ich nehme Sarlene mit in die Notiz für die Kreditstelle.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S038",
+      "start_s": 167.83,
+      "end_s": 173.81,
+      "role": "customer",
+      "text": "Ich will, dass sie nur meine Eigenmittel zählt und die Vereinbarung meiner Tante gar nicht erfährt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S039",
+      "start_s": 175.63,
+      "end_s": 177.75,
+      "role": "advisor",
+      "text": "Dem Wunsch kann ich nicht folgen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S040",
+      "start_s": 178.07,
+      "end_s": 182.55,
+      "role": "advisor",
+      "text": "Wir müssen die Anlage zur Herkunft und Verpflichtung richtig festhalten.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S041",
+      "start_s": 182.89,
+      "end_s": 187.79,
+      "role": "advisor",
+      "text": "Ich schicke kein Entwurf weiter, wo ich weiss, dass ein relevanter Teil fehlt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S042",
+      "start_s": 189.45,
+      "end_s": 192.39,
+      "role": "customer",
+      "text": "Ich habe gehofft, es wäre einfach eine Formalität.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S043",
+      "start_s": 192.39,
+      "end_s": 195.65,
+      "role": "customer",
+      "text": "Ich will meine Tante nicht aus den Sachen rauslassen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S044",
+      "start_s": 195.81,
+      "end_s": 198.21,
+      "role": "customer",
+      "text": "Ich will nur die Wohnung nicht verlieren.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S045",
+      "start_s": 199.67,
+      "end_s": 201.45,
+      "role": "advisor",
+      "text": "Den Druck kann ich aufnehmen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S046",
+      "start_s": 201.71,
+      "end_s": 205.15,
+      "role": "advisor",
+      "text": "Aber ich löse ihn nicht mit einer falschen Dokumentation.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S047",
+      "start_s": 205.51,
+      "end_s": 210.95,
+      "role": "advisor",
+      "text": "Wir können festhalten, welche Unterlagen vorliegen und welche Fragen noch zu klären sind.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S048",
+      "start_s": 212.86,
+      "end_s": 217.12,
+      "role": "customer",
+      "text": "Okay, dann lade ich den Beleg heute am Abend richtig hoch.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S049",
+      "start_s": 217.48,
+      "end_s": 221.74,
+      "role": "customer",
+      "text": "Ich habe meine Tante am Telefon, falls ich mir ein besseres Foto brauche.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S050",
+      "start_s": 223.64,
+      "end_s": 228.46,
+      "role": "advisor",
+      "text": "Ich lege den sicheren Aufbruch an die Werk - und Dossierreferenz im Postfach ab.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S051",
+      "start_s": 228.52,
+      "end_s": 231.32,
+      "role": "advisor",
+      "text": "Bitte prüfen, dass alle Seiten los sind.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S052",
+      "start_s": 233.56,
+      "end_s": 234.68,
+      "role": "customer",
+      "text": "Gut, und",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S053",
+      "start_s": 234.68,
+      "end_s": 238.34,
+      "role": "advisor",
+      "text": "den Termin mit dem Verkäufer können Sie als Wunsch drin lassen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S054",
+      "start_s": 240.2,
+      "end_s": 246.94,
+      "role": "advisor",
+      "text": "Genau, ja, als Ihren genannten Termin ohne Zusage, dass der entscheidet, bis der in Ruhe liegt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S055",
+      "start_s": 248.85,
+      "end_s": 252.09,
+      "role": "advisor",
+      "text": "Danke, dann weiss ich, was ich heute noch machen muss.",
+      "low_confidence": false
+    }
+  ],
+  "twin": null,
+  "feedback": [],
+  "triggers": [
+    {
+      "id": 10,
+      "call_id": "Stufe1_D09-K2",
+      "remote_id": "47",
+      "url": "http://localhost:5173/calls/Stufe1_D09-K2?t=148",
+      "status_code": 201,
+      "created_at": "2026-10-10T07:42:03Z"
+    }
+  ]
+}

@@ -2,14 +2,14 @@
 
 Updated with every step's commit. Steps and checks: `06_IMPLEMENTATION_PLAN.md`. Submission Sunday 08:30, feature freeze Saturday 22:00.
 
-Last update: Sat 10 Oct, 09:45 (B30, B31 done; clean final run of all 60 calls on the frozen config).
+Last update: Sat 10 Oct, 11:30 (runbook, injection test, README done; PRD checklist 9/10).
 
 ## Next up
 
 | Track | Next 3 steps |
 |---|---|
 | Backend | **B32** freeze (Sat 22:00) → **B34** demo rehearsal ×3 + backup recording → **B35** final run Sunday 06:00 (repeat the clean re-run below) |
-| Frontend | **F10** Switch to real API (needs B24–B26, incl. SSE `/api/events` and `POST /pipeline/inbox`) → integration bugs → demo rehearsal with B34 |
+| Frontend | Demo rehearsal with B34 → integration bugs only after the freeze |
 
 ## Demo prep (todo)
 
@@ -21,20 +21,21 @@ Last update: Sat 10 Oct, 09:45 (B30, B31 done; clean final run of all 60 calls o
 
 Final run on the frozen config (check prompts a8ee57dbcc41, thresholds v4, large-v3, k=5, reasoning off): 60/60 calls done, decisions identical to before the reset (60/60 verdict, family, score, reason, twin), 35 triggers in the Outcept list, 166 evidence rows with snippets, 53 calls with an advisor name (25 distinct). Config versions and the 4 eval runs kept; per-call rows and stage files rebuilt. Backup of the previous DB: `data/klartext.backup-20261010-0941.db`. `demo_call` is not in the DB; `data/demo/demo_call.wav` and its transcript are ready.
 
+## Submission checklist (01_PRD.md §12)
+
+9 of 10 done. Open: **backup screen recording of the demo** (B34). Security checklist (07 §8): no secrets in git history, `.env` ignored, no real data, open-weight models only, injection test 4/4 (`scripts/injection_test.py`), audio only via the API, backend and trigger API on localhost; open: stop the Exoscale instance after use and destroy it after the event.
+
 ## Risks / open items
 
-1. **Review threshold at k = 5 (decided: k = 5, DECISIONS D18).** k=5 scores are stable (max diff 10 vs 33 at k=3) but at T_review 30 dev recall is 0.82 / 0.91: C20 and C18 are borderline for the model, C14 a stable false alarm at 80. B28 picks the review threshold on the ASR PR curve (recall 1.00, best precision); 30 until then.
-2. **ASR not measured yet.** All check results so far run on script text. Swiss German ASR will drop digits and key phrases; expect dev numbers to fall. B15 picks the model by critical token recall.
-3. **GPU is smaller than planned.** RTX 3080 Ti 12 GB (AT-VIE-2), not A30/A5000 24 GB. Enough for faster-whisper large-v3 + pyannote, one model at a time. Driver 595 / CUDA 13.2: faster-whisper needs the CUDA 12 pip libs (`nvidia-cublas-cu12`, `nvidia-cudnn-cu12`).
-4. **C14 and C20 unstable** (C14 extra review or alarm, C20 review or missed, depending on the run). Prompt time-box in B13 is used up.
-5. **Holdout has no disclosure case** (D07, C12, C18 are all in dev). Disclosure recall can only be shown on dev.
-6. **Contract gaps for B20/B24:** `quote` must be an exact substring (snap fuzzy quotes in B20); `CheckResult.samples` = our `valid_samples`; fields marked "still invented" in `API_CONTRACT.md` need a review before B24.
-7. **`decide.ts` has no `reason_de`.** Fine for Tuning; needed if the UI shows German reasons from client-side decisions.
-8. **Full LLM run cost/time.** Reasoning off: ~13 min for 60 recordings at concurrency 8. Rate limits at that load are untested.
-9. **Trigger API image** `ghcr.io/outcept/inventx-case-study` is not publicly pullable; compose builds it from the case repo instead.
-10. **Exoscale instance** must be stopped after every session and destroyed after the event (07_SECURITY section 8).
-11. **Keyword hints are not in the check prompts yet.** Section 4 designs them in, but the prompts were tuned without them. Turning them on is a prompt change: decide in B19 with a dev re-run.
-12. **Your `.env` still overrides k:** the pipeline run printed k=3. Set `LLM_SAMPLES=5` in `.env` (D18).
+1. **Exoscale instance:** stop after every use; after the event delete the case data on it and destroy it (07_SECURITY §8). Rotate the OpenRouter key after the event.
+2. **Hidden test set day-of:** depends on the GPU box starting and on the results format (asked the organisers). Runbook: `docs/RUNBOOK_HIDDEN_SET.md`.
+3. **Known errors, accepted:** C14 documentation false alarm (dev, both recordings); noisy recordings flip twice on holdout (C15-K4 extra review, C19-K4 alarm instead of review). Clean vs noisy agreement on holdout is 8/10 (target 90%).
+4. **Holdout has no disclosure case** (D07, C12, C18 are all in dev): disclosure recall is shown on dev only.
+5. **Evidence overlap on dev 17/19 (89%)**, just under the 90% target; holdout 9/9.
+6. **`decide.ts` has no `reason_de`:** German reasons on the Tuning page only come from the server (stretch).
+7. **Trigger API image** `ghcr.io/outcept/inventx-case-study` is not publicly pullable; compose builds it from the case repo.
+
+Closed: review threshold chosen (B28, D11); ASR measured and chosen (B15, D19); GPU size sufficient (B14/B15); contract gaps (quotes snapped to exact substrings in B20, API built in B24/B25); LLM run time measured and request deadline added (B18); keyword hints in the prompts: not changed after the freeze (prompts frozen for B29); `.env` uses k = 5.
 
 ## Backend (Track B)
 
@@ -66,7 +67,7 @@ Final run on the frozen config (check prompts a8ee57dbcc41, thresholds v4, large
 | B24 Read API | done | `5ee4bfc` | All GET endpoints of `API_CONTRACT.md` incl. SSE `/api/events`, routers in `app/api/`. 53 API tests on a seeded temp DB; the three call details, list, scores, thresholds, keywords, eval and settings equal the frontend fixtures. Open for the pipeline track: evidence falls back to `data/checks/<id>.json` until B20 fills the `evidence` table; `/pipeline/status` is derived from `calls` until the watcher (B26) reports to `app/api/pipeline_state.py` (`watching` is false until then); the pipeline should call `app.api.events.notify_call_updated(call_id)` / `notify_pipeline_status()`; `checks` lists only families with a `check_results` row; audio is served only from DATA_DIR, INBOX_DIR or CASE_DATA_DIR; tests need `pytest` (dev only, not in `requirements.txt`) |
 | B25 Write API | done | `fd85059` | All write endpoints of `API_CONTRACT.md` plus `GET /calls/{id}/history`; 65 new API tests (119 backend tests pass). PUTs write a new active version + `audit_log` (`config_changed`, target `<kind>:<id>`), families get `changed_at`/`changed_by` per changed family; recheck runs `process(from_stage="checks")`, retry from `asr`, process-folder registers + processes in one background worker (`app/api/jobs.py`); `/eval/run` runs `scripts/evaluate.py --source asr` (holdout/all pass `--holdout`; failure → 409 with the script's message); inbox duplicate answers 202 `{queued: false, duplicate: true}` as in the contract (not 409); 422 details are one plain sentence; suggest calls `llm_client.complete_json` with an injection guard; `python-multipart==0.0.32` added |
 | B26 Inbox watcher | done | `c637b25` | Started with the API server (`bbc5b59`).  `services/watcher.py` + `scripts/watch_inbox.py`: watchdog + 5 s scan, stable-size wait, ffmpeg conversion to 16 kHz mono, one worker thread, hash dedup, reports to `api/pipeline_state` (watching, file seen, progress, batch). Check: 44.1 kHz stereo drop → done in 56 s with 3 evidence rows + snippets and an Outcept trigger; duplicate skipped. Starting it with the API server needs a hook in `main.py` (teammate / open) |
-| B27 Fixture export | todo | – | |
+| B27 Fixture export | done | (this commit) | `scripts/export_fixtures.py` writes the real API responses (66 files, 60 calls, holdout eval) into `frontend/src/fixtures-real/`, not `src/fixtures/` (the hand-made files are the expected values of the API contract tests). Open for the frontend: a switch to load `fixtures-real/` in fixture mode, and 5 checker rules that are stricter than real data. Fixed on the way: a needs_human review now always carries an open question (verdicts unchanged, 60/60) |
 | B28 Threshold tuning on dev | done | (this commit) | Review 30 / alarm 70 saved as thresholds version 4 (via PUT /config/thresholds, audit logged), all 60 decisions re-decided on it. Recall 1.00 holds 10–50 on dev; 30 keeps a two-vote margin (DECISIONS D11) |
 | B29 Holdout run | done | (this commit) | Once, frozen (check prompts a8ee57dbcc41, thresholds v4, large-v3, k=5, reasoning off): 20 holdout recordings P 0.91 R 1.00, exact 18/20, Stufe2 pairs 3/3, Stufe3 review 1/2 (C19-K4 alarm, caught), clean/noisy 8/10, evidence overlap 9/9, family 10/10; keyword-only P 0.67 R 0.40. Extra flag: C15-K4 (review). Nothing tuned afterwards. `data/eval/eval-20261010-073258-holdout-asr.json` |
 | B30 Hidden test set dry run | done | (this commit) | Isolated DATA_DIR, 6 dev recordings renamed to random names, via POST /pipeline/process-folder + GET /pipeline/export (JSON + CSV): 6/6 verdict, family and score identical to the original names, 0 new LLM requests (no prompt contains a name), level/variant/dialogue null, notes.txt rejected. Static check: names are parsed only in `display_fields()` (display) |

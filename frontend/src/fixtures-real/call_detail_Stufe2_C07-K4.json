@@ -1,0 +1,571 @@
+{
+  "call": {
+    "call_id": "Stufe2_C07-K4",
+    "file_name": "Stufe2_C07-K4.wav",
+    "dialogue_id": "Stufe2_C07",
+    "variant": "noisy",
+    "level": 2,
+    "duration_s": 260.01,
+    "advisor_name": "Nadia Fuller",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:28Z",
+    "processed_at": "2026-10-10T09:54:59Z",
+    "verdict": "alarm",
+    "family": "trade",
+    "score": 100.0,
+    "reason": "The customer explicitly links a trade request (buying shares) to non-public information (an internal sales report shown by a cousin in the project team) that has not been released to the public. Although the customer initially frames it as hypothetical, they later state a decision to act on this information ('Wegen dieser Nachricht möchte ich... Aktien... kaufen'), constituting a request to trade on insider information.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": true,
+    "expected_verdict": "alarm"
+  },
+  "decision": {
+    "verdict": "alarm",
+    "family": "trade",
+    "score": 100.0,
+    "reason": "The customer explicitly links a trade request (buying shares) to non-public information (an internal sales report shown by a cousin in the project team) that has not been released to the public. Although the customer initially frames it as hypothetical, they later state a decision to act on this information ('Wegen dieser Nachricht möchte ich... Aktien... kaufen'), constituting a request to trade on insider information.",
+    "reason_de": "Die Kundin verknüpft einen Kaufwunsch explizit mit nicht-öffentlichen Informationen (ein interner Absatzbericht, der ihr von einer Cousine im Projektteam gezeigt wurde). Obwohl sie zunächst von einer hypothetischen Überlegung spricht, entscheidet sie sich später, aufgrund dieser Nachricht Aktien zu kaufen, was einen Antrag auf Handel mit Insiderinformationen darstellt.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:46Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 100.0,
+      "event_majority": "present",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer explicitly links a trade request (buying shares) to non-public information (an internal sales report shown by a cousin in the project team) that has not been released to the public. Although the customer initially frames it as hypothetical, they later state a decision to act on this information ('Wegen dieser Nachricht möchte ich... Aktien... kaufen'), constituting a request to trade on insider information.",
+      "reason_de": "Die Kundin verknüpft einen Kaufwunsch explizit mit nicht-öffentlichen Informationen (ein interner Absatzbericht, der ihr von einer Cousine im Projektteam gezeigt wurde). Obwohl sie zunächst von einer hypothetischen Überlegung spricht, entscheidet sie sich später, aufgrund dieser Nachricht Aktien zu kaufen, was einen Antrag auf Handel mit Insiderinformationen darstellt.",
+      "benign_explanation": "The customer is discussing a hypothetical scenario to understand the process of submitting a trade order via a form, and explicitly states they have not yet decided to buy. The advisor is clarifying the administrative steps."
+    },
+    {
+      "family": "splitting",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call concerns a potential single one-time purchase of shares, not a request to split payments to avoid approval. The customer explicitly discusses a single hypothetical amount and process clarification, with no indication of connected partial movements intended to circumvent controls.",
+      "reason_de": "Der Anruf betrifft einen potenziellen einmaligen Aktienkauf, keine Anfrage zur Aufteilung von Zahlungen zur Umgehung von Genehmigungen. Die Kundin bespricht explizit einen einzelnen hypothetischen Betrag und die Prozessklärung, ohne dass Hinweise auf verbundene Teilzahlungen zur Kontrolleumgehung vorliegen.",
+      "benign_explanation": "The customer is discussing a hypothetical or single one-time purchase of shares (Albis Optik) based on information from a cousin. The customer explicitly states they have not decided to buy yet and are only clarifying the process and limits (5000 CHF). There is no request to split a payment into multiple parts to avoid an internal approval process. The mention of 5000 CHF is a single upper limit for a potential single transaction, not a strategy to fragment transactions."
+    },
+    {
+      "family": "access",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The transcript contains no disclosure of any active access secret (such as a login code, PIN, or TAN). The numbers mentioned refer to monetary amounts (5000 Francs), which are not access secrets.",
+      "reason_de": "Im Transkript findet keine Offenlegung eines aktiven Zugriffsgeheimnisses (wie Login-Code, PIN oder TAN) statt. Die genannten Zahlen beziehen sich auf Geldbeträge (5000 Franken), die keine Zugriffsgeheimnisse sind.",
+      "benign_explanation": "The call concerns a discussion about changing a savings plan and potentially buying shares. The customer mentions an upper limit of 5000 Francs for a hypothetical purchase and later decides not to buy. No access codes, passwords, PINs, or TANs are mentioned or disclosed by either party."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor interacts solely with the account holder regarding her own potential transaction. No third-party data is revealed, and no unauthorized access occurs.",
+      "reason_de": "Der Berater kommuniziert ausschliesslich mit der Kontoinhaberin bezüglich ihrer eigenen potenziellen Transaktion. Es werden keine Daten Dritter offengelegt und kein unbefugter Zugriff erfolgt.",
+      "benign_explanation": "The call is between a bank advisor and the account holder (Frau Bühler). The customer discusses her own potential investment decision and provides hypothetical figures for her own savings limit. No protected information about a third party is disclosed by the advisor, nor does the advisor reveal any account details to an unauthorized person."
+    },
+    {
+      "family": "documentation",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 0.6,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer discloses a relevant fact (insider information source) and the advisor records it. There is no request to leave out or hide relevant information from the internal recipient; the interaction is transparent regarding the source of the investment decision.",
+      "reason_de": "Die Kundin gibt eine relevante Tatsache (Insider-Informationenquelle) an und die Beraterin hält sie fest. Es gibt keine Anfrage, relevante Informationen vom internen Empfänger zu verschweigen oder zu verstecken; die Interaktion ist transparent bezüglich der Quelle der Anlageentscheidung.",
+      "benign_explanation": "The call involves a customer discussing a potential investment and providing the source of their information (a non-public report from a relative). The advisor explicitly records this source and the customer's decision. There is no request by either party to conceal, remove, or hide relevant facts from the internal record; rather, the advisor ensures the relevant context (the insider source) is documented."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 245,
+      "family": "trade",
+      "seg_id": "S009",
+      "role": "context",
+      "start_s": 35.33,
+      "end_s": 39.33,
+      "speaker_role": "customer",
+      "quote": "Meine Cousine ist im Projektteam der Alpes Optik.",
+      "note": "Establishes the source of the information as an insider.",
+      "snippet_url": "/api/calls/Stufe2_C07-K4/snippets/S009"
+    },
+    {
+      "id": 246,
+      "family": "trade",
+      "seg_id": "S010",
+      "role": "context",
+      "start_s": 39.61,
+      "end_s": 43.63,
+      "speaker_role": "customer",
+      "quote": "Sie hat mir gestern den neuen Absatzbericht persönlich gezeigt.",
+      "note": "Identifies the specific non-public information (new sales report).",
+      "snippet_url": "/api/calls/Stufe2_C07-K4/snippets/S010"
+    },
+    {
+      "id": 247,
+      "family": "trade",
+      "seg_id": "S011",
+      "role": "context",
+      "start_s": 44.05,
+      "end_s": 48.31,
+      "speaker_role": "customer",
+      "quote": "Er geht erst einmal an die Mädchen, bis dann darf das Team ihn nicht weitergeben.",
+      "note": "Confirms the information is confidential and not yet public.",
+      "snippet_url": "/api/calls/Stufe2_C07-K4/snippets/S011"
+    },
+    {
+      "id": 248,
+      "family": "trade",
+      "seg_id": "S041",
+      "role": "trigger",
+      "start_s": 212.96,
+      "end_s": 219.06,
+      "speaker_role": "customer",
+      "quote": "Wegen dieser Nachricht möchte ich nicht für 5 '000 Franken Aktien von der Albis Optik kaufen.",
+      "note": "The customer explicitly links the desire to buy shares to the non-public message. Note: The word 'nicht' (not) here is likely an ASR error for 'jetzt' (now) or part of a negated structure that is immediately contradicted by the next sentence, or it is a double negative/confusion. However, S042 clarifies the intent.",
+      "snippet_url": "/api/calls/Stufe2_C07-K4/snippets/S041"
+    },
+    {
+      "id": 249,
+      "family": "trade",
+      "seg_id": "S042",
+      "role": "trigger",
+      "start_s": 219.44,
+      "end_s": 223.04,
+      "speaker_role": "customer",
+      "quote": "Können Sie den einmaligen Auftrag für mich entgegennehmen?",
+      "note": "The customer explicitly requests the advisor to accept the order, confirming the trade request despite the previous confusing phrasing.",
+      "snippet_url": "/api/calls/Stufe2_C07-K4/snippets/S042"
+    }
+  ],
+  "keyword_hits": [],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.08,
+      "end_s": 3.58,
+      "role": "advisor",
+      "text": "Guten Tag, Frau Bühler. Da ist Nadia Fuller.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 3.74,
+      "end_s": 6.92,
+      "role": "advisor",
+      "text": "Sie wollen die Erfassung Ihres Sparauftrags ändern.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 7.38,
+      "end_s": 9.82,
+      "role": "advisor",
+      "text": "Geht es um den Monat oder um den Betrag?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 11.68,
+      "end_s": 16.9,
+      "role": "customer",
+      "text": "Ich hätte zuerst verstanden, wie ein einzelner Kauf mit dem Sparauftrag erfasst wird.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 17.26,
+      "end_s": 20.36,
+      "role": "customer",
+      "text": "Ob ich selber etwas kaufe, habe ich noch nicht entschieden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 20.7,
+      "end_s": 25.0,
+      "role": "customer",
+      "text": "Es geht um ein Formular zur Alpisoptik, nicht um einen Auftrag.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 26.75,
+      "end_s": 30.05,
+      "role": "advisor",
+      "text": "Gut, dann behandeln wir das als separate Frage.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 30.05,
+      "end_s": 33.51,
+      "role": "advisor",
+      "text": "Woher kommen die Notizen, die Sie zum Titel gemacht haben?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 35.33,
+      "end_s": 39.33,
+      "role": "customer",
+      "text": "Meine Cousine ist im Projektteam der Alpes Optik.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 39.61,
+      "end_s": 43.63,
+      "role": "customer",
+      "text": "Sie hat mir gestern den neuen Absatzbericht persönlich gezeigt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 44.05,
+      "end_s": 48.31,
+      "role": "customer",
+      "text": "Er geht erst einmal an die Mädchen, bis dann darf das Team ihn nicht weitergeben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 48.65,
+      "end_s": 54.07,
+      "role": "customer",
+      "text": "Es ist deutlich mehr verkauft worden als erwartet und ich kann nur auf sie davor fahren.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 55.63,
+      "end_s": 63.49,
+      "role": "advisor",
+      "text": "Ich habe den Ursprung Ihrer Notiz festgehalten. Wie gross werden die zusätzlichen Beträge, die Sie besprechen wollen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 65.53,
+      "end_s": 71.95,
+      "role": "customer",
+      "text": "Falls ich mich dazu entscheiden, fange ich meine Obergrenzen 5000 Franken aus meinem Sparkonto.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 72.41,
+      "end_s": 79.97,
+      "role": "customer",
+      "text": "Meine Miete und die Versicherung sind separat reserviert. Für das Formular will ich nur eine hypothetische Zahl brauchen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 81.75,
+      "end_s": 88.85,
+      "role": "advisor",
+      "text": "Ich erkläre zuerst Ihren Wunsch. Im Betrag alleine sagt man nicht, dass der Kauf zu Ihrem Plan nicht passt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 89.33,
+      "end_s": 92.39,
+      "role": "advisor",
+      "text": "Was ist für Sie der Unterschied zum Sparauftrag?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 94.57,
+      "end_s": 99.15,
+      "role": "customer",
+      "text": "Beim Sparauftrag mache ich jeden Monat das gleiche. Das wäre einmalig.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 99.17,
+      "end_s": 103.51,
+      "role": "customer",
+      "text": "Ich habe Sorge, dass ich im Formular aus für Sie auf Wiederholung drücke.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 105.15,
+      "end_s": 110.57,
+      "role": "advisor",
+      "text": "Der einmalige Auftrag und der Dauerauftrag haben verschiedene Erfassungen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 110.73,
+      "end_s": 115.05,
+      "role": "advisor",
+      "text": "Ich nehme im Rückruf keine unflagge Erfassung als Bestätigung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 115.35,
+      "end_s": 118.01,
+      "role": "advisor",
+      "text": "Wir können Ihren Wunsch aber genau benennen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 119.75,
+      "end_s": 123.35,
+      "role": "customer",
+      "text": "Gut, ich habe das Formular noch nicht abgeschickt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 123.55,
+      "end_s": 126.61,
+      "role": "customer",
+      "text": "Ich habe nur auf Papier die Anzahl ausgerechnet.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 126.67,
+      "end_s": 130.07,
+      "role": "customer",
+      "text": "Aber der Preis schwankt und darum ist diese Zahl vielleicht",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 130.07,
+      "end_s": 131.05,
+      "role": "advisor",
+      "text": "schon veraltet.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 131.05,
+      "end_s": 136.94,
+      "role": "advisor",
+      "text": "Beziehen Sie sich bitte nicht auf einen alten Preis als Zusage.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 137.4,
+      "end_s": 144.76,
+      "role": "advisor",
+      "text": "Wir müssen die Betragstitel und Auftragsart -Gipfel entklären, bevor ein Portsehnenablauf möglich ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 146.2,
+      "end_s": 149.34,
+      "role": "customer",
+      "text": "Ja, ich muss auch nicht eine Rundanzahl haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S030",
+      "start_s": 149.64,
+      "end_s": 153.9,
+      "role": "customer",
+      "text": "Ich habe es nur gemacht, um zu verstehen, wie viel ungefähr drin liegt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S031",
+      "start_s": 156.2,
+      "end_s": 161.3,
+      "role": "advisor",
+      "text": "Haben Sie den Formularentwurf lokal gespeichert oder schon übermittelt?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S032",
+      "start_s": 161.3,
+      "end_s": 167.22,
+      "role": "advisor",
+      "text": "Für den weiteren Ablauf muss klar sein, ob es nur Ihre eigene Vorbereitung ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S033",
+      "start_s": 168.98,
+      "end_s": 177.02,
+      "role": "customer",
+      "text": "Nur Lokale. Ich habe Sie noch nicht abgeschickt. Im Postfach gibt es darum auch keine Auftragsbestätigung für die Erfassung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S034",
+      "start_s": 178.8,
+      "end_s": 184.68,
+      "role": "advisor",
+      "text": "Und was macht den Zeitpunkt für Sie wichtig? Sie haben Ihre Nachrichten möglichst heute geschrieben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S035",
+      "start_s": 186.44,
+      "end_s": 191.02,
+      "role": "customer",
+      "text": "Ich will die Formel verstehen, solange ich die Unterlagen vor mir habe.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S036",
+      "start_s": 191.24,
+      "end_s": 193.72,
+      "role": "customer",
+      "text": "Bis jetzt wollte ich nur den Ablauf klären.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S037",
+      "start_s": 194.12,
+      "end_s": 198.3,
+      "role": "customer",
+      "text": "Ich bin noch am überlegen, ob ich überhaupt einen Auftrag machen kann.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S038",
+      "start_s": 200.16,
+      "end_s": 203.74,
+      "role": "advisor",
+      "text": "Dann sagen Sie mir bitte Ihren konkreten Wunsch.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S039",
+      "start_s": 203.92,
+      "end_s": 208.94,
+      "role": "advisor",
+      "text": "Wir können ihn erst nachher im Zusammenhang mit der besprochenen Quelle beurteilen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S040",
+      "start_s": 210.72,
+      "end_s": 212.96,
+      "role": "customer",
+      "text": "Ja, ich habe mich jetzt entschieden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S041",
+      "start_s": 212.96,
+      "end_s": 219.06,
+      "role": "customer",
+      "text": "Wegen dieser Nachricht möchte ich nicht für 5 '000 Franken Aktien von der Albis Optik kaufen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S042",
+      "start_s": 219.44,
+      "end_s": 223.04,
+      "role": "customer",
+      "text": "Können Sie den einmaligen Auftrag für mich entgegennehmen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S043",
+      "start_s": 224.74,
+      "end_s": 227.32,
+      "role": "advisor",
+      "text": "Ich bestätige jetzt keine Ausführung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S044",
+      "start_s": 227.42,
+      "end_s": 232.5,
+      "role": "advisor",
+      "text": "Ich nehme den Kaufwunsch mit der Quelle, die Sie vorher genannt haben, zum Vorgang.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S045",
+      "start_s": 234.2,
+      "end_s": 237.68,
+      "role": "customer",
+      "text": "Gut, dann ändere ich selbst ein Formular damit.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S046",
+      "start_s": 237.68,
+      "end_s": 242.78,
+      "role": "customer",
+      "text": "Ich habe niemals eine klare Rückmeldung als zweite Schäden in der Erfassung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S047",
+      "start_s": 244.92,
+      "end_s": 249.56,
+      "role": "advisor",
+      "text": "Der bestehende Spargeauftrag wird dann zurück auf unverwendet.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S048",
+      "start_s": 249.9,
+      "end_s": 252.64,
+      "role": "advisor",
+      "text": "Die Rückrufreferenz kommt ins Postfach.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S049",
+      "start_s": 254.42,
+      "end_s": 259.18,
+      "role": "customer",
+      "text": "Danke. Ich habe am Nachmittag noch Zeit, falls Sie mich noch einmal erreichen müssen.",
+      "low_confidence": false
+    }
+  ],
+  "twin": {
+    "call_id": "Stufe2_C08-K3",
+    "dialogue_id": "Stufe2_C08",
+    "variant": "clean",
+    "verdict": "no_alert",
+    "note": "The customer explicitly refuses to buy shares, negating any trade request."
+  },
+  "feedback": [],
+  "triggers": [
+    {
+      "id": 16,
+      "call_id": "Stufe2_C07-K4",
+      "remote_id": "53",
+      "url": "http://localhost:5173/calls/Stufe2_C07-K4?t=202",
+      "status_code": 201,
+      "created_at": "2026-10-10T07:42:03Z"
+    }
+  ]
+}

@@ -226,7 +226,7 @@ def stage_keywords(call_id: str) -> None:
         session.commit()
 
 
-def stage_checks(call_ids: list[str]) -> dict[str, CheckOutcome]:
+def stage_checks(call_ids: list[str], recheck: bool = False) -> dict[str, CheckOutcome]:
     s = get_settings()
     transcripts = []
     for cid in call_ids:
@@ -238,7 +238,7 @@ def stage_checks(call_ids: list[str]) -> dict[str, CheckOutcome]:
         return {}
     # Keyword hints are not passed to the check prompts yet: prompts were tuned without them (decide in B19).
     return run_check_stage(transcripts, _dir("checks"), get_active_config("families"), get_active_config("thresholds").data,
-                           s.llm_model, s.llm_samples, s.llm_reasoning == "on", s.llm_concurrency)
+                           s.llm_model, s.llm_samples, s.llm_reasoning == "on", s.llm_concurrency, recheck=recheck)
 
 
 def _asr_uncertain(t: Transcript, outcome: CheckOutcome) -> bool:
@@ -348,7 +348,9 @@ def _guard(call_id: str, summary: RunSummary, fn: Callable[[], object]) -> bool:
     return False
 
 
-def process(call_ids: list[str], from_stage: str = "asr") -> RunSummary:
+def process(call_ids: list[str], from_stage: str = "asr", recheck: bool = False) -> RunSummary:
+    """recheck: run the checks again instead of reusing stored check results (the LLM cache still answers
+    unchanged prompts), e.g. after a change in how samples are aggregated."""
     if from_stage not in STAGES:
         raise ValueError(f"Unknown stage '{from_stage}'. Stages: {', '.join(STAGES)}")
     start = STAGES.index(from_stage)
@@ -381,7 +383,7 @@ def process(call_ids: list[str], from_stage: str = "asr") -> RunSummary:
         for cid in active:
             _live(cid, "checks")
         try:
-            stage_checks(active)
+            stage_checks(active, recheck=recheck)
         except Exception as exc:
             log.exception("Check stage failed")
             for cid in active:

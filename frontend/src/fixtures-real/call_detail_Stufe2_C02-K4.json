@@ -1,0 +1,420 @@
+{
+  "call": {
+    "call_id": "Stufe2_C02-K4",
+    "file_name": "Stufe2_C02-K4.wav",
+    "dialogue_id": "Stufe2_C02",
+    "variant": "noisy",
+    "level": 2,
+    "duration_s": 161.19,
+    "advisor_name": "Doris Amann",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:28Z",
+    "processed_at": "2026-10-10T09:54:59Z",
+    "verdict": "no_alert",
+    "family": "trade",
+    "score": 0.0,
+    "reason": "The call concerns identifying an invoice reference for an online purchase and contains no trade requests or mentions of non-public company information. Therefore, the family 'Trading on non-public information' is not applicable to this call.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": false,
+    "expected_verdict": "no_alert"
+  },
+  "decision": {
+    "verdict": "no_alert",
+    "family": "trade",
+    "score": 0.0,
+    "reason": "The call concerns identifying an invoice reference for an online purchase and contains no trade requests or mentions of non-public company information. Therefore, the family 'Trading on non-public information' is not applicable to this call.",
+    "reason_de": "Der Anruf betrifft die Identifizierung einer Rechnungsreferenz für einen Online-Kauf und enthält keine Handelsanfragen oder Erwähnungen von nicht-öffentlichen Unternehmensinformationen. Daher ist die Familie 'Handel mit nicht-öffentlichen Informationen' auf diesen Anruf nicht anwendbar.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:46Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call concerns identifying an invoice reference for an online purchase and contains no trade requests or mentions of non-public company information. Therefore, the family 'Trading on non-public information' is not applicable to this call.",
+      "reason_de": "Der Anruf betrifft die Identifizierung einer Rechnungsreferenz für einen Online-Kauf und enthält keine Handelsanfragen oder Erwähnungen von nicht-öffentlichen Unternehmensinformationen. Daher ist die Familie 'Handel mit nicht-öffentlichen Informationen' auf diesen Anruf nicht anwendbar.",
+      "benign_explanation": "The call is a customer service interaction regarding an unidentified invoice reference number from an online purchase. The customer is trying to identify a long number (invoice reference) on a confirmation slip. There is no discussion of stock trades, company results, takeovers, or any non-public financial information. The conversation is purely administrative."
+    },
+    {
+      "family": "splitting",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The transcript contains no request for connected partial movements intended to prevent an internal process. The conversation is strictly about identifying a transaction reference number for an online purchase, which falls outside the scope of the 'Splitting to avoid approval' family.",
+      "reason_de": "Das Transkript enthält keine Anfrage nach verbundenen Teilzahlungen mit dem Ziel, interne Prozesse zu umgehen. Das Gespräch dreht sich ausschließlich um die Identifizierung einer Rechnungsreferenznummer für einen Online-Kauf, was nicht in den Anwendungsbereich der Familie 'Aufteilung zur Vermeidung von Genehmigungen' fällt.",
+      "benign_explanation": "The call is a customer service interaction regarding the identification of an invoice reference number on an online shopping confirmation. The customer is trying to understand why a specific label is missing from their document and provides the order details (date, name) and the reference number itself for verification. There is no discussion of splitting payments, transfers, or deposits to avoid internal approval limits or checks."
+    },
+    {
+      "family": "access",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer disclosed a number that was explicitly identified as an invoice reference and order number, not an active access secret like a PIN or TAN. Since the value is not a secret code required for authentication, the rule for 'Access code shared' is not triggered.",
+      "reason_de": "Der Kunde hat eine Nummer genannt, die explizit als Rechnungsreferenz und Bestellnummer identifiziert wurde und kein aktiver Zugriffsgeheimnis wie PIN oder TAN ist. Da es sich nicht um ein Geheimnis handelt, wird die Regel für 'Zugangscode geteilt' nicht ausgelöst.",
+      "benign_explanation": "The customer reads out a long number consisting of repeated digits (2424...). The customer explicitly identifies this number as an 'invoice reference' (Rechnungsreferenz) and an 'order number' (Bezug zu dieser Bestellung), stating it is not related to their card. The advisor confirms this understanding and instructs the customer to use a secure channel for further details, but no active access secret (such as a PIN, TAN, or password) is disclosed."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor interacts with the account holder regarding their own transaction details and explicitly prevents the disclosure of sensitive numbers over the phone. No protected information was revealed to an unauthorized third party.",
+      "reason_de": "Die Beraterin kommuniziert mit dem Kontoinhaber über dessen eigene Transaktionsdetails und verhindert explizit die Preisgabe sensibler Nummern am Telefon. Es wurden keine geschützten Informationen an eine unbefugte dritte Partei offengelegt.",
+      "benign_explanation": "The call is between a bank advisor and the account holder (the customer). The customer is seeking clarification on an invoice reference number from an online purchase. The advisor does not reveal any protected third-party details; instead, the advisor actively prevents the customer from reading out sensitive numbers over the phone and directs them to use a secure channel. Since the customer is the account holder, there is no third party involved, and no unauthorized disclosure occurred."
+    },
+    {
+      "family": "documentation",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer requests to cover 'other fields' on the document to protect privacy, which is a harmless omission of irrelevant private data. The relevant fact (the invoice reference) is explicitly discussed and intended to be recorded by the advisor. No relevant information is withheld from the designated internal recipient.",
+      "reason_de": "Der Kunde bittet darum, andere Felder auf dem Dokument zu verdecken, um die Privatsphäre zu schützen, was eine harmlose Auslassung irrelevanter privater Daten ist. Die relevante Tatsache (die Rechnungsreferenz) wird explizit besprochen und soll vom Berater erfasst werden. Es werden keine relevanten Informationen vom internen Empfänger vorenthalten.",
+      "benign_explanation": "The customer asks to redact unrelated private data (other fields on the document) before sending a copy to the bank for verification. This is a standard privacy measure to protect sensitive personal information not relevant to the specific inquiry about an invoice reference. The advisor agrees to this and facilitates the secure transmission. There is no request to hide relevant facts (like the invoice reference itself or the nature of the transaction) from the bank's internal records."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 1,
+      "family": "trade",
+      "seg_id": "S001",
+      "role": "context",
+      "start_s": 0.11,
+      "end_s": 6.49,
+      "speaker_role": "advisor",
+      "quote": "Sie haben einen Rückruf gewünscht, weil Sie eine Nummer nicht zuordnen können.",
+      "note": "Establishes the call's purpose: identifying an unknown number.",
+      "snippet_url": "/api/calls/Stufe2_C02-K4/snippets/S001"
+    },
+    {
+      "id": 2,
+      "family": "trade",
+      "seg_id": "S008",
+      "role": "context",
+      "start_s": 34.71,
+      "end_s": 37.87,
+      "speaker_role": "customer",
+      "quote": "Im Formular war das die Rechnungsreferenz.",
+      "note": "Identifies the number as an invoice reference, not a financial code or trade detail.",
+      "snippet_url": "/api/calls/Stufe2_C02-K4/snippets/S008"
+    },
+    {
+      "id": 3,
+      "family": "trade",
+      "seg_id": "S020",
+      "role": "context",
+      "start_s": 84.33,
+      "end_s": 88.77,
+      "speaker_role": "customer",
+      "quote": "Der Bestellname ist Laissez -Lang -Beweis vom 4. September.",
+      "note": "Confirms the context is a specific order/purchase, unrelated to securities trading.",
+      "snippet_url": "/api/calls/Stufe2_C02-K4/snippets/S020"
+    }
+  ],
+  "keyword_hits": [],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.11,
+      "end_s": 6.49,
+      "role": "advisor",
+      "text": "Grüezi, da ist Doris Amann. Sie haben einen Rückruf gewünscht, weil Sie eine Nummer nicht zuordnen können.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 6.87,
+      "end_s": 8.47,
+      "role": "advisor",
+      "text": "Was haben Sie gerade vor sich?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 10.65,
+      "end_s": 13.49,
+      "role": "customer",
+      "text": "Ein Ausdruck vom Online -Heimkauf.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 13.77,
+      "end_s": 21.25,
+      "role": "customer",
+      "text": "Ich habe die Rechnung und die Bestätigung nebeneinander, aber auf der Bestätigung steht keine Beschriftung über die lange Zahl.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 23.01,
+      "end_s": 25.37,
+      "role": "advisor",
+      "text": "Wir schauen den Zusammenhang an.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 25.37,
+      "end_s": 28.23,
+      "role": "advisor",
+      "text": "Bitte lese nicht voll aus alle Nummern vor.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 28.49,
+      "end_s": 32.83,
+      "role": "advisor",
+      "text": "Welche Bezeichnung hatte das Feld im ursprünglichen Bestellformular?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 34.71,
+      "end_s": 37.87,
+      "role": "customer",
+      "text": "Im Formular war das die Rechnungsreferenz.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 38.23,
+      "end_s": 41.65,
+      "role": "customer",
+      "text": "Ich habe die Nummer aus dem Rechnungsfeld des Händlers übernommen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 41.85,
+      "end_s": 46.03,
+      "role": "customer",
+      "text": "Es ist der Bezug zu dieser Bestellung, nicht zu meiner Karte.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 46.21,
+      "end_s": 49.65,
+      "role": "customer",
+      "text": "Die Fahrteangaben stehen separat auf dem anderen Blatt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 51.09,
+      "end_s": 56.53,
+      "role": "advisor",
+      "text": "Gut, wir müssen für diese Rückfrage den Ursprung der Zahl festhalten.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 56.93,
+      "end_s": 59.23,
+      "role": "advisor",
+      "text": "Haben Sie den Händler schon kontaktiert?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 61.19,
+      "end_s": 65.43,
+      "role": "customer",
+      "text": "Ja, aber er hat mir nur den Ausdruck noch einmal geschickt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 65.73,
+      "end_s": 69.53,
+      "role": "customer",
+      "text": "Ich dachte, eine neue Kopie würde die Überschrift wieder zeigen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 69.95,
+      "end_s": 71.11,
+      "role": "customer",
+      "text": "Die fehlt aber wieder.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 72.73,
+      "end_s": 77.67,
+      "role": "advisor",
+      "text": "Dann brauchen Sie für die Rückfrage das Datum und den Bestellnamen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 77.75,
+      "end_s": 79.65,
+      "role": "advisor",
+      "text": "Bitte sagen Sie noch nicht die Zahl.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 79.65,
+      "end_s": 82.69,
+      "role": "advisor",
+      "text": "Ich will zuerst den Vorgang richtig zuordnen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 84.33,
+      "end_s": 88.77,
+      "role": "customer",
+      "text": "Der Bestellname ist Laissez -Lang -Beweis vom 4. September.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 89.21,
+      "end_s": 92.93,
+      "role": "customer",
+      "text": "Es ist kein Abonnement und auch keine zweite Bestellung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 94.84,
+      "end_s": 101.58,
+      "role": "advisor",
+      "text": "Wird und ist die Rückfrage von Ihnen selber oder hat sich jemand mit einer Anfrage nach der Zahl bei Ihnen gemeldet?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 103.12,
+      "end_s": 104.16,
+      "role": "customer",
+      "text": "Von mir selber.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 104.64,
+      "end_s": 108.98,
+      "role": "customer",
+      "text": "Der Händler hat mir keine Nachricht mit dem Wunsch nach einer Zahl geschickt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 108.98,
+      "end_s": 112.2,
+      "role": "customer",
+      "text": "Ich weiss, sie haben von mir gesagt, ich solle warten,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 112.56,
+      "end_s": 114.48,
+      "role": "customer",
+      "text": "aber ich habe sie jetzt im Blick.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 116.28,
+      "end_s": 125.74,
+      "role": "customer",
+      "text": "Das steht für 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 125.74,
+      "end_s": 127.76,
+      "role": "customer",
+      "text": "Wir machen",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 127.76,
+      "end_s": 130.66,
+      "role": "advisor",
+      "text": "an keinen weiteren Zahlort wie am Telefon.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S030",
+      "start_s": 130.84,
+      "end_s": 134.44,
+      "role": "advisor",
+      "text": "Für die Zurückfrage stelle ich Ihnen den sicheren Kanal bereit",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S031",
+      "start_s": 134.44,
+      "end_s": 138.42,
+      "role": "advisor",
+      "text": "und notiere den Ursprung, den Sie vorne angeschlagen haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S032",
+      "start_s": 140.12,
+      "end_s": 146.58,
+      "role": "customer",
+      "text": "Gut, ich werde im Dokument die anderen Felder abdecken und nur die nötigen Stellen schicken.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S033",
+      "start_s": 149.3,
+      "end_s": 153.8,
+      "role": "advisor",
+      "text": "Rückaufjagd mit der Rückaufreferenz, damit es zum wichtigen Vorgang kommt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S034",
+      "start_s": 155.84,
+      "end_s": 157.98,
+      "role": "advisor",
+      "text": "Danke, dann probiere ich mir mal",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S035",
+      "start_s": 157.98,
+      "end_s": 160.38,
+      "role": "customer",
+      "text": "selber die anderen Felder zu kopieren.",
+      "low_confidence": false
+    }
+  ],
+  "twin": null,
+  "feedback": [],
+  "triggers": []
+}

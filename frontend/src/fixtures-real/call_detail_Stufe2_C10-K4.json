@@ -1,0 +1,362 @@
+{
+  "call": {
+    "call_id": "Stufe2_C10-K4",
+    "file_name": "Stufe2_C10-K4.wav",
+    "dialogue_id": "Stufe2_C10",
+    "variant": "noisy",
+    "level": 2,
+    "duration_s": 145.0,
+    "advisor_name": null,
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:28Z",
+    "processed_at": "2026-10-10T09:54:59Z",
+    "verdict": "no_alert",
+    "family": "trade",
+    "score": 0.0,
+    "reason": "The conversation concerns technical assistance with the login screen and interpreting a help manual. No trade requests were made, and no non-public financial information was discussed or used as a basis for investment decisions.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": false,
+    "expected_verdict": "no_alert"
+  },
+  "decision": {
+    "verdict": "no_alert",
+    "family": "trade",
+    "score": 0.0,
+    "reason": "The conversation concerns technical assistance with the login screen and interpreting a help manual. No trade requests were made, and no non-public financial information was discussed or used as a basis for investment decisions.",
+    "reason_de": "Das Gespräch betrifft technische Unterstützung beim Anmeldebildschirm und die Interpretation eines Hilfemanuals. Es wurden keine Handelsaufträge getätigt und keine nicht-öffentlichen Finanzinformationen diskutiert oder als Grundlage für Anlageentscheidungen verwendet.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:46Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The conversation concerns technical assistance with the login screen and interpreting a help manual. No trade requests were made, and no non-public financial information was discussed or used as a basis for investment decisions.",
+      "reason_de": "Das Gespräch betrifft technische Unterstützung beim Anmeldebildschirm und die Interpretation eines Hilfemanuals. Es wurden keine Handelsaufträge getätigt und keine nicht-öffentlichen Finanzinformationen diskutiert oder als Grundlage für Anlageentscheidungen verwendet.",
+      "benign_explanation": "The call is a technical support interaction regarding the bank's login interface. The customer is confused by a help manual image and reads out a number from that static example ('expired sample'). There is no discussion of financial markets, company results, takeovers, or any trade requests. The topic of trading on non-public information is completely absent."
+    },
+    {
+      "family": "splitting",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call concerns technical navigation of the login screen and interpreting help images. It does not involve any financial movements or requests to structure payments to avoid approval processes.",
+      "reason_de": "Der Anruf betrifft die technische Navigation am Anmeldebildschirm und die Interpretation von Hilfeseiten. Es werden keine Finanztransaktionen oder Anfragen zur Strukturierung von Zahlungen zur Umgehung von Genehmigungsprozessen besprochen.",
+      "benign_explanation": "The call is a technical support interaction regarding the bank's login interface and help documentation. The customer is confused by a visual aid (an expired sample image) and reads out a number from that image. There is no discussion of financial transactions, payments, transfers, or deposits, nor any request to split such transactions to avoid internal controls."
+    },
+    {
+      "family": "access",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer disclosed a number from an expired sample image while explicitly confirming that no live login session was active. Therefore, no currently active access secret was shared.",
+      "reason_de": "Die Kundin hat eine Zahl aus einem abgelaufenen Musterbild vorgelesen und dabei explizit bestätigt, dass keine aktive Login-Sitzung lief. Daher wurde kein aktuelles Zugangsgeheimnis offengelegt.",
+      "benign_explanation": "The customer read out a number (836174) from an 'expired sample' (abgelaufene Muster) in a help manual/image. The customer explicitly stated that the real login process had not been started and the window was closed. The advisor confirmed they do not share secret data and instructed the customer to stop reading numbers. Since no live authentication process was active, the value disclosed was not a currently active access secret."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor did not reveal any protected third-party details; instead, the advisor actively prevented the disclosure of any numbers by instructing the customer not to read them out and clarifying that secret data is not shared. The number provided by the customer was identified as coming from a help image, not a live account.",
+      "reason_de": "Der Berater hat keine geschützten Daten eines Dritten offengelegt; stattdessen hat er aktiv verhindert, dass Zahlen vorgelesen werden, indem er die Kundin angewiesen hat, die Zahlen bei sich zu behalten, und klargestellt, dass keine Geheimdaten geteilt werden. Die von der Kundin genannte Zahl stammte aus einem Hilfsmittel, nicht aus einem aktiven Konto.",
+      "benign_explanation": "The call is a technical support interaction regarding a login screen confusion. The customer reads a number from a help manual/image, not from a live account. The advisor explicitly refuses to accept or process any numbers, stating 'We do not share secret data' and instructing the customer to keep the number to themselves. No protected account details (balances, transactions, personal data) were revealed by the advisor to the customer or any third party."
+    },
+    {
+      "family": "documentation",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The family 'Relevant information left out' concerns requests to hide facts from internal records or recipients. This call involves a customer support scenario where the advisor prevents the disclosure of sensitive data to the advisor, which is a security measure, not an attempt to conceal relevant facts from internal documentation. The event is not applicable to this context.",
+      "reason_de": "Die Familie 'Relevante Informationen weggelassen' betrifft Anfragen, Tatsachen vor internen Aufzeichnungen oder Empfängern zu verbergen. Dieser Anruf ist ein technischer Support, bei dem der Berater die Offenlegung sensibler Daten verhindert. Es gibt keine Anfrage, Informationen in internen Dokumenten zu unterdrücken.",
+      "benign_explanation": "The call is a technical support interaction regarding a login screen and help documentation. The customer reads a number from an expired sample image, and the advisor instructs them to stop reading numbers for security reasons. There is no discussion of internal records, call notes, dossiers, or compliance documentation, nor any request to conceal information from an internal recipient."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 262,
+      "family": "trade",
+      "seg_id": "S026",
+      "role": "exclusion",
+      "start_s": 105.52,
+      "end_s": 111.26,
+      "speaker_role": "customer",
+      "quote": "Warte, ich versiere, bis ich die Stelle aus dem Feld hole. 836174.",
+      "note": "The only number mentioned is from a help manual field, unrelated to trading or insider info.",
+      "snippet_url": "/api/calls/Stufe2_C10-K4/snippets/S026"
+    }
+  ],
+  "keyword_hits": [],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.08,
+      "end_s": 8.88,
+      "role": "advisor",
+      "text": "Guten Tag, Frau Zimmermann. Da ist Twitter -Kund vom Technischen Service. Sie haben etwas am Anmeldebildschirm zuordnen können.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 10.88,
+      "end_s": 20.06,
+      "role": "customer",
+      "text": "Ja, ich bin unsicher, ob ich auf dem richtigen Schritt bin. Ich habe die Hilfe im zweiten Fenster offen und beides sieht ähnlich aus.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 21.87,
+      "end_s": 29.07,
+      "role": "advisor",
+      "text": "Haben Sie gerade selber eine Anmeldung gestartet oder schauen Sie nur mehr das Hilfebild an? Bitte sagen Sie keine Zahl.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 31.33,
+      "end_s": 33.49,
+      "role": "customer",
+      "text": "Ich habe den Zugang noch gar nicht gestartet.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 33.79,
+      "end_s": 37.01,
+      "role": "customer",
+      "text": "Ich schaue das abgelaufene Muster in der Anleitung an.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 37.17,
+      "end_s": 39.35,
+      "role": "customer",
+      "text": "Das echte Anmeldefenster ist zu.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 39.59,
+      "end_s": 41.45,
+      "role": "customer",
+      "text": "Es gibt auch kein Kaumton.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 41.77,
+      "end_s": 43.79,
+      "role": "customer",
+      "text": "Diese Zahl kann nicht gebraucht werden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 44.09,
+      "end_s": 46.45,
+      "role": "customer",
+      "text": "Und ich bleibe jetzt bei genau diesem Feld.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 48.19,
+      "end_s": 49.31,
+      "role": "advisor",
+      "text": "Bist du gedankt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 49.63,
+      "end_s": 54.39,
+      "role": "advisor",
+      "text": "Bitte lasst die Zahl bei Ihnen und beschreiben nur den Text rund ums Feld.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 54.67,
+      "end_s": 56.75,
+      "role": "advisor",
+      "text": "Was hat Sie am Schritt irritiert?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 58.64,
+      "end_s": 58.94,
+      "role": "advisor",
+      "text": "Der",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 58.94,
+      "end_s": 59.44,
+      "role": "customer",
+      "text": "Pfeil.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 59.44,
+      "end_s": 65.48,
+      "role": "customer",
+      "text": "Ich erwarte, dass ich auf dem Telefon etwas bestätige, aber da geht der Pfeil zum Browser.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 65.76,
+      "end_s": 68.52,
+      "role": "customer",
+      "text": "Vielleicht habe ich nur das Bild schnell angeschaut.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 70.7,
+      "end_s": 72.22,
+      "role": "customer",
+      "text": "Wir können zwei Ansichten",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 72.22,
+      "end_s": 73.5,
+      "role": "advisor",
+      "text": "getrennt betrachten.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 73.86,
+      "end_s": 79.68,
+      "role": "advisor",
+      "text": "Für den Pulsor gibt es ein Pfeil zum selber eintippen, das Telefon beinahe beabläuft.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 80.06,
+      "end_s": 81.8,
+      "role": "advisor",
+      "text": "Wir teilen keine Geheimdaten.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 84.0,
+      "end_s": 85.98,
+      "role": "customer",
+      "text": "Jetzt habe ich den Pfeil gesehen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 86.1,
+      "end_s": 90.3,
+      "role": "customer",
+      "text": "Ich habe nur das Bild vergrössert, keinen anderen Tab aufgerufen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 90.3,
+      "end_s": 93.62,
+      "role": "customer",
+      "text": "Das 5, was ich meine, ist immer noch das gleiche.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 95.9,
+      "end_s": 101.7,
+      "role": "advisor",
+      "text": "Schliessen wird überrastet. Sie können zuerst den Titel des Fensters lesen, ohne diese Zahl.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 101.92,
+      "end_s": 103.76,
+      "role": "advisor",
+      "text": "Ich brauche nur den Titel.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 105.52,
+      "end_s": 111.26,
+      "role": "customer",
+      "text": "Warte, ich versiere, bis ich die Stelle aus dem Feld hole. 836174.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 112.94,
+      "end_s": 121.12,
+      "role": "advisor",
+      "text": "Bitte keine weiteren Zahlen vorlesen. Wir gehen den Schritt zurück und sortieren die Fenster, bevor Sie etwas Neues starten.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 122.8,
+      "end_s": 127.98,
+      "role": "customer",
+      "text": "Okay, ich habe jetzt nur noch die Hilfsseite offen. Ich war ein bisschen zu schnell.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 129.94,
+      "end_s": 138.14,
+      "role": "advisor",
+      "text": "Sie bleiben bei der Anleitung. Falls Sie nachher starten, geben Sie neue Werte ausschliesslich selbst im vorgesehenen Feld.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S030",
+      "start_s": 140.1,
+      "end_s": 144.04,
+      "role": "customer",
+      "text": "Mache ich. Danke für das Mitdenken. Auf Wiedersehen.",
+      "low_confidence": false
+    }
+  ],
+  "twin": {
+    "call_id": "Stufe2_C09-K4",
+    "dialogue_id": "Stufe2_C09",
+    "variant": "noisy",
+    "verdict": "alarm",
+    "note": "The customer read an expired sample from a help manual, not a live secret from an active login process."
+  },
+  "feedback": [],
+  "triggers": []
+}

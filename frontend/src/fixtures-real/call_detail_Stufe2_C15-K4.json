@@ -1,0 +1,419 @@
+{
+  "call": {
+    "call_id": "Stufe2_C15-K4",
+    "file_name": "Stufe2_C15-K4.wav",
+    "dialogue_id": "Stufe2_C15",
+    "variant": "noisy",
+    "level": 2,
+    "duration_s": 146.35,
+    "advisor_name": "Sylvia Badl",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:28Z",
+    "processed_at": "2026-10-10T09:54:59Z",
+    "verdict": "review",
+    "family": "splitting",
+    "score": 50.0,
+    "reason": "The customer requests splitting a total of 9,000 into two payments of 4,500 to avoid the 8,000 approval threshold mentioned by the advisor. However, the customer also stated the invoices have different due dates. The call does not establish whether the split is driven by the genuine due dates or expressly intended to circumvent the approval process. Since the intent is unclear, the event is undetermined.",
+    "open_question": "Is the customer's request to split the payment into two parts of 4,500 expressly intended to prevent the internal approval process for amounts over 8,000 from applying, or is it based on the genuine difference in due dates mentioned earlier?",
+    "feedback_label": null,
+    "trigger_sent": true,
+    "expected_verdict": "no_alert"
+  },
+  "decision": {
+    "verdict": "review",
+    "family": "splitting",
+    "score": 50.0,
+    "reason": "The customer requests splitting a total of 9,000 into two payments of 4,500 to avoid the 8,000 approval threshold mentioned by the advisor. However, the customer also stated the invoices have different due dates. The call does not establish whether the split is driven by the genuine due dates or expressly intended to circumvent the approval process. Since the intent is unclear, the event is undetermined.",
+    "reason_de": "Der Kunde beantragt, einen Gesamtbetrag von 9'000 in zwei Zahlungen von je 4'500 aufzuteilen, um die vom Berater erwähnte Freigabeschwelle von 8'000 zu umgehen. Der Kunde hat jedoch auch angegeben, dass die Rechnungen unterschiedliche Fälligkeitsdaten haben. Der Anruf klärt nicht, ob die Aufteilung auf die echten Fälligkeitsdaten zurückzuführen ist oder ausdrücklich der Umgehung des Freigabeprozesses dient. Da die Absicht unklar ist, ist das Ereignis unbestimmt.",
+    "open_question": "Is the customer's request to split the payment into two parts of 4,500 expressly intended to prevent the internal approval process for amounts over 8,000 from applying, or is it based on the genuine difference in due dates mentioned earlier?",
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:47Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The conversation is strictly about accounts payable and invoice entry procedures for a supplier. It does not involve any request to trade securities based on non-public information, making the family of misconduct not applicable.",
+      "reason_de": "Das Gespräch betrifft ausschließlich die Buchhaltung und die Erfassung von Lieferantenrechnungen. Es wird kein Wertpapierhandel oder die Nutzung von nicht-öffentlichen Informationen für Handelszwecke thematisiert, weshalb diese Fehlverhaltenfamilie nicht zutrifft.",
+      "benign_explanation": "The call concerns the administrative processing of supplier invoices for a company's internal accounting system. The customer is asking how to record payments for a workshop ('Werkstatt') to ensure correct due dates and visibility in the system. There is no discussion of securities trading, stock markets, or non-public corporate information regarding listed companies."
+    },
+    {
+      "family": "splitting",
+      "score": 50.0,
+      "event_majority": "undetermined",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": "Is the customer's request to split the payment into two parts of 4,500 expressly intended to prevent the internal approval process for amounts over 8,000 from applying, or is it based on the genuine difference in due dates mentioned earlier?",
+      "reason": "The customer requests splitting a total of 9,000 into two payments of 4,500 to avoid the 8,000 approval threshold mentioned by the advisor. However, the customer also stated the invoices have different due dates. The call does not establish whether the split is driven by the genuine due dates or expressly intended to circumvent the approval process. Since the intent is unclear, the event is undetermined.",
+      "reason_de": "Der Kunde beantragt, einen Gesamtbetrag von 9'000 in zwei Zahlungen von je 4'500 aufzuteilen, um die vom Berater erwähnte Freigabeschwelle von 8'000 zu umgehen. Der Kunde hat jedoch auch angegeben, dass die Rechnungen unterschiedliche Fälligkeitsdaten haben. Der Anruf klärt nicht, ob die Aufteilung auf die echten Fälligkeitsdaten zurückzuführen ist oder ausdrücklich der Umgehung des Freigabeprozesses dient. Da die Absicht unklar ist, ist das Ereignis unbestimmt.",
+      "benign_explanation": "The customer has two independent invoices with different due dates. The request to process them separately (one today, one tomorrow) might be a legitimate reflection of the payment terms (due dates) rather than an attempt to circumvent the approval threshold. The customer explicitly stated the invoices are independent and have different due dates."
+    },
+    {
+      "family": "access",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The conversation focuses entirely on administrative details of invoice processing, such as amounts and reference numbers. No access secrets were disclosed, and the advisor explicitly instructed the customer not to read long reference numbers over the phone, ensuring no sensitive data was shared verbally.",
+      "reason_de": "Das Gespräch konzentriert sich ausschließlich auf administrative Details der Rechnungsverarbeitung, wie Beträge und Referenznummern. Es wurden keine Zugangsgeheimnisse offengelegt, und die Beraterin wies den Kunden explizit an, keine langen Referenznummern am Telefon vorzulesen, wodurch sichergestellt wurde, dass keine sensiblen Daten verbal geteilt wurden.",
+      "benign_explanation": "The call is a standard business inquiry regarding the processing of supplier invoices. The customer and advisor discuss invoice amounts, due dates, and reference numbers. No access secrets (such as login codes, PINs, TANs, or passwords) are mentioned, requested, or disclosed by either party."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor did not reveal any protected third-party details such as account balances, transaction histories, or personal data. The conversation focused on general procedural rules for invoice processing and the submission of documents via a secure channel, which does not constitute a disclosure of confidential information.",
+      "reason_de": "Die Beraterin hat keine geschützten Drittpartei-Details wie Kontostände, Transaktionsverläufe oder persönliche Daten offengelegt. Das Gespräch konzentrierte sich auf allgemeine Verfahrensregeln für die Rechnungsverarbeitung und die Übermittlung von Dokumenten über einen sicheren Kanal, was keine Offenlegung vertraulicher Informationen darstellt.",
+      "benign_explanation": "The call is a standard consultation regarding the procedural handling of supplier invoices. The customer (Frau Frey) is discussing how to record payments for her own company's suppliers. The advisor provides general procedural information (internal approval thresholds, document submission via secure channel) and does not disclose any protected account details, balances, or personal data to an unauthorized third party. The customer appears to be the authorized representative of the company."
+    },
+    {
+      "family": "documentation",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The customer explicitly states that both documents and the context should remain fully visible in the system, and the advisor agrees to record the details. No request to conceal relevant facts was made.",
+      "reason_de": "Der Kunde erklärt ausdrücklich, dass beide Belege und der Zusammenhang im System vollständig sichtbar bleiben sollen, und der Berater stimmt zu, die Details aufzunehmen. Es wurde keine Aufforderung zum Verschweigen relevanter Tatsachen geäußert.",
+      "benign_explanation": "The customer explicitly requests that all documents and the context of the transactions remain fully visible in the system. The advisor confirms they will record the description and check the documents. There is no request to conceal, remove, or hide any relevant information from the internal record; on the contrary, the customer insists on transparency."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 288,
+      "family": "splitting",
+      "seg_id": "S003",
+      "role": "context",
+      "start_s": 20.42,
+      "end_s": 26.09,
+      "speaker_role": "advisor",
+      "quote": "Bei uns geht ein zusammengehöriger Vorgang über 8 '000 Franken an die interne Freigabestellung.",
+      "note": "Advisor establishes the internal control threshold that the customer's subsequent request might aim to circumvent.",
+      "snippet_url": "/api/calls/Stufe2_C15-K4/snippets/S003"
+    },
+    {
+      "id": 289,
+      "family": "splitting",
+      "seg_id": "S006",
+      "role": "context",
+      "start_s": 34.95,
+      "end_s": 40.73,
+      "speaker_role": "customer",
+      "quote": "Es sind zwei unabhängige Rechnungen für verschiedene Lieferungen, zusammen 9000.",
+      "note": "Customer states the total amount and claims the invoices are independent, which could be a harmless reason for separate processing.",
+      "snippet_url": "/api/calls/Stufe2_C15-K4/snippets/S006"
+    },
+    {
+      "id": 290,
+      "family": "splitting",
+      "seg_id": "S007",
+      "role": "context",
+      "start_s": 41.11,
+      "end_s": 43.53,
+      "speaker_role": "customer",
+      "quote": "Die eine ist heute fällig, die andere nicht.",
+      "note": "Customer provides a potentially genuine reason (different due dates) for processing the payments at different times.",
+      "snippet_url": "/api/calls/Stufe2_C15-K4/snippets/S007"
+    },
+    {
+      "id": 291,
+      "family": "splitting",
+      "seg_id": "S023",
+      "role": "trigger",
+      "start_s": 105.39,
+      "end_s": 111.89,
+      "speaker_role": "customer",
+      "quote": "Dann mache ich heute 4 '500 und morgen 4 '500 an die gleiche Werkstatt.",
+      "note": "Customer proposes splitting the payment into two parts below the threshold. The intent (circumvention vs. due date compliance) is not explicitly stated as circumvention.",
+      "snippet_url": "/api/calls/Stufe2_C15-K4/snippets/S023"
+    },
+    {
+      "id": 292,
+      "family": "splitting",
+      "seg_id": "S024",
+      "role": "trigger",
+      "start_s": 111.89,
+      "end_s": 115.75,
+      "speaker_role": "customer",
+      "quote": "Können Sie mir die zwei Erfassungen so vorbereiten?",
+      "note": "Customer makes the request for the split processing.",
+      "snippet_url": "/api/calls/Stufe2_C15-K4/snippets/S024"
+    }
+  ],
+  "keyword_hits": [],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.14,
+      "end_s": 8.26,
+      "role": "advisor",
+      "text": "Frau Frey, hier ist Sylvia Badl vom Firmen -Service. Sie haben einen Terminwunsch zu den lieferanten Vorgängen gemeldet.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 10.1,
+      "end_s": 18.9,
+      "role": "customer",
+      "text": "Ja, ich bereite die lieferanten Zahlungen vor. Ich möchte zuerst wissen, wie ich sie erfasse, bevor ich einen konkreten Auftrag verlange.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 20.42,
+      "end_s": 26.09,
+      "role": "advisor",
+      "text": "Bei uns geht ein zusammengehöriger Vorgang über 8 '000 Franken an die interne Freigabestellung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 26.09,
+      "end_s": 31.35,
+      "role": "advisor",
+      "text": "Ich betrachte den ganzen Vorgang für nur eine einzelne Erfassung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 31.73,
+      "end_s": 33.47,
+      "role": "advisor",
+      "text": "Welche Unterlagen haben Sie?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 34.95,
+      "end_s": 40.73,
+      "role": "customer",
+      "text": "Es sind zwei unabhängige Rechnungen für verschiedene Lieferungen, zusammen 9000.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 41.11,
+      "end_s": 43.53,
+      "role": "customer",
+      "text": "Die eine ist heute fällig, die andere nicht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 43.83,
+      "end_s": 46.57,
+      "role": "customer",
+      "text": "Ich will die richtige Fälligkeit erfassen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 46.81,
+      "end_s": 52.47,
+      "role": "customer",
+      "text": "Beide Belege und der Zusammenhang sollten im System vollständig sichtbar bleiben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 54.03,
+      "end_s": 57.01,
+      "role": "advisor",
+      "text": "Ich nehme ihre Beschreibung der Beleg auf.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 57.25,
+      "end_s": 58.59,
+      "role": "advisor",
+      "text": "Wer ist der Empfänger?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 60.51,
+      "end_s": 62.51,
+      "role": "customer",
+      "text": "Die Werkstatt Talblick.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 62.79,
+      "end_s": 65.17,
+      "role": "customer",
+      "text": "Sie liefert euch regelmässig Material.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 65.75,
+      "end_s": 68.57,
+      "role": "customer",
+      "text": "Der Name ist bei beiden Erfassungen der Tief.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 68.71,
+      "end_s": 70.77,
+      "role": "customer",
+      "text": "Darum habe ich überhaupt gefordert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 72.47,
+      "end_s": 75.73,
+      "role": "advisor",
+      "text": "Für den Vorgang brauchen wir die Belegreferenzen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 76.01,
+      "end_s": 78.41,
+      "role": "advisor",
+      "text": "Bitte schicken Sie über das Firmenpostfach.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 78.69,
+      "end_s": 82.87,
+      "role": "advisor",
+      "text": "Am Telefon brauchen Sie keine lange Referenz kurz zu lesen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 84.53,
+      "end_s": 87.65,
+      "role": "customer",
+      "text": "Gut, ich habe die Datei schon vorbereitet.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 87.93,
+      "end_s": 93.03,
+      "role": "customer",
+      "text": "Wie der Betrag habe ich im Plan gemacht, aber noch nicht im System bestätigt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 95.01,
+      "end_s": 101.93,
+      "role": "advisor",
+      "text": "Genau das sollten Sie kennen. Im Plan am Telefon ist noch keine bestätigte Ausführung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 102.03,
+      "end_s": 103.73,
+      "role": "advisor",
+      "text": "Wie wollen Sie den Plan erfassen?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 105.39,
+      "end_s": 111.89,
+      "role": "customer",
+      "text": "Dann mache ich heute 4 '500 und morgen 4 '500 an die gleiche Werkstatt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 111.89,
+      "end_s": 115.75,
+      "role": "customer",
+      "text": "Können Sie mir die zwei Erfassungen so vorbereiten?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 117.47,
+      "end_s": 119.89,
+      "role": "advisor",
+      "text": "Ich bestätige da noch keine Ausführung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 120.51,
+      "end_s": 127.01,
+      "role": "advisor",
+      "text": "Wir nehmen zuerst die Unterlagen zum Vorgaben und prüfen die Rahmenwaben, die Sie am Anfang gemacht haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 128.63,
+      "end_s": 130.01,
+      "role": "customer",
+      "text": "Gut, ich",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 130.01,
+      "end_s": 133.55,
+      "role": "advisor",
+      "text": "schicke die Datei gerade, bevor ich zurück in den Betrieb gehe.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 135.95,
+      "end_s": 141.35,
+      "role": "advisor",
+      "text": "Verwiesen bitte auf den Rückruf, damit die Belege nicht in einer neuen Anfrage landen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S030",
+      "start_s": 142.83,
+      "end_s": 145.33,
+      "role": "customer",
+      "text": "Ja, danke. Auf Wiedersehen.",
+      "low_confidence": false
+    }
+  ],
+  "twin": {
+    "call_id": "Stufe2_C15-K3",
+    "dialogue_id": "Stufe2_C15",
+    "variant": "clean",
+    "verdict": "no_alert",
+    "note": "The customer explicitly states the payments correspond to independent invoices with different due dates, and the advisor confirms this understanding."
+  },
+  "feedback": [],
+  "triggers": [
+    {
+      "id": 25,
+      "call_id": "Stufe2_C15-K4",
+      "remote_id": "62",
+      "url": "http://localhost:5173/calls/Stufe2_C15-K4?t=95",
+      "status_code": 201,
+      "created_at": "2026-10-10T07:42:03Z"
+    }
+  ]
+}

@@ -1,0 +1,1117 @@
+{
+  "call": {
+    "call_id": "Stufe2_C14-K4",
+    "file_name": "Stufe2_C14-K4.wav",
+    "dialogue_id": "Stufe2_C14",
+    "variant": "noisy",
+    "level": 2,
+    "duration_s": 542.02,
+    "advisor_name": "Regula Bachmann",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:28Z",
+    "processed_at": "2026-10-10T09:54:59Z",
+    "verdict": "alarm",
+    "family": "documentation",
+    "score": 100.0,
+    "reason": "The advisor explicitly requests to remove a specific sentence (marked in violet) from the dossier with the stated intention that the financing department ('Finanzierungsstelle') should not see its content. This constitutes an intentional request to conceal relevant information from its designated internal recipient, which is misconduct under the rule, regardless of the customer's refusal to comply.",
+    "open_question": null,
+    "feedback_label": null,
+    "trigger_sent": true,
+    "expected_verdict": "no_alert"
+  },
+  "decision": {
+    "verdict": "alarm",
+    "family": "documentation",
+    "score": 100.0,
+    "reason": "The advisor explicitly requests to remove a specific sentence (marked in violet) from the dossier with the stated intention that the financing department ('Finanzierungsstelle') should not see its content. This constitutes an intentional request to conceal relevant information from its designated internal recipient, which is misconduct under the rule, regardless of the customer's refusal to comply.",
+    "reason_de": "Die Beraterin fordert explizit die Entfernung eines bestimmten Satzes (violett markiert) aus dem Dossier mit der Absicht, dass die Finanzierungsstelle den Inhalt nicht sehen soll. Dies stellt einen vorsätzlichen Versuch dar, relevante Informationen vor dem vorgesehenen internen Empfänger zu verbergen, was nach der Regel als Fehlverhalten gilt, unabhängig von der Weigerung der Kundin.",
+    "open_question": null,
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:47Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call is exclusively about administrative corrections to a real estate financing application. No trade requests or recommendations based on non-public information are made.",
+      "reason_de": "Der Anruf betrifft ausschließlich administrative Korrekturen an einer Immobilienfinanzierungsantrag. Es werden keine Handelsanfragen oder Empfehlungen auf Basis nicht-öffentlicher Informationen getätigt.",
+      "benign_explanation": "The call concerns the review and correction of a mortgage financing application dossier (Wohnungsdossier). The speakers discuss correcting addresses, clarifying purchase price components (parking space, notary fees), and ensuring income documents are correctly dated and labeled. There is no discussion of securities trading, stock recommendations, or non-public corporate information."
+    },
+    {
+      "family": "splitting",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 0.6,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The conversation focuses on document preparation for a mortgage application, specifically correcting data entry errors and clarifying invoice components. No request for connected partial movements to circumvent an internal process is made.",
+      "reason_de": "Das Gespräch dreht sich um die Vorbereitung von Unterlagen für eine Hypothekarkreditantrag, insbesondere um die Korrektur von Dateneingabefehlern und die Klärung von Rechnungsbestandteilen. Es wird keine Anfrage gestellt, Zahlungen aufzuteilen, um interne Prozesse zu umgehen.",
+      "benign_explanation": "The call concerns the review and correction of a housing financing application dossier. The speakers discuss correcting errors in addresses, clarifying the composition of the purchase price (parking space vs. total), handling salary proofs with bonuses, and ensuring the correct version of documents is uploaded. There is no discussion of splitting payments, transfers, or deposits to avoid internal approval limits or controls."
+    },
+    {
+      "family": "access",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call contains no disclosure of access secrets. The parties discuss financial documents and dossier content, but no login credentials or active access codes are shared.",
+      "reason_de": "Im Gespräch wird kein Zugangsgeheimnis offengelegt. Die Parteien besprechen Finanzdokumente und den Inhalt des Dossiers, aber es werden keine Login-Zugangsdaten oder aktive ZugangsCodes geteilt.",
+      "benign_explanation": "The call is a standard advisory conversation regarding the preparation and correction of a mortgage financing dossier. The speakers discuss document versions, specific line items (such as a loan from a brother, parking costs, and health insurance premiums), and formatting details. No access codes, passwords, PINs, TANs, or other login secrets are mentioned, requested, or disclosed by either party."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "absent",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor is assisting the account holder with her own application documents and does not disclose any protected third-party details to an unauthorized recipient. The discussion concerns the customer's own data and the formatting of her dossier.",
+      "reason_de": "Die Beraterin unterstützt die Kontoinhaberin bei der Vorbereitung ihres eigenen Kreditdossiers und gibt keine geschützten Daten Dritter an unbefugte Personen weiter. Das Gespräch betrifft die eigenen Daten der Kundin und die Formatierung ihres Dokuments.",
+      "benign_explanation": "The call is a consultation between a bank advisor and the account holder (Frau Inhofe) regarding the preparation of her own mortgage application dossier. The advisor discusses corrections to the draft document, clarifies details about the customer's own income and expenses, and notes the customer's request to remove a specific sentence from the document before it is sent to the financing department. No protected information about a third party is revealed to an unauthorized person; the customer is the primary party involved."
+    },
+    {
+      "family": "documentation",
+      "score": 100.0,
+      "event_majority": "present",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor explicitly requests to remove a specific sentence (marked in violet) from the dossier with the stated intention that the financing department ('Finanzierungsstelle') should not see its content. This constitutes an intentional request to conceal relevant information from its designated internal recipient, which is misconduct under the rule, regardless of the customer's refusal to comply.",
+      "reason_de": "Die Beraterin fordert explizit die Entfernung eines bestimmten Satzes (violett markiert) aus dem Dossier mit der Absicht, dass die Finanzierungsstelle den Inhalt nicht sehen soll. Dies stellt einen vorsätzlichen Versuch dar, relevante Informationen vor dem vorgesehenen internen Empfänger zu verbergen, was nach der Regel als Fehlverhalten gilt, unabhängig von der Weigerung der Kundin.",
+      "benign_explanation": "The advisor initially discusses correcting errors in the dossier, such as an old address and a double-counted parking fee. These corrections are harmless. However, towards the end of the call, the advisor explicitly requests to remove a specific sentence from the dossier so that the financing department does not see it, citing a desire to hide information rather than correcting an error."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 285,
+      "family": "documentation",
+      "seg_id": "S108",
+      "role": "trigger",
+      "start_s": 477.36,
+      "end_s": 481.38,
+      "speaker_role": "advisor",
+      "quote": "Dann lernt mir der Violett Machia den Satz aus dem Dossier heraus.",
+      "note": "The advisor requests the removal of the sentence marked in violet.",
+      "snippet_url": "/api/calls/Stufe2_C14-K4/snippets/S108"
+    },
+    {
+      "id": 286,
+      "family": "documentation",
+      "seg_id": "S109",
+      "role": "trigger",
+      "start_s": 481.68,
+      "end_s": 486.02,
+      "speaker_role": "advisor",
+      "quote": "Ich will, dass die Finanzierung gestellte Inhalte von genau diesem Satz",
+      "note": "The advisor explicitly states the intent to hide the content of this sentence from the financing department.",
+      "snippet_url": "/api/calls/Stufe2_C14-K4/snippets/S109"
+    },
+    {
+      "id": 287,
+      "family": "documentation",
+      "seg_id": "S113",
+      "role": "exclusion",
+      "start_s": 497.84,
+      "end_s": 501.92,
+      "speaker_role": "customer",
+      "quote": "Ich ändere am Telefon auch kein Beleg, das schon im Dossier ist.",
+      "note": "The customer refuses the request, but for a request family, the event is the request itself.",
+      "snippet_url": "/api/calls/Stufe2_C14-K4/snippets/S113"
+    }
+  ],
+  "keyword_hits": [],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.08,
+      "end_s": 3.6,
+      "role": "advisor",
+      "text": "Guten Morgen, Frau Inhofe, das ist die Regula Bachmann.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 3.82,
+      "end_s": 8.48,
+      "role": "advisor",
+      "text": "Ich habe Ihren Entwurf für das Wohnungsdossier und Ihren Rückruf umspaniert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 8.8,
+      "end_s": 11.32,
+      "role": "customer",
+      "text": "Sie haben am Rande mehrere Sachen markiert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 13.41,
+      "end_s": 20.37,
+      "role": "advisor",
+      "text": "Ja, ich habe die Stellen mit verschiedenen Farben markiert, aber meine Notizen dazu sind durcheinander gekommen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 20.59,
+      "end_s": 26.61,
+      "role": "advisor",
+      "text": "Ich möchte den Entwurf prüfen, bevor er an die Stelle geht, wo die Finanzierung bearbeitet wird.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 27.96,
+      "end_s": 30.48,
+      "role": "customer",
+      "text": "Dann sortieren wir die Markierungen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 30.64,
+      "end_s": 35.32,
+      "role": "customer",
+      "text": "Für weisse Ausdruck mit Datum vom Montag ist der aktuelle im Buch.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 35.72,
+      "end_s": 39.66,
+      "role": "customer",
+      "text": "Für gelbe Ausdruck ist die alte Version vom letzten Monat.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 39.92,
+      "end_s": 41.56,
+      "role": "customer",
+      "text": "Habt ihr die zwei von sich?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 43.2,
+      "end_s": 45.36,
+      "role": "customer",
+      "text": "Ja, der weisse liegt oben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 45.7,
+      "end_s": 51.46,
+      "role": "advisor",
+      "text": "Die gelbe Version lege ich gerade auf die Seite, sonst lese ich Ihnen nachher den falschen Satz vor.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 51.8,
+      "end_s": 55.32,
+      "role": "advisor",
+      "text": "Auf der aktuellen Version habe ich drei Stellen markiert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 56.63,
+      "end_s": 61.89,
+      "role": "customer",
+      "text": "Bedienen wir mit den violetten Zeilen und welche Anlage gibt es dort?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 62.15,
+      "end_s": 68.01,
+      "role": "customer",
+      "text": "Wir müssen zuerst wissen, ob sie sachlich wichtig und für den vorgesehenen Empfänger nötig ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 69.35,
+      "end_s": 72.63,
+      "role": "advisor",
+      "text": "Der violette Satz nennt meine alte Kontaktadresse.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 73.49,
+      "end_s": 76.89,
+      "role": "advisor",
+      "text": "Diese ist falsch und für den vorgesehenen Entscheid nicht relevant.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 77.43,
+      "end_s": 81.05,
+      "role": "advisor",
+      "text": "Die aktuelle Adresse steht richtig im Kontaktfeld.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 81.05,
+      "end_s": 90.07,
+      "role": "advisor",
+      "text": "Die rückzahlbaren 30 '000 Fr. von meinem Bruder sind im Finanzierungsabschnitt vollständig erfasst und sollten dort unverändert bleiben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 92.41,
+      "end_s": 98.75,
+      "role": "customer",
+      "text": "Die Herkunft und die Rückzahlungsverpflichtung müssen vollständig an unsere Finanzierungsstelle gestellt werden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 98.85,
+      "end_s": 101.75,
+      "role": "customer",
+      "text": "Eine falsche Kontaktzeile kann man korrigieren.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 102.07,
+      "end_s": 105.37,
+      "role": "customer",
+      "text": "Ich habe Ihre Erklärung zur violetten Stelle notiert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 105.75,
+      "end_s": 108.01,
+      "role": "customer",
+      "text": "Was betrifft hier wann einmal die Fähre?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 110.11,
+      "end_s": 116.57,
+      "role": "advisor",
+      "text": "Der Kaufpreis, der stimmt im Text, aber im Anhang ist nur der alte Entwurf vom Verkäufer.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 116.69,
+      "end_s": 120.03,
+      "role": "advisor",
+      "text": "Der hat Parkplatzkosten und nicht separat gezeigt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 120.49,
+      "end_s": 123.95,
+      "role": "advisor",
+      "text": "Ich will nicht das in zwei verschiedene Summen vergleichen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 125.58,
+      "end_s": 129.38,
+      "role": "customer",
+      "text": "Wie ist der Parkplatz im neuen Entwurf aufgeführt?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 129.42,
+      "end_s": 133.88,
+      "role": "customer",
+      "text": "Als Teil vom bisherigen Total oder als zusätzliche Position?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 133.88,
+      "end_s": 137.98,
+      "role": "customer",
+      "text": "Die zwei Varianten würden die Summe anders verändern.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 139.72,
+      "end_s": 143.02,
+      "role": "advisor",
+      "text": "Als Teil des Totals, nicht als Zuschlag.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S030",
+      "start_s": 143.3,
+      "end_s": 147.2,
+      "role": "advisor",
+      "text": "Auf der ersten Seite steht der gleiche Betrag wie im alten Entwurf.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S031",
+      "start_s": 147.66,
+      "end_s": 152.26,
+      "role": "advisor",
+      "text": "Auf der zweiten Seite sind die Wohnung und Parkplatz separat aufgeführt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S032",
+      "start_s": 152.56,
+      "end_s": 156.62,
+      "role": "advisor",
+      "text": "Ich habe zuerst gemeint, ich müsse die zweite Seite noch dazu zählen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S033",
+      "start_s": 158.6,
+      "end_s": 163.86,
+      "role": "customer",
+      "text": "Dann muss Windows hier das Total sehen, ohne den Parkplatz doppelt zu zählen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S034",
+      "start_s": 164.14,
+      "end_s": 170.72,
+      "role": "customer",
+      "text": "Ich schicke beide Seiten, damit man nachvollziehen kann, weil die Positionen im Total schon drin sind.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S035",
+      "start_s": 171.18,
+      "end_s": 175.68,
+      "role": "customer",
+      "text": "Die Rechnung für den Notaviatsvorschuss ist nicht Teil des Kaufpreises.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S036",
+      "start_s": 177.36,
+      "end_s": 181.4,
+      "role": "advisor",
+      "text": "Genau diese habe ich auch dazu gelegt, darum war meine Summe höher.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S037",
+      "start_s": 181.4,
+      "end_s": 189.32,
+      "role": "advisor",
+      "text": "Der Vorschuss ist separat fällig. Ich schreibe ihn separat an und rechne ihn mit in den Kaufpreis hinein.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S038",
+      "start_s": 189.32,
+      "end_s": 193.88,
+      "role": "advisor",
+      "text": "Das ist der Rahmenpunkt. Der violette Satz betrifft die andere Anlage.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S039",
+      "start_s": 195.66,
+      "end_s": 201.72,
+      "role": "customer",
+      "text": "Genau. Wir lassen diese Punkte separat. Der Kaufentwurf kommt als Anhang dazu.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S040",
+      "start_s": 202.26,
+      "end_s": 208.18,
+      "role": "customer",
+      "text": "Bei den violetten Zeilen geht es um etwas im Text selbst. Welche dritte Markierung haben sie?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S041",
+      "start_s": 210.4,
+      "end_s": 213.14,
+      "role": "advisor",
+      "text": "Dort ist der vorgesehene Termin.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S042",
+      "start_s": 213.28,
+      "end_s": 214.88,
+      "role": "customer",
+      "text": "Ich habe den 5. Oktober",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S043",
+      "start_s": 214.88,
+      "end_s": 221.22,
+      "role": "advisor",
+      "text": "eingeteilt, aber der Verkäufer hat nur gesagt, er will ungefähr in dieser Woche antworten.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S044",
+      "start_s": 221.3,
+      "end_s": 223.46,
+      "role": "advisor",
+      "text": "Es ist noch kein besserer Termin.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S045",
+      "start_s": 224.9,
+      "end_s": 229.6,
+      "role": "customer",
+      "text": "Der sollte in meinem Entwurf nicht stehen. Der Termin sei schon abgemacht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S046",
+      "start_s": 229.9,
+      "end_s": 234.84,
+      "role": "customer",
+      "text": "Wir können notieren, welche Woche Sie gerne hätten und lassen den Termin offen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S047",
+      "start_s": 234.84,
+      "end_s": 239.86,
+      "role": "customer",
+      "text": "Der Verkäufer hat Ihnen bis jetzt nur gesagt, wenn er antwortet.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S048",
+      "start_s": 241.84,
+      "end_s": 242.44,
+      "role": "advisor",
+      "text": "Genau.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S049",
+      "start_s": 243.0,
+      "end_s": 247.0,
+      "role": "advisor",
+      "text": "Ich will später nicht sagen, Sie hätten mir den 5. versprochen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S050",
+      "start_s": 247.44,
+      "end_s": 251.18,
+      "role": "advisor",
+      "text": "Ich habe mir das Tattoo nur als Erinnerung in meine Agenda geschrieben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S051",
+      "start_s": 252.98,
+      "end_s": 257.84,
+      "role": "customer",
+      "text": "In Ihrer Agenda können Sie sich das natürlich als Erinnerung notieren.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S052",
+      "start_s": 258.2,
+      "end_s": 262.58,
+      "role": "customer",
+      "text": "Im Dossier lassen wir den Termin offen, solange Sie noch keine Bestätigung haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S053",
+      "start_s": 262.58,
+      "end_s": 266.42,
+      "role": "customer",
+      "text": "Wir schreiben nicht etwas als abgemacht in eine, die noch offen ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S054",
+      "start_s": 268.18,
+      "end_s": 274.2,
+      "role": "advisor",
+      "text": "Danke. Ich habe noch den Lohnnachweis vom August, aber der vom September kommt erst Ende Woche.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S055",
+      "start_s": 274.7,
+      "end_s": 279.44,
+      "role": "advisor",
+      "text": "Soll ich den August schon aufladen oder gibt es einen grossen zweiten Stapel?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S056",
+      "start_s": 280.96,
+      "end_s": 285.66,
+      "role": "customer",
+      "text": "Sie können den Beleg, den Sie schon haben, mit dem richtigen Datum aufladen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S057",
+      "start_s": 285.78,
+      "end_s": 289.24,
+      "role": "customer",
+      "text": "Wenn Sie später einen anderen nachgeben, muss man das ziehen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S058",
+      "start_s": 289.24,
+      "end_s": 292.66,
+      "role": "customer",
+      "text": "Wir müssen wissen, für welchen Monat der Beleg gilt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S059",
+      "start_s": 294.38,
+      "end_s": 297.44,
+      "role": "advisor",
+      "text": "Dann schreibe ich den Monat in den Dateinamen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S060",
+      "start_s": 297.74,
+      "end_s": 303.28,
+      "role": "advisor",
+      "text": "Bis jetzt habe ich alles erneut gemerkt und genau darum habe ich zuerst die falsche Version rausgenommen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S061",
+      "start_s": 303.78,
+      "end_s": 304.44,
+      "role": "customer",
+      "text": "Das Datum",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S062",
+      "start_s": 304.44,
+      "end_s": 305.2,
+      "role": "advisor",
+      "text": "im Namen hilft",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S063",
+      "start_s": 305.2,
+      "end_s": 306.58,
+      "role": "customer",
+      "text": "mir mehr als die Farbe.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S064",
+      "start_s": 308.38,
+      "end_s": 311.54,
+      "role": "customer",
+      "text": "Ja, das Datum hilft uns beim Zuordnen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S065",
+      "start_s": 311.74,
+      "end_s": 316.28,
+      "role": "customer",
+      "text": "Mit der Farbe könnt ihr mir am Telefon zeigen, welche Frage ihr meint.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S066",
+      "start_s": 316.28,
+      "end_s": 321.02,
+      "role": "customer",
+      "text": "Aber auf dem Beleg selber brauchen wir das Datum und den wichtigen Inhalt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S067",
+      "start_s": 322.67,
+      "end_s": 323.77,
+      "role": "customer",
+      "text": "Ich habe noch eine",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S068",
+      "start_s": 323.77,
+      "end_s": 326.31,
+      "role": "advisor",
+      "text": "Übersicht meiner festen Ausgaben gemacht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S069",
+      "start_s": 326.81,
+      "end_s": 330.75,
+      "role": "advisor",
+      "text": "Die Krankenkasse ist eine Jahresrechnung, die Miete monatlich.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S070",
+      "start_s": 331.03,
+      "end_s": 333.47,
+      "role": "advisor",
+      "text": "Ich habe beide als monatlich aufgeschrieben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S071",
+      "start_s": 333.73,
+      "end_s": 337.69,
+      "role": "advisor",
+      "text": "Aber bitte die Krankenkasse mit dem ganzen Jahresbetrag.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S072",
+      "start_s": 337.91,
+      "end_s": 339.67,
+      "role": "advisor",
+      "text": "Das muss ich kollegieren.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S073",
+      "start_s": 341.57,
+      "end_s": 345.75,
+      "role": "customer",
+      "text": "Schreibt dazu, ob der Betrag pro Monat oder pro Jahr gilt",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S074",
+      "start_s": 345.75,
+      "end_s": 348.11,
+      "role": "customer",
+      "text": "und nehmen die passenden Belege dazu.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S075",
+      "start_s": 348.51,
+      "end_s": 350.67,
+      "role": "customer",
+      "text": "Beim Rechnen schauen wir auf den Zeitraum.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S076",
+      "start_s": 351.39,
+      "end_s": 356.01,
+      "role": "customer",
+      "text": "Sonst nehmen wir aus Versehen den ganzen Jahresbetrag für den einzelnen Monat.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S077",
+      "start_s": 358.19,
+      "end_s": 358.79,
+      "role": "advisor",
+      "text": "Verstanden.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S078",
+      "start_s": 358.99,
+      "end_s": 362.17,
+      "role": "advisor",
+      "text": "Bei der Krankenkasse zahle ich einmal im Jahr.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S079",
+      "start_s": 362.43,
+      "end_s": 368.03,
+      "role": "advisor",
+      "text": "Ich will also auch in meiner eigenen Monatsliste nicht jeden Monat den vollen Betrag reservieren.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S080",
+      "start_s": 368.41,
+      "end_s": 373.19,
+      "role": "advisor",
+      "text": "Können Sie im Kommentar festhalten, dass sich die Monatsübersicht neu wechnet?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S081",
+      "start_s": 374.79,
+      "end_s": 379.39,
+      "role": "customer",
+      "text": "Ja, ich notiere, dass Ihre Übersicht zur Korrektur zurückkommt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S082",
+      "start_s": 380.03,
+      "end_s": 383.53,
+      "role": "customer",
+      "text": "Haben Sie im August noch einen einmaligen Lohnbestandteil gehabt?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S083",
+      "start_s": 383.85,
+      "end_s": 390.79,
+      "role": "customer",
+      "text": "Für den Septembernachweis wäre wichtig, dass im allfälligen Bonus nicht zum normalen Monatslohn gerechnet wird.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S084",
+      "start_s": 392.77,
+      "end_s": 395.63,
+      "role": "advisor",
+      "text": "Ja, im August ist ein Bonus drin.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S085",
+      "start_s": 395.97,
+      "end_s": 402.47,
+      "role": "advisor",
+      "text": "Der normale Lohn ist aber separat aufgeführt und ich erwarte den gleichen Lohnbetrag im September.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S086",
+      "start_s": 402.47,
+      "end_s": 406.35,
+      "role": "advisor",
+      "text": "Ich kann beide Nachweise schicken, dann sieht man den Unterschied.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S087",
+      "start_s": 408.26,
+      "end_s": 410.04,
+      "role": "customer",
+      "text": "Das passt zur Zuordnung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S088",
+      "start_s": 410.48,
+      "end_s": 414.66,
+      "role": "customer",
+      "text": "Lohn und Bonus sollten mit der wichtigen Periode angeschrieben sein.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S089",
+      "start_s": 414.94,
+      "end_s": 418.2,
+      "role": "customer",
+      "text": "Ich rechne Ihnen am Telefon aus diesem einen Monatsblatt",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S090",
+      "start_s": 418.2,
+      "end_s": 420.6,
+      "role": "customer",
+      "text": "wird schon ein neuer regelmässiger Lohn aus.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S091",
+      "start_s": 422.2,
+      "end_s": 423.02,
+      "role": "customer",
+      "text": "Das ist",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S092",
+      "start_s": 423.02,
+      "end_s": 423.58,
+      "role": "advisor",
+      "text": "mir recht.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S093",
+      "start_s": 423.76,
+      "end_s": 428.44,
+      "role": "advisor",
+      "text": "Es ist eine grosse Sache für mich und ich werde nicht schon am Papier scheitern.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S094",
+      "start_s": 428.62,
+      "end_s": 432.78,
+      "role": "advisor",
+      "text": "Ich kann nur sorgen, dass jede Ergänzung wieder ein paar Tage dauert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S095",
+      "start_s": 432.78,
+      "end_s": 437.41,
+      "role": "customer",
+      "text": "Ich kann notieren, bis sie eine Antwort haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S096",
+      "start_s": 437.81,
+      "end_s": 439.91,
+      "role": "customer",
+      "text": "Aber bevor wir das Dossier weitergeben,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S097",
+      "start_s": 440.11,
+      "end_s": 442.91,
+      "role": "customer",
+      "text": "müssen die Angaben vollständig und richtig sein.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S098",
+      "start_s": 443.19,
+      "end_s": 446.75,
+      "role": "customer",
+      "text": "Wir verschicken nicht absichtlich einen unvollständigen Entwurf,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S099",
+      "start_s": 447.05,
+      "end_s": 449.25,
+      "role": "customer",
+      "text": "nur damit der frühere da ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S100",
+      "start_s": 451.03,
+      "end_s": 451.85,
+      "role": "advisor",
+      "text": "Macht's gut.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S101",
+      "start_s": 452.27,
+      "end_s": 454.03,
+      "role": "customer",
+      "text": "Die Ange - und die grüne",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S102",
+      "start_s": 454.03,
+      "end_s": 455.65,
+      "role": "advisor",
+      "text": "Markierung sind jetzt klar.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S103",
+      "start_s": 455.99,
+      "end_s": 458.75,
+      "role": "advisor",
+      "text": "Für die violetten Zeilen habe ich noch den Wunsch,",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S104",
+      "start_s": 458.87,
+      "end_s": 460.99,
+      "role": "advisor",
+      "text": "den ich am Anfang angesprochen habe.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S105",
+      "start_s": 460.99,
+      "end_s": 466.25,
+      "role": "advisor",
+      "text": "Die Farbe meine ich auf der aktuellen weissen Version, nicht auf dem alten Blatt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S106",
+      "start_s": 467.86,
+      "end_s": 471.96,
+      "role": "customer",
+      "text": "Ja, Sie meinen die violette Zeile im aktuellen Zuflug.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S107",
+      "start_s": 472.18,
+      "end_s": 475.7,
+      "role": "customer",
+      "text": "Sagen Sie mir bitte, was ich mit diesem Satz machen soll.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S108",
+      "start_s": 477.36,
+      "end_s": 481.38,
+      "role": "advisor",
+      "text": "Dann lernt mir der Violett Machia den Satz aus dem Dossier heraus.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S109",
+      "start_s": 481.68,
+      "end_s": 486.02,
+      "role": "advisor",
+      "text": "Ich will, dass die Finanzierung gestellte Inhalte von genau diesem Satz",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S110",
+      "start_s": 486.02,
+      "end_s": 486.92,
+      "role": "customer",
+      "text": "nicht zu sehen bekommen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S111",
+      "start_s": 486.92,
+      "end_s": 494.36,
+      "role": "customer",
+      "text": "Ich nehme Ihren Wunsch auf, zusammen mit dem, was Sie am Abend über den Satz gesagt haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S112",
+      "start_s": 494.7,
+      "end_s": 497.4,
+      "role": "customer",
+      "text": "Dieser Entwurf geht jetzt nicht ungeprüft weiter.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S113",
+      "start_s": 497.84,
+      "end_s": 501.92,
+      "role": "customer",
+      "text": "Ich ändere am Telefon auch kein Beleg, das schon im Dossier ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S114",
+      "start_s": 503.82,
+      "end_s": 509.66,
+      "role": "advisor",
+      "text": "Gut, dann lade ich zuerst den neuen Kaufentwurf und den richtig angeschriebenen Beleg auf.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S115",
+      "start_s": 509.96,
+      "end_s": 513.72,
+      "role": "advisor",
+      "text": "Die alte Version lasse ich separat, damit ich sie nicht wieder",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S116",
+      "start_s": 513.72,
+      "end_s": 514.68,
+      "role": "customer",
+      "text": "verwechseln muss.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S117",
+      "start_s": 514.68,
+      "end_s": 520.65,
+      "role": "customer",
+      "text": "Rufe gerne beim Aufladen bitte die aktuelle Dossierreferenz an.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S118",
+      "start_s": 520.91,
+      "end_s": 524.67,
+      "role": "customer",
+      "text": "In der Rückmeldung steht dann, welche Punkte noch offen sind.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S119",
+      "start_s": 524.97,
+      "end_s": 529.39,
+      "role": "customer",
+      "text": "Das heisst noch nicht, dass die Entscheidung bis zu Ihrem Wunschdatum da ist.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S120",
+      "start_s": 531.19,
+      "end_s": 538.29,
+      "role": "advisor",
+      "text": "Danke. Ich habe mir die drei Punkte gekennzeichnet und packe nicht alles in einen einzigen Kommentar.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S121",
+      "start_s": 538.41,
+      "end_s": 541.17,
+      "role": "advisor",
+      "text": "Ich melde mich, wenn die Unterlagen bereit sind.",
+      "low_confidence": false
+    }
+  ],
+  "twin": null,
+  "feedback": [],
+  "triggers": [
+    {
+      "id": 24,
+      "call_id": "Stufe2_C14-K4",
+      "remote_id": "61",
+      "url": "http://localhost:5173/calls/Stufe2_C14-K4?t=467",
+      "status_code": 201,
+      "created_at": "2026-10-10T07:42:03Z"
+    }
+  ]
+}

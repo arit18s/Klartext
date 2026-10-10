@@ -1,0 +1,405 @@
+{
+  "call": {
+    "call_id": "Stufe3_C17-K3",
+    "file_name": "Stufe3_C17-K3.wav",
+    "dialogue_id": "Stufe3_C17",
+    "variant": "clean",
+    "level": 3,
+    "duration_s": 147.21,
+    "advisor_name": "Esther",
+    "status": "done",
+    "error": null,
+    "created_at": "2026-10-10T07:41:28Z",
+    "processed_at": "2026-10-10T09:54:59Z",
+    "verdict": "review",
+    "family": "access",
+    "score": 50.0,
+    "reason": "The customer disclosed a 6-digit number identified as a one-time password, but explicitly stated uncertainty about its validity ('cannot say if it is valid now or then'). Since the rule defines misconduct as the disclosure of a *currently active* secret, and the call does not establish whether this specific code was still live, the event is undetermined.",
+    "open_question": "Was the 6-digit number '296481' read by the customer a currently active access secret (e.g., valid TAN/OTP) at the time it was spoken?",
+    "feedback_label": null,
+    "trigger_sent": true,
+    "expected_verdict": "review"
+  },
+  "decision": {
+    "verdict": "review",
+    "family": "access",
+    "score": 50.0,
+    "reason": "The customer disclosed a 6-digit number identified as a one-time password, but explicitly stated uncertainty about its validity ('cannot say if it is valid now or then'). Since the rule defines misconduct as the disclosure of a *currently active* secret, and the call does not establish whether this specific code was still live, the event is undetermined.",
+    "reason_de": "Der Kunde hat eine 6-stellige Zahl genannt, die als Einmalpasswort identifiziert wurde, aber explizit Unsicherheit bezüglich ihrer Gültigkeit geäußert ('kann nicht sagen, ob sie jetzt oder damals gültig ist'). Da die Regel Missbrauch als Offenlegung eines *aktuell aktiven* Geheimnisses definiert und der Anruf nicht klärt, ob dieser Code noch aktiv war, ist das Ereignis unbestimmt.",
+    "open_question": "Was the 6-digit number '296481' read by the customer a currently active access secret (e.g., valid TAN/OTP) at the time it was spoken?",
+    "asr_uncertain": false,
+    "thresholds_version_id": 4,
+    "decided_at": "2026-10-10T09:54:47Z"
+  },
+  "checks": [
+    {
+      "family": "trade",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call concerns technical support for an online banking interface and the handling of a one-time password/screenshot. There is no mention of non-public company information or any trade request linked to such information, making the family of 'Trading on non-public information' not applicable to this interaction.",
+      "reason_de": "Der Anruf betrifft technischen Support für eine Online-Banking-Oberfläche und den Umgang mit einem Einmalpasswort/Bildschirmfoto. Es wird keine nicht-öffentliche Unternehmensinformation erwähnt, noch wird eine Handelsanfrage gestellt, die auf solchen Informationen basiert. Daher ist die Kategorie 'Handel mit nicht-öffentlichen Informationen' auf diese Interaktion nicht anwendbar.",
+      "benign_explanation": "The call is a technical support conversation regarding an online banking error. The customer is trying to provide a screenshot of an error message to the advisor. The number discussed (296481) is identified as a one-time password or confirmation code related to a previous login or transaction attempt, not as non-public financial information. There is no discussion of company results, takeovers, or internal figures, nor is there any request to trade based on such information."
+    },
+    {
+      "family": "splitting",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The call concerns technical support for reading a screenshot and does not involve any requests for partial payments or transfers intended to circumvent approval processes. Therefore, the family 'Splitting to avoid approval' is not applicable.",
+      "reason_de": "Der Anruf betrifft technischen Support beim Lesen eines Screenshots und beinhaltet keine Anfragen nach Teilzahlungen oder Überweisungen, die darauf abzielen, Genehmigungsprozesse zu umgehen. Daher ist die Kategorie 'Aufteilung zur Vermeidung von Genehmigungen' nicht anwendbar.",
+      "benign_explanation": "The call is a technical support interaction regarding a screenshot of an online banking interface. The customer is trying to read an error message or a one-time password from a static image to troubleshoot an issue. There is no discussion of financial transfers, payments, or deposits, nor any request to split transactions to avoid internal controls."
+    },
+    {
+      "family": "access",
+      "score": 50.0,
+      "event_majority": "undetermined",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": "Was the 6-digit number '296481' read by the customer a currently active access secret (e.g., valid TAN/OTP) at the time it was spoken?",
+      "reason": "The customer disclosed a 6-digit number identified as a one-time password, but explicitly stated uncertainty about its validity ('cannot say if it is valid now or then'). Since the rule defines misconduct as the disclosure of a *currently active* secret, and the call does not establish whether this specific code was still live, the event is undetermined.",
+      "reason_de": "Der Kunde hat eine 6-stellige Zahl genannt, die als Einmalpasswort identifiziert wurde, aber explizit Unsicherheit bezüglich ihrer Gültigkeit geäußert ('kann nicht sagen, ob sie jetzt oder damals gültig ist'). Da die Regel Missbrauch als Offenlegung eines *aktuell aktiven* Geheimnisses definiert und der Anruf nicht klärt, ob dieser Code noch aktiv war, ist das Ereignis unbestimmt.",
+      "benign_explanation": "The customer is troubleshooting an error message and reads out a number from a screenshot taken previously. The advisor explicitly instructs the customer not to share further values and states that the screenshot should not be treated as a current instruction. The customer themselves admits they do not know if the value is still valid."
+    },
+    {
+      "family": "disclosure",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 0.8,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The advisor does not reveal any protected third-party details; instead, the advisor actively prevents the disclosure of a security code and limits the interaction to technical error reporting. The family 'Information given to a third party' is not applicable as no unauthorized disclosure occurred.",
+      "reason_de": "Der Berater gibt keine geschützten Daten an Dritte weiter; stattdessen verhindert er aktiv die Weitergabe eines Sicherheitscodes und beschränkt das Gespräch auf technische Fehlermeldungen. Die Kategorie 'Informationen an Dritte gegeben' ist nicht anwendbar, da keine unbefugte Offenlegung stattgefunden hat.",
+      "benign_explanation": "The call is a technical support interaction where a customer attempts to troubleshoot an online banking error using a screenshot. The advisor explicitly refuses to process any security codes or values from the screenshot, instructing the customer to keep the number to themselves and to provide only the error message text. No protected account details (balances, transactions, personal data) are disclosed by the advisor to a third party, nor is there any indication that the customer is acting on behalf of someone else without authority."
+    },
+    {
+      "family": "documentation",
+      "score": 0.0,
+      "event_majority": "not_applicable",
+      "agreement": 1.0,
+      "samples": 5,
+      "needs_human_votes": 0,
+      "open_question": null,
+      "reason": "The family 'Relevant information left out' applies to requests to hide facts from internal records (e.g., call notes, compliance files). This call involves a customer providing a potentially invalid OTP for technical support, which the advisor rightly refuses to process as a valid instruction. No request was made to omit relevant facts from any internal recipient's record; the interaction is purely operational support.",
+      "reason_de": "Die Familie 'Wesentliche Informationen unterlassen' betrifft Anfragen, Tatsachen vor internen Aufzeichnungen (z. B. Anmerkungen, Compliance-Dateien) zu verbergen. Dieser Anruf betrifft einen Kunden, der ein möglicherweise ungültiges Einmalpasswort zur technischen Unterstützung bereitstellt, welches der Berater zu Recht nicht als gültige Anweisung bearbeitet. Es wurde keine Anfrage gestellt, relevante Fakten von den Aufzeichnungen eines internen Empfängers auszuschließen; die Interaktion ist rein operativer Support.",
+      "benign_explanation": "The call concerns a technical support issue regarding an online banking error. The customer provides a screenshot of a past transaction attempt but explicitly states they do not know if the displayed one-time password is still valid. The advisor correctly identifies that the OTP should not be used or recorded as a current instruction and focuses on the error message for troubleshooting. There is no discussion about internal documentation, call notes, dossiers, or compliance records, nor any request to conceal information from such recipients."
+    }
+  ],
+  "evidence": [
+    {
+      "id": 302,
+      "family": "access",
+      "seg_id": "S018",
+      "role": "context",
+      "start_s": 77.11,
+      "end_s": 81.29,
+      "speaker_role": "advisor",
+      "quote": "Wir sollten den Screenshot nicht als aktuelle Anweisung behandeln.",
+      "note": "The advisor warns against treating the screenshot data as a current/live instruction.",
+      "snippet_url": "/api/calls/Stufe3_C17-K3/snippets/S018"
+    },
+    {
+      "id": 303,
+      "family": "access",
+      "seg_id": "S024",
+      "role": "trigger",
+      "start_s": 102.75,
+      "end_s": 103.31,
+      "speaker_role": "customer",
+      "quote": "296481",
+      "note": "The customer reads out the 6-digit number.",
+      "snippet_url": "/api/calls/Stufe3_C17-K3/snippets/S024"
+    },
+    {
+      "id": 304,
+      "family": "access",
+      "seg_id": "S025",
+      "role": "context",
+      "start_s": 103.31,
+      "end_s": 107.53,
+      "speaker_role": "customer",
+      "quote": "Ob sie jetzt oder damals gültig ist, kann ich nicht sagen.",
+      "note": "The customer explicitly states they do not know if the code is currently valid or expired.",
+      "snippet_url": "/api/calls/Stufe3_C17-K3/snippets/S025"
+    }
+  ],
+  "keyword_hits": [],
+  "segments": [
+    {
+      "seg_id": "S001",
+      "start_s": 0.08,
+      "end_s": 3.22,
+      "role": "advisor",
+      "text": "Grüezi, hier ist Esther von Chaucer.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S002",
+      "start_s": 3.3,
+      "end_s": 7.3,
+      "role": "advisor",
+      "text": "Sie haben um Hilfe mit einer Anzeige im Online zu beten.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S003",
+      "start_s": 7.3,
+      "end_s": 8.4,
+      "role": "advisor",
+      "text": "Was sehen Sie?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S004",
+      "start_s": 10.24,
+      "end_s": 12.74,
+      "role": "customer",
+      "text": "Ich habe einen Screenshot auf meinem Telefon.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S005",
+      "start_s": 13.04,
+      "end_s": 18.9,
+      "role": "customer",
+      "text": "Ich wollte gestern etwas bestätigen und habe das Bild gemacht, bevor ich aus dem Fenster gegangen bin.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S006",
+      "start_s": 19.16,
+      "end_s": 23.34,
+      "role": "customer",
+      "text": "Jetzt bin ich nicht sicher, was davon noch zum laufenden Vorgang gehört.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S007",
+      "start_s": 25.26,
+      "end_s": 30.56,
+      "role": "advisor",
+      "text": "Sind Sie aktuell im echten Fenster oder schauen Sie nur den Screenshot an?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S008",
+      "start_s": 30.82,
+      "end_s": 32.48,
+      "role": "advisor",
+      "text": "Weizen teilen keine Zahlen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S009",
+      "start_s": 34.28,
+      "end_s": 37.06,
+      "role": "customer",
+      "text": "Im Moment schaue ich nur das Bild an.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S010",
+      "start_s": 37.36,
+      "end_s": 41.9,
+      "role": "customer",
+      "text": "Der obere Rand ist abgeschnitten und ich kann nicht lesen, ob es noch gültig war.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S011",
+      "start_s": 42.38,
+      "end_s": 46.92,
+      "role": "customer",
+      "text": "Ich habe nichts Neues gestartet, aber ich weiss nicht, ob ich Ihnen dazu etwas zeigen kann.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S012",
+      "start_s": 49.26,
+      "end_s": 52.28,
+      "role": "advisor",
+      "text": "Dann ist der Zusammenhang noch unklar.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S013",
+      "start_s": 52.28,
+      "end_s": 56.02,
+      "role": "advisor",
+      "text": "Wir müssen die Herkunft und den Status des Wertes kennen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S014",
+      "start_s": 56.42,
+      "end_s": 59.78,
+      "role": "advisor",
+      "text": "Haben Sie das Bild selbst gemacht oder hat jemand es Ihnen geschickt?",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S015",
+      "start_s": 61.45,
+      "end_s": 65.55,
+      "role": "customer",
+      "text": "Ich habe es selbst gemacht. Niemand hat mich nach ihrer Zahl gefragt.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S016",
+      "start_s": 66.11,
+      "end_s": 69.57,
+      "role": "customer",
+      "text": "Ich habe nur versucht, für die Fehlermeldung im Beleg zu haben.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S017",
+      "start_s": 71.17,
+      "end_s": 76.79,
+      "role": "advisor",
+      "text": "Gut, für den Support brauchen wir die Fehlermeldung, nicht den Bestätigungswert.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S018",
+      "start_s": 77.11,
+      "end_s": 81.29,
+      "role": "advisor",
+      "text": "Wir sollten den Screenshot nicht als aktuelle Anweisung behandeln.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S019",
+      "start_s": 82.91,
+      "end_s": 86.51,
+      "role": "customer",
+      "text": "Ich weiss nicht, ob der Wert oben oder unten dazugehört.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S020",
+      "start_s": 86.81,
+      "end_s": 90.59,
+      "role": "customer",
+      "text": "Der Text ist so klein, dass ich das Bild gerade vergrössern muss.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S021",
+      "start_s": 92.61,
+      "end_s": 95.19,
+      "role": "advisor",
+      "text": "Bitte sagen Sie nur den lesbaren Text.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S022",
+      "start_s": 95.67,
+      "end_s": 97.23,
+      "role": "advisor",
+      "text": "Die Zahl bleibt bei Ihnen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S023",
+      "start_s": 98.97,
+      "end_s": 100.55,
+      "role": "customer",
+      "text": "Ich habe sie jetzt schon vor mir.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S024",
+      "start_s": 102.75,
+      "end_s": 103.31,
+      "role": "customer",
+      "text": "296481",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S025",
+      "start_s": 103.31,
+      "end_s": 107.53,
+      "role": "customer",
+      "text": "Ob sie jetzt oder damals gültig ist, kann ich nicht sagen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S026",
+      "start_s": 109.19,
+      "end_s": 112.19,
+      "role": "advisor",
+      "text": "Weiter keine weiteren Werte aufzulesen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S027",
+      "start_s": 112.23,
+      "end_s": 117.89,
+      "role": "advisor",
+      "text": "Für den nächsten Schritt müssen wir den Screenshot und den laufenden Vorgang auseinanderhalten.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S028",
+      "start_s": 118.27,
+      "end_s": 121.61,
+      "role": "advisor",
+      "text": "Ich bestätige keine Verwendungssicht dieser Zahl.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S029",
+      "start_s": 123.27,
+      "end_s": 128.13,
+      "role": "customer",
+      "text": "Okay, ich lege das Bild weg und warte auf den vorgesehenen Ablauf.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S030",
+      "start_s": 128.49,
+      "end_s": 130.99,
+      "role": "customer",
+      "text": "Ich will nicht noch einen neuen Versuch darüber legen.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S031",
+      "start_s": 132.53,
+      "end_s": 139.39,
+      "role": "advisor",
+      "text": "Ich lege den sicheren Supportzweig im Postfach ab und verwende nur die verlangte Fehlermeldung.",
+      "low_confidence": false
+    },
+    {
+      "seg_id": "S032",
+      "start_s": 140.99,
+      "end_s": 146.33,
+      "role": "customer",
+      "text": "Danke. Ich melde mich mit dem richtigen Bild, wenn der Text wieder lesbar ist.",
+      "low_confidence": false
+    }
+  ],
+  "twin": null,
+  "feedback": [],
+  "triggers": [
+    {
+      "id": 28,
+      "call_id": "Stufe3_C17-K3",
+      "remote_id": "65",
+      "url": "http://localhost:5173/calls/Stufe3_C17-K3?t=92",
+      "status_code": 201,
+      "created_at": "2026-10-10T07:42:03Z"
+    }
+  ]
+}
