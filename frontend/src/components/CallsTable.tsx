@@ -11,6 +11,7 @@ import {
   matchKind,
   recordingName,
 } from '@/lib/format'
+import { arrivedRecently } from '@/lib/live'
 import { cn } from '@/lib/utils'
 import { VerdictChip } from './VerdictChip'
 import { ScoreBar } from './ScoreBar'
@@ -129,10 +130,26 @@ export function CallsTable({
                   onClick={(e) => {
                     if (!(e.target as HTMLElement).closest('a')) navigate(href)
                   }}
-                  className="group cursor-pointer hover:bg-canvas focus-visible:bg-canvas focus-visible:outline-2 focus-visible:-outline-offset-2"
+                  className={cn(
+                    'group cursor-pointer hover:bg-canvas focus-visible:bg-canvas focus-visible:outline-2 focus-visible:-outline-offset-2',
+                    // The one deliberate moment: a newly decided call slides in, its verdict chip fades in (300 ms).
+                    arrivedRecently(c.call_id) && 'duration-300 animate-in fade-in-0 slide-in-from-top-2',
+                  )}
                 >
                   <td className={td}>
-                    {c.verdict ? <VerdictChip verdict={c.verdict} /> : <span className="text-muted">Checking…</span>}
+                    {c.verdict ? (
+                      <span
+                        className={cn(
+                          'inline-block',
+                          arrivedRecently(c.call_id) &&
+                            'delay-150 duration-300 animate-in fade-in-0 fill-mode-backwards',
+                        )}
+                      >
+                        <VerdictChip verdict={c.verdict} />
+                      </span>
+                    ) : (
+                      <span className="text-muted">Checking…</span>
+                    )}
                   </td>
                   <td className={td}>
                     <div className="flex items-center gap-2">

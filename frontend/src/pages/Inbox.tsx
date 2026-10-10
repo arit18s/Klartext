@@ -10,8 +10,9 @@ import { FilterModal } from '@/components/FilterModal'
 import { Kbd } from '@/components/Kbd'
 import { StatCard } from '@/components/StatCard'
 import { Tag } from '@/components/Tag'
+import { useToast } from '@/components/Toast'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { USE_FIXTURES, getCalls, getPipelineStatus } from '@/lib/api'
+import { USE_FIXTURES, getCalls, getPipelineStatus, simulateIncomingCall } from '@/lib/api'
 import { INBOX_FILTERS, applyFilters, filterChips, removeChip, sortCalls, type FilterState } from '@/lib/filters'
 import { recordingName } from '@/lib/format'
 import { useFeedback } from '@/lib/hooks'
@@ -30,8 +31,9 @@ export default function Inbox() {
     queryKey: ['calls', { flagged_only: true }],
     queryFn: () => getCalls({ flagged_only: true }),
   })
-  const pipeline = useQuery({ queryKey: ['pipeline'], queryFn: getPipelineStatus, enabled: !USE_FIXTURES })
+  const pipeline = useQuery({ queryKey: ['pipeline'], queryFn: getPipelineStatus, retry: false })
   const feedback = useFeedback()
+  const toast = useToast()
 
   const flagged = useMemo(() => sortCalls(calls.data?.items ?? []), [calls.data])
   const shown = useMemo(() => applyFilters(flagged, filters), [flagged, filters])
@@ -45,7 +47,16 @@ export default function Inbox() {
         <h2 className="text-display">Needs attention</h2>
         <p className="mt-1 text-muted">Alarms first, then reviews, highest score on top.</p>
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center gap-2">
+        {USE_FIXTURES && (
+          <Button
+            variant="ghost"
+            title="Fixture mode: plays a stored recording through the pipeline, as if it had just been dropped into the inbox folder"
+            onClick={() => toast(`Simulating ${simulateIncomingCall()} arriving in the inbox folder`)}
+          >
+            Simulate a new recording
+          </Button>
+        )}
         <DateRangeButton value={filters.date} onChange={(date) => setFilters({ ...filters, date })} />
         <FilterModal value={filters} onApply={setFilters} items={flagged} verdicts={['alarm', 'review']} />
       </div>

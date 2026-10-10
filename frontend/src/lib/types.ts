@@ -430,6 +430,13 @@ export interface PipelineStatus {
   last_batch: { files: number; failed: number; duration_s: number; finished_at: string } | null
 }
 
+/** POST /api/pipeline/inbox (multipart, field `file`): the drop zone copies one WAV into the inbox folder. */
+export interface UploadResponse {
+  file_name: string
+  queued: boolean // false when the same file (by hash) was processed before
+  duplicate: boolean
+}
+
 export interface ProcessFolderRequest {
   path: string
 }

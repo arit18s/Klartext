@@ -2,14 +2,14 @@
 
 Updated with every step's commit. Steps and checks: `06_IMPLEMENTATION_PLAN.md`. Submission Sunday 08:30, feature freeze Saturday 22:00.
 
-Last update: Sat 10 Oct, 01:55 (B12 done; F6, F7 merged).
+Last update: Sat 10 Oct, 02:40 (B12 done; F6, F7 merged; F8, F9 done on the frontend branch).
 
 ## Next up
 
 | Track | Next 3 steps |
 |---|---|
 | Backend | Stability check: dev with `LLM_SAMPLES=5`, reasoning off ×2 and on ×1 (decides k and reasoning, risk 1) → **B14** ASR script for the GPU box (+ CUDA 12 pip libs) → **B15** ASR bake-off on the 60 calls |
-| Frontend | **F8** Pipeline page → **F9** Live updates and polish → **F10** Switch to real API (needs B24–B25) |
+| Frontend | **F10** Switch to real API (needs B24–B26, incl. SSE `/api/events` and `POST /pipeline/inbox`) → integration bugs → demo rehearsal with B34 |
 
 ## Risks / open items
 
@@ -80,6 +80,6 @@ Also on main: `d64bcac` contract changes (evidence `note`, decision `reason_de`)
 | F5 Tuning page | done | `0d1aa0b` | `decide.ts` runs the shared cases; feedback label `note` in `a18c0e3`, `c03901a` |
 | F6 Rules page | done | `f923c00` | Merged in `fe06d7e` |
 | F7 Quality page | done | `04b7280` | Reads the B12 metrics shape; merged in `fe06d7e` |
-| F8 Pipeline page | todo | – | |
-| F9 Live updates and polish | todo | – | |
+| F8 Pipeline page | done | `78de022` | Watch toggle, queue with stages, retry, drop zone, batch, exports, recent runs; SSE layer; fixture-mode watcher simulation. New invented endpoint `POST /pipeline/inbox` for the drop zone (in `API_CONTRACT.md`) |
+| F9 Live updates and polish | done | `9c368a0` | Inbox slide-in on `call_updated` (reduced motion respected), error copy for an unreachable server, read-only Settings page, axe WCAG 2 A/AA: 0 violations on 12 routes; `muted` token darkened to #666A72 for 4.5:1 on canvas |
 | F10 Switch to real API | todo | – | Needs B24–B25 |
