@@ -49,6 +49,7 @@ Still invented, review before implementing:
 | Eval metrics | shape of `metrics` | Section 10 lists the metrics, not their JSON |
 | Pipeline status | whole object | Not specified. Stages from `02_APP_FLOW.md` screen 7 |
 | `POST /pipeline/inbox` | whole endpoint | The Pipeline drop zone (02_APP_FLOW screen 7) copies one file into the inbox folder; section 9 has no endpoint for it |
+| `GET /advisors` | `last_call_at`, `last_call_id`, query `since` | Advisors page (R12): last call column and the period picker |
 
 Not covered yet: "View history" of config versions (Rules, Settings).
 
@@ -543,10 +544,26 @@ Read-only. Never contains the API key.
 
 The model values are examples. `config_versions` holds the active version ID per kind, or `null` if there is none.
 
-### `GET /advisors` (stretch)
+### `GET /advisors` (stretch goal R12)
+
+Patterns across calls, one row per advisor name from the role labelling (`calls.advisor_name`). Calls without a recognised name are left out. Query: `since` (ISO time; only calls with `processed_at` at or after it, as in `GET /calls`). Sorted by alarms, then reviews, then calls, most first.
 
 ```json
 [
-  { "advisor_name": "Advisor 01", "calls": 12, "alarm": 7, "review": 3, "no_alert": 2, "families": ["access", "trade"] }
+  {
+    "advisor_name": "Advisor 01",
+    "calls": 12,
+    "alarm": 7,
+    "review": 3,
+    "no_alert": 2,
+    "families": ["trade", "access"],
+    "last_call_at": "2026-10-10T08:42:00Z",
+    "last_call_id": "Stufe2_C09-K3"
+  }
 ]
 ```
+
+- `calls` counts every call of the advisor, decided or not; `alarm + review + no_alert` counts the decided ones.
+- `families`: the families of the advisor's alarms and reviews, in the fixed family order. Empty when there are none.
+- `last_call_at`: `processed_at` of the newest call (`created_at` while it is not processed yet); `last_call_id` is that call.
+- The UI highlights advisors with any alarm or 2+ reviews in the period and links each row to All calls filtered by that advisor (`/calls?advisor=…`).

@@ -18,7 +18,7 @@ from pydantic import BaseModel, Field
 from sqlmodel import Session, select
 
 from app.api import jobs, pipeline_state
-from app.api.common import PlainErrorRoute, audit, file_name, iso, triggered_call_ids
+from app.api.common import PlainErrorRoute, audit, utc, file_name, iso, triggered_call_ids
 from app.config import get_settings
 from app.db import get_session
 from app.models.tables import Call, Decision, Evidence
@@ -63,25 +63,19 @@ class PipelineStatus(BaseModel):
     last_batch: LastBatchOut | None
 
 
-def _utc(dt: datetime | None) -> datetime | None:
-    if dt is None:
-        return None
-    return dt.replace(tzinfo=timezone.utc) if dt.tzinfo is None else dt.astimezone(timezone.utc)
-
-
 def _item(call: Call, d: Decision | None, triggered: bool, prog: pipeline_state.Progress | None, now: datetime) -> PipelineItem:
     active = call.status not in ("done", "failed")
     use = prog if prog and active else None
     stage = use.stage if use else call.status
     if call.status == "done":
-        end = _utc(call.processed_at)
+        end = utc(call.processed_at)
     elif active:
         end = now
     else:
         end = prog.updated_at if prog else None
-    start = prog.started_at if prog else _utc(call.created_at)
+    start = prog.started_at if prog else utc(call.created_at)
     elapsed = round((end - start).total_seconds(), 1) if end and start else None
-    updated = (prog.updated_at if use else None) or _utc(call.processed_at) or (_utc(d.decided_at) if d else None) or _utc(call.created_at)
+    updated = (prog.updated_at if use else None) or utc(call.processed_at) or (utc(d.decided_at) if d else None) or utc(call.created_at)
     return PipelineItem(
         call_id=call.id, file_name=file_name(call), stage=stage,
         progress=use.progress if use else STATUS_PROGRESS.get(call.status, 0.0), progress_note=use.note if use else None,
@@ -101,9 +95,9 @@ def build_status(session: Session) -> PipelineStatus:
     def item(c: Call) -> PipelineItem:
         return _item(c, decisions.get(c.id), c.id in triggered, state.progress.get(c.id), now)
 
-    queue = sorted((c for c in calls if c.status != "done"), key=lambda c: (_utc(c.created_at) or now, c.id))
-    done = sorted((c for c in calls if c.status == "done"), key=lambda c: (_utc(c.processed_at) or now, c.id), reverse=True)
-    last_file = state.last_file_at or max((_utc(c.created_at) for c in calls if c.created_at), default=None)
+    queue = sorted((c for c in calls if c.status != "done"), key=lambda c: (utc(c.created_at) or now, c.id))
+    done = sorted((c for c in calls if c.status == "done"), key=lambda c: (utc(c.processed_at) or now, c.id), reverse=True)
+    last_file = state.last_file_at or max((utc(c.created_at) for c in calls if c.created_at), default=None)
     lb = state.last_batch
     return PipelineStatus(
         watching=state.watching, inbox_dir=str(get_settings().inbox_path), poll_interval_s=state.poll_interval_s,

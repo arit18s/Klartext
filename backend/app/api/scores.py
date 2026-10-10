@@ -8,6 +8,7 @@ from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlmodel import Session, select
 
+from app.api import advisors
 from app.api.common import PlainErrorRoute, active_config, expected_verdicts, family_rank, iso
 from app.api.configs import ThresholdsOut
 from app.config import get_settings
@@ -16,6 +17,8 @@ from app.models.tables import Call, CheckResult, Decision
 from app.pipeline.decide import FAMILY_ORDER
 
 router = APIRouter(prefix="/api", tags=["scores"], route_class=PlainErrorRoute)
+# GET /advisors rides on this /api router: main.py (owned by the pipeline track) registers one router per module.
+router.include_router(advisors.router)
 SessionDep = Annotated[Session, Depends(get_session)]
 
 
