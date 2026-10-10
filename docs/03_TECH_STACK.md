@@ -37,6 +37,7 @@ Production story: ASR and LLM both run on GPUs inside the bank (e.g. Inventx ix.
 | Text matching | `rapidfuzz` | Fuzzy keyword matching, script-to-ASR turn alignment for evaluation |
 | Metrics | scikit-learn (`precision_recall_curve`, `confusion_matrix`) | Evaluation script |
 | HTTP client | `httpx` | Trigger API calls |
+| File uploads | `python-multipart` | Needed by FastAPI for multipart forms: `POST /pipeline/inbox` (drop zone). Approved for B25 |
 | Config | `.env` + `pydantic-settings` | Keys and URLs never in code |
 
 ## Speech (runs on Exoscale GPU)
@@ -62,7 +63,7 @@ Selection rule: pick the ASR model with the best **critical token recall** (digi
 | Models allowed | **Open-weight only**: Qwen, Llama, Mistral, DeepSeek families; Apertus if listed | Never Claude, GPT or Gemini, even via OpenRouter |
 | Models to benchmark | One large (~70B+ or MoE), one mid (~30B) | Pick by precision/recall on dev split. Record exact OpenRouter model ID in config |
 | Output | JSON schema / structured outputs where the model supports it, otherwise JSON mode + Pydantic validation + one retry | |
-| Sampling | k = 3 runs per family check, temperature 0.3 | Agreement feeds uncertainty |
+| Sampling | k = 5 runs per family check, temperature 0.3 | Agreement feeds uncertainty. k = 5 for stable scores (DECISIONS D18) |
 
 ## Frontend
 
@@ -92,7 +93,7 @@ Selection rule: pick the ASR model with the best **critical token recall** (digi
 LLM_BASE_URL=https://openrouter.ai/api/v1
 LLM_API_KEY=
 LLM_MODEL=            # open-weight model ID from OpenRouter
-LLM_SAMPLES=3
+LLM_SAMPLES=5
 LLM_TEMPERATURE=0.3
 
 # Speech (GPU box)

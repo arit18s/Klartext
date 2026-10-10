@@ -56,7 +56,7 @@ The LLM returns structured fields (event, evidence, open question). A fixed, tes
 k runs per check; present = 1, undetermined = 0.5, absent = 0. An all-"unclear" check scores 50 and lands in review by default. We do not use the model's self-reported confidence (unreliable according to recent research).
 *"Confidence comes from agreement between independent runs, not from the model grading itself."*
 
-**D11. Default thresholds: review from 30, alarm from 70.** Officer-adjustable on the Tuning page with live effect.
+**D11. Default thresholds: review from 30, alarm from 70.** Officer-adjustable on the Tuning page with live effect. The review threshold is re-chosen in B28 on the PR curve from ASR transcripts on dev (aim: recall 1.00 at the best precision); the chosen value and why go here. Until then it stays 30.
 
 **D12. Rule order (final):**
 1. No family enabled → review ("No checks enabled.")
@@ -100,7 +100,9 @@ Open-weight, structured JSON output, long context, cheap, and small enough for o
 Reasoning on missed a real case and was ~5× slower. No hybrid needed.
 *"We measured it: the faster setting also caught more."*
 
-**D18. Runs per check: k = 3 (k = 5 under evaluation for stability).**
+**D18. Runs per check: k = 5.**
+Stability check on dev (reasoning off, two independent runs each): with k = 3 the same call's family scores differed by up to 33 between identical runs and 2 of 20 verdicts flipped; with k = 5 they differ by at most 10 and 1 of 20 flips. k = 3 sometimes caught borderline cases (C18, C20) by luck; k = 5 shows the model's real lean, so the review threshold is set on its scores in B28 (D11). Cost: 5/3 of the LLM calls, ~22 min per full 60-recording run instead of ~13.
+*"We run every check five times and measured that the answer barely moves between runs."*
 
 **D19. ASR model chosen by critical token recall, not WER.**
 Candidates: Whisper large-v3, Flix-AI Swiss German fine-tune (Apache-2.0), gcoli turbo (MIT). What matters is whether digits, names and key phrases survive, not exact dialect wording. Swiss German ASR outputs Standard German; transcripts and quotes are shown as transcribed.
@@ -163,7 +165,7 @@ Echoes the case deck, where the suspicious part of the waveform is yellow. Revie
 
 | Item | Options | Decide when |
 |---|---|---|
-| k = 3 or 5 | Depends on the stability check | After the dev re-runs |
+| Review threshold | Chosen on the PR curve (ASR, dev), recall 1.00 at best precision; stays 30 until then (D11) | B28 |
 | ASR model | Whisper large-v3 / Flix-AI / gcoli turbo | After the B15 bake-off |
 | Live ASR in the demo | GPU service running vs cached transcripts | Saturday evening |
 | Failed-check note wording | Family key ("trade") vs display name | If time allows |

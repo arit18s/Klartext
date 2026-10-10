@@ -11,7 +11,7 @@ Base: section 8 tables, the transcript JSON (section 2) and `CheckSample` (secti
 - Offsets and durations: seconds as float (`101.0`). Scores: 0–100 as float; the UI rounds.
 - Recording ID (`call_id`) = file stem, e.g. `Stufe2_C09-K3`. `dialogue_id` = `Stufe2_C09`, `variant` = `clean` (K1/K3) or `noisy` (K2/K4), `level` = 1/2/3. For unknown file names all three are `null`; the UI then shows the file stem and no Clean/Noisy chip.
 - Enum values: verdict `alarm | review | no_alert`; family `trade | splitting | access | disclosure | documentation` (helper `numbers`); event `present | absent | undetermined | not_applicable` (plus `failed` in results); evidence role `context | trigger | exclusion`; speaker role `advisor | customer | unknown`.
-- Defaults: thresholds review 30, alarm 70; k = 3 samples per check.
+- Defaults: thresholds review 30, alarm 70 (review threshold to be re-chosen in B28); k = 5 samples per check.
 - Errors: any non-2xx returns FastAPI's `{"detail": "…"}`. 404 for an unknown call, 422 for invalid input.
 - Paths on disk (`file_path`, `snippet_path`) are never returned. Audio is reached only through the audio and snippet endpoints.
 
@@ -23,7 +23,7 @@ Agreed (contract changes beyond sections 2, 4 and 8):
 |---|---|---|
 | `Evidence` | `note` | One short line on why this passage matters. The backend adds `note` to each `CheckSample.evidence` item |
 | `Decision` | `reason_de` | New column on `decisions`: the decided family's `reason_de` (English/Deutsch toggle) |
-| Scores | — | Section 4 formula stays. With k = 3, real scores move in steps of about 17. The UI accepts any integer 0–100. The fixtures keep the design's illustrative numbers (91, 58, 12) |
+| Scores | — | Section 4 formula stays. With k = 5, real scores move in steps of 10. The UI accepts any integer 0–100. The fixtures keep the design's illustrative numbers (91, 58, 12) |
 | Numbers helper | — | Defined by the backend; not part of this contract yet. The UI does not show it |
 | "Why the check is unclear" panel | — | No new field. Built from the check's `open_question`, `benign_explanation` and `agreement` |
 | Keyword list | `KeywordList`, `KeywordEntry` | Field names confirmed against `data/Stichwortliste.json` in the case repo (version `example-0.2`) |
@@ -159,7 +159,7 @@ The full detail. Full examples: `frontend/src/fixtures/call_detail_*.json`. Shor
 
 Rules:
 - `decision` is `null` until decided. Its `verdict, family, score, reason, open_question` equal the same fields in `call`.
-- Scores are any number 0–100. With k = 3 they come in steps of about 17; the UI rounds and accepts any value.
+- Scores are any number 0–100. With k = 5 they come in steps of 10; the UI rounds and accepts any value.
 - `checks` always has the five verdict families in the order `trade, splitting, access, disclosure, documentation`. A family that failed has `score: null`, `agreement: null`, `event_majority: "failed"`. A `not_applicable` family has `score: 0`, which the UI shows as "–".
 - `decision.score` and `decision.family` are the maximum `checks[].score` and its family (section 5).
 - `evidence` holds only the decided family, sorted by `start_s`. `start_s`/`end_s` lie within the segment, and `quote` is a substring of the segment text. Every alarm or review has at least one `trigger`. A no-alert call may carry `exclusion` items.

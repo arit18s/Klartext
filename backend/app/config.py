@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     llm_base_url: str = "https://openrouter.ai/api/v1"
     llm_api_key: SecretStr = SecretStr("")
     llm_model: str = ""
-    llm_samples: int = 3
+    llm_samples: int = 5  # k runs per check (D18: k=5 for stable scores)
     llm_temperature: float = 0.3
     llm_reasoning: Literal["on", "off"] = "off"  # model "thinking"; switch without code changes
     llm_concurrency: int = 8  # parallel LLM requests

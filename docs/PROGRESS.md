@@ -2,28 +2,27 @@
 
 Updated with every step's commit. Steps and checks: `06_IMPLEMENTATION_PLAN.md`. Submission Sunday 08:30, feature freeze Saturday 22:00.
 
-Last update: Sat 10 Oct, 02:45 (stability check done; B14 written, not run yet; F8, F9 done).
+Last update: Sat 10 Oct, 08:15 (B14 done on the GPU; B15 next).
 
 ## Next up
 
 | Track | Next 3 steps |
 |---|---|
-| Backend | **B14** run on the GPU box (setup + 1-call smoke test, by you) → **B15** ASR bake-off on the 60 calls → **B16** role labelling and number normaliser |
+| Backend | **B15** ASR bake-off: 60 calls × 3 models on the GPU (by you, ~1 h) + `asr_benchmark.py` (me) → **B16** role labelling and number normaliser → **B18** pipeline orchestrator |
 | Frontend | **F10** Switch to real API (needs B24–B26, incl. SSE `/api/events` and `POST /pipeline/inbox`) → integration bugs → demo rehearsal with B34 |
 
 ## Risks / open items
 
-1. **k = 3 is noisy, k = 5 is stable but shows lower recall.** Stability check (dev, reasoning off, two independent runs each): k=3 verdicts agree 18/20, max score diff 33; k=5 agree 19/20, max diff 10. At T_review 30, k=5 recall is 0.82 / 0.91 (k=3: 0.91 / 1.00, partly by luck). C20 (1 of 5 runs undetermined) and C18 (2 of 5 needs_human votes) are borderline for the model; C14 is a stable false alarm at 80. Decision pending: k=5 + review threshold ~15–20 in B28, or stay at k=3.
+1. **Review threshold at k = 5 (decided: k = 5, DECISIONS D18).** k=5 scores are stable (max diff 10 vs 33 at k=3) but at T_review 30 dev recall is 0.82 / 0.91: C20 and C18 are borderline for the model, C14 a stable false alarm at 80. B28 picks the review threshold on the ASR PR curve (recall 1.00, best precision); 30 until then.
 2. **ASR not measured yet.** All check results so far run on script text. Swiss German ASR will drop digits and key phrases; expect dev numbers to fall. B15 picks the model by critical token recall.
 3. **GPU is smaller than planned.** RTX 3080 Ti 12 GB (AT-VIE-2), not A30/A5000 24 GB. Enough for faster-whisper large-v3 + pyannote, one model at a time. Driver 595 / CUDA 13.2: faster-whisper needs the CUDA 12 pip libs (`nvidia-cublas-cu12`, `nvidia-cudnn-cu12`).
-4. **k = 3 is coarse.** One stray sample scores 33, which crosses review at 30 (C14 extra review, D02 at 50). B12 PR curve (reasoning off): recall stays 1.00 only up to review threshold 16. Decide in B28: thresholds on the PR curve, or `LLM_SAMPLES=5`.
-5. **C14 and C20 unstable** (C14 extra review or alarm, C20 review or missed, depending on the run). Prompt time-box in B13 is used up.
-6. **Holdout has no disclosure case** (D07, C12, C18 are all in dev). Disclosure recall can only be shown on dev.
-7. **Contract gaps for B20/B24:** `quote` must be an exact substring (snap fuzzy quotes in B20); `CheckResult.samples` = our `valid_samples`; fields marked "still invented" in `API_CONTRACT.md` need a review before B24.
-8. **`decide.ts` has no `reason_de`.** Fine for Tuning; needed if the UI shows German reasons from client-side decisions.
-9. **Full LLM run cost/time.** Reasoning off: ~13 min for 60 recordings at concurrency 8. Rate limits at that load are untested.
-10. **Trigger API image** `ghcr.io/outcept/inventx-case-study` is not publicly pullable; compose builds it from the case repo instead.
-11. **Exoscale instance** must be stopped after every session and destroyed after the event (07_SECURITY section 8).
+4. **C14 and C20 unstable** (C14 extra review or alarm, C20 review or missed, depending on the run). Prompt time-box in B13 is used up.
+5. **Holdout has no disclosure case** (D07, C12, C18 are all in dev). Disclosure recall can only be shown on dev.
+6. **Contract gaps for B20/B24:** `quote` must be an exact substring (snap fuzzy quotes in B20); `CheckResult.samples` = our `valid_samples`; fields marked "still invented" in `API_CONTRACT.md` need a review before B24.
+7. **`decide.ts` has no `reason_de`.** Fine for Tuning; needed if the UI shows German reasons from client-side decisions.
+8. **Full LLM run cost/time.** Reasoning off: ~13 min for 60 recordings at concurrency 8. Rate limits at that load are untested.
+9. **Trigger API image** `ghcr.io/outcept/inventx-case-study` is not publicly pullable; compose builds it from the case repo instead.
+10. **Exoscale instance** must be stopped after every session and destroyed after the event (07_SECURITY section 8).
 
 ## Backend (Track B)
 
@@ -42,7 +41,7 @@ Last update: Sat 10 Oct, 02:45 (stability check done; B14 written, not run yet; 
 | B11 Decision rule | done | `99d00ab` | `shared/decision_cases.json` (22 cases) passes in decide.py and decide.ts; no_checks, alarm despite failed family, fixed family order |
 | B12 Evaluation runner | done | `d0fc9c0` | `scripts/evaluate.py`: GET /eval/latest shape, keyword-only baseline, `--holdout` guard. Dev/script, reasoning off: P 0.91 R 0.91, exact 17/20; on: 1.00 / 1.00, 20/20; keyword baseline P 0.57 R 0.36 |
 | B13 First tuning loop | done | `961dc84` | 5 iterations on dev, reasoning off: precision 0.92, recall 1.00, exact 18/20. Reasoning on: 0.91 / 0.91, 5× slower; default off. Stability check after B12: see risk 1 (`run_checks.py --sample-offset` for independent repeat runs) |
-| B14 ASR script for GPU box | in progress | (this commit) | `scripts/run_asr.py` + `scripts/setup_gpu.sh` written and tested offline (speaker splitting, schema). Not run on the GPU yet; check = 1 call in under a minute |
+| B14 ASR script for GPU box | done | (this commit) | Check passed on the GPU box: Stufe1_D01-K1 (166 s) in 11.7 s with diarization (39 s incl. model load). Schema valid, 343 words (script: 343), speakers match script roles in 40/42 segments. Versions in `backend/requirements-gpu.lock.txt`. env.sh fixed (nvidia namespace packages) |
 | B15 ASR bake-off | todo | – | whisper-large-v3 vs Flix-AI vs gcoli turbo, by critical token recall |
 | B16 Role labelling and normaliser | todo | – | |
 | B17 Optional ASR service | todo | – | |
@@ -53,10 +52,10 @@ Last update: Sat 10 Oct, 02:45 (stability check done; B14 written, not run yet; 
 | B22 Trigger API integration | todo | – | |
 | B23 Evaluation on ASR | todo | – | |
 | B24 Read API | todo | – | Shapes from `API_CONTRACT.md` |
-| B25 Write API | todo | – | Feedback labels incl. `note` |
+| B25 Write API | todo | – | Feedback labels incl. `note`; `POST /pipeline/inbox` (multipart `file`, WAV ≤ 200 MB, safe name into INBOX_DIR, 202 / duplicate / 415 / 413; needs `python-multipart`) |
 | B26 Inbox watcher | todo | – | |
 | B27 Fixture export | todo | – | |
-| B28 Threshold tuning on dev | todo | – | See risk 3 |
+| B28 Threshold tuning on dev | todo | – | k = 5 decided (D18). Pick the review threshold on the ASR PR curve: recall 1.00 at best precision; record value + why in DECISIONS D11 |
 | B29 Holdout run | todo | – | Once, frozen prompts and thresholds |
 | B30 Hidden test set dry run | todo | – | |
 | B31 Robustness pass | todo | – | |

@@ -73,7 +73,7 @@ Advisor name: extracted from the greeting by the role-labelling LLM call if pres
 
 Families: `trade`, `splitting`, `access`, `disclosure`, `documentation`. Helper: `numbers` (classifies number objects; never produces a verdict).
 
-One prompt per family, k samples (default `LLM_SAMPLES=3`, configurable, may be raised to 5 if score steps are too coarse; temperature 0.3). Prompts live in `backend/app/prompts/`; the family rule text and the harmless description come from the editable config.
+One prompt per family, k samples (default `LLM_SAMPLES=5`, configurable; k = 5 because k = 3 scores moved by up to 33 between identical runs, see DECISIONS D18; temperature 0.3). Prompts live in `backend/app/prompts/`; the family rule text and the harmless description come from the editable config.
 
 ### Prompt structure
 

@@ -41,7 +41,8 @@ echo "   exact versions recorded in $ROOT/requirements-gpu.lock.txt"
 echo "== env.sh (source it in every new shell)"
 cat > "$ROOT/env.sh" <<'EOF'
 source "$HOME/klartext-gpu/.venv/bin/activate"
-export LD_LIBRARY_PATH="$(python -c 'import os, nvidia.cublas.lib, nvidia.cudnn.lib; print(os.path.dirname(nvidia.cublas.lib.__file__) + ":" + os.path.dirname(nvidia.cudnn.lib.__file__))'):${LD_LIBRARY_PATH:-}"
+# nvidia.* are namespace packages (__file__ is None): take the lib folders from __path__.
+export LD_LIBRARY_PATH="$(python -c 'import os, nvidia.cublas, nvidia.cudnn; print(":".join(os.path.join(list(m.__path__)[0], "lib") for m in (nvidia.cublas, nvidia.cudnn)))'):${LD_LIBRARY_PATH:-}"
 export HF_HOME="$HOME/klartext-gpu/hf-cache"
 EOF
 # shellcheck disable=SC1091
