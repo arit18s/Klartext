@@ -21,6 +21,8 @@ import json
 import logging
 import re
 import time
+from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import TimeoutError as FutureTimeout
 from functools import lru_cache
 from typing import Generic, TypeVar
 
@@ -36,13 +38,22 @@ T = TypeVar("T", bound=BaseModel)
 
 MAX_TRANSPORT_TRIES = 3
 BACKOFF_BASE_S = 2.0
-REQUEST_TIMEOUT_S = 180.0  # reasoning on long transcripts can take minutes
+REQUEST_TIMEOUT_S = 180.0  # per read (SDK); reasoning on long transcripts can take minutes
+# Hard total deadline per request: the SDK timeout is per read, and a provider that keeps a slow request
+# alive with padding never trips it, so a call could hang forever. Past the deadline the request counts
+# as a timeout and is retried with backoff; the abandoned worker thread finishes or dies on its own.
+REQUEST_DEADLINE_S = 240.0
 RETRYABLE = (openai.RateLimitError, openai.APITimeoutError, openai.APIConnectionError, openai.InternalServerError)
 THINK_RE = re.compile(r"<think>.*?</think>", re.S)
 FENCE_RE = re.compile(r"^```(?:json)?\s*|\s*```$")
 
 # Models whose endpoint rejected json_schema: use JSON mode for them from then on.
 _json_mode_only: set[str] = set()
+_requests = ThreadPoolExecutor(max_workers=64, thread_name_prefix="llm-request")
+
+
+class _DeadlineExceeded(Exception):
+    pass
 
 
 class LLMResult(BaseModel, Generic[T]):
@@ -97,13 +108,19 @@ def _call(messages: list[dict], schema_model: type[BaseModel], model: str, tempe
     """One chat completion with transport backoff. Falls back to JSON mode if json_schema is rejected."""
     for attempt in range(1, MAX_TRANSPORT_TRIES + 1):
         try:
-            return _client().chat.completions.create(
+            future = _requests.submit(
+                _client().chat.completions.create,
                 model=model,
                 messages=messages,
                 temperature=temperature,
                 response_format=_response_format(schema_model, model),
                 extra_body={"reasoning": {"enabled": reasoning}},
             )
+            try:
+                return future.result(timeout=REQUEST_DEADLINE_S)
+            except FutureTimeout:
+                future.cancel()
+                raise _DeadlineExceeded(f"no answer within {REQUEST_DEADLINE_S:.0f} s") from None
         except openai.BadRequestError as exc:
             msg = str(exc).lower()
             if model not in _json_mode_only and ("response_format" in msg or "json_schema" in msg):
@@ -111,7 +128,7 @@ def _call(messages: list[dict], schema_model: type[BaseModel], model: str, tempe
                 _json_mode_only.add(model)
                 continue
             raise _TransportError(_short_error(exc)) from exc
-        except RETRYABLE as exc:
+        except (*RETRYABLE, _DeadlineExceeded) as exc:
             if attempt == MAX_TRANSPORT_TRIES:
                 raise _TransportError(f"{type(exc).__name__} after {attempt} tries") from exc
             wait = BACKOFF_BASE_S * 2 ** (attempt - 1)

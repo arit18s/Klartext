@@ -105,6 +105,7 @@ Stability check on dev (reasoning off, two independent runs each): with k = 3 th
 *"We run every check five times and measured that the answer barely moves between runs."*
 
 **D19. ASR model chosen by critical token recall, not WER.**
+Chosen: **Whisper large-v3** (B15, dev recordings): critical token recall 95% (digits 57/60, annotated keywords 46/48), tied with the Flix Swiss German fine-tune (95%), ahead of gcoli turbo (91%); WER 58% vs 59% broke the tie. Turbo is ~2× faster (538 s vs 996 s for 59 calls) but loses 5 critical tokens, mostly digits on clean audio. *"We picked the speech model by whether the digits and key phrases survive, not by word error rate."*
 Candidates: Whisper large-v3, Flix-AI Swiss German fine-tune (Apache-2.0), gcoli turbo (MIT). What matters is whether digits, names and key phrases survive, not exact dialect wording. Swiss German ASR outputs Standard German; transcripts and quotes are shown as transcribed.
 
 **D20. Speaker separation: pyannote community-1 on our GPU, never precision-2.**
@@ -170,6 +171,5 @@ The F9 accessibility pass (axe-core, WCAG 2 A/AA) found `#6E727A` reaches only 4
 | Item | Options | Decide when |
 |---|---|---|
 | Review threshold | Chosen on the PR curve (ASR, dev), recall 1.00 at best precision; stays 30 until then (D11) | B28 |
-| ASR model | Whisper large-v3 / Flix-AI / gcoli turbo | After the B15 bake-off |
 | Live ASR in the demo | GPU service running vs cached transcripts | Saturday evening |
 | Failed-check note wording | Family key ("trade") vs display name | If time allows |

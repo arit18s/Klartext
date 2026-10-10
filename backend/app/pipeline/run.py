@@ -33,7 +33,7 @@ from app.pipeline.check_stage import CheckOutcome, decision_for, run_check_stage
 from app.pipeline.decide import DecisionOutput
 from app.pipeline.evidence import build_rows, cut_snippet
 from app.pipeline.keywords import match_keywords
-from app.pipeline.normalise import digit_sequences
+from app.pipeline.normalise import digit_sequences_from_words
 from app.pipeline.notify import notify
 from app.pipeline.roles import label_roles
 from app.pipeline.twin import find_twins, load_view
@@ -197,7 +197,7 @@ def stage_normalise(call_id: str) -> None:
     out = []
     for s in _labelled(call_id).segments:
         words = [w.w for w in s.words]
-        for d in digit_sequences(words):
+        for d in digit_sequences_from_words(words):
             out.append({"seg_id": s.seg_id, "digits": d.digits, "kind": d.kind,
                         "start_s": s.words[d.start_word].start, "end_s": s.words[d.end_word].end})
     _write("normalise", call_id, out)

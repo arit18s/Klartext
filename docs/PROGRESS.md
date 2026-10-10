@@ -2,14 +2,20 @@
 
 Updated with every step's commit. Steps and checks: `06_IMPLEMENTATION_PLAN.md`. Submission Sunday 08:30, feature freeze Saturday 22:00.
 
-Last update: Sat 10 Oct, 08:45 (B24 merged; live updates; B26 done; B18 60-call run in progress).
+Last update: Sat 10 Oct, 09:45 (B15, B18, B20–B23 done; large-v3 chosen; B25/F10 merged).
 
 ## Next up
 
 | Track | Next 3 steps |
 |---|---|
-| Backend | **B15** run the GPU bake-off (by you, ~1 h), then `asr_benchmark.py` picks the model on dev → **B18** check: all 60 calls `done` on ASR transcripts → **B20** evidence and snippets |
+| Backend | **Demo prep** (todo below) → **B28** threshold on the ASR PR curve (dev: recall 1.00 up to review 50) → **B29** holdout run (once, frozen) |
 | Frontend | **F10** Switch to real API (needs B24–B26, incl. SSE `/api/events` and `POST /pipeline/inbox`) → integration bugs → demo rehearsal with B34 |
+
+## Demo prep (todo)
+
+- [ ] **Live-drop call:** a re-encoded copy of **Stufe2_C09-K3** (the PRD demo alarm, 2:23, twin C10 in the batch): `ffmpeg -i case-data/Audio/Stufe2_C09-K3.wav -af adelay=300 -ar 16000 -ac 1 demo_call.wav`. Different bytes → not skipped as a duplicate; neutral name → no level/variant chip (hidden-set behaviour). Keep it out of the batch by never putting it in case-data/Audio.
+- [ ] **Its transcript:** run `run_asr.py` on `demo_call.wav` on the GPU box ahead and put `demo_call.json` into `data/transcripts/` (processed from cached ASR, transcribed on our GPU); live ASR only if B17 is built and the GPU runs during the demo.
+- [ ] **Reset after each rehearsal:** `python scripts/purge_call.py demo_call --keep-transcript`, then `DELETE /triggers` on the Outcept API if its list should be clean.
 
 ## Risks / open items
 
@@ -44,18 +50,18 @@ Last update: Sat 10 Oct, 08:45 (B24 merged; live updates; B26 done; B18 60-call 
 | B12 Evaluation runner | done | `d0fc9c0` | `scripts/evaluate.py`: GET /eval/latest shape, keyword-only baseline, `--holdout` guard. Dev/script, reasoning off: P 0.91 R 0.91, exact 17/20; on: 1.00 / 1.00, 20/20; keyword baseline P 0.57 R 0.36 |
 | B13 First tuning loop | done | `961dc84` | 5 iterations on dev, reasoning off: precision 0.92, recall 1.00, exact 18/20. Reasoning on: 0.91 / 0.91, 5× slower; default off. Stability check after B12: see risk 1 (`run_checks.py --sample-offset` for independent repeat runs) |
 | B14 ASR script for GPU box | done | (this commit) | Check passed on the GPU box: Stufe1_D01-K1 (166 s) in 11.7 s with diarization (39 s incl. model load). Schema valid, 343 words (script: 343), speakers match script roles in 40/42 segments. Versions in `backend/requirements-gpu.lock.txt`. env.sh fixed (nvidia namespace packages) |
-| B15 ASR bake-off | in progress | `f98443d` | `scripts/asr_benchmark.py` (dev only by default). large-v3 on dev: digits 57/60 (95%), keywords 46/48 (96%), critical 95%, speaker 93%, WER 58% vs dialect script. Fixed: ASR writes Swiss amounts as "10 '000" (normaliser), amounts must match exactly. Waiting for Flix + gcoli transcripts |
+| B15 ASR bake-off | done | (this commit) | Dev (40 recordings), critical token recall: large-v3 95% (103/108, WER 58%), flix 95% (103/108, WER 59%), gcoli-turbo 91% (98/108). Chosen: **large-v3** (tie with flix, wins on WER; no conversion). Speed for 59 calls: gcoli 538 s, large-v3 996 s, flix 1020 s. DECISIONS D19 |
 | B16 Role labelling and normaliser | done | `f98443d` | Cue rule + LLM fallback (`prompts/roles_system.md`, temperature 0) + first-speaker fallback. Check on all 40 dev recordings: key (evidence) turns 94% right, 39/40 calls right (C14-K4 noisy: diarization), all segments 89%; advisor name in 33/40. Normaliser handles "10 '000" |
 | B17 Optional ASR service | todo | – | |
-| B18 Pipeline orchestrator | in progress | (this commit) | `pipeline/run.py` + `scripts/process_all.py`: stages asr → roles → normalise → keywords → checks → decide, disk + DB, `--from`, hash dedup, statuses. Tested: 1 done / 59 waiting_for_asr; broken transcript → failed with message; no speech → review. Evidence/notify stages are B20/B22. Check needs the 60 ASR transcripts |
+| B18 Pipeline orchestrator | done | (this commit) | Check passed: all 60 calls `done` on large-v3 transcripts, 0 failed. Fixed on the way: hard 240 s deadline per LLM request (a provider kept stalled requests open; the run hung). Dev on ASR: P 0.92 R 1.00, exact 37/40, Stufe2 pairs 4/5, Stufe3 review 5/6 (C20-K4 alarm, still caught), clean/noisy 19/20 |
 | B19 Keyword stage + rescan diff | done | `6714166` | Keyword stage in the pipeline (B18) + `pipeline.keywords.rescan()` returning the POST /keywords/rescan body (`dry_run` option). Check: active config reproduces 78 stored hits; adding "Franken" → 124 hits, 30 changed calls, keyword-only flags 20 → 39. Endpoint wiring is the teammate's (api/). Keyword hints still not in the check prompts (risk) |
-| B20 Evidence and snippets | in progress | `614de6d` | Stage `evidence` (`pipeline/evidence.py`): rows for the decided family, quotes snapped to exact substrings, times from word timestamps, ffmpeg snippets ±10 s. Offline tests pass (exact/fuzzy snapping, 25.98 s snippet). End-to-end check after the B18 run |
-| B21 Twin call | in progress | `614de6d` | Global stage `twin` (`pipeline/twin.py`): flagged vs not-flagged pairs by trigger similarity ≥ 60, one LLM sentence per pair. Check on dev pairs (C15/C16 is holdout) after the B18 run |
-| B22 Trigger API integration | in progress | `614de6d` | Stage `notify` (`pipeline/notify.py`): once per decision, deep link `?t=floor(trigger−10)`, triggers_sent + audit row. Check after the B18 run |
-| B23 Evaluation on ASR | todo | – | |
+| B20 Evidence and snippets | done | (this commit) | Check passed: C09-K3 trigger S023 snippet (94–120 s) contains code 836174. 166 evidence rows with snippets in 46 calls. Fixed: number stage merges ASR digit groups ("836" "174", "10" "'000") |
+| B21 Twin call | done | (this commit) | Check on dev pairs (C15/C16 is holdout): flagged ↔ harmless partner found 12/12 incl. C09 ↔ C10 (similarity 62–76). C13/C14: no twin while C14 is a false alarm. Fixed: similarity on equal-length windows (token_sort_ratio) and same-family candidates; notes never say "Call A/B" |
+| B22 Trigger API integration | done | (this commit) | 35 alarms/reviews posted to Outcept with deep links, re-runs skip already-posted calls (60 skipped on re-run) |
+| B23 Evaluation on ASR | done | `bf2132f` | `evaluate.py --source asr` reads the pipeline's results. Dev: P 0.92 R 1.00 vs script source 0.91/0.91 (k=5, B12); evidence overlap 17/19 alarms (89%, target 90%); keyword-only baseline 14 flags, P 0.57 R 0.36 |
 | B24 Read API | done | `5ee4bfc` | All GET endpoints of `API_CONTRACT.md` incl. SSE `/api/events`, routers in `app/api/`. 53 API tests on a seeded temp DB; the three call details, list, scores, thresholds, keywords, eval and settings equal the frontend fixtures. Open for the pipeline track: evidence falls back to `data/checks/<id>.json` until B20 fills the `evidence` table; `/pipeline/status` is derived from `calls` until the watcher (B26) reports to `app/api/pipeline_state.py` (`watching` is false until then); the pipeline should call `app.api.events.notify_call_updated(call_id)` / `notify_pipeline_status()`; `checks` lists only families with a `check_results` row; audio is served only from DATA_DIR, INBOX_DIR or CASE_DATA_DIR; tests need `pytest` (dev only, not in `requirements.txt`) |
 | B25 Write API | done | `fd85059` | All write endpoints of `API_CONTRACT.md` plus `GET /calls/{id}/history`; 65 new API tests (119 backend tests pass). PUTs write a new active version + `audit_log` (`config_changed`, target `<kind>:<id>`), families get `changed_at`/`changed_by` per changed family; recheck runs `process(from_stage="checks")`, retry from `asr`, process-folder registers + processes in one background worker (`app/api/jobs.py`); `/eval/run` runs `scripts/evaluate.py --source asr` (holdout/all pass `--holdout`; failure → 409 with the script's message); inbox duplicate answers 202 `{queued: false, duplicate: true}` as in the contract (not 409); 422 details are one plain sentence; suggest calls `llm_client.complete_json` with an injection guard; `python-multipart==0.0.32` added |
-| B26 Inbox watcher | done | (this commit) | `services/watcher.py` + `scripts/watch_inbox.py`: watchdog + 5 s scan, stable-size wait, ffmpeg conversion to 16 kHz mono, one worker thread, hash dedup, reports to `api/pipeline_state` (watching, file seen, progress, batch). Check: 44.1 kHz stereo drop → done in 56 s with 3 evidence rows + snippets and an Outcept trigger; duplicate skipped. Starting it with the API server needs a hook in `main.py` (teammate / open) |
+| B26 Inbox watcher | done | `c637b25` | Started with the API server (`bbc5b59`).  `services/watcher.py` + `scripts/watch_inbox.py`: watchdog + 5 s scan, stable-size wait, ffmpeg conversion to 16 kHz mono, one worker thread, hash dedup, reports to `api/pipeline_state` (watching, file seen, progress, batch). Check: 44.1 kHz stereo drop → done in 56 s with 3 evidence rows + snippets and an Outcept trigger; duplicate skipped. Starting it with the API server needs a hook in `main.py` (teammate / open) |
 | B27 Fixture export | todo | – | |
 | B28 Threshold tuning on dev | todo | – | k = 5 decided (D18). Pick the review threshold on the ASR PR curve: recall 1.00 at best precision; record value + why in DECISIONS D11 |
 | B29 Holdout run | todo | – | Once, frozen prompts and thresholds |

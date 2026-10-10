@@ -1,8 +1,10 @@
 """Twin call (05_BACKEND_STRUCTURE.md section 6, plan B21).
 
 Pairs each flagged call (alarm / review) with the most similar call that was NOT flagged, and back.
-Similarity: best rapidfuzz token_set_ratio between the flagged call's trigger passage and any segment of
-the other call. Below MIN_SIMILARITY there is no twin. Flagged vs not flagged (not just "different
+Candidates: only calls whose check for the flagged call's family produced evidence (the call is about
+the same thing). Similarity: the flagged call's evidence passages against the best window of as many
+consecutive segments in the other call, rapidfuzz token_sort_ratio (no subset effect: a short quote does
+not match every long segment). Below MIN_SIMILARITY there is no twin. Flagged vs not flagged (not just "different
 verdict") so a call's own clean and noisy recordings never become twins without looking at file names.
 One LLM sentence per pair says what differs; it is stored on both decisions.
 """
@@ -35,6 +37,7 @@ class CallView(BaseModel):
     triggers: list[str]  # trigger quotes of the decided family (flagged calls)
     evidence: list[str]  # all evidence quotes with roles, for the note
     benign: dict[str, str | None]  # family -> benign explanation
+    family_evidence: dict[str, int]  # family -> number of evidence items its check produced
 
 
 class Twin(BaseModel):
@@ -48,25 +51,30 @@ def _flagged(v: CallView) -> bool:
     return v.verdict in ("alarm", "review")
 
 
-def _best_segment(text: str, t: Transcript) -> tuple[float, int]:
+def _best_window(text: str, t: Transcript, size: int) -> tuple[float, int]:
     best, idx = 0.0, -1
-    for i, s in enumerate(t.segments):
-        r = fuzz.token_set_ratio(text.casefold(), s.text.casefold())
+    segs = t.segments
+    for i in range(max(1, len(segs) - size + 1)):
+        window = " ".join(s.text for s in segs[i:i + size])
+        r = fuzz.token_sort_ratio(text.casefold(), window.casefold())
         if r > best:
             best, idx = r, i
     return best, idx
 
 
 def similarity(a: CallView, b: CallView) -> tuple[float, int]:
-    """a is flagged: its triggers against every segment of b."""
-    scores = [_best_segment(q, b.transcript) for q in a.triggers]
-    return max(scores, default=(0.0, -1))
+    """a is flagged: all its evidence passages against the best equally long window of b.
+    b only qualifies if its check for a's family produced evidence."""
+    if not a.family or b.family_evidence.get(a.family, 0) == 0:
+        return 0.0, -1
+    quotes = [q.split("] ", 1)[-1] for q in a.evidence]
+    return _best_window(" ".join(quotes), b.transcript, max(1, len(quotes)))
 
 
 def note_for(a: CallView, b: CallView, b_idx: int) -> str | None:
     segs = b.transcript.segments
     window = segs[max(0, b_idx - CONTEXT_SEGMENTS): b_idx + CONTEXT_SEGMENTS + 1]
-    b_lines = "\n".join(f"[{s.role or 'unknown'}] {s.text}" for s in window)
+    b_lines = "\n".join(f"[{s.role or 'unknown'}] {s.text}" for s in window)  # b_idx: start of the best window
     user = (
         f"Call A was flagged: {a.verdict}, family {a.family}. Reason: {a.reason}\n"
         f"<call_a>\n" + "\n".join(a.evidence) + "\n</call_a>\n\n"
@@ -78,7 +86,7 @@ def note_for(a: CallView, b: CallView, b_idx: int) -> str | None:
 
 
 def find_twins(views: list[CallView], with_notes: bool = True) -> list[Twin]:
-    flagged = [v for v in views if _flagged(v) and v.triggers]
+    flagged = [v for v in views if _flagged(v) and v.evidence]
     clear = [v for v in views if not _flagged(v)]
     best_for: dict[str, tuple[float, str, int, str, str]] = {}  # call -> (sim, twin, b_idx, flagged_id, clear_id)
     for a in flagged:
@@ -108,12 +116,15 @@ def load_view(call_id: str, data_path, decision: dict) -> CallView | None:
     rows = json.loads(ev_path.read_text(encoding="utf-8")) if ev_path.exists() else []
     checks_path = data_path / "checks" / f"{call_id}.json"
     benign: dict[str, str | None] = {}
+    fam_ev: dict[str, int] = {}
     if checks_path.exists():
         fams = json.loads(checks_path.read_text(encoding="utf-8"))["checks"]["families"]
         benign = {f: r.get("benign_explanation") for f, r in fams.items()}
+        fam_ev = {f: len(r.get("evidence") or []) for f, r in fams.items()}
     return CallView(
         call_id=call_id, verdict=decision["verdict"], family=decision.get("family"), reason=decision.get("reason"),
         transcript=t, triggers=[r["quote"] for r in rows if r["role"] == "trigger"],
         evidence=[f"[{r['role']}, {r.get('speaker_role') or 'unknown'}] {r['quote']}" for r in rows], benign=benign,
+        family_evidence=fam_ev,
     )
 

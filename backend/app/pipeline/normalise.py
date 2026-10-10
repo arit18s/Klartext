@@ -123,3 +123,31 @@ def tokenize(text: str) -> list[str]:
     text = re.sub(r"(?<=\d)\s*['’]\s*(?=\d{3}\b)", "'", text)  # ASR writes Swiss amounts as "10 '000": -> "10'000"
     text = re.sub(r"(?<=\d)[ ](?=\d{3}\b)", "'", text)  # "4 500" -> "4'500"
     return [t for t in re.split(r"[\s,;:!?«»\"()–]+", text) if t and t not in ("-", ".")]
+
+
+_GROUP_HEAD = re.compile(r"^\d{1,3}$")
+_GROUP_TAIL = re.compile(r"^['’]?\d{3}[.,;:!?]?$")
+
+
+def digit_sequences_from_words(words: list[str], min_spelled: int = 3, min_value: int = 100) -> list[DigitSequence]:
+    """digit_sequences() on ASR words, after merging digit groups the ASR writes as separate words
+    ("836" "174" -> 836174, "10" "'000" -> 10000). Word indices refer to the original list (for timestamps)."""
+    tokens: list[str] = []
+    spans: list[tuple[int, int]] = []
+    i = 0
+    while i < len(words):
+        w = words[i].strip()
+        j = i
+        if _GROUP_HEAD.match(w.rstrip(".,;:!?")):
+            merged = w.rstrip(".,;:!?")
+            while j + 1 < len(words) and _GROUP_TAIL.match(words[j + 1].strip()) and not re.search(r"[.,;:!?]$", words[j].strip()):
+                merged += re.sub(r"\D", "", words[j + 1])
+                j += 1
+            w = merged if j > i else words[i]
+        tokens.append(w)
+        spans.append((i, j))
+        i = j + 1
+    out = []
+    for d in digit_sequences(tokens, min_spelled, min_value):
+        out.append(d.model_copy(update={"start_word": spans[d.start_word][0], "end_word": spans[d.end_word][1]}))
+    return out
