@@ -81,6 +81,8 @@ Hinweis: Die Buttons **Catch everything** / **Balanced** / **Fewer reviews** än
 **Nicht Run evaluation on dev** klicken (sonst ist der Holdout-Lauf nicht mehr der neueste).
 
 ### 10-outcept · Jeder Alert landet bei Outcept (ca. 15 s)
+**Nur auf Dinesh' Mac aufnehmen.** Die Outcept-Liste (`localhost:8080`) ist absichtlich nur auf seinem Mac erreichbar, und die Links darin zeigen auf `localhost:5173`. Von einem anderen Laptop aus (über die IP) öffnet sich weder die Liste noch der Link. Am besten direkt nach Clip 01 aufnehmen, dann steht `demo_call` oben.
+
 1. Neuer Tab `http://localhost:8080`: die Outcept-Liste mit *Alert: …* und *Review: …*; ganz oben *Alert: Access code shared (demo_call)* aus Clip 01.
 2. Auf den Titel dieses Eintrags klicken: Klartext öffnet sich in einem neuen Tab an der Stelle, die Karte ist markiert mit *Opened from Outcept link*. Mit dem neuen Tab weiter aufnehmen, 2 s stehen lassen.
 
