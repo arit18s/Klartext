@@ -1,5 +1,5 @@
 import { forwardRef, useState } from 'react'
-import { Check, CircleHelp, MessageSquare, Play, Send, Siren, X, ZoomIn, type LucideIcon } from 'lucide-react'
+import { Check, CircleHelp, MessageSquare, Play, Printer, Send, Siren, X, ZoomIn, type LucideIcon } from 'lucide-react'
 import type { CallDetail, Feedback, FeedbackLabel } from '@/lib/types'
 import { FAMILY_LABEL, formatClock } from '@/lib/format'
 import { FEEDBACK_DONE } from '@/lib/hooks'
@@ -9,6 +9,14 @@ import { ScoreBar } from '../ScoreBar'
 import { Segmented } from '../Segmented'
 import { Button, type ButtonProps } from '../ui/button'
 import { NoteDialog } from './NoteDialog'
+
+/** Browser print to PDF (D30). The document title becomes the suggested PDF file name. */
+function printReport(callId: string) {
+  const before = document.title
+  document.title = `Klartext report ${callId}`
+  window.addEventListener('afterprint', () => (document.title = before), { once: true })
+  window.print()
+}
 
 export interface FeedbackAction {
   label: FeedbackLabel
@@ -56,7 +64,10 @@ export function VerdictHeader({
   const give = (label: FeedbackLabel) => () => onFeedback({ label })
 
   return (
-    <section aria-label="Verdict" className="flex flex-col gap-4 rounded-panel border border-line bg-paper p-6">
+    <section
+      aria-label="Verdict"
+      className="flex break-inside-avoid flex-col gap-4 rounded-panel border border-line bg-paper p-6 print:p-4"
+    >
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-3">
           <VerdictChip verdict={decision.verdict} size="lg" />
@@ -65,6 +76,7 @@ export function VerdictHeader({
         </div>
         {decision.reason_de && (
           <Segmented
+            className="print:hidden"
             label="Reason language"
             value={lang}
             onChange={setLang}
@@ -93,7 +105,7 @@ export function VerdictHeader({
       )}
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
-        <div className="flex flex-wrap gap-2" aria-busy={busy}>
+        <div className="flex flex-wrap gap-2 print:hidden" aria-busy={busy}>
           {decision.verdict === 'review' ? (
             <>
               <ActionButton icon={Siren} pressed={is('escalated_to_alarm')} onClick={give('escalated_to_alarm')}>
@@ -150,7 +162,11 @@ export function VerdictHeader({
           ) : (
             flagged && <span className="text-small text-muted">Not sent to Outcept</span>
           )}
-          <Button variant="primary" onClick={onOpenFullCall}>
+          <Button className="print:hidden" onClick={() => printReport(detail.call.call_id)}>
+            <Printer strokeWidth={1.75} aria-hidden="true" />
+            Print report
+          </Button>
+          <Button variant="primary" className="print:hidden" onClick={onOpenFullCall}>
             <Play strokeWidth={1.75} aria-hidden="true" />
             Open full call
           </Button>

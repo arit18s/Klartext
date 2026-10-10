@@ -87,7 +87,7 @@ export function Sidebar() {
   const onCall = useLocation().pathname.startsWith('/calls/')
 
   return (
-    <aside className="sticky top-0 flex h-screen w-sidebar flex-none flex-col gap-2 overflow-y-auto border-r border-line bg-canvas px-4 py-5 max-lg:w-sidebar-collapsed max-lg:px-2">
+    <aside className="sticky top-0 flex print:hidden h-screen w-sidebar flex-none flex-col gap-2 overflow-y-auto border-r border-line bg-canvas px-4 py-5 max-lg:w-sidebar-collapsed max-lg:px-2">
       <div className="flex h-9 items-center gap-2.5 px-1 max-lg:justify-center max-lg:px-0">
         <LogoMark />
         <span className="text-[18px] font-semibold tracking-[-0.01em] max-lg:sr-only">Klartext</span>

@@ -21,14 +21,14 @@ export function TwinBox({ twin, verdict }: { twin: Twin; verdict: Verdict }) {
   return (
     <section
       aria-label={title}
-      className="flex flex-wrap items-center justify-between gap-3 rounded-panel border border-line bg-canvas p-4"
+      className="flex break-inside-avoid flex-wrap items-center justify-between gap-3 rounded-panel border border-line bg-canvas p-4"
     >
       <div className="flex max-w-[72ch] flex-col gap-1">
         <span className="font-semibold">{title}</span>
         <span className="text-muted">{twin.note}</span>
       </div>
       {verdict !== 'review' && (
-        <Link to={href} className={buttonVariants()}>
+        <Link to={href} className={buttonVariants({ className: 'print:hidden' })}>
           Open {name}
         </Link>
       )}

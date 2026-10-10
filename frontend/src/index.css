@@ -49,3 +49,20 @@
     transition: none !important;
   }
 }
+
+/* Call report = browser print to PDF (D30): A4 portrait, white page, colours kept for verdict chips and the
+   highlighted passages. Screen-only parts carry print:hidden; print-only parts are hidden print:block. */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm 16mm;
+  }
+  html,
+  body {
+    background: #fff;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

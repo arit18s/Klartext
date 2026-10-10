@@ -32,7 +32,7 @@ export function Transcript({
   }, [activeSeg])
 
   return (
-    <section aria-label="Transcript" className="flex flex-col rounded-panel border border-line bg-paper">
+    <section aria-label="Transcript" className="flex flex-col print:hidden rounded-panel border border-line bg-paper">
       <div className="flex items-center justify-between px-4 pb-2 pt-4">
         <h3 className="text-subtitle font-medium">Transcript</h3>
         <span className="text-small text-muted">Click a line to jump there</span>
