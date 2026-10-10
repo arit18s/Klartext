@@ -76,17 +76,8 @@ export function applyFilters(items: CallSummary[], f: FilterState, now = new Dat
   })
 }
 
-const VERDICT_ORDER: Record<Verdict, number> = { alarm: 0, review: 1, no_alert: 2 }
 
-/** Alarms first, then reviews, then no alert, undecided last; highest score on top. */
-export function sortCalls(items: CallSummary[]): CallSummary[] {
-  return [...items].sort(
-    (a, b) =>
-      (a.verdict ? VERDICT_ORDER[a.verdict] : 3) - (b.verdict ? VERDICT_ORDER[b.verdict] : 3) ||
-      (b.score ?? -1) - (a.score ?? -1) ||
-      a.call_id.localeCompare(b.call_id),
-  )
-}
+export { sortCalls } from './sort'
 
 export interface FilterChip {
   key: 'verdict' | 'family' | 'level' | 'variant' | 'advisor'

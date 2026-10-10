@@ -166,7 +166,7 @@ export const de: Record<Key, string> = {
 
   // ---------- Inbox ----------
   'inbox.heading': 'Handlungsbedarf',
-  'inbox.intro': 'Zuerst Alerts, dann Prüfungen, höchster Score zuoberst.',
+  'inbox.intro': 'Zuerst Alerts, dann Prüfungen; neueste zuoberst, dann höchster Score.',
   'inbox.simulateTitle':
     'Fixture-Modus: spielt eine gespeicherte Aufnahme durch die Pipeline, als wäre sie soeben im Eingangsordner abgelegt worden',
   'inbox.simulate': 'Neue Aufnahme simulieren',

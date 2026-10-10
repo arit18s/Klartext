@@ -223,10 +223,13 @@ def list_calls(
         return True
 
     def order(c: Call) -> tuple:
+        # Alerts, reviews, no alert, undecided; within each: newest first by the minute it was checked (a batch
+        # shares its minute), then highest score. Mirrored in frontend/src/lib/filters.ts sortCalls.
         d = decisions.get(c.id)
         rank = VERDICT_RANK.get(d.verdict, 3) if d else 3
         score = d.score if d and d.score is not None else -1.0
-        return (rank, -score, c.id)
+        minute = int(utc(c.processed_at).timestamp() // 60) if c.processed_at else 0
+        return (rank, -minute, -score, c.id)
 
     items = [
         call_summary(c, decisions.get(c.id), feedback.get(c.id), c.id in triggered, expected, speakers.get(c.id, []))

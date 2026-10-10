@@ -10,6 +10,21 @@ Nothing in this procedure depends on file names (B30): names only become call ID
 
 ---
 
+## Sunday: files at 09:00, pitch at 09:15
+
+One command does everything (speech to text, checks at 16 parallel requests, export, summary). Expect about 11–14 min for ~18 calls (about 17 s per call speech to text, then all checks together; decisions appear only when every call's checks are done). Do not use the drop zone for the hidden set: the watcher does one call at a time (about 1 min each).
+
+| Time | Do |
+|---|---|
+| 08:15 | Start the GPU box (Exoscale console). Check: `ssh ubuntu@138.124.210.190 'nvidia-smi --query-gpu=name --format=csv,noheader'` |
+| 08:30 | Submission done (repo, video, ZIP, thumbnail) |
+| 08:45 | Backend + frontend running, watcher on; `cd backend && ../.venv/bin/python scripts/reset_demo.py` (clean demo); terminal open in `~/Klartext` with the command below typed in |
+| 09:00 | Files arrive: put them in one folder (e.g. `~/hidden`), nothing else in it, then: `backend/scripts/run_hidden_set.sh ~/hidden` |
+| ~09:12 | Summary line `N calls: … Alert, … Review, … No alert`; results in `data/export/hidden-test-set_results.csv`; in the app under **All calls**. Pick one alert to open in the pitch |
+| 09:15 | Pitch. Stop the GPU box afterwards |
+
+If it is not finished by 09:13: start the pitch as planned (the demo does not depend on the hidden set) and say *"The held-back calls arrived 15 minutes ago and are running now; results in a few minutes."* If a step fails: run the same command again; it continues where it stopped. The app has no expected verdicts for the hidden calls, so it shows no recall or precision for them: the organisers score them; our metric in the pitch stays the B29 holdout run.
+
 ## 0. Before you start (laptop, 2 min)
 
 ```bash

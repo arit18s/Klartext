@@ -164,7 +164,7 @@ export const en = {
 
   // ---------- Inbox ----------
   'inbox.heading': 'Needs attention',
-  'inbox.intro': 'Alerts first, then reviews, highest score on top.',
+  'inbox.intro': 'Alerts first, then reviews; newest on top, then highest score.',
   'inbox.simulateTitle':
     'Fixture mode: plays a stored recording through the pipeline, as if it had just been dropped into the inbox folder',
   'inbox.simulate': 'Simulate a new recording',
