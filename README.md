@@ -72,6 +72,10 @@ Errors always fail towards review, never towards silence. A real case sent to re
 
 Python 3.11 · FastAPI · SQLite (SQLModel) · faster-whisper (Whisper large-v3) · pyannote community-1 · open-weight LLM (Qwen3.6 27B) via an OpenAI-compatible API · React + TypeScript (Vite, Tailwind) · wavesurfer.js
 
+## Try it with your own recordings
+
+Step-by-step guide for case partners and testers: set up once, then transcribe new recordings with one command and check them in the app, in 5–10 minutes: [`docs/GUIDE_PARTNERS.md`](docs/GUIDE_PARTNERS.md).
+
 ## Run it
 
 From a fresh clone. Needs macOS or Linux with [uv](https://docs.astral.sh/uv/), ffmpeg, Docker, Node 22+, an OpenAI-compatible endpoint for an open-weight model (OpenRouter during the sprint), and for speech recognition a GPU machine with an NVIDIA card and a Hugging Face token.

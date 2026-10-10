@@ -42,11 +42,11 @@ if [ "$COUNT" = "0" ]; then
   exit 1
 fi
 
-echo "== 2/4 Checking the GPU box ($GPU_HOST)"
+echo "== 2/4 Checking the GPU machine ($GPU_HOST)"
 if ! ssh -o ConnectTimeout=10 -o BatchMode=yes "$GPU_HOST" 'nvidia-smi --query-gpu=name --format=csv,noheader' ; then
-  echo "The GPU box does not answer. Start it in the Exoscale console (Compute > Instances > klartext > Start),"
-  echo "wait until it runs, then run this script again. If it runs and still does not answer: allow SSH from"
-  echo "your current IP in the security group."
+  echo "The GPU machine does not answer. Start it (our setup: Exoscale console > Compute > Instances > klartext > Start),"
+  echo "wait until it runs, then run this script again. If it runs and still does not answer: allow SSH from your"
+  echo "current IP, and check that 'ssh $GPU_HOST' works without a password (SSH key). Other host: GPU_HOST=user@host"
   exit 1
 fi
 
@@ -77,4 +77,4 @@ done
 echo
 echo "Done: $GOT of $COUNT transcripts in data/transcripts/."
 echo "Next: drop the WAVs from data/$NAME/ on the Pipeline page, or:   cp data/$NAME/*.wav inbox/"
-echo "Then stop the GPU box: Exoscale console > klartext > Stop."
+echo "Then stop the GPU machine if you pay for it by the hour (our setup: Exoscale console > klartext > Stop)."

@@ -1,5 +1,7 @@
 # CLAUDE.md: rules for building Klartext
 
+> Only testing Klartext with new recordings (for example for a case partner)? Follow "Instructions for an AI agent" in `docs/GUIDE_PARTNERS.md` instead of the build steps below.
+
 Klartext checks Swiss German bank calls for compliance risks (Inventx × Outcept case, sprintd Zurich, submission Sunday 08:30). Read `docs/01_PRD.md` to `docs/07_SECURITY_GUIDELINES.md` before writing code. Follow `docs/06_IMPLEMENTATION_PLAN.md` step by step.
 
 ## Hard rules
