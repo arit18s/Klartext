@@ -140,6 +140,7 @@ def data_dir(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[Path]:
     monkeypatch.setenv("LLM_BASE_URL", "https://openrouter.ai/api/v1")
     monkeypatch.setenv("TRIGGER_API_URL", "http://localhost:8080")
     monkeypatch.setenv("TRIGGER_API_ENABLED", "true")
+    monkeypatch.setenv("WATCHER_ENABLED", "false")  # no real inbox watcher in API tests (B26 starts one with the app)
     monkeypatch.setenv("LLM_API_KEY", SECRET)
     get_settings.cache_clear()
     get_engine.cache_clear()

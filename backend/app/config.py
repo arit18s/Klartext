@@ -36,6 +36,7 @@ class Settings(BaseSettings):
     public_base_url: str = "http://localhost:5173"
     trigger_api_url: str = "http://localhost:8080"
     trigger_api_enabled: bool = True
+    watcher_enabled: bool = True  # start the inbox watcher with the API server
     retention_days: int = 30
 
     def path(self, p: Path) -> Path:

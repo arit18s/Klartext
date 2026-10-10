@@ -189,8 +189,33 @@ class InboxWatcher:
 _watcher: InboxWatcher | None = None
 
 
-def get_watcher() -> InboxWatcher:
-    global _watcher
-    if _watcher is None:
-        _watcher = InboxWatcher()
+def get_watcher() -> InboxWatcher | None:
+    """The running watcher, or None when it is not started (WATCHER_ENABLED=false, CLI scripts)."""
     return _watcher
+
+
+def start_watcher() -> InboxWatcher | None:
+    """App startup: a fresh watcher on the current INBOX_DIR (settings may differ between app instances)."""
+    global _watcher
+    if not get_settings().watcher_enabled:
+        return None
+    stop_watcher()
+    _watcher = InboxWatcher()
+    _watcher.start()
+    return _watcher
+
+
+def stop_watcher() -> None:
+    global _watcher
+    if _watcher is not None:
+        _watcher.stop()
+        _watcher = None
+
+
+def set_watching(enabled: bool) -> bool:
+    """For POST /pipeline/watch: pause (False) or resume (True). Returns the resulting state."""
+    w = get_watcher()
+    if w is None:
+        return False
+    w.set_watching(enabled)
+    return w.watching
