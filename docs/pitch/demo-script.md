@@ -8,7 +8,7 @@ Times are the target *end* of each part. If you are late at 2:50, shorten part 4
 
 - [ ] Backend, frontend and Outcept trigger API running (`docker compose up -d trigger-api`, trigger list open at `http://localhost:8080` in a second tab).
 - [ ] All 60 calls processed and cached. Thresholds back to **review from 30, alarm from 70** (Tuning → **Reset to saved**, or **Balanced**).
-- [ ] No feedback left on C09, C10, C17 from rehearsals.
+- [ ] No feedback left on C09, C10, C17, D06 from rehearsals.
 - [ ] Latest run on Quality is the B29 holdout run (`eval-20261010-073258-holdout-asr`); don't run Dev from the Quality page after it, or Dev becomes the latest run.
 - [ ] Drop file ready: `data/demo/demo_call.wav` (D42: byte-different copy of Stufe2_C09-K3, same audio, so the duplicate check does not skip it). Its transcript is cached as `data/transcripts/demo_call.json`; the GPU box stays off. No `demo_call` row in the DB yet (see the reset below).
 - [ ] **Reset between rehearsals** (from `backend/`): `python scripts/purge_call.py demo_call --keep-transcript`. It removes the call's DB rows, stage outputs and snippets and keeps the cached transcript. An Outcept trigger already posted stays in their list; clear it with `DELETE /triggers` on the trigger API if the list should be clean.
@@ -28,7 +28,8 @@ curl -s localhost:8000/api/calls/Stufe2_C09-K3 | python3 -c "import json,sys; d=
 | Opening | – | Inbox | At least C09-K3 (alarm) and C17-K3 (review) listed; the date filter (*Last 7 days*) covers their `processed_at`. Sidebar not showing *Pipeline not reachable* or *Live updates lost* | verify on real DB |
 | 1. A call arrives | drop `data/demo/demo_call.wav`, then open `demo_call` | Pipeline → Inbox → call view | **No `demo_call` row yet** (`curl -s localhost:8000/api/calls/demo_call` answers 404); after a rehearsal run `purge_call.py demo_call --keep-transcript`. If a `demo_call` row is left over, the upload is saved as `demo_call_2.wav`, which has no cached transcript and waits for ASR. `data/transcripts/demo_call.json` exists. The LLM is reachable. The watcher runs (`watching: true` in `/api/pipeline/status`). The Outcept trigger API is up (`TRIGGER_API_ENABLED=true`, Docker running). After the drop, `demo_call` is decided like C09-K3: alarm, access, trigger evidence, *Sent to Outcept*, and its twin is `Stufe2_C10-K3` (needed for step 2; otherwise do step 2 from C09-K3) | verify on real DB |
 | 1. (backup) | `Stufe2_C09-K3` | Call view | The batch twin of the drop, for when the drop is slow. Verdict `alarm`, family `access`. Evidence of the access family with at least one `trigger` (the six digits) and a `context` card for "started the login herself". A snippet or the full audio plays (`/audio` answers 206). A `triggers_sent` row with a 2xx status (*Sent to Outcept at …*). No leftover feedback from rehearsals | verify on real DB |
-| 2. Same digits, no alarm | `Stufe2_C09-K3` → `Stufe2_C10-K3` | Call view → twin → Quality / Rules | C09-K3's `twin_call_id` is `Stufe2_C10-K3` with a one-sentence `twin_note` (button **Open Stufe2_C10**). C10-K3 verdict `no_alert`, ideally with `exclusion` evidence (the expired sample, no login started). The latest eval run (or Rules → Keywords) has the keyword baseline for *Compared with a keyword filter* | verify on real DB |
+| 2a. Keywords, no alarm | `Stufe1_D06-K1` | Search → All calls → call view | Verdict `no_alert`. At least one keyword hit, so the **Keyword hits** panel shows (fixtures-real: 7 hits, *Passwort*, *Kreditkarte*, *Prüfung umgehen*, *TAN*, *Bestätigungscode*). The access check is `absent` with a reason about the expired example number. Searching `D06` finds it. Known: the headline family is `trade` (all scores 0), so the presenter opens the **Access code shared** check instead of reading the headline reason | verify on real DB |
+| 2b. Same digits, no alarm | `Stufe2_C09-K3` → `Stufe2_C10-K3` | Call view → twin | C09-K3's `twin_call_id` is `Stufe2_C10-K3` with a one-sentence `twin_note` (button **Open Stufe2_C10**). C10-K3 verdict `no_alert` with `exclusion` evidence. C10-K3 has **no** keyword hits (expected; that is why 2a exists). Optional: the latest eval run has the keyword baseline for *Compared with a keyword filter* | verify on real DB |
 | 3. When the call doesn't settle it | `Stufe3_C17-K3` | Call view | Verdict `review`, family `access`, `open_question` set (*Was the code still valid when it was read out?*). The access check is `undetermined`, so *Why the access check is unclear* shows; the Checks table shows the real agreement (k = 5, e.g. *3 of 5*). No feedback yet, so **Escalate as alarm** / **Close as no alert** are unpressed | verify on real DB |
 | 4. Compliance sets how strict it is | – (all calls) | Tuning → Rules | `/api/scores` lists all 60 decided calls with `expected_verdict` (needs `CASE_DATA_DIR` with `Skript_mit_Sollbewertung`). Active thresholds review 30, alarm 70. All five families enabled. After the demo edit, the family is switched back on and the removed keyword is back (each save is a new config version, that is fine) | verify on real DB |
 | 5. Quality, measured honestly | – | Quality, Outcept tab | The B29 holdout run is the latest eval run (`/api/eval/latest` shows `split: holdout`, recall 1.00, precision 0.91); nobody ran Dev from the Quality page after it. Mismatches have reasons. The Outcept list at `localhost:8080` shows the C09-K3 alarm and the C17-K3 review, and their deep links open Klartext at the passage (*Opened from Outcept link*) | verify on real DB |
@@ -55,14 +56,24 @@ curl -s localhost:8000/api/calls/Stufe2_C09-K3 | python3 -c "import json,sys; d=
 
 **Say:** "Yellow means listen here. The customer started the login herself a minute earlier, so these six digits are a live code, and the advisor asked for them."
 
-## 1:20 – 2:10 · 2. Same digits, no alarm
+## 1:20 – 2:10 · 2. Keywords without risk, same digits without alarm
 
-**Do:**
-1. Scroll to **Similar call without alarm: Stufe2_C10** → **Open Stufe2_C10**.
-2. Point at **No alert** and the reason: the customer reads an expired sample from the manual; no login was started. Point at the **Exclusion** cards.
-3. Sidebar → **Quality** → panel **Compared with a keyword filter** (or Rules → **Keywords** → *Keyword filter alone would flag …*).
+The brief asks for a harmless call that still contains a keyword. C10 has no registered keywords, so show **Stufe1_D06** for that first, then C10 as the context twin of the alarm.
 
-**Say:** "Same six digits, two verdicts. A keyword filter flags both. Keywords tell us where to look; context tells us what it means."
+**Do (D06, ~25 s):**
+1. Top bar search: type `D06`, Enter. On **All calls**, open **Stufe1_D06** with the **Clean** chip.
+2. Point at the **Keyword hits** panel (*7 hits*: *Passwort*, *Kreditkarte*, *Prüfung umgehen*, *TAN*, *Bestätigungscode*) and at **No alert**.
+3. In **Checks**, click **Access code shared** to open its reason: the number comes from a sample image in a help document, marked as an expired example; no active code. (Don't read the headline reason; it is about the trading family.)
+
+**Say:** "Password, TAN, confirmation code: a keyword filter alarms here. Klartext reads the context: it's a help page, nothing live. No alert."
+
+**Do (C10, ~25 s):**
+4. Browser **Back** twice to the alarm (demo_call or Stufe2_C09). Scroll to **Similar call without alarm: Stufe2_C10** → **Open Stufe2_C10**. (If Back misbehaves: search `C10`, open the **Clean** one.)
+5. Point at **No alert** and the twin note: the customer reads an expired sample value from a help page, no login started. Point at the **Exclusion** card.
+
+**Say:** "Same six digits as the alarm, no alarm. Keywords tell us where to look; context tells us what it means."
+
+*Only if ahead of time:* Sidebar → **Quality** → **Compared with a keyword filter**. Otherwise skip; part 3 starts at 2:10.
 
 ## 2:10 – 2:50 · 3. When the call doesn't settle it
 

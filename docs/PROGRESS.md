@@ -2,19 +2,20 @@
 
 Updated with every step's commit. Steps and checks: `06_IMPLEMENTATION_PLAN.md`. Submission Sunday 08:30, feature freeze Saturday 22:00.
 
-Last update: Sat 10 Oct, 11:30 (runbook, injection test, README done; PRD checklist 9/10).
+Last update: Sat 10 Oct (demo step 2 now shows Stufe1_D06 for "harmless call with a keyword", then C10 as the twin).
 
 ## Next up
 
 | Track | Next 3 steps |
 |---|---|
 | Backend | **B32** freeze (Sat 22:00) → **B34** demo rehearsal ×3 + backup recording → **B35** final run Sunday 06:00 (repeat the clean re-run below) |
-| Frontend | Demo rehearsal with B34 → integration bugs only after the freeze |
+| Frontend | Taken over from the teammate: (1) demo script D06 ✓ → (2) advisor fairness `raised_by` → (3) safe suggestion → (4) fixtures-real fallback |
 
 ## Demo prep (todo)
 
 - [x] **Live-drop call:** a re-encoded copy of **Stufe2_C09-K3** (the PRD demo alarm, 2:23, twin C10 in the batch): `ffmpeg -i case-data/Audio/Stufe2_C09-K3.wav -af adelay=300 -ar 16000 -ac 1 demo_call.wav`. Different bytes → not skipped as a duplicate; neutral name → no level/variant chip (hidden-set behaviour). Keep it out of the batch by never putting it in case-data/Audio.
 - [x] **Its transcript:** decided (D42): copy of Stufe2_C09-K3's transcript as `data/transcripts/demo_call.json`; no live ASR. File: `data/demo/demo_call.wav` (byte-different, identical audio). Rehearsed: drop → alarm, access, twin C10, in 6 s with cached LLM answers (30–60 s with an empty cache).
+- [x] **Harmless call with a keyword (brief):** C10 has no registered keywords, so demo step 2 first shows Stufe1_D06-K1 (7 keyword hits, no alert, access check absent), then C10 as the context twin. D06's headline reason is about the trade family (all scores 0); the presenter opens the access check instead.
 - [ ] **Reset after each rehearsal:** `python scripts/purge_call.py demo_call --keep-transcript`, then `DELETE /triggers` on the Outcept API if its list should be clean.
 
 ## Clean demo state (Sat 09:45)
