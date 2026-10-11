@@ -2,7 +2,7 @@
 
 From the organisers' folder of recordings to a results file. About **30–40 min** for 20–30 calls: ASR ~17 s per call on the GPU, checks ~1 min per call at the provider's speed, plus copying.
 
-GPU box: `klartext`, Exoscale AT-VIE-2, RTX 3080 Ti, **IP 138.124.210.190**, user `ubuntu`. Everything on the box lives in `~/klartext-gpu` (installed by `setup_gpu.sh`, B14). Laptop commands run from the repo root `~/Klartext`; `PY=.venv/bin/python`.
+GPU box: `klartext`, Exoscale AT-VIE-2, RTX 3080 Ti, address in `.env` as `GPU_HOST` (user `ubuntu`; not in git). Everything on the box lives in `~/klartext-gpu` (installed by `setup_gpu.sh`, B14). Laptop commands run from the repo root `~/Klartext`; `PY=.venv/bin/python`.
 
 **Results format:** waiting for the organisers. `export_results.py` writes JSON and CSV with `call_id, file_name, verdict, family, score, reason, open_question, evidence, original_file_name`; convert from there once the format is known.
 
@@ -16,7 +16,7 @@ One command does everything (speech to text, checks at 16 parallel requests, exp
 
 | Time | Do |
 |---|---|
-| 08:15 | Start the GPU box (Exoscale console). Check: `ssh ubuntu@138.124.210.190 'nvidia-smi --query-gpu=name --format=csv,noheader'` |
+| 08:15 | Start the GPU box (Exoscale console). Check: `ssh <gpu-host> 'nvidia-smi --query-gpu=name --format=csv,noheader'` |
 | 08:30 | Submission done (repo, video, ZIP, thumbnail) |
 | 08:45 | Backend + frontend running, watcher on; `cd backend && ../.venv/bin/python scripts/reset_demo.py` (clean demo); terminal open in `~/Klartext` with the command below typed in |
 | 09:00 | Files arrive. A ZIP: save it (e.g. `~/Downloads/hidden.zip`) and run `backend/scripts/run_hidden_set.sh ~/Downloads/hidden.zip`; it unpacks and finds the recordings in subfolders too (skips `__MACOSX`). Loose files: put them in one folder (e.g. `~/hidden`) and run `backend/scripts/run_hidden_set.sh ~/hidden` |
@@ -39,7 +39,7 @@ docker compose up -d trigger-api        # Outcept list at http://localhost:8080 
 Exoscale console → Compute → Instances → `klartext` → **Start**. Wait until it is running, then:
 
 ```bash
-ssh ubuntu@138.124.210.190 'nvidia-smi --query-gpu=name,memory.used --format=csv,noheader'
+ssh <gpu-host> 'nvidia-smi --query-gpu=name,memory.used --format=csv,noheader'
 ```
 
 If SSH times out: check that the instance runs and that the firewall allows SSH from your current IP (security group).
@@ -59,14 +59,14 @@ Accepted: WAV, MP3, M4A, MP4 (audio track only), FLAC, OGG. Every file becomes a
 ## 3. Copy the recordings to the box (1–3 min)
 
 ```bash
-ssh ubuntu@138.124.210.190 'mkdir -p ~/klartext-gpu/hidden ~/klartext-gpu/out/hidden'
-scp data/hidden-test-set/*.wav ubuntu@138.124.210.190:~/klartext-gpu/hidden/
+ssh <gpu-host> 'mkdir -p ~/klartext-gpu/hidden ~/klartext-gpu/out/hidden'
+scp data/hidden-test-set/*.wav <gpu-host>:~/klartext-gpu/hidden/
 ```
 
 ## 4. Transcribe on the box (~17 s per call)
 
 ```bash
-ssh ubuntu@138.124.210.190
+ssh <gpu-host>
 tmux new -s hidden                      # survives a dropped connection: tmux attach -t hidden
 source ~/klartext-gpu/env.sh
 read -s HF_TOKEN && export HF_TOKEN     # paste the token (not shown, not stored in history)
@@ -85,7 +85,7 @@ Wait for the last line `Done: N written, 0 failed`. Same model and settings as t
 On the laptop:
 
 ```bash
-scp "ubuntu@138.124.210.190:~/klartext-gpu/out/hidden/*.json" data/transcripts/
+scp "<gpu-host>:~/klartext-gpu/out/hidden/*.json" data/transcripts/
 ls data/hidden-test-set/*.wav | wc -l; ls data/transcripts/ | grep -cFf <(ls data/hidden-test-set/*.wav | xargs -n1 basename | sed 's/\.wav$//')
 ```
 

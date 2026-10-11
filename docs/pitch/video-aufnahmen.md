@@ -1,6 +1,6 @@
 # Video-Aufnahmen für die Präsentation
 
-Zehn kurze Bildschirmvideos, eines pro Demo-Schritt, zum Einbetten in PowerPoint (Backup, falls die Live-Demo ausfällt). Reihenfolge und Inhalt folgen `demo-script.md` und den Backup-Folien 5–14 (`5-backup-a-pipeline.png` … `14-backup-j-outcept.png` zeigen jeweils, wie das Bild aussehen soll).
+Zehn kurze Bildschirmvideos, eines pro Demo-Schritt, zum Einbetten in PowerPoint (Backup, falls die Live-Demo ausfällt). Reihenfolge und Inhalt folgen `demo-script.md`.
 
 Die App ist englisch: Button- und Seitennamen unten stehen so, wie sie auf dem Bildschirm erscheinen.
 

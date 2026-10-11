@@ -6,6 +6,8 @@ Klartext checks every recorded call between bank customers and advisors in Swiss
 
 Built for the Inventx × Outcept case at sprintd Innovation Sprint Zurich, October 2026.
 
+**Our full video presentation:** [youtu.be/NVrGVU0pd80](https://youtu.be/NVrGVU0pd80) · **Slides:** [docs/pitch/klartext-pitch_final.pdf](docs/pitch/klartext-pitch_final.pdf)
+
 ## The problem
 
 - Banks record every advisory call, but only samples are ever reviewed. Misconduct goes undetected on both ends of the line.

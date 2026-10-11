@@ -13,8 +13,15 @@
 # Afterwards: drop the WAVs from data/<name>/ in the app, or cp them into inbox/. Then stop the GPU box.
 set -euo pipefail
 
-GPU_HOST="${GPU_HOST:-ubuntu@138.124.210.190}"
 REPO="$(cd "$(dirname "$0")/../.." && pwd)"
+# The GPU machine (user@host): from the environment, else GPU_HOST in .env (kept out of git).
+if [ -z "${GPU_HOST:-}" ] && [ -f "$REPO/.env" ]; then
+  GPU_HOST="$(grep -E '^GPU_HOST=' "$REPO/.env" | head -1 | cut -d= -f2- | tr -d '"'"'"' ')" || true
+fi
+if [ -z "${GPU_HOST:-}" ]; then
+  echo "Set the GPU machine: add GPU_HOST=user@host to .env, or run with GPU_HOST=user@host in front."
+  exit 2
+fi
 PY="$REPO/.venv/bin/python"
 
 if [ $# -ne 2 ]; then
