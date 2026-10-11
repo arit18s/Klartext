@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Hidden test set (or any new batch) from recordings to results in one command, for the 09:00 window.
 #
-#   backend/scripts/run_hidden_set.sh <folder-from-the-organisers> [name]      (name default: hidden-test-set)
+#   backend/scripts/run_hidden_set.sh <folder-or-zip-from-the-organisers> [name]   (name default: hidden-test-set)
+#
+# A .zip is unpacked into data/incoming/<name>/ first; recordings are found in subfolders too.
 #
 # 1. transcribe_on_gpu.sh: prepare (any audio format), upload, Whisper + speaker separation, transcripts back
 # 2. process_all.py on the folder, checks at LLM_CONCURRENCY=16 (not the watcher: that does one call at a time)
@@ -17,9 +19,19 @@ PY="$REPO/.venv/bin/python"
 IN="${1:-}"
 NAME="${2:-hidden-test-set}"
 if [ -z "$IN" ]; then
-  echo "Usage: $0 <folder-with-recordings> [name]"
+  echo "Usage: $0 <folder-or-zip-with-recordings> [name]"
   exit 2
 fi
+case "$IN" in
+  *.zip|*.ZIP)
+    [ -f "$IN" ] || { echo "ZIP not found: $IN"; exit 2; }
+    UNZIP_DIR="$REPO/data/incoming/$NAME"
+    echo "== Unpacking $IN into data/incoming/$NAME"
+    rm -rf "$UNZIP_DIR" && mkdir -p "$UNZIP_DIR"
+    unzip -q -o "$IN" -d "$UNZIP_DIR"
+    IN="$UNZIP_DIR"
+    ;;
+esac
 START=$(date +%s)
 stamp() { echo "   [$(( $(date +%s) - START )) s]"; }
 

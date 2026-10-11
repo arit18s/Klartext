@@ -55,7 +55,7 @@ function StatusLine({ status }: { status: Status }) {
   )
 }
 
-function Kpi({ label, value, detail, status }: { label: string; value: string; detail: string; status: Status }) {
+function Kpi({ label, value, detail, status, note }: { label: string; value: string; detail: string; status: Status; note?: string }) {
   return (
     <div className="flex flex-col gap-1 rounded-panel border border-line bg-paper p-4">
       <span className="text-muted">{label}</span>
@@ -64,6 +64,7 @@ function Kpi({ label, value, detail, status }: { label: string; value: string; d
       <span className="mt-1">
         <StatusLine status={status} />
       </span>
+      {note && <span className="text-small text-muted">{note}</span>}
     </div>
   )
 }
@@ -109,6 +110,8 @@ function kpis(m: EvalMetrics) {
         ? t('quality.cleanNoisyDetail', { a: cn_.agree, b: cn_.total, target: pct(TARGET.cleanNoisy) })
         : t('quality.cleanNoisyNone', { target: pct(TARGET.cleanNoisy) }),
       status: cn_.total ? meets(cn_.agree / cn_.total, TARGET.cleanNoisy) : ('unmeasured' as Status),
+      // Clean and noisy differ, but the run missed no real case: every difference stayed caught or went to a person.
+      note: cn_.total && cn_.agree < cn_.total && b.fn === 0 ? t('quality.cleanNoisySafe') : undefined,
     },
   ]
 }

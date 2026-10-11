@@ -37,8 +37,10 @@ def main() -> int:
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     rows, used, failed = [], set(), []
-    for p in sorted(args.inp.iterdir()):
-        if not p.is_file() or p.name.startswith(".") or p.suffix.lower() not in AUDIO_EXT:
+    # Also in subfolders (a ZIP often holds one folder); skip hidden files and macOS ZIP leftovers (__MACOSX, ._x).
+    for p in sorted(args.inp.rglob("*")):
+        if (not p.is_file() or p.name.startswith(".") or p.suffix.lower() not in AUDIO_EXT
+                or any(part.startswith((".", "__MACOSX")) for part in p.relative_to(args.inp).parts)):
             continue
         stem = safe_call_id(p.stem)
         call_id, n = stem, 2

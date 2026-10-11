@@ -19,7 +19,7 @@ One command does everything (speech to text, checks at 16 parallel requests, exp
 | 08:15 | Start the GPU box (Exoscale console). Check: `ssh ubuntu@138.124.210.190 'nvidia-smi --query-gpu=name --format=csv,noheader'` |
 | 08:30 | Submission done (repo, video, ZIP, thumbnail) |
 | 08:45 | Backend + frontend running, watcher on; `cd backend && ../.venv/bin/python scripts/reset_demo.py` (clean demo); terminal open in `~/Klartext` with the command below typed in |
-| 09:00 | Files arrive: put them in one folder (e.g. `~/hidden`), nothing else in it, then: `backend/scripts/run_hidden_set.sh ~/hidden` |
+| 09:00 | Files arrive. A ZIP: save it (e.g. `~/Downloads/hidden.zip`) and run `backend/scripts/run_hidden_set.sh ~/Downloads/hidden.zip`; it unpacks and finds the recordings in subfolders too (skips `__MACOSX`). Loose files: put them in one folder (e.g. `~/hidden`) and run `backend/scripts/run_hidden_set.sh ~/hidden` |
 | ~09:12 | Summary line `N calls: … Alert, … Review, … No alert`; results in `data/export/hidden-test-set_results.csv`; in the app under **All calls**. Pick one alert to open in the pitch |
 | 09:15 | Pitch. Stop the GPU box afterwards |
 
