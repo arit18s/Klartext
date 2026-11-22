@@ -3,6 +3,7 @@
 | File | What |
 |---|---|
 | `klartext-pitch_final.pdf` | The presentation slides (18 pages). |
+| `klartext-pitch.pptx` | PowerPoint draft of the pitch (English, two speakers), spoken script in the speaker notes. |
 | `demo-script.md` | The 5-minute live demo: what to click, what to say, timed, with fallbacks and a readiness checklist. |
 | `qa.md` | Answers to the questions we expect from the jury, with the decision behind each (see `docs/DECISIONS.md`). |
 | `video-aufnahmen.md` | Shot list (German) for the backup demo videos. |

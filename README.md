@@ -2,9 +2,15 @@
 
 **Every bank call heard. Every alert explained.**
 
+*[Deutsche Version](README.de.md)*
+
 Klartext checks every recorded call between bank customers and advisors in Swiss German. It flags insider trading, leaked access codes, information given to third parties and other compliance risks. For each flagged call it gives the compliance officer the exact passage worth listening to, with a timestamp and a plain-language reason. When the call does not contain enough facts to decide, Klartext says what is missing and hands the call to a human.
 
 Built for the Inventx × Outcept case at sprintd Innovation Sprint Zurich, October 2026.
+
+**Team**
+- **Selvadinesh Sasikumar** (builder): built Klartext, from the speech pipeline and the checks to the app.
+- **Arivinchsa Thilagarajah** (researcher): researched the problem and the case, and created the pitch and the presentation.
 
 **Our full video presentation:** [youtu.be/NVrGVU0pd80](https://youtu.be/NVrGVU0pd80) · **Slides:** [docs/pitch/klartext-pitch_final.pdf](docs/pitch/klartext-pitch_final.pdf)
 
