@@ -20,7 +20,14 @@ from pathlib import Path
 
 import soundfile as sf
 
-AUDIO_EXT = {".wav", ".mp3", ".m4a", ".flac", ".ogg"}
+AUDIO_EXT = {".wav", ".mp3", ".m4a", ".mp4", ".flac", ".ogg"}  # .mp4: only its audio track is used
+
+
+def safe_call_id(stem: str) -> str:
+    """ASCII only (safe for scp, shell and URLs), without leading/trailing "_" or ".", so the name stays the same
+    when the Pipeline drop zone cleans it (app.api.pipeline.safe_stem); otherwise a dropped file no longer matches
+    its transcript ("Recording (2).mp4" -> "Recording__2" both ways)."""
+    return re.sub(r"[^A-Za-z0-9_.-]", "_", stem).strip("._")[:80] or "recording"
 
 
 def main() -> int:
@@ -30,10 +37,12 @@ def main() -> int:
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     rows, used, failed = [], set(), []
-    for p in sorted(args.inp.iterdir()):
-        if not p.is_file() or p.name.startswith(".") or p.suffix.lower() not in AUDIO_EXT:
+    # Also in subfolders (a ZIP often holds one folder); skip hidden files and macOS ZIP leftovers (__MACOSX, ._x).
+    for p in sorted(args.inp.rglob("*")):
+        if (not p.is_file() or p.name.startswith(".") or p.suffix.lower() not in AUDIO_EXT
+                or any(part.startswith((".", "__MACOSX")) for part in p.relative_to(args.inp).parts)):
             continue
-        stem = re.sub(r"[^A-Za-z0-9_.-]", "_", p.stem)  # ASCII only: safe for scp, shell and URLs
+        stem = safe_call_id(p.stem)
         call_id, n = stem, 2
         while call_id in used:
             call_id, n = f"{stem}_{n}", n + 1
@@ -45,7 +54,7 @@ def main() -> int:
                 shutil.copy(p, target)
                 how = "copied"
             else:
-                subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(p), "-ar", "16000", "-ac", "1", str(target)],
+                subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(p), "-vn", "-ar", "16000", "-ac", "1", str(target)],
                                check=True, capture_output=True, timeout=300)
                 how = "converted"
             dur = sf.info(str(target)).duration

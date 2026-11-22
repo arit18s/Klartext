@@ -149,7 +149,7 @@ Content is left-aligned. Numbers in tables right-aligned.
 
 **Twin call box.** Plain panel with `line` border: "Similar call without alert" + one-sentence difference + link.
 
-**Checks table.** Columns: family, event, score, agreement ("3 of 3 runs agree"). Undetermined event shown in review colour.
+**Checks table.** Columns: category, event, score, agreement ("3 of 3 runs agree"). Undetermined event shown in review colour.
 
 **Threshold slider.** Single track with two handles ("Review from", "Alert from"). Track segments coloured clear / review / alarm soft colours. Values shown above handles. Live summary sentence under it.
 
@@ -172,7 +172,7 @@ Content is left-aligned. Numbers in tables right-aligned.
 ## 8. Copy rules
 
 - Speak to the officer: "Customer reads a live login code to the advisor", not "Event present in family access".
-- Family display names:
+- Category display names (the UI says "category"; data, API and code keep `family`, D48):
   - trade → "Trading on non-public information"
   - splitting → "Splitting to avoid approval"
   - access → "Access code shared"

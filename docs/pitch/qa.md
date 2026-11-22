@@ -37,6 +37,9 @@ Short answers for the jury, built from the pitch lines in `docs/DECISIONS.md` (d
 **How confident is it, and where does that come from?**
 **"Confidence comes from agreement between independent runs, not from the model grading itself."** (D10) Each check runs several times; the score is the share of runs that say it happened, with "unclear" counted as half.
 
+**How do the score and the thresholds work? Why 70 and 30?**
+**"Each check runs five times; the score is how many runs agree. Alert from 70, review from 30, chosen on calls we tuned on, and compliance can move them."** (D10, D11) Each run says *happened* (1), *unclear* (½) or *did not happen* (0); score = points ÷ 5 × 100, so it moves in steps of 10. Examples: 4 of 5 say happened = 80 (alert); 3 happened, 1 unclear, 1 no = 70 (alert); 5 times unclear = 50 (review); 1 happened, 1 unclear, 3 no = 30 (review). The call's highest category score decides. A majority asking for a human, a failed check or unclear speech recognition at the key passage always go to review. 30 was chosen on the dev calls: every real case reached a human with the fewest extra reviews, and recall stays 1.00 anywhere from 10 to 50. 70 means at least three of five runs clearly agree.
+
 **What if the model hallucinates?**
 Quotes must match a real transcript segment or the evidence is dropped; a "happened" without valid evidence becomes "unclear". (D9) **"Every error fails towards a human, never towards silence."** (D12)
 
@@ -60,8 +63,14 @@ Transcripts are treated as untrusted data in every prompt, outputs are checked a
 **Swiss German speech recognition is hard. How do you deal with it?**
 We picked the ASR model by whether digits and key phrases survive, not by word error rate. (D19) Whisper large-v3 recognises 95% of the digits and key phrases on dev. Low-confidence lines are marked *Listen to confirm*, and an unclear key passage sends the call to review. Clean and noisy recordings of the same call agree on 8 of 10 holdout pairs.
 
+**Did anyone check the transcripts by ear? What if they are wrong?**
+**"A Swiss German listener checked five calls: the transcript has errors, especially names, technical words and sometimes a missing negation. The verdicts were still right in all five, because Klartext judges the meaning of the whole call and the officer always hears the passage."** (D47) Checked: C09 (both recordings, alert), C10 (no alert), C17 (review), D02 (alert). Typical errors: *"Weizen"* for *"Bitte"*, *"Gospach"* for *"Postfach"*, misheard names, a few lines given to the wrong speaker, and missing negations (*"ich habe nichts Neues gestartet"* where the customer said *"heute schon etwas Neues gestartet"*). Klartext never edits transcripts by hand: the input is the audio, as it will be for the bank's calls.
+
 **Which LLM, and why reasoning off?**
 **"We measured it: the faster setting also caught more."** (D17) Qwen3.6 27B, open-weight. On dev, reasoning off: recall 1.00, precision 0.92, 6.6 s per request; reasoning on: recall 0.91, about 5× slower.
+
+**Why ask five times? Why not a fine-tuned or a bigger model?**
+**"We ask an open-weight model the same question five times and count the agreement; that's a known technique, and we measured that five runs make the verdict stable. We didn't fine-tune because 30 example calls are far too few and compliance must be able to change rules without retraining. Most remaining errors come from Swiss German speech recognition, so that's where fine-tuning pays off first."** (D10, D17, D18) Asking several times and using the agreement is known as self-consistency (Wang et al., 2022); disagreement between runs as a sign of uncertainty is the idea behind SelfCheckGPT (Manakul et al., 2023). Measured on dev: with three runs the same call's scores moved by up to 33 points between identical runs and 2 of 20 verdicts flipped; with five, at most 10 points and 1 of 20. Fine-tuning would need hundreds of labelled calls and retraining for every rule change, and a classifier gives a label, not a reason with quotes; the officers' feedback buttons collect exactly the labels a later fine-tune would need. A bigger model: closed models are ruled out for bank call data, bigger open ones need several GPUs, and "thinking harder" (reasoning on) did worse here (recall 0.91 vs 1.00, five times slower). A bigger open model is a one-line config change; we would test it on dev only. Honest limit: all five runs read the same transcript, so a word speech recognition got wrong is wrong in all five.
 
 ## Running it in a bank
 
@@ -71,8 +80,14 @@ We picked the ASR model by whether digits and key phrases survive, not by word e
 **Where would it run?**
 **"In production this runs in a Swiss data centre such as Inventx ix.Cloud."** (D16) Behind the recording system: **"Nobody uploads anything. A call ends, the recording lands, Klartext checks it."** (D2)
 
+**How does it connect to the bank's systems?**
+**"Recordings come in through a folder, an upload API or a webhook from the recording system; alerts go out to Outcept with a link to the passage, and everything is also available as a REST API."** In today: a watched inbox folder (any recording system that can drop files into a share or SFTP folder works unchanged), a REST upload (`POST /api/pipeline/inbox`, WAV, MP3, M4A, MP4, FLAC or OGG) and a batch endpoint for a whole folder; in production a webhook from the bank's call-recording system with metadata (advisor ID, ideally separate channels for bank and caller). Out: every alert and review is posted to Outcept's trigger API as JSON with a deep link to the passage (live today), a REST read API (`GET /api/calls`, `GET /api/calls/{id}`) for any case-management tool, a live event stream, JSON/CSV export and a print report per call. Not built yet: login/SSO and roles, and a connector for a specific recording product.
+
 **Who controls how strict it is?**
 Compliance. Two thresholds on the Tuning page with the cost shown live; rules and keywords edited in plain language; every change is a versioned config with an audit entry. (D11, D35)
+
+**Can the bank add its own rule, say "no velo purchases"? Will Klartext flag it?**
+**"Today compliance edits the rules and keywords of the five categories without a developer, and it takes effect on the next check. A new category like 'no velo purchases' is the same engine with a new rule text. In the prototype the five are fixed; adding a category in the UI is the next step."** The *Rule* and *What counts as harmless* text of each category on the Rules page goes directly into that category's check. A keyword such as *Velo* can be added too, but a keyword alone never flags a call: it only points the checks at the passage (D5). So "no velo purchases" is not flagged today unless it falls under one of the five categories. Every category is the same thing to the engine (rule text, harmless text, keywords, five independent runs), so a new one is configuration plus one entry in the fixed list, not a new system.
 
 **What does an auditor or FINMA get?**
 Per decision: model, prompt version, config versions (rules, keywords, thresholds) and every raw run. Every config change and every officer action (correct, false alert, missed, escalate, close, note) is in the audit log. (D28, D35)
@@ -87,7 +102,7 @@ Within minutes after the call. One batch of 60 recordings runs its checks in abo
 No. CallQuanta, the closest open-source analogue, is AGPL-3.0, which would force open-sourcing an Inventx MVP; we took ideas only (audio next to findings, webhook ingestion, local speech-to-text, feedback buttons). (D32)
 
 **How would Inventx sell this?**
-**"Inventx runs one platform; each bank gets its own rule package. The checks, keywords and thresholds are configuration, not code."** Families, keywords and thresholds are already edited on the Rules and Tuning pages without a developer, and every change is a versioned config with an audit entry (D11, D35). Onboarding a bank means loading its rule package, not a new deployment.
+**"Inventx runs one platform; each bank gets its own rule package. The checks, keywords and thresholds are configuration, not code."** Categories, keywords and thresholds are already edited on the Rules and Tuning pages without a developer, and every change is a versioned config with an audit entry (D11, D35). Onboarding a bank means loading its rule package, not a new deployment.
 
 **What would you do next?**
-**"Same pipeline, new rule package: promised guaranteed returns, missing risk warnings. The bank adds a family, not a new system."** Today's five families are about fraud and abuse. The natural next family is advisory quality under FIDLEG, the Swiss Financial Services Act: an advisor saying *"Das isch garantiert sicher"* (a guaranteed return), or a recommendation without a risk warning. After that: live warnings for access codes, where seconds matter, and the recording-system webhook instead of the inbox folder. Threshold suggestions from feedback (D44) and the advisor view (D43) are already built.
+**"Same pipeline, new rule package: promised guaranteed returns, missing risk warnings. The bank adds a category, not a new system."** Today's five categories are about fraud and abuse. The natural next category is advisory quality under FIDLEG, the Swiss Financial Services Act: an advisor saying *"Das isch garantiert sicher"* (a guaranteed return), or a recommendation without a risk warning. After that: live warnings for access codes, where seconds matter, and the recording-system webhook instead of the inbox folder. For speech recognition: the bank's own vocabulary and known advisor names as hints (*Browser, Feld, Postfach, Countdown, Anmeldebildschirm*), measured on dev only; a targeted check of negations at the evidence passages; and separate recording channels for bank and caller, which fixes wrong speakers at the source. Threshold suggestions from feedback (D44) and the advisor view (D43) are already built.

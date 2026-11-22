@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "check:fixtures": "node scripts/check-fixtures.mjs",
     "check:fixtures-real": "node scripts/check-fixtures.mjs src/fixtures-real",
-    "test": "node --test src/lib/decide.test.ts src/lib/advisors.test.ts src/i18n/i18n.test.ts"
+    "test": "node --test src/lib/decide.test.ts src/lib/advisors.test.ts src/i18n/i18n.test.ts src/lib/sort.test.ts"
   },
   "dependencies": {
     "@fontsource/instrument-sans": "5.3.0",

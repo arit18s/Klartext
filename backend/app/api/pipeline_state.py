@@ -60,11 +60,12 @@ def file_seen(at: datetime | None = None) -> None:
 
 
 def report_progress(call_id: str, stage: str, progress: float, note: str | None = None) -> None:
-    """Stage progress for one call; the start time is kept from its first report."""
+    """Stage progress for one call; the start time is kept from the first report of the current run. Progress going
+    back down means a new run of the same call (a retake after a demo reset), so the clock starts again."""
     now = datetime.now(timezone.utc)
     with _lock:
         prev = _state.progress.get(call_id)
-        started = prev.started_at if prev else now
+        started = prev.started_at if prev and progress >= prev.progress else now
         _state.progress[call_id] = Progress(stage, max(0.0, min(1.0, progress)), note, started, now)
 
 

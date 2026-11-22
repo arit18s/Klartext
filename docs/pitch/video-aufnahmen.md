@@ -1,6 +1,6 @@
 # Video-Aufnahmen für die Präsentation
 
-Zehn kurze Bildschirmvideos, eines pro Demo-Schritt, zum Einbetten in PowerPoint (Backup, falls die Live-Demo ausfällt). Reihenfolge und Inhalt folgen `demo-script.md` und den Backup-Folien 5–14 (`5-backup-a-pipeline.png` … `14-backup-j-outcept.png` zeigen jeweils, wie das Bild aussehen soll).
+Zehn kurze Bildschirmvideos, eines pro Demo-Schritt, zum Einbetten in PowerPoint (Backup, falls die Live-Demo ausfällt). Reihenfolge und Inhalt folgen `demo-script.md`.
 
 Die App ist englisch: Button- und Seitennamen unten stehen so, wie sie auf dem Bildschirm erscheinen.
 
@@ -28,7 +28,7 @@ Die App ist englisch: Button- und Seitennamen unten stehen so, wie sie auf dem B
 
 ### 01-pipeline · Ein Anruf kommt rein (ca. 20 s)
 Seite: Seitenleiste → **Pipeline**.
-1. Datei `data/demo/demo_call.wav` aus dem Finder auf **Drop a WAV file here** ziehen.
+1. Datei `data/demo/demo_call.wav` aus dem Finder auf **Drop a recording here** ziehen.
 2. Laufen lassen: die Zeile `demo_call.wav` geht durch *Transcribing → Separating speakers → Checking → Deciding* bis *Done* mit rotem **Alert**.
 3. Warten, bis der Hinweis **New alert** unten rechts erscheint. Stopp.
 
@@ -70,7 +70,7 @@ Ton: Die macOS-Aufnahme nimmt keinen Systemton auf. Wenn der Ton ins Video soll,
 Hinweis: Die Buttons **Catch everything** / **Balanced** / **Fewer reviews** ändern bei unseren 60 Anrufen keine Zahl (die Scores liegen fast nur bei 0 oder 100). Deshalb im Video den Regler ziehen statt diese Buttons zu klicken.
 
 ### 08-rules · Regeln in Klartext (ca. 15 s)
-1. Seitenleiste → **Rules**, Tab **Families**: die fünf Familien mit ihrer Regel in normaler Sprache zeigen, langsam scrollen.
+1. Seitenleiste → **Rules**, Tab **Categories**: die fünf Kategorien mit ihrer Regel in normaler Sprache zeigen, langsam scrollen.
 2. Tab **Keywords** kurz öffnen (Liste mit Standarddeutsch und Schweizerdeutsch).
 3. Nichts umschalten, nichts speichern.
 
@@ -81,6 +81,8 @@ Hinweis: Die Buttons **Catch everything** / **Balanced** / **Fewer reviews** än
 **Nicht Run evaluation on dev** klicken (sonst ist der Holdout-Lauf nicht mehr der neueste).
 
 ### 10-outcept · Jeder Alert landet bei Outcept (ca. 15 s)
+**Nur auf Dinesh' Mac aufnehmen.** Die Outcept-Liste (`localhost:8080`) ist absichtlich nur auf seinem Mac erreichbar, und die Links darin zeigen auf `localhost:5173`. Von einem anderen Laptop aus (über die IP) öffnet sich weder die Liste noch der Link. Am besten direkt nach Clip 01 aufnehmen, dann steht `demo_call` oben.
+
 1. Neuer Tab `http://localhost:8080`: die Outcept-Liste mit *Alert: …* und *Review: …*; ganz oben *Alert: Access code shared (demo_call)* aus Clip 01.
 2. Auf den Titel dieses Eintrags klicken: Klartext öffnet sich in einem neuen Tab an der Stelle, die Karte ist markiert mit *Opened from Outcept link*. Mit dem neuen Tab weiter aufnehmen, 2 s stehen lassen.
 

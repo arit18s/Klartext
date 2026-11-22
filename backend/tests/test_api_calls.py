@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 import pytest
 from sqlmodel import Session
 
-from app.models.tables import Call, Evidence, Feedback, Segment
+from app.models.tables import Call, Decision, Evidence, Feedback, Segment
 from tests.test_api_support import assert_shape, client, data_dir, details, engine, load_fixture, seeded, write_wav  # noqa: F401
 
 
@@ -27,6 +27,22 @@ def test_list_sorted_by_verdict_then_score(client, seeded):
         s.commit()
     ids = [i["call_id"] for i in client.get("/api/calls").json()["items"]]
     assert ids == ["Stufe2_C09-K3", "Stufe3_C17-K3", "Stufe2_C10-K3", "Unknown_file"]
+
+
+def test_new_alert_is_on_top_whatever_its_name_or_score(client, seeded):
+    from datetime import datetime, timezone
+    batch = datetime(2026, 10, 10, 9, 0, tzinfo=timezone.utc)
+    with Session(seeded) as s:
+        for cid, score, sec in [("A_batch_100", 100, 1), ("B_batch_80", 80, 30), ("C_batch_100", 100, 50)]:
+            s.add(Call(id=cid, file_path=f"/x/{cid}.wav", file_hash=cid, status="done", processed_at=batch.replace(second=sec)))
+            s.add(Decision(call_id=cid, verdict="alarm", family="trade", score=score))
+        later = datetime(2026, 10, 10, 15, 16, tzinfo=timezone.utc)  # dropped later, lower score, name sorts last
+        s.add(Call(id="WhatsApp_2", file_path="/x/w.wav", file_hash="w", status="done", processed_at=later))
+        s.add(Decision(call_id="WhatsApp_2", verdict="alarm", family="access", score=70))
+        s.commit()
+    ids = [i["call_id"] for i in client.get("/api/calls", params={"verdict": "alarm"}).json()["items"]]
+    # newest first; the batch (same minute) keeps highest score first, then the ID
+    assert ids[:4] == ["WhatsApp_2", "A_batch_100", "C_batch_100", "B_batch_80"]
 
 
 def test_undecided_call_has_null_decision_fields(client, seeded):

@@ -25,7 +25,7 @@ from app.config import get_settings
 
 log = logging.getLogger(__name__)
 
-AUDIO_EXT = {".wav", ".mp3", ".m4a", ".flac", ".ogg"}
+AUDIO_EXT = {".wav", ".mp3", ".m4a", ".mp4", ".flac", ".ogg"}  # .mp4: only its audio track is used
 POLL_INTERVAL_S = 5.0
 STABLE_S = 1.0
 SAFE_STEM = re.compile(r"[^\w.-]")
@@ -52,7 +52,7 @@ def convert(path: Path) -> Path:
     out_dir = get_settings().data_path / "audio"
     out_dir.mkdir(parents=True, exist_ok=True)
     out = out_dir / (SAFE_STEM.sub("_", path.stem) + ".wav")
-    cmd = ["ffmpeg", "-y", "-loglevel", "error", "-i", str(path), "-ar", "16000", "-ac", "1", str(out)]
+    cmd = ["ffmpeg", "-y", "-loglevel", "error", "-i", str(path), "-vn", "-ar", "16000", "-ac", "1", str(out)]
     try:
         subprocess.run(cmd, check=True, capture_output=True, timeout=300)
     except (subprocess.CalledProcessError, subprocess.TimeoutExpired, FileNotFoundError) as exc:

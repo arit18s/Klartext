@@ -80,11 +80,26 @@ def test_inbox_duplicate_of_known_call(client, seeded, tmp_path):
     ("notes.txt", b"hello", "text/plain"),
     ("fake.wav", b"ID3\x03not a wav at all", "audio/wav"),
     ("empty.wav", b"", "audio/wav"),
+    ("renamed.mp3", b"just some text, not audio", "audio/mpeg"),
+    ("renamed.mp4", b"just some text, not a video", "video/mp4"),
 ])
-def test_inbox_rejects_non_wav(client, tmp_path, name, data, ctype):
+def test_inbox_rejects_non_audio(client, tmp_path, name, data, ctype):
     r = client.post("/api/pipeline/inbox", files={"file": (name, data, ctype)})
-    assert r.status_code == 415 and r.json()["detail"] == f"{name} is not a WAV file. Convert it to WAV and drop it again."
+    assert r.status_code == 415 and r.json()["detail"] == (
+        f"{name} is not a recording Klartext can read. Use WAV, MP3, M4A, MP4, FLAC or OGG and drop it again.")
     assert [p for p in (tmp_path / "inbox").iterdir()] == [] if (tmp_path / "inbox").exists() else True
+
+
+@pytest.mark.parametrize("name, head, stored", [
+    ("Call 07.mp3", b"ID3\x04\x00\x00\x00\x00\x00\x00", "Call_07.mp3"),
+    ("interview.MP4", b"\x00\x00\x00\x20ftypisom\x00\x00", "interview.mp4"),
+    ("memo.m4a", b"\x00\x00\x00\x20ftypM4A \x00\x00", "memo.m4a"),
+])
+def test_inbox_accepts_other_audio_and_keeps_its_extension(client, tmp_path, name, head, stored):
+    data = head + b"\x00" * 64  # only the first bytes are checked here; the watcher converts with ffmpeg
+    r = client.post("/api/pipeline/inbox", files={"file": (name, data, "application/octet-stream")})
+    assert r.status_code == 202 and r.json() == {"file_name": stored, "queued": True, "duplicate": False}
+    assert (tmp_path / "inbox" / stored).read_bytes() == data
 
 
 def test_inbox_too_large(client, tmp_path, monkeypatch):
@@ -160,3 +175,18 @@ def test_export_csv(client, seeded):
     new = next(x for x in rows if x["call_id"] == "New-K1")
     assert new["verdict"] == "" and new["evidence"] == ""
     assert client.get("/api/pipeline/export?format=xml").status_code == 422
+
+
+@pytest.mark.parametrize("original", [
+    "WhatsApp Audio 2026-10-10 at 16.24.30 (2).mp4", "Anruf (1).mp3", "_leading.wav", "Kunde Müller.m4a", "...odd.ogg",
+])
+def test_prepared_name_survives_the_drop_zone(original):
+    # prepare_hidden_set.py names the WAV and its transcript; a drop of that WAV must keep the same call ID.
+    import importlib.util
+    from pathlib import Path as P
+    from app.api.pipeline import safe_stem
+    spec = importlib.util.spec_from_file_location("prep", P(__file__).resolve().parents[1] / "scripts" / "prepare_hidden_set.py")
+    prep = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(prep)
+    call_id = prep.safe_call_id(P(original).stem)
+    assert safe_stem(f"{call_id}.wav") == call_id

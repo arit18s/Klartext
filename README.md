@@ -6,6 +6,8 @@ Klartext checks every recorded call between bank customers and advisors in Swiss
 
 Built for the Inventx × Outcept case at sprintd Innovation Sprint Zurich, October 2026.
 
+**Our full video presentation:** [youtu.be/NVrGVU0pd80](https://youtu.be/NVrGVU0pd80) · **Slides:** [docs/pitch/klartext-pitch_final.pdf](docs/pitch/klartext-pitch_final.pdf)
+
 ## The problem
 
 - Banks record every advisory call, but only samples are ever reviewed. Misconduct goes undetected on both ends of the line.
@@ -71,6 +73,10 @@ Errors always fail towards review, never towards silence. A real case sent to re
 ## Stack
 
 Python 3.11 · FastAPI · SQLite (SQLModel) · faster-whisper (Whisper large-v3) · pyannote community-1 · open-weight LLM (Qwen3.6 27B) via an OpenAI-compatible API · React + TypeScript (Vite, Tailwind) · wavesurfer.js
+
+## Try it with your own recordings
+
+Step-by-step guide for case partners and testers: set up once, then transcribe new recordings with one command and check them in the app, in 5–10 minutes: [`docs/GUIDE_PARTNERS.md`](docs/GUIDE_PARTNERS.md).
 
 ## Run it
 

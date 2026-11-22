@@ -218,7 +218,7 @@ function DropZone({ onFiles, busy }: { onFiles: (files: File[]) => void; busy: b
       <input
         ref={input}
         type="file"
-        accept=".wav,audio/wav,audio/x-wav"
+        accept=".wav,.mp3,.m4a,.mp4,.flac,.ogg,audio/*,video/mp4"
         multiple
         className="sr-only"
         tabIndex={-1}
