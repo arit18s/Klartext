@@ -8,6 +8,10 @@ Klartext prüft jedes aufgezeichnete Gespräch zwischen Bankkundinnen und -kunde
 
 Entwickelt für den Inventx × Outcept Case am sprintd Innovation Sprint Zürich, Oktober 2026.
 
+**Team**
+- **Selvadinesh Sasikumar** (Builder): hat Klartext gebaut, von der Spracherkennung über die Prüfungen bis zur App.
+- **Arivinchsa** (Researcher): hat das Problem und den Case recherchiert und den Pitch und die Präsentation erarbeitet.
+
 **Unsere ganze Video-Präsentation:** [youtu.be/NVrGVU0pd80](https://youtu.be/NVrGVU0pd80) · **Folien:** [docs/pitch/klartext-pitch_final.pdf](docs/pitch/klartext-pitch_final.pdf)
 
 ## Das Problem
