@@ -10,7 +10,7 @@ Built for the Inventx × Outcept case at sprintd Innovation Sprint Zurich, Octob
 
 **Team**
 - **Selvadinesh Sasikumar** (builder): built Klartext, from the speech pipeline and the checks to the app.
-- **Arivinchsa** (researcher): researched the problem and the case, and created the pitch and the presentation.
+- **Arivinchsa Thilagarajah** (researcher): researched the problem and the case, and created the pitch and the presentation.
 
 **Our full video presentation:** [youtu.be/NVrGVU0pd80](https://youtu.be/NVrGVU0pd80) · **Slides:** [docs/pitch/klartext-pitch_final.pdf](docs/pitch/klartext-pitch_final.pdf)
 
